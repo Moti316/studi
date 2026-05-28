@@ -1,0 +1,218 @@
+project: StudiBuilder
+profile: Solo-Tool
+topology: Sequential
+agent_count: 21
+agents:
+  product-owner:
+    title: Product Owner
+    tier: strategic
+    model: opus
+    skills:
+    - product-discovery
+    - user-story-writing
+    - roadmap-planning
+    focus:
+    - 'דגש: scope אכזרי — רק מה שמוכיח/מפריך את ההשערה.'
+  tech-lead:
+    title: Tech Lead / Architect
+    tier: strategic
+    model: opus
+    skills:
+    - architecture-decision-records
+    - system-design
+    - typescript-patterns
+    focus: []
+  backend-engineer:
+    title: Backend Engineer
+    tier: builder
+    model: sonnet
+    skills:
+    - typescript-patterns
+    - api-design
+    - secure-coding
+    - auth-patterns
+    focus: []
+  frontend-engineer:
+    title: Frontend Engineer (Web)
+    tier: builder
+    model: sonnet
+    skills:
+    - next.js
+    - rtl-css
+    - form-validation
+    - web-performance
+    focus:
+    - 'דגש: RTL כאזרח-ראשון — bidi, mirroring, לא תיקון בדיעבד.'
+    - 'דגש: mobile-first, מגע, רשת-איטית.'
+  data-engineer:
+    title: Data Engineer
+    tier: builder
+    model: sonnet
+    skills:
+    - data-modeling
+    - supabase js client + drizzle orm
+    - query-optimization
+    focus: []
+  devops-engineer:
+    title: DevOps Engineer
+    tier: builder
+    model: sonnet
+    skills:
+    - ci-cd
+    - infrastructure-as-code
+    - observability-basics
+    focus: []
+  notifications-engineer:
+    title: Notifications Engineer
+    tier: builder
+    model: sonnet
+    skills:
+    - push-delivery
+    - notification-ux
+    focus: []
+  ml-engineer:
+    title: ML Engineer
+    tier: builder
+    model: sonnet
+    skills:
+    - mlops
+    - model-evaluation
+    focus: []
+  appsec:
+    title: Application Security Engineer
+    tier: quality
+    model: sonnet
+    skills:
+    - owasp-top-10
+    - secure-coding
+    - secrets-management
+    focus:
+    - 'דגש: משטח-תקיפה ציבורי — rate-limiting, hardening.'
+  test-engineer:
+    title: Test Engineer
+    tier: quality
+    model: sonnet
+    skills:
+    - test-driven-development
+    - typescript-testing
+    focus:
+    - 'דגש: RED-GREEN-REFACTOR — בדיקה נכשלת לפני מימוש.'
+  e2e-qa:
+    title: E2E / Manual QA Engineer
+    tier: quality
+    model: sonnet
+    skills:
+    - e2e-automation
+    - exploratory-testing
+    focus: []
+  visual-designer:
+    title: Visual Designer
+    tier: builder
+    model: sonnet
+    skills:
+    - design-tokens
+    - he-typography
+    focus:
+    - 'דגש: טיפוגרפיה ל-RTL — מרווח, ניקוד, יישור.'
+  design-system:
+    title: Design System Engineer
+    tier: builder
+    model: sonnet
+    skills:
+    - design-tokens
+    - component-architecture
+    focus: []
+  ux-researcher:
+    title: UX Researcher
+    tier: builder
+    model: sonnet
+    skills:
+    - jobs-to-be-done
+    - usability-testing
+    focus: []
+  interaction-designer:
+    title: Interaction Designer
+    tier: builder
+    model: sonnet
+    skills:
+    - user-flows
+    - ia-patterns
+    focus: []
+  content-writer:
+    title: UX Writer / Content Designer
+    tier: builder
+    model: sonnet
+    skills:
+    - he-microcopy
+    - tone-of-voice
+    focus: []
+  accessibility-i18n:
+    title: Accessibility & i18n Engineer
+    tier: builder
+    model: sonnet
+    skills:
+    - wcag-2.2
+    - i18n-framework
+    - rtl-css
+    focus: []
+  cloud-specialist:
+    title: Cloud / Self-Hosting Specialist
+    tier: builder
+    model: sonnet
+    skills:
+    - cloud-platforms
+    - backup-strategy
+    focus: []
+  privacy-officer:
+    title: Privacy Officer
+    tier: quality
+    model: sonnet
+    skills:
+    - data-minimization
+    - privacy-by-design
+    focus: []
+  release-manager:
+    title: Release Manager
+    tier: coordinator
+    model: sonnet
+    skills:
+    - semver
+    - release-management
+    focus:
+    - 'דגש: ניטור-שחרור, התראות-רגרסיה, גילוי-מהיר.'
+  domain-expert:
+    title: Domain Expert
+    tier: strategic
+    model: opus
+    skills:
+    - edtech-domain-knowledge
+    focus: []
+plugins:
+  global:
+  - claude-md-management
+  - plugin-dev
+  - superpowers
+  per_project:
+  - sentry
+  - supabase
+  - typescript-lsp
+  - vercel
+auxiliary_models:
+  compression: haiku
+  web_extract: haiku
+  session_search: haiku
+  approval_gate: haiku
+capability_agents:
+  live_research:
+    capability: web-search
+    note: מודל/כלי עם גישה חיה לרשת - מחקר זמן-אמת וציטוטים
+  deep_context:
+    capability: large-context
+    note: מודל עם חלון-הקשר ענק - ניתוח לוגים/קבצים גדולים
+guardrails:
+  max_turns: 12
+  max_budget_usd: 1.0
+  loop_breaker:
+    method: error-hash
+    repeat_threshold: 3
+    action: inject CRITICAL STOP - force strategy change
