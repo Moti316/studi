@@ -94,5 +94,6 @@ docs/
 - [ ] Phase 7 - TTS (4 voices)
 - [ ] Phase 8 - Credits system
 - [ ] Phase 9 - Polish & launch
+- [ ] Phase 10 - Course-Site Factory (landing+checkout+ads per course)
 
 ראה `docs/build-roadmap.md` לפירוט מלא של כל phase.
