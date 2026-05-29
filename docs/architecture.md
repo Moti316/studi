@@ -48,6 +48,7 @@
 ## בחירות-טכנולוגיה מומלצות (לדיון)
 
 ### Frontend
+
 **המלצה: Next.js 15 + App Router** — SSR/RSC ל-SEO ב-landing, ניתוב ברור,
 שילוב API routes לפעולות-לקוח. PWA דרך `next-pwa`. RTL עברית native.
 
@@ -58,6 +59,7 @@
 **State**: React Query לקריאות-API + Zustand ל-UI state.
 
 ### Backend
+
 **המלצה: Node + Hono / Express** או **Python + FastAPI**.
 
 **Hono ב-Node** אם הצוות JS — מהיר, type-safe, רץ ב-edge runtime.
@@ -68,10 +70,12 @@
 **שכבת AI יכולה להיות נפרדת**: gateway ב-Node, workers ב-Python.
 
 ### Database
+
 **עיקרי: PostgreSQL** ל-relational state (users, courses, lessons, questions,
 answers, credits transactions, sessions).
 
 **Vector DB**: 3 אופציות:
+
 - **pgvector** (extension של Postgres) — הכי פשוט, מספיק ל-MVP, מאחד DB
 - **Qdrant** — high-performance, hybrid search, open-source
 - **Pinecone** — מנוהל, scale, אבל יקר
@@ -81,9 +85,11 @@ answers, credits transactions, sessions).
 **Object Storage**: S3 / Cloudflare R2 / Supabase Storage לקבצי-מקור גולמיים.
 
 ### Background Jobs
+
 **Bull / BullMQ + Redis** ב-Node או **Celery + Redis** ב-Python.
 
 הצורך: pipeline אסינכרוני 5-שלבי שצריך:
+
 - progress tracking (מצב ה-5%)
 - retries (אם LLM נכשל)
 - timeout
@@ -91,9 +97,11 @@ answers, credits transactions, sessions).
 - estimated time remaining
 
 ### LLM
+
 **Claude (Anthropic)** עם prompt caching - חוסך עלויות בעיבוד 50MB מסמכים.
 
 **שימושים**:
+
 - **Sonnet 4.6** ליצירת תוכן (לימודים, שאלות)
 - **Haiku 4.5** ל-classification (זיהוי-נושא, ביטחון)
 - **Opus 4.8** לבדיקת-איכות (review של שאלות שנוצרו)
@@ -102,6 +110,7 @@ answers, credits transactions, sessions).
 את החוזים האלה במדויק.
 
 ### Document Processing
+
 - **PDF**: PyMuPDF (PyPDF2 גם אופציה) או Unstructured.io
 - **Word**: python-docx
 - **PowerPoint**: python-pptx
@@ -109,6 +118,7 @@ answers, credits transactions, sessions).
 - **תמונות**: Tesseract OCR או Claude Vision (יקר יותר אבל איכותי)
 
 ### TTS
+
 - **ElevenLabs** — איכות מובילה, עברית טובה, voice cloning. יקר יחסית
 - **Microsoft Azure Speech** — עברית סבירה, מחיר טוב
 - **Google Cloud TTS** — תמיכת עברית מוגבלת
@@ -118,12 +128,14 @@ answers, credits transactions, sessions).
 כדי לא לשלם פעמיים על אותו הסבר.
 
 ### Auth
+
 - **Magic Link**: Resend / Postmark לשליחה + טבלת `auth_tokens`
 - **Google OAuth**: NextAuth (אם Next.js) או Lucia או Supabase Auth
 
 **המלצה**: NextAuth v5 (Auth.js) — תומך magic link + Google מתוך-הקופסא.
 
 ### Hosting / Deployment
+
 - **Frontend + API Routes**: Vercel (אם Next.js)
 - **Workers**: Railway / Fly.io / AWS ECS (לעבודות-עיבוד ארוכות)
 - **DB**: Neon (Postgres מנוהל, עם pgvector) או Supabase
@@ -190,13 +202,13 @@ POST /api/courses
 
 ## שיקולי-עלות
 
-| פעולה | עלות מוערכת ליצירה (50 עמ' PDF) |
-|---|---|
-| LLM (Claude Sonnet) | ~$0.50 (עם prompt caching) |
-| Embedding (Voyage) | ~$0.05 |
-| TTS (ElevenLabs) | ~$0.10 לשיעור עם הסבר |
-| Storage (R2) | זניח |
-| **סה"כ** | **~$0.65 לקורס** |
+| פעולה               | עלות מוערכת ליצירה (50 עמ' PDF) |
+| ------------------- | ------------------------------- |
+| LLM (Claude Sonnet) | ~$0.50 (עם prompt caching)      |
+| Embedding (Voyage)  | ~$0.05                          |
+| TTS (ElevenLabs)    | ~$0.10 לשיעור עם הסבר           |
+| Storage (R2)        | זניח                            |
+| **סה"כ**            | **~$0.65 לקורס**                |
 
 עם מודל-קרדיטים: 23 קרדיטים = 23 × $X. אם 1 קרדיט = 5 סנט → $1.15 הכנסה
 ל-$0.65 עלות = ~43% רווח-גולמי. סביר.
@@ -204,6 +216,7 @@ POST /api/courses
 ## פערים שייסגרו ב-intake (50 השאלות של workspace-template)
 
 הסקירה לעיל נותנת **תמונת-על**. ה-intake יחדד:
+
 - שלב הפרויקט (Q05: רעיון / MVP / מוצר-חי) → roster + ארכיטיפ
 - דומיין (Q06: edtech נכון? יש סייגים?)
 - שפת backend (Q22: TS / Python / Go?) → LSP, יחסים בין סוכנים

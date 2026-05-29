@@ -9,6 +9,7 @@
 ## States
 
 ### first-time (משתמש חדש)
+
 - header counters: credits=X (mock 1500), XP=0, streak=0
 - CTA: "+ קורס חדש" (כחול בולט)
 - Bob mascot שמח
@@ -19,6 +20,7 @@
 - level: "מתחיל" (placeholder badge)
 
 ### with-courses
+
 - grid של קורסים פעילים (cards)
 - toggle "כל הקורסים" / "סטטיסטיקות"
 - streak פעיל (להבה צהובה + מספר)

@@ -27,15 +27,18 @@
 ## Alternatives Considered (לא בחרנו)
 
 ### Option A: ...
+
 - ✅ יתרון 1
 - ✅ יתרון 2
 - ❌ חיסרון 1
 - ❌ חיסרון 2
 
 ### Option B: ...
+
 - ...
 
 ### Option C: ...
+
 - ...
 
 **למה לא A/B/C**: נימוק קצר.
@@ -45,15 +48,18 @@
 ## Consequences
 
 ### Positive
+
 - מה נשתפר
 - חוסך זמן/כסף/מורכבות
 
 ### Negative / Trade-offs
+
 - מה הקשה יותר
 - חוב טכני שניצור
 - migration path אם נשנה את דעתנו
 
 ### Neutral
+
 - שינויים נדרשים בקוד/תהליכים
 
 ---
@@ -89,6 +95,6 @@
 
 ## Revision History
 
-| Date | Author | Change |
-|---|---|---|
-| 2026-MM-DD | ... | Initial proposal |
+| Date       | Author | Change           |
+| ---------- | ------ | ---------------- |
+| 2026-MM-DD | ...    | Initial proposal |

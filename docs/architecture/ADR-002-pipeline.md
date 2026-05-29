@@ -10,6 +10,7 @@
 ## Context
 
 לב המוצר הוא pipeline 5-שלבי שלוקח PDF/Word ומייצר קורס. אפשר:
+
 1. לבנות מהיסוד עם Claude + pgvector + Voyage
 2. להשתמש ב-NotebookLM API של Google (preview)
 3. שילוב: NotebookLM ל-RAG + Claude ליצירת שאלות
@@ -55,6 +56,7 @@
 ## Alternatives Considered
 
 ### Option A: NotebookLM API לכל ה-RAG
+
 - ✅ Google מטפל ב-parse/chunk/embed
 - ✅ איכות עברית של Gemini
 - ❌ Vendor lock-in
@@ -63,12 +65,14 @@
 - ❌ אין access לעלות-לטיפול
 
 ### Option B: שילוב - NotebookLM ל-RAG + Claude ליצירה
+
 - ✅ פחות לבנות ב-Phase 4
 - ❌ 2 vendors להתחזק
 - ❌ פחות שליטה ב-chunk granularity
 - ❌ עלות כפולה
 
 ### Option C: Build from scratch (נבחר)
+
 - ✅ שליטה מלאה
 - ✅ no vendor lock-in
 - ✅ aligning עם הסטאק (TS, Supabase)
@@ -80,6 +84,7 @@
 ## Implementation Details
 
 ### 4.1 Parsing (2 ימים)
+
 - **PDF**: `pdf-parse` או `unpdf`. fallback ל-Claude Vision לעמודים-תמונה
 - **Word**: `mammoth`
 - **PowerPoint**: לעת עתה - חילוץ via Claude Vision לכל slide
@@ -88,28 +93,33 @@
 - Output: `{ text, structure: { headings, tables, lists }, pages }`
 
 ### 4.2 Chunking (1 יום)
+
 - Semantic - by paragraph + heading boundaries
 - Target 500 tokens
 - Overlap 50 tokens
 - Metadata: `page`, `heading`, `section`
 
 ### 4.3 Embedding (2 ימים)
+
 - **Voyage AI** `voyage-3` (1024-dim)
 - Batch 100 chunks
 - pgvector with HNSW index (`vector_cosine_ops`)
 
 ### 4.4 Topic Detection (1 יום)
+
 - **Claude Haiku 4.5** (זול לסיווג)
 - Prompt: top-10 chunks → "מה הנושא בעברית? + confidence 0-100"
 - Output: `{ topic, confidence }`
 - **ביטחון < 70% → אזהרה למשתמש**
 
 ### 4.5 Lesson Generation (2 ימים)
+
 - **Claude Sonnet 4.6** + **prompt caching** (cache chunks)
 - Prompt: "given these chunks, plan N lessons covering them, output JSON"
 - Output: `[{ title, summary, chunk_ids, estimated_questions }]`
 
 ### 4.6 Question Generation (2 ימים)
+
 - Per lesson, per question:
   - Retrieve top 3 chunks (RAG)
   - Claude Sonnet generates one of 4 types
@@ -131,12 +141,12 @@
 
 ## Risk & Mitigation
 
-| סיכון | חומרה | מיטיגציה |
-|---|---|---|
-| LLM ממציא עובדות | גבוה | RAG strict context + validation chunk-grounding |
-| Parsing PDF ייכשל | בינוני | fallback ל-Claude Vision |
-| עלות LLM מתפוצצת | בינוני | prompt caching + rate limits |
-| pgvector לא scale | נמוך | תיעוד switch-plan ב-ADR-005 |
+| סיכון             | חומרה  | מיטיגציה                                        |
+| ----------------- | ------ | ----------------------------------------------- |
+| LLM ממציא עובדות  | גבוה   | RAG strict context + validation chunk-grounding |
+| Parsing PDF ייכשל | בינוני | fallback ל-Claude Vision                        |
+| עלות LLM מתפוצצת  | בינוני | prompt caching + rate limits                    |
+| pgvector לא scale | נמוך   | תיעוד switch-plan ב-ADR-005                     |
 
 ---
 

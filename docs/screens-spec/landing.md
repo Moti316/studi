@@ -28,16 +28,20 @@
 - `<PrimaryButton>` x 2
 
 ## Data dependencies
+
 - None (static)
 
 ## Acceptance
+
 - [ ] Lighthouse perf >= 95
 - [ ] SEO: meta tags, OG image
 - [ ] עברית RTL מלאה
 - [ ] mobile + desktop responsive
 
 ## Related
+
 - ↘ `auth-modal.md`
 
 ## Source
+
 לא צולם - נבנה מהיסוד

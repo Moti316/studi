@@ -41,18 +41,18 @@ pnpm lint          # ESLint + Prettier
 
 **Phase**: 0/10 - Foundation ✅
 
-| # | Phase | סטטוס |
-|---|---|---|
-| 0 | Foundation - scaffold + CI + תיעוד | ✅ הושלם |
-| 1 | Auth & User Profile | 🚧 הבא |
-| 2 | Dashboard skeleton | ⏳ |
-| 3 | Upload UI | ⏳ |
-| 4 | Course Pipeline (Parse→RAG→Questions) | ⏳ |
-| 5 | Quiz Engine (4 question types) | ⏳ |
-| 6 | Gamification (XP/streak) | ⏳ |
-| 7 | TTS (4 Hebrew voices) | ⏳ |
-| 8 | Credits System | ⏳ |
-| 9 | Polish & Launch | ⏳ |
+| #   | Phase                                 | סטטוס    |
+| --- | ------------------------------------- | -------- |
+| 0   | Foundation - scaffold + CI + תיעוד    | ✅ הושלם |
+| 1   | Auth & User Profile                   | 🚧 הבא   |
+| 2   | Dashboard skeleton                    | ⏳       |
+| 3   | Upload UI                             | ⏳       |
+| 4   | Course Pipeline (Parse→RAG→Questions) | ⏳       |
+| 5   | Quiz Engine (4 question types)        | ⏳       |
+| 6   | Gamification (XP/streak)              | ⏳       |
+| 7   | TTS (4 Hebrew voices)                 | ⏳       |
+| 8   | Credits System                        | ⏳       |
+| 9   | Polish & Launch                       | ⏳       |
 
 לפירוט מלא: [`docs/build-roadmap.md`](./docs/build-roadmap.md)
 

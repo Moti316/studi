@@ -5,6 +5,7 @@
 ## מה הושלם
 
 ### תכנון
+
 - [x] ניתוח StudiesGo מ-76 frames (6 סרטונים)
 - [x] תיעוד מוצר (`docs/concept.md`, `features.md`, `sitemap.md`, `architecture.md`)
 - [x] 20 מסכי-מפרט תחת `docs/screens-spec/`
@@ -13,6 +14,7 @@
 - [x] QA templates (`docs/qa/`)
 
 ### Workspace רב-סוכני
+
 - [x] Intake אדפטיבי - 50 שאלות נענו
 - [x] 21 סוכנים יוצרו (`.claude/agents/`)
 - [x] 21 מסמכי-זהות פנימיים (`teams/*/identity.md`)
@@ -20,6 +22,7 @@
 - [x] Memory schema, comms protocol
 
 ### Scaffold Phase 0
+
 - [x] `package.json` עם כל התלויות
 - [x] `tsconfig.json` strict mode
 - [x] `next.config.ts`, `tailwind.config.ts`, `postcss.config.mjs`
@@ -60,27 +63,32 @@ pnpm typecheck
 ## מה למדנו
 
 ### עבד טוב
+
 - workspace-template עבד כצפוי - יצר 21 סוכנים מותאמים
 - ניתוח מ-frames נתן תמונה מאוד מלאה (פחות "פערים" מהציפייה)
 - החלטות הוחלטו מהר ב-AskUserQuestion (build from scratch, OAuth login-only)
 
 ### יכל להיות טוב יותר
+
 - חלק מצילומי-המסך לא נקראו (לא מקסמנו את ה-76 frames)
 - לא הרצנו `pnpm install` בפועל - תלוי בסביבת המשתמש
 
 ### תובנות לפעם הבאה
+
 - לפני Phase 1 - להרים Supabase project ולוודא שה-credentials עובדים
 - ADR-002 (Pipeline) הוא heaviest, נכוון יותר זמן ב-Phase 4
 
 ## הצעדים הבאים (Phase 1)
 
 ### תנאי-קדם
+
 - [ ] `pnpm install` הצליח על המכונה
 - [ ] Supabase project נוצר
 - [ ] Google Cloud project + OAuth credentials מוגדרים
 - [ ] `.env.local` מלא עם ה-keys
 
 ### Phase 1 deliverables (4 ימים)
+
 ראה `docs/build-roadmap.md` section Phase 1.
 
 הצעד-המיידי: ADR-004 על Drizzle schema + יצירת migration ראשון.
@@ -94,10 +102,10 @@ pnpm typecheck
 
 ## מטריקות
 
-| מדד | ערך |
-|---|---|
-| ימי-עבודה | 1 (משתמש + AI) |
-| מסמכים שנכתבו | 32 |
-| קבצי-מקור (פני שכל-קוד) | 18 |
-| קבצי-סוכן | 21 |
-| Phase progress | 1/10 (10%) |
+| מדד                     | ערך            |
+| ----------------------- | -------------- |
+| ימי-עבודה               | 1 (משתמש + AI) |
+| מסמכים שנכתבו           | 32             |
+| קבצי-מקור (פני שכל-קוד) | 18             |
+| קבצי-סוכן               | 21             |
+| Phase progress          | 1/10 (10%)     |

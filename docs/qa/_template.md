@@ -14,14 +14,17 @@
 ## בדיקות מסך-ידני
 
 ### Mobile (Chrome DevTools - iPhone 12 / Galaxy S20)
+
 - [ ] dimensions: 390×844 (mobile portrait)
 - [ ] dimensions: 768×1024 (tablet)
 
 ### Desktop
+
 - [ ] dimensions: 1440×900
 - [ ] dimensions: 1920×1080
 
 ### Network
+
 - [ ] Slow 3G - הכל נטען < 5s
 - [ ] Offline - PWA service worker עובד
 - [ ] Online - normal behavior
@@ -54,10 +57,12 @@
 ## בדיקות תפקודיות
 
 ### Happy Path
+
 - [ ] [תאר את ה-flow המרכזי]
 - [ ] [תוצאה צפויה]
 
 ### Edge Cases
+
 - [ ] empty state
 - [ ] error state
 - [ ] very long input
@@ -66,6 +71,7 @@
 - [ ] permissions blocked (geo, camera, etc.)
 
 ### Regression
+
 - [ ] פיצ'רים קיימים שלא נגעתי בהם - עדיין עובדים
 
 ---
@@ -94,6 +100,7 @@
 ## בדיקות-עין (השוואה ל-StudiesGo)
 
 לכל מסך חדש:
+
 - [ ] שיש לי `docs/screens/<screen>.jpg` להשוות אליו
 - [ ] גודל-טקסטים דומה
 - [ ] צבעים דומים (לפחות בגוון)

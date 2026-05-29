@@ -9,16 +9,20 @@
 ## States
 
 ### loading
+
 - skeleton / spinner
 - [ספציפי למסך]
 
 ### empty
+
 - [תוכן ראשון/onboarding/CTA]
 
 ### populated
+
 - [תוכן רגיל]
 
 ### error
+
 - [error message + retry CTA]
 
 ## Layout (mobile portrait 390×844)

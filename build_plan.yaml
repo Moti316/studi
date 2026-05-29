@@ -8,195 +8,195 @@ agents:
     tier: strategic
     model: opus
     skills:
-    - product-discovery
-    - user-story-writing
-    - roadmap-planning
+      - product-discovery
+      - user-story-writing
+      - roadmap-planning
     focus:
-    - 'דגש: scope אכזרי — רק מה שמוכיח/מפריך את ההשערה.'
+      - 'דגש: scope אכזרי — רק מה שמוכיח/מפריך את ההשערה.'
   tech-lead:
     title: Tech Lead / Architect
     tier: strategic
     model: opus
     skills:
-    - architecture-decision-records
-    - system-design
-    - typescript-patterns
+      - architecture-decision-records
+      - system-design
+      - typescript-patterns
     focus: []
   backend-engineer:
     title: Backend Engineer
     tier: builder
     model: sonnet
     skills:
-    - typescript-patterns
-    - api-design
-    - secure-coding
-    - auth-patterns
+      - typescript-patterns
+      - api-design
+      - secure-coding
+      - auth-patterns
     focus: []
   frontend-engineer:
     title: Frontend Engineer (Web)
     tier: builder
     model: sonnet
     skills:
-    - next.js
-    - rtl-css
-    - form-validation
-    - web-performance
+      - next.js
+      - rtl-css
+      - form-validation
+      - web-performance
     focus:
-    - 'דגש: RTL כאזרח-ראשון — bidi, mirroring, לא תיקון בדיעבד.'
-    - 'דגש: mobile-first, מגע, רשת-איטית.'
+      - 'דגש: RTL כאזרח-ראשון — bidi, mirroring, לא תיקון בדיעבד.'
+      - 'דגש: mobile-first, מגע, רשת-איטית.'
   data-engineer:
     title: Data Engineer
     tier: builder
     model: sonnet
     skills:
-    - data-modeling
-    - supabase js client + drizzle orm
-    - query-optimization
+      - data-modeling
+      - supabase js client + drizzle orm
+      - query-optimization
     focus: []
   devops-engineer:
     title: DevOps Engineer
     tier: builder
     model: sonnet
     skills:
-    - ci-cd
-    - infrastructure-as-code
-    - observability-basics
+      - ci-cd
+      - infrastructure-as-code
+      - observability-basics
     focus: []
   notifications-engineer:
     title: Notifications Engineer
     tier: builder
     model: sonnet
     skills:
-    - push-delivery
-    - notification-ux
+      - push-delivery
+      - notification-ux
     focus: []
   ml-engineer:
     title: ML Engineer
     tier: builder
     model: sonnet
     skills:
-    - mlops
-    - model-evaluation
+      - mlops
+      - model-evaluation
     focus: []
   appsec:
     title: Application Security Engineer
     tier: quality
     model: sonnet
     skills:
-    - owasp-top-10
-    - secure-coding
-    - secrets-management
+      - owasp-top-10
+      - secure-coding
+      - secrets-management
     focus:
-    - 'דגש: משטח-תקיפה ציבורי — rate-limiting, hardening.'
+      - 'דגש: משטח-תקיפה ציבורי — rate-limiting, hardening.'
   test-engineer:
     title: Test Engineer
     tier: quality
     model: sonnet
     skills:
-    - test-driven-development
-    - typescript-testing
+      - test-driven-development
+      - typescript-testing
     focus:
-    - 'דגש: RED-GREEN-REFACTOR — בדיקה נכשלת לפני מימוש.'
+      - 'דגש: RED-GREEN-REFACTOR — בדיקה נכשלת לפני מימוש.'
   e2e-qa:
     title: E2E / Manual QA Engineer
     tier: quality
     model: sonnet
     skills:
-    - e2e-automation
-    - exploratory-testing
+      - e2e-automation
+      - exploratory-testing
     focus: []
   visual-designer:
     title: Visual Designer
     tier: builder
     model: sonnet
     skills:
-    - design-tokens
-    - he-typography
+      - design-tokens
+      - he-typography
     focus:
-    - 'דגש: טיפוגרפיה ל-RTL — מרווח, ניקוד, יישור.'
+      - 'דגש: טיפוגרפיה ל-RTL — מרווח, ניקוד, יישור.'
   design-system:
     title: Design System Engineer
     tier: builder
     model: sonnet
     skills:
-    - design-tokens
-    - component-architecture
+      - design-tokens
+      - component-architecture
     focus: []
   ux-researcher:
     title: UX Researcher
     tier: builder
     model: sonnet
     skills:
-    - jobs-to-be-done
-    - usability-testing
+      - jobs-to-be-done
+      - usability-testing
     focus: []
   interaction-designer:
     title: Interaction Designer
     tier: builder
     model: sonnet
     skills:
-    - user-flows
-    - ia-patterns
+      - user-flows
+      - ia-patterns
     focus: []
   content-writer:
     title: UX Writer / Content Designer
     tier: builder
     model: sonnet
     skills:
-    - he-microcopy
-    - tone-of-voice
+      - he-microcopy
+      - tone-of-voice
     focus: []
   accessibility-i18n:
     title: Accessibility & i18n Engineer
     tier: builder
     model: sonnet
     skills:
-    - wcag-2.2
-    - i18n-framework
-    - rtl-css
+      - wcag-2.2
+      - i18n-framework
+      - rtl-css
     focus: []
   cloud-specialist:
     title: Cloud / Self-Hosting Specialist
     tier: builder
     model: sonnet
     skills:
-    - cloud-platforms
-    - backup-strategy
+      - cloud-platforms
+      - backup-strategy
     focus: []
   privacy-officer:
     title: Privacy Officer
     tier: quality
     model: sonnet
     skills:
-    - data-minimization
-    - privacy-by-design
+      - data-minimization
+      - privacy-by-design
     focus: []
   release-manager:
     title: Release Manager
     tier: coordinator
     model: sonnet
     skills:
-    - semver
-    - release-management
+      - semver
+      - release-management
     focus:
-    - 'דגש: ניטור-שחרור, התראות-רגרסיה, גילוי-מהיר.'
+      - 'דגש: ניטור-שחרור, התראות-רגרסיה, גילוי-מהיר.'
   domain-expert:
     title: Domain Expert
     tier: strategic
     model: opus
     skills:
-    - edtech-domain-knowledge
+      - edtech-domain-knowledge
     focus: []
 plugins:
   global:
-  - claude-md-management
-  - plugin-dev
-  - superpowers
+    - claude-md-management
+    - plugin-dev
+    - superpowers
   per_project:
-  - sentry
-  - supabase
-  - typescript-lsp
-  - vercel
+    - sentry
+    - supabase
+    - typescript-lsp
+    - vercel
 auxiliary_models:
   compression: haiku
   web_extract: haiku

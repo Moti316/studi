@@ -5,7 +5,7 @@ project_description: פלטפורמת AI שמחוללת קורסי-לימוד ג
 core_problem: הפיכת חומר-לימוד קיים (חוברות, מצגות, ספרי-לימוד) לחוויית-לימוד אינטראקטיבית
   בסגנון Duolingo - אוטומטית ע"י AI, בעברית RTL, עם XP/streak וגיוון סוגי-שאלות.
 product_types:
-- web
+  - web
 stage: MVP
 domain: edtech
 needs_domain_expert: true
@@ -31,10 +31,10 @@ database_provider: supabase
 data_access_layer: Supabase JS client + Drizzle ORM
 data_sensitivity: PII
 third_party_integrations:
-- AI-API
-- TTS
-- auth
-- email-SMS
+  - AI-API
+  - TTS
+  - auth
+  - email-SMS
 scale: <100
 perf_critical: false
 needs_offline_ha: false
@@ -49,9 +49,9 @@ team_size: יחיד
 governance_level: ללא
 has_chief: false
 methodology:
-- TDD
-- code-review
-- CI
+  - TDD
+  - code-review
+  - CI
 git_policy: commit+push אוטומטי
 final_authority: המשתמש-לבד
 design_investment: מוקפד
@@ -61,43 +61,43 @@ deploy_target: ענן-מנוהל
 needs_cicd: true
 needs_observability: true
 gates:
-- id: Q04
-  value:
-  - web
-- id: Q06
-  value: edtech
-- id: Q07
-  value: true
-- id: Q10
-  value: true
-- id: Q17
-  value: true
-- id: Q21
-  value: true
-- id: Q24
-  value: relational
-- id: Q27
-  value: PII
-- id: Q28
-  value:
-  - AI-API
-  - TTS
-  - auth
-  - email-SMS
-- id: Q32
-  value: true
-- id: Q42
-  value:
-  - TDD
-  - code-review
-  - CI
-- id: Q45
-  value: מוקפד
-- id: Q46
-  value: true
-- id: Q48
-  value: ענן-מנוהל
-- id: Q49
-  value: true
-- id: Q50
-  value: true
+  - id: Q04
+    value:
+      - web
+  - id: Q06
+    value: edtech
+  - id: Q07
+    value: true
+  - id: Q10
+    value: true
+  - id: Q17
+    value: true
+  - id: Q21
+    value: true
+  - id: Q24
+    value: relational
+  - id: Q27
+    value: PII
+  - id: Q28
+    value:
+      - AI-API
+      - TTS
+      - auth
+      - email-SMS
+  - id: Q32
+    value: true
+  - id: Q42
+    value:
+      - TDD
+      - code-review
+      - CI
+  - id: Q45
+    value: מוקפד
+  - id: Q46
+    value: true
+  - id: Q48
+    value: ענן-מנוהל
+  - id: Q49
+    value: true
+  - id: Q50
+    value: true

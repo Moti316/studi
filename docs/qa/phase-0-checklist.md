@@ -13,6 +13,7 @@
 ## Phase 0 specific checks
 
 ### Project bootstrap
+
 - [ ] `pnpm install` עובר בלי שגיאות (יבדק במכונה)
 - [ ] `pnpm dev` עולה ב-`localhost:3000`
 - [ ] hot-reload עובד (שינוי ב-`page.tsx` משתקף)
@@ -20,29 +21,34 @@
 - [ ] `pnpm start` מפעיל build prod
 
 ### Tests
+
 - [ ] `pnpm test` עוברת (sanity test עובד)
 - [ ] `pnpm test:e2e` עוברת
 - [ ] `pnpm typecheck` 0 errors
 - [ ] `pnpm lint` 0 errors
 
 ### RTL ועברית
+
 - [ ] בדפדפן: `<html lang="he" dir="rtl">` ב-DOM
 - [ ] טקסט מוצג מימין לשמאל
 - [ ] פונט Heebo נטען (לא Times/system fallback)
 - [ ] `דבדיקת RTL ועברית 🎯` מוצג נכון
 
 ### CI
+
 - [ ] `.github/workflows/ci.yml` קיים
 - [ ] `.github/workflows/e2e.yml` קיים
 - [ ] בדיקת PR פתוח שבדק שכל ה-checks ירוקים (יבדק אחרי push)
 
 ### Code hygiene
-- [ ] `.gitignore` מכסה: node_modules, .next, .env*, coverage, playwright-report
+
+- [ ] `.gitignore` מכסה: node_modules, .next, .env\*, coverage, playwright-report
 - [ ] `.env.example` מתועד עם כל ה-keys הצפויים
 - [ ] husky hooks מותקנים (pre-commit, pre-push)
 - [ ] husky hooks הם executable
 
 ### Documentation
+
 - [x] CLAUDE.md מעודכן (97 שורות, < 300)
 - [x] USER.md מעודכן עם העדפות
 - [x] MEMORY.md מעודכן עם locked decisions

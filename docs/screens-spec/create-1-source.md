@@ -3,14 +3,17 @@
 > **Phase**: 3 · States: empty / file-selected / uploading
 
 ## Purpose
+
 שלב ראשון ביצירת קורס. משתמש בוחר מקור: העלאת קבצים או כתיבת טקסט.
 
 ## States
+
 - **empty**: drag-drop empty + "לחץ לבחירת קבצים"
 - **file-selected**: שם הקובץ + size + X לביטול + pencil לעריכת-שם
 - **uploading**: progress bar + "מעלה קבצים לשרתים..."
 
 ## Layout
+
 ```
 [progress: ●●○○○ 1/5] [StudiesGo logo]
 [Bob mascot curious]
@@ -24,17 +27,20 @@
 ```
 
 ## Components
+
 - `<WizardProgress current=1 total=5>`, `<BobMascot pose="curious">`
 - `<SourceTypeToggle>` (files | text)
 - `<FileDropzone max=50MB>` (FilePond או custom)
 - `<UploadedFileChip>` (X + edit name)
 
 ## Data
+
 - POST `/api/courses/draft` (creates draft course)
 - POST `/api/uploads` (multipart to Supabase Storage)
 - `course_drafts`, `course_files` tables
 
 ## Acceptance
+
 - [ ] drag-drop עובד
 - [ ] multiple files אפשרי
 - [ ] validation: format + size
@@ -42,4 +48,5 @@
 - [ ] draft נשמר (חזרה לאחר סגירה ממשיכה מאותו מצב)
 
 ## Source
+
 `docs/screens/create_upload.jpg`

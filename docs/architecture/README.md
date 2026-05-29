@@ -15,32 +15,38 @@
 
 ## ADRs קיימים
 
-| # | כותרת | סטטוס | Phase | תאריך |
-|---|---|---|---|---|
-| 001 | בחירת Stack - Next.js + Supabase | proposed | 0 | 2026-05-29 |
-| 002 | Course pipeline - build from scratch (לא NotebookLM) | accepted | 4 | 2026-05-29 |
-| 003 | Auth - Google OAuth login-only + Magic Link | accepted | 1 | 2026-05-29 |
+| #   | כותרת                                                | סטטוס    | Phase | תאריך      |
+| --- | ---------------------------------------------------- | -------- | ----- | ---------- |
+| 001 | בחירת Stack - Next.js + Supabase                     | proposed | 0     | 2026-05-29 |
+| 002 | Course pipeline - build from scratch (לא NotebookLM) | accepted | 4     | 2026-05-29 |
+| 003 | Auth - Google OAuth login-only + Magic Link          | accepted | 1     | 2026-05-29 |
 
 ## חלוקה לפי Phase
 
 ### Phase 0
+
 - 001 Stack
 
 ### Phase 1
+
 - 003 Auth
 
 ### Phase 4
+
 - 002 Course pipeline
 - (TBD) 004 RAG strategy - pgvector ראשון
 - (TBD) 005 Chunking strategy
 
 ### Phase 5
+
 - (TBD) 006 Quiz state machine
 
 ### Phase 7
+
 - (TBD) 007 TTS provider - ElevenLabs vs Azure
 
 ### Phase 8
+
 - (TBD) 008 Credits model
 
 ## תהליך כתיבת ADR

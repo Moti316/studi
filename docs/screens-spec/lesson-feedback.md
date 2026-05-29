@@ -3,9 +3,11 @@
 > **Phase**: 5 · States: showing-feedback / deep-explanation-loading / continue
 
 ## Purpose
+
 מסך פידבק אחרי תשובה שגויה. מציג מה היה שגוי, מה הנכון, והסבר. אופציה ל"הסבר לעומק" (LLM call).
 
 ## Layout
+
 ```
 [progress: dim/blue dots - השאלה הזו מסומנת אדום]
 
@@ -42,6 +44,7 @@
 ```
 
 ## Components
+
 - `<BobMascot pose="neutral">`
 - `<FeedbackHeader>` ("תשובה לא נכונה")
 - `<MatchingResultRow>` x N (your-pair → correct-pair, with ✓/❌)
@@ -50,11 +53,13 @@
 - `<ContinueButton>`
 
 ## Data
+
 - Already have `attempt` result from POST
 - POST `/api/explanations/deep` { question_id, attempt_id } → Claude LLM call עם RAG-context
 - ה-source_chunk_id הוא הקישור!
 
 ## Deep Explanation Flow
+
 ```
 User clicks "הסבר לעומק"
    ↓
@@ -66,10 +71,12 @@ Stream response → modal
 ```
 
 ## Acceptance
+
 - [ ] feedback מוצג תוך 500ms (אין delay)
 - [ ] "הסבר לעומק" סופג עלות (~$0.01 LLM call)
 - [ ] deep explanation streamed (אפילו אם איטי, רואים progress)
 - [ ] "המשך" = next question + צבעים מתאפסים
 
 ## Source
+
 `docs/screens/lesson_wrong_answer.jpg`

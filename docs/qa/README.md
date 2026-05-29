@@ -5,6 +5,7 @@
 ## מטרה
 
 CI לוכד באגים פונקציונליים. QA ידני לוכד:
+
 - בעיות-UX (לא ברור, לא נוח)
 - בעיות RTL/i18n שאוטומציה לא חושפת
 - regression ב-pixel-perfect design
@@ -12,12 +13,12 @@ CI לוכד באגים פונקציונליים. QA ידני לוכד:
 
 ## מבנה
 
-| קובץ | מתי | מי מבצע |
-|---|---|---|
-| `_template.md` | כל Phase | יוצא Phase lead |
-| `phase-N-checklist.md` | סוף phase N | כל הצוות |
-| `pre-release.md` | לפני Phase 9 deploy | release-manager |
-| `security-audit.md` | Phase 9 + רבעוני | appsec |
+| קובץ                   | מתי                 | מי מבצע         |
+| ---------------------- | ------------------- | --------------- |
+| `_template.md`         | כל Phase            | יוצא Phase lead |
+| `phase-N-checklist.md` | סוף phase N         | כל הצוות        |
+| `pre-release.md`       | לפני Phase 9 deploy | release-manager |
+| `security-audit.md`    | Phase 9 + רבעוני    | appsec          |
 
 ## תהליך
 
@@ -33,6 +34,7 @@ CI לוכד באגים פונקציונליים. QA ידני לוכד:
 ## פיצ'רים-מובנים
 
 ה-template כולל בדיקות לפי קטגוריות:
+
 - Mobile/desktop/tablet rendering
 - Network throttling
 - RTL + i18n

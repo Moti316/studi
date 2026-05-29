@@ -3,9 +3,11 @@
 > **Phase**: 1 · State of auth flow
 
 ## Purpose
+
 מסך-אישור שמופיע אחרי שמשתמש שולח את ה-magic link. מודיע ש-email נשלח.
 
 ## Layout
+
 ```
 [Bob smiling mascot]
 
@@ -21,17 +23,20 @@
 ```
 
 ## Components
+
 - `<BobMascot pose="happy">`
 - `<EmailDisplay>` (kept as-typed, masked-display optional)
 - `<ResendButton>` (rate limited: 60s between sends)
 - `<ChangeEmailLink>` (back to email input)
 
 ## Data
+
 - POST `/api/auth/magic-link` { email }
 - DB: `auth_tokens` (token_hash, expires_at=NOW()+60min, type='magic')
 - Email: Resend / Postmark template
 
 ## Acceptance
+
 - [ ] resend rate-limit 60s
 - [ ] expiry clear (60 דקות)
 - [ ] BACK button חוזר למצב choices
@@ -39,4 +44,5 @@
 - [ ] graceful: אם משתמש לחץ פעמיים על "שלח" מהר - יראה toast "כבר שלחנו"
 
 ## Source
+
 `docs/screens/auth_magic_link.jpg`

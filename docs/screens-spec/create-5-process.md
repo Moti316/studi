@@ -3,9 +3,11 @@
 > **Phase**: 4 (full pipeline) · States: each of 5 stages + done
 
 ## Purpose
+
 מציג את 5 שלבי העיבוד באופן live, ETA, ואפשרות לסגור הדפדפן והכל ממשיך ברקע.
 
 ## States (5 שלבים סדורים)
+
 1. **Parsing** - חילוץ תוכן מהקבצים
 2. **Chunking** - חלוקה לקטעי לימוד
 3. **RAG** - אינדוקס סמנטי של החומר
@@ -15,6 +17,7 @@
 לכל שלב: spinner + "מעבד..." / ✓ "הושלם" / ⏸ "ממתין..."
 
 ## Layout
+
 ```
 [progress: ●●●●● 5/5]
 [Bob mascot]
@@ -38,6 +41,7 @@
 ```
 
 ## Components
+
 - `<WizardProgress>`, `<BobMascot pose="neutral">`
 - `<PipelineSteps>` (5 שורות עם status)
 - `<OverallProgressBar>` + ETA
@@ -45,6 +49,7 @@
 - `<ViewCourseButton>` (פעיל כשמתחיל שלב 4)
 
 ## Data
+
 - Supabase Realtime: `course:{id}` channel
 - Each Inngest stage emits event:
   ```json
@@ -53,13 +58,16 @@
 - DB: `course_progress` (course_id, stage, progress_pct, updated_at)
 
 ## Acceptance
+
 - [ ] progress updates < 2s after backend emit
 - [ ] משתמש סוגר tab → email notification בסיום
 - [ ] error in stage X → רואה אלרט + retry
 - [ ] idempotent: refresh page = ממשיך מאותו מצב
 
 ## Related
+
 - ↘ `dashboard.md` (after success)
 
 ## Source
+
 `docs/screens/create_processing.jpg`

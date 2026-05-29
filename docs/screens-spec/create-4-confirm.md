@@ -3,13 +3,16 @@
 > **Phase**: 3 (UI) + 8 (credits live) · States: default / not-enough-credits
 
 ## Purpose
+
 משתמש מאשר עלות-בקרדיטים ופותח הזמנה. אופציה לתוספת ("צירוף עמודי מקור").
 
 ## States
+
 - **default**: שם-הקורס + מטריקות + עלות + יתרה + CTA "צור!"
 - **not-enough-credits**: עלות מסומנת באדום, CTA חסום, כפתור "רכוש קרדיטים"
 
 ## Layout
+
 ```
 [progress: ●●●●● 4/5]
 [Bob happy]
@@ -33,6 +36,7 @@
 ```
 
 ## Components
+
 - `<WizardProgress>`, `<BobMascot pose="happy">`
 - `<EditableTitle>`, `<MetricsRow>`
 - `<ToggleWithCost>` (source-attach option)
@@ -40,6 +44,7 @@
 - `<CreateCourseButton>`, `<BackButton>`
 
 ## Data
+
 - POST `/api/courses` { draft_id, attach_source: bool }
   - validates: balance >= cost
   - deducts: credits + transaction log
@@ -47,10 +52,12 @@
   - returns: course_id
 
 ## Acceptance
+
 - [ ] toggle "צירוף מקור" מעדכן עלות בזמן-אמת
 - [ ] not-enough-credits מציג alert ולא מאפשר creation
 - [ ] click "צור" → spinner → Step 5
 - [ ] transaction log רושם hold + commit נפרדים
 
 ## Source
+
 `docs/screens/create_ready_summary.jpg`

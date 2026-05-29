@@ -8,6 +8,7 @@
 
 כל קריאה ל-Claude עוברת **דרך הקבצים כאן**, לא ישירות מ-route handler.
 מטרות:
+
 - prompt caching מובנה (חוסך 90% עלות)
 - type-safe payloads (Zod schemas)
 - retry logic סטנדרטי

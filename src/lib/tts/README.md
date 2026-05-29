@@ -6,12 +6,12 @@
 
 ## קולות (Phase 7)
 
-| voice | gender | tone | env var |
-|---|---|---|---|
-| יואב | M | חם | `ELEVENLABS_VOICE_YOAV` |
-| טלי | F | בהיר | `ELEVENLABS_VOICE_TALI` |
-| מיכל | F | חם | `ELEVENLABS_VOICE_MICHAL` |
-| אורי | M | צעיר | `ELEVENLABS_VOICE_ORI` |
+| voice | gender | tone | env var                   |
+| ----- | ------ | ---- | ------------------------- |
+| יואב  | M      | חם   | `ELEVENLABS_VOICE_YOAV`   |
+| טלי   | F      | בהיר | `ELEVENLABS_VOICE_TALI`   |
+| מיכל  | F      | חם   | `ELEVENLABS_VOICE_MICHAL` |
+| אורי  | M      | צעיר | `ELEVENLABS_VOICE_ORI`    |
 
 ## קבצים מתוכננים
 
@@ -30,6 +30,7 @@
 ```
 
 זה משמעותי כי:
+
 - אותו הסבר נשמע על-ידי הרבה משתמשים
 - voice preview משמש על ידי כולם
 - חוסך > 90% מהעלות אחרי trafficking ראשוני
