@@ -1,14 +1,17 @@
 # CLAUDE.md - StudiBuilder
 
 ## אזהרת קריאה
+
 לפני כל פעולה: קרא `AGENTS.md` (קנוני), `USER.md` (העדפות motilev8),
 ואת `teams/<tier>/<slug>/identity.md` של הסוכן הרלוונטי.
 
 ## הפרויקט בקצרה
+
 StudiBuilder = פלטפורמת AI לבניית קורסי-לימוד בעברית מתוך מסמכים.
 דומיין: edtech · קהל: motilev8 (internal) · stack: TS · stage: greenfield.
 
 ## עקרונות-יסוד (לעולם אל תוותר)
+
 - **עברית RTL כאזרח-ראשון** - לא תיקון בדיעבד
 - **TDD-first** - בדיקה כושלת לפני הקוד, אחרי הקוד פוגעת באמינות
 - **secrets ב-.env.local בלבד** - לעולם לא ב-commit
@@ -16,6 +19,7 @@ StudiBuilder = פלטפורמת AI לבניית קורסי-לימוד בעברי
 - **שגיאות הן מצב מתוכנן** - כל פעולת-משתמש עוטפת ב-try/catch + telemetry
 
 ## stack שנבחר (אסור לסטות בלי ADR)
+
 - Next.js 15 (App Router, RSC) + TypeScript strict
 - Supabase: Postgres + pgvector + Auth + Storage + Realtime
 - Inngest: pipelines אסינכרוניים (5-stage course-build)
@@ -26,6 +30,7 @@ StudiBuilder = פלטפורמת AI לבניית קורסי-לימוד בעברי
 - Vercel hosting, Sentry observability
 
 ## פקודות נפוצות
+
 - `pnpm dev` - dev server
 - `pnpm test` - vitest
 - `pnpm test:e2e` - playwright
@@ -35,6 +40,7 @@ StudiBuilder = פלטפורמת AI לבניית קורסי-לימוד בעברי
 - `pnpm db:studio` - drizzle studio
 
 ## מבנה התיקיות
+
 ```
 src/
   app/                Next.js App Router pages
@@ -62,12 +68,14 @@ docs/
 ```
 
 ## כללי תכנון
+
 - כל פיצ'ר מתחיל ב-`docs/architecture/ADR-NNN-name.md`
 - כל UI component מקבל story ב-Storybook + screenshot test
 - כל endpoint מקבל unit + integration test
 - pipeline אסינכרוני = idempotent (יכול לרוץ פעמיים בלי נזק)
 
 ## RTL checklist (לכל component חדש)
+
 - [ ] padding/margin משתמש ב-`ps-*`/`pe-*` לא `pl-*`/`pr-*`
 - [ ] חיצים מתהפכים (`>` במקום `<` ב-RTL)
 - [ ] טקסט מימין לשמאל - native browser handling
@@ -75,8 +83,9 @@ docs/
 - [ ] בדיקת Playwright ב-`dir=rtl`
 
 ## Build phases (סטטוס)
+
 - [x] Phase 0 - Foundation (סקאפולד, CI, deploy)
-- [ ] Phase 1 - Auth & profile
+- [~] Phase 1 - Auth & profile (mock-first: clients, helpers, UI, settings, delete — ממתין ל-Supabase keys)
 - [ ] Phase 2 - Dashboard skeleton
 - [ ] Phase 3 - Upload UI
 - [ ] Phase 4 - Course pipeline (parsing → RAG → questions)
