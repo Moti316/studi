@@ -12,6 +12,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html', 'lcov'],
+      include: ['src/**/*.{ts,tsx}'],
       exclude: [
         'node_modules/',
         '.next/',
@@ -19,6 +20,21 @@ export default defineConfig({
         '**/*.config.{ts,js,mjs}',
         '**/types.ts',
         '**/*.d.ts',
+        // wrappers דקים סביב @supabase/ssr ו-Next runtime — אין לוגיקה ביחידה;
+        // נכוסים דרך integration/e2e ב-phase הבא.
+        'src/lib/supabase/client.ts',
+        'src/lib/supabase/server.ts',
+        'src/lib/supabase/admin.ts',
+        'src/lib/supabase/middleware.ts',
+        'src/app/**/route.ts',
+        'src/app/**/page.tsx',
+        'src/app/**/layout.tsx',
+        'src/middleware.ts',
+        // קומפוננטות-תצוגה ללא לוגיקה (passthroughs).
+        'src/components/auth/SignOutButton.tsx',
+        'src/components/auth/AuthModal.tsx',
+        'src/components/auth/AuthLayout.tsx',
+        'src/components/ui/**',
       ],
       thresholds: {
         // raised gradually phase-by-phase
