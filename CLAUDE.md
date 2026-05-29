@@ -85,8 +85,8 @@ docs/
 ## Build phases (סטטוס)
 
 - [x] Phase 0 - Foundation (סקאפולד, CI, deploy)
-- [~] Phase 1 - Auth & profile (mock-first: clients, helpers, UI, settings, delete — ממתין ל-Supabase keys)
-- [ ] Phase 2 - Dashboard skeleton
+- [x] Phase 1 - Auth & profile (Supabase מחובר, Vercel חי על studibuilder.vercel.app)
+- [~] Phase 2 - Dashboard skeleton (UI-only, mock-data — DB persistence ב-Phase 6/7)
 - [ ] Phase 3 - Upload UI
 - [ ] Phase 4 - Course pipeline (parsing → RAG → questions)
 - [ ] Phase 5 - Quiz engine

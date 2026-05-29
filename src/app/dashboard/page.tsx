@@ -1,7 +1,15 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { requireAuth } from '@/lib/auth/server';
-import { Button } from '@/components/ui/button';
+import { BottomNav } from '@/components/dashboard/BottomNav';
+import { GreetingBanner } from '@/components/dashboard/GreetingBanner';
+import { UserHeaderStats } from '@/components/dashboard/UserHeaderStats';
+import { NewCourseCTA } from '@/components/dashboard/NewCourseCTA';
+import { StreakCard } from '@/components/dashboard/StreakCard';
+import { DailyProgressCard } from '@/components/dashboard/DailyProgressCard';
+import { LevelBadge } from '@/components/dashboard/LevelBadge';
+import { CourseCard } from '@/components/dashboard/CourseCard';
+import { MOCK_USER_PROFILE } from '@/lib/mock/user';
+import { MOCK_COURSES } from '@/lib/mock/courses';
 
 export const metadata: Metadata = {
   title: 'לוח הבקרה',
@@ -11,31 +19,68 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic';
 
 /**
- * `/dashboard` — stub מוגן ל-Phase 1 (היעד אחרי התחברות). ה-skeleton
- * המלא נבנה ב-Phase 2. requireAuth מנתב ל-/beta-access אם אין session.
+ * `/dashboard` — מסך הבית של משתמש מחובר (Phase 2 skeleton).
+ * מציג greeting + counters, CTA, רצף, יעדי-יום, ורשימת קורסים.
  */
 export default async function DashboardPage() {
-  const user = await requireAuth('/dashboard');
+  await requireAuth('/dashboard');
+
+  // מוק עד Phase 4. הזמן נלקח מ-Date.now של ה-server (Jerusalem TZ).
+  const now = new Date();
+  const today = now.getDay();
+  const user = MOCK_USER_PROFILE;
 
   return (
-    <main className="mx-auto flex min-h-dvh max-w-2xl flex-col gap-6 p-6">
-      <header className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">לוח הבקרה</h1>
-        <Button asChild variant="ghost" size="sm">
-          <Link href="/settings">הגדרות</Link>
-        </Button>
-      </header>
+    <div className="flex min-h-dvh flex-col">
+      <main className="mx-auto w-full max-w-2xl flex-1 space-y-5 p-4 pb-8">
+        <header className="flex items-start justify-between gap-3">
+          <GreetingBanner name={user.displayName} hour={now.getHours()} />
+          <UserHeaderStats
+            credits={user.credits}
+            xpToday={user.xpToday}
+            streakDays={user.streakDays}
+          />
+        </header>
 
-      <div className="card space-y-2">
-        <p className="text-foreground/70 text-sm">שלום,</p>
-        <p dir="ltr" className="text-start font-medium">
-          {user.email ?? 'משתמש'}
-        </p>
-      </div>
+        <NewCourseCTA />
 
-      <p className="text-foreground/50 text-sm">
-        ה-Dashboard המלא (קורסים, סטטיסטיקות, יצירה) נבנה ב-Phase 2.
-      </p>
-    </main>
+        <StreakCard streakDays={user.streakDays} today={today} />
+
+        <div className="grid grid-cols-2 gap-3">
+          <DailyProgressCard
+            title="XP היום"
+            current={user.xpToday}
+            goal={user.xpDailyGoal}
+            encouragement={
+              user.xpToday >= user.xpDailyGoal
+                ? 'יעד-יום הושג!'
+                : `עוד ${user.xpDailyGoal - user.xpToday} XP`
+            }
+          />
+          <DailyProgressCard
+            title="שיעורים היום"
+            current={user.lessonsToday}
+            goal={user.lessonsDailyGoal}
+            encouragement={
+              user.lessonsToday >= user.lessonsDailyGoal ? 'יעד-יום הושג!' : 'עוד אחד!'
+            }
+          />
+        </div>
+
+        <LevelBadge level={user.level} />
+
+        <section aria-labelledby="active-courses-heading" className="space-y-3">
+          <h2 id="active-courses-heading" className="text-lg font-bold">
+            קורסים פעילים
+          </h2>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {MOCK_COURSES.map((c) => (
+              <CourseCard key={c.id} course={c} />
+            ))}
+          </div>
+        </section>
+      </main>
+      <BottomNav />
+    </div>
   );
 }
