@@ -24,10 +24,12 @@ export default defineConfig({
       use: { ...devices['iPhone 13'] },
     },
   ],
+  // ב-CI מריצים נגד production build (יציב יותר מ-dev: ללא overlay,
+  // ללא Suspense fallback של hot-reload, ללא HMR sockets).
   webServer: {
-    command: 'pnpm dev',
+    command: process.env.CI ? 'pnpm build && pnpm start' : 'pnpm dev',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
+    timeout: 180_000,
   },
 });
