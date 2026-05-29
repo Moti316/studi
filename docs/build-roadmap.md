@@ -1,12 +1,14 @@
-# StudiBuilder - Build Roadmap (10 Phases)
+# StudiBuilder - Build Roadmap (11 Phases)
 
 תרשים-העל של בניית הפרויקט מקצה לקצה. כל Phase מסתיים ב-merge + deploy לפרודקשן.
+
+> **הערה**: Phase 10 (Course-Site Factory) נוסף בעקבות הפיווט-העסקי המתואר ב-[`ADR-006-course-as-product-factory.md`](architecture/ADR-006-course-as-product-factory.md). StudiBuilder הופך מ"פלטפורמת קורסים פתוחה" ל-Course-as-Product Factory: מוטי יוצר קורסים, וכל קורס נולד אוטומטית כמוצר-מסחרי עצמאי (landing + checkout + ads).
 
 ## תרשים זמן
 
 ```mermaid
 gantt
-    title StudiBuilder Build Roadmap (~47 ימי-עבודה)
+    title StudiBuilder Build Roadmap (~54 ימי-עבודה)
     dateFormat YYYY-MM-DD
     axisFormat %d/%m
     section Foundation
@@ -23,22 +25,25 @@ gantt
     Phase 7 TTS            :p7, after p6, 3d
     Phase 8 Credits        :p8, after p7, 4d
     Phase 9 Polish & launch:p9, after p8, 5d
+    section Distribution
+    Phase 10 Course-Site Factory :p10, after p9, 7d
 ```
 
 ## טבלת השלבים
 
-| #   | Phase              | משך     | Lead            | Deliverables עיקריים                                           |
-| --- | ------------------ | ------- | --------------- | -------------------------------------------------------------- |
-| 0   | Foundation         | 3 ימים  | tech-lead       | Next.js scaffold, CI, Vercel deploy, RTL hello-world           |
-| 1   | Auth & Profile     | 4 ימים  | backend         | Supabase Auth (Google OAuth login + Magic link), settings page |
-| 2   | Dashboard skeleton | 3 ימים  | frontend        | `/dashboard`, `/courses`, `/stats`, `/settings` (UI בלבד)      |
-| 3   | Upload UI          | 4 ימים  | frontend        | wizard 5 שלבים (UI), upload to Supabase Storage                |
-| 4   | Course Pipeline    | 10 ימים | ml              | Parse → Chunk → Embed → Topic → Lessons → Questions            |
-| 5   | Quiz Engine        | 7 ימים  | frontend        | `/lesson/[id]`, 4 סוגי שאלות, פידבק, deep-explanation          |
-| 6   | Gamification       | 4 ימים  | backend         | XP/streak/levels/daily-goal פעילים                             |
-| 7   | TTS                | 3 ימים  | ml              | ElevenLabs, 4 קולות עברית, cache                               |
-| 8   | Credits            | 4 ימים  | backend         | DB + cost calculator + transaction log                         |
-| 9   | Polish & Launch    | 5 ימים  | release-manager | a11y, Lighthouse, error boundaries, onboarding                 |
+| #   | Phase               | משך     | Lead                | Deliverables עיקריים                                                                                                                                                                                                                    |
+| --- | ------------------- | ------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0   | Foundation          | 3 ימים  | tech-lead           | Next.js scaffold, CI, Vercel deploy, RTL hello-world                                                                                                                                                                                    |
+| 1   | Auth & Profile      | 4 ימים  | backend             | Supabase Auth (Google OAuth login + Magic link), settings page                                                                                                                                                                          |
+| 2   | Dashboard skeleton  | 3 ימים  | frontend            | `/dashboard`, `/courses`, `/stats`, `/settings` (UI בלבד)                                                                                                                                                                               |
+| 3   | Upload UI           | 4 ימים  | frontend            | wizard 5 שלבים (UI), upload to Supabase Storage                                                                                                                                                                                         |
+| 4   | Course Pipeline     | 10 ימים | ml                  | Parse → Chunk → Embed → Topic → Lessons → Questions                                                                                                                                                                                     |
+| 5   | Quiz Engine         | 7 ימים  | frontend            | `/lesson/[id]`, 4 סוגי שאלות, פידבק, deep-explanation                                                                                                                                                                                   |
+| 6   | Gamification        | 4 ימים  | backend             | XP/streak/levels/daily-goal פעילים                                                                                                                                                                                                      |
+| 7   | TTS                 | 3 ימים  | ml                  | ElevenLabs, 4 קולות עברית, cache                                                                                                                                                                                                        |
+| 8   | Credits             | 4 ימים  | backend             | DB + cost calculator + transaction log                                                                                                                                                                                                  |
+| 9   | Polish & Launch     | 5 ימים  | release-manager     | a11y, Lighthouse, error boundaries, onboarding                                                                                                                                                                                          |
+| 10  | Course-Site Factory | 7 ימים  | tech-lead + backend | Landing-page templates (3), Auto-copywriter (Claude), Vercel REST provisioning, Stripe/Lemon-Squeezy checkout, ad campaigns (manual ב-MVP), admin analytics dashboard. ראה [ADR-006](architecture/ADR-006-course-as-product-factory.md) |
 
 ## עקרון כל-שלב
 
@@ -88,10 +93,19 @@ gantt
 - `docs/qa/phase-N-checklist.md` - בדיקות ידניות
 - `docs/phase-N-retrospective.md` - מה למדנו (נכתב בסוף phase)
 
-## פערים מודעים שיוטפלו ב-Phase 9
+## פערים מודעים — חלוקה בין Phase 9 ל-Phase 10
+
+**ב-Phase 9 (Polish & Launch):**
 
 - Mobile native (iOS/Android) - לא, PWA מספיק
-- Multi-user / org accounts - אחרי MVP
-- API ציבורי - אחרי MVP
 - רב-לשוניות (i18n) - הכנה ארכיטקטונית בלבד, עברית בלבד תחילה
 - Manual course editor - אחרי MVP
+
+**מועברים ל-Phase 10 (Course-Site Factory)** — אינם פערים פתוחים אלא scope מתוכנן:
+
+- **Multi-user / org accounts** — בפועל מתממש כ-public learners פר-קורס (לא org-accounts; כל קורס = קהל-לומדים נפרד עם enroll-flow)
+- **API ציבורי** — נשאר דחוי גם אחרי Phase 10 (אין use-case חיצוני)
+- **תשלום אמיתי לקורסים** — Stripe/Lemon-Squeezy checkout per-course (ה-credits של Phase 8 נשארים פנימיים לאדמין; ראה ADR-006)
+- **Landing-pages אוטומטיות + ads** — הליבה של Phase 10
+
+ראה [ADR-006](architecture/ADR-006-course-as-product-factory.md) ו-חלק י"ב בתוכנית-העל.
