@@ -17,10 +17,10 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium webkit
 
+      # e2e רץ במצב mock (ללא Supabase env) — UI נטען, actions מחזירות שגיאה
+      # ידידותית, ו-middleware no-op בפיתוח. החיווט האמיתי מקבל e2e ייעודי
+      # כשיהיו keys.
       - run: pnpm test:e2e
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder
 
       - uses: actions/upload-artifact@v4
         if: always()
