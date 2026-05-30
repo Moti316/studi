@@ -559,7 +559,7 @@ theme: {
 **Bottom-Nav glassmorphism class** (לדוגמא):
 
 ```tsx
-<nav className="bg-background-nav rounded-nav shadow-innerNav border-t border-white/10 backdrop-blur-md">
+<nav className="bg-background-nav rounded-nav border-t border-white/10 shadow-innerNav backdrop-blur-md">
   {/* tabs */}
 </nav>
 ```
