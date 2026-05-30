@@ -165,10 +165,13 @@ Red-Line של ה-Tech-Lead: לא over-engineering ל-scale שלא קיים. ה-c
 
 ### Phase B — אחרי הוועדה (Phase 10)
 
-1. **Content migration script** — `scripts/import-megen-content.ts`:
-   - קורא `megen/scenarios/*.md`
-   - מפרסר metadata (פקודה/תקנה/קושי)
-   - מייצר רשומות `lessons` + `questions` ב-Supabase
+1. **Content migration script** — `scripts/import-content.ts`:
+   - **Source-of-truth = Google Drive** (motilev8 אישר 2026-05-29 לילה)
+   - megen-repo הוא subset של Drive — לא המקור-העיקרי
+   - קורא Drive folders דרך Drive API (read-only scope)
+   - normalizer: Drive files → Markdown מובנה (schema ב-MVP-plan §10.2)
+   - מפרסר metadata (פקודה/תקנה/קושי) מ-headings + תיוגי `[מאומת]`/`[מוסקנא]`
+   - מייצר רשומות `lessons` + `questions` + `scenarios` ב-Supabase
 2. **Personas integration** — העתקת `magen.system.md` + `shagi.system.md` ל-`src/lib/ai/personas/`:
    - prompt-cache config
    - persona-router (איזה persona ל-איזה lesson type)
