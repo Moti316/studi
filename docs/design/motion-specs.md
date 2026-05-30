@@ -5,15 +5,17 @@
 
 ## מצב סקירה
 
-| סרטון                 | תגובת-Gemini        | פרסור | Framer-Motion variants  |
-| --------------------- | ------------------- | ----- | ----------------------- |
-| 02-lesson-flow        | ✅ קליטה 2026-05-30 | ✅    | ✅ (8 variants V1-V8)   |
-| 07-stats-feedback     | ✅ קליטה 2026-05-30 | ✅    | ✅ (10 variants V9-V18) |
-| 04-onboarding         | 🟡 ממתין            | -     | -                       |
-| 01-create-course-flow | 🟡 ממתין            | -     | -                       |
-| 05-quiz-types         | 🟡 ממתין            | -     | -                       |
-| 06-settings-voices    | 🟡 ממתין            | -     | -                       |
-| 03-messenger          | 🟡 ממתין            | -     | -                       |
+| סרטון                 | תגובת-Gemini        | פרסור | Framer-Motion variants               |
+| --------------------- | ------------------- | ----- | ------------------------------------ |
+| 02-lesson-flow        | ✅ קליטה 2026-05-30 | ✅    | ✅ V1-V8 + tokens (light)            |
+| 07-stats-feedback     | ✅ קליטה 2026-05-30 | ✅    | ✅ V9-V18 + tokens (dark)            |
+| 01-create-course-flow | ✅ קליטה 2026-05-30 | ✅    | ✅ V19-V23 (gamification, XP/dots)   |
+| 04-onboarding         | ✅ קליטה 2026-05-30 | ✅    | ✅ V24-V29 (transitions, spinner)    |
+| 05-quiz-types         | ✅ קליטה 2026-05-30 | ✅    | ✅ V26-V29 (modal + grid stagger)    |
+| 06-settings-voices    | ✅ קליטה 2026-05-30 | ✅    | ✅ V30-V34 (toggle/pill/toast)       |
+| 03-messenger          | ✅ קליטה 2026-05-30 | ℹ️    | N/A (Magic-Link auth, לא animations) |
+
+**סיכום**: 34 variants ב-13 קבצי-TS · 60 בדיקות · 100% coverage ל-2 ה-priority-1 וידיאות.
 
 ---
 
