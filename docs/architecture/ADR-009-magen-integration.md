@@ -171,6 +171,8 @@ Red-Line של ה-Tech-Lead: לא over-engineering ל-scale שלא קיים. ה-c
    - קורא Drive folders דרך Drive API (read-only scope)
    - normalizer: Drive files → Markdown מובנה (schema ב-MVP-plan §10.2)
    - מפרסר metadata (פקודה/תקנה/קושי) מ-headings + תיוגי `[מאומת]`/`[מוסקנא]`
+   - **Committee Scope Filter** (קריטי, ראה `docs/content-scope.md`): כל chunk מתויג `in_scope: true|false` + `scope_refs[]` מול 21 פריטי-החקיקה ב-PDF
+   - רק `in_scope=true` עולה ל-quiz; `false` נשמר כ-reference
    - מייצר רשומות `lessons` + `questions` + `scenarios` ב-Supabase
 2. **Personas integration** — העתקת `magen.system.md` + `shagi.system.md` ל-`src/lib/ai/personas/`:
    - prompt-cache config
