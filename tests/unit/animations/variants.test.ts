@@ -191,3 +191,119 @@ describe('animation variants — gemini-extracted', () => {
     });
   });
 });
+
+import {
+  centerModalLightVariants,
+  checkboxPopVariants,
+  checkmarkPopVariants,
+  dailyGoalPillTransition,
+  gridStaggerContainer,
+  gridStaggerItem,
+  pageSlideHorizontal,
+  progressBarTransition,
+  progressDotVariants,
+  segmentedControlTransition,
+  spinnerEnterVariants,
+  spinnerRotateAnimation,
+  statusPulseVariants,
+  streakBumpVariants,
+  toastVariants,
+  toggleSwitchTransition,
+  voiceCardLoaderVariants,
+  xpCountUpFlashVariants,
+  xpCountUpTransition,
+  xpFloaterVariants,
+} from '@/lib/animations';
+
+describe('animation variants — gemini-extracted (V19-V34)', () => {
+  describe('Gamification (V19-V23) — video 01 + 07', () => {
+    it('V19: xpCountUpTransition is 400ms ease-out', () => {
+      expect(xpCountUpTransition.duration).toBe(0.4);
+      expect(xpCountUpTransition.ease).toHaveLength(4);
+    });
+
+    it('V19: xpCountUpFlash strobes through orange', () => {
+      expect(obj(xpCountUpFlashVariants.counting).color).toEqual(['#111827', '#F97316', '#111827']);
+    });
+
+    it('V20: xpFloater rises and fades out', () => {
+      expect(obj(xpFloaterVariants.hidden)).toMatchObject({ y: 10, opacity: 0 });
+      expect(obj(xpFloaterVariants.visible).y).toBe(-20);
+      expect(obj(xpFloaterVariants.exit).y).toBe(-40);
+    });
+
+    it('V21: progressDot pulses scale on active', () => {
+      expect(obj(progressDotVariants.active).scale).toEqual([1, 1.2, 1]);
+      expect(obj(progressDotVariants.active).backgroundColor).toBe('#F97316');
+    });
+
+    it('V22: statusPulse loops infinitely', () => {
+      expect(obj(statusPulseVariants.animate).transition.repeat).toBe(Infinity);
+    });
+
+    it('V23: progressBarTransition is slow ease-out for smooth fill', () => {
+      expect(progressBarTransition.duration).toBe(0.6);
+    });
+
+    it('streakBump pulses to 1.2 on increment', () => {
+      expect(obj(streakBumpVariants.bump).scale).toEqual([1, 1.2, 1]);
+    });
+  });
+
+  describe('Transitions (V24-V29) — videos 04 + 05', () => {
+    it('V24: pageSlideHorizontal uses bounce-0 spring (no overshoot)', () => {
+      expect(obj(pageSlideHorizontal.active).transition.bounce).toBe(0);
+    });
+
+    it('V25: spinner enters from scale 0.8 then loops 360° linear', () => {
+      expect(obj(spinnerEnterVariants.hidden)).toMatchObject({ scale: 0.8, opacity: 0 });
+      expect(spinnerRotateAnimation.rotate).toBe(360);
+      expect(obj(spinnerRotateAnimation.transition).repeat).toBe(Infinity);
+    });
+
+    it('V26: centerModalLight grows from 0.95 (gentler than V17)', () => {
+      expect(obj(centerModalLightVariants.hidden)).toMatchObject({ scale: 0.95 });
+    });
+
+    it('V27: checkmarkPop springs in from scale 0', () => {
+      expect(obj(checkmarkPopVariants.hidden)).toMatchObject({ scale: 0, opacity: 0 });
+      expect(obj(checkmarkPopVariants.visible).scale).toBe(1);
+    });
+
+    it('V28: gridStagger spaces children by 50ms', () => {
+      expect(obj(gridStaggerContainer.visible).transition.staggerChildren).toBe(0.05);
+      expect(obj(gridStaggerItem.hidden)).toMatchObject({ y: 10, opacity: 0 });
+    });
+
+    it('V29: checkboxPop springs from scale 0', () => {
+      expect(obj(checkboxPopVariants.unchecked)).toMatchObject({ scale: 0, opacity: 0 });
+      expect(obj(checkboxPopVariants.checked).scale).toBe(1);
+    });
+  });
+
+  describe('Settings (V30-V34) — video 06', () => {
+    it('V30: toggle uses stiff spring (700/40) for snap', () => {
+      expect(obj(toggleSwitchTransition).stiffness).toBe(700);
+      expect(obj(toggleSwitchTransition).damping).toBe(40);
+    });
+
+    it('V31: segmented control uses bounce 0.15 spring', () => {
+      expect(obj(segmentedControlTransition).bounce).toBe(0.15);
+      expect(obj(segmentedControlTransition).duration).toBe(0.3);
+    });
+
+    it('V32: toast slides up from y:100 with stiff spring', () => {
+      expect(obj(toastVariants.hidden)).toMatchObject({ y: 100, opacity: 0 });
+      expect(obj(toastVariants.visible).transition.stiffness).toBe(500);
+    });
+
+    it('V33: voiceCardLoader has loading + success states', () => {
+      expect(voiceCardLoaderVariants).toHaveProperty('loading');
+      expect(voiceCardLoaderVariants).toHaveProperty('success');
+    });
+
+    it('V34: dailyGoalPill reuses segmented-control transition', () => {
+      expect(dailyGoalPillTransition).toEqual(segmentedControlTransition);
+    });
+  });
+});

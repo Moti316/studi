@@ -61,15 +61,15 @@
 
 ## מצב-נוכחי
 
-| #                     | video | prompt | response                                |
-| --------------------- | ----- | ------ | --------------------------------------- |
-| 01-create-course-flow | ✅    | ✅     | 🟡 ריק                                  |
-| **02-lesson-flow**    | ✅    | ✅     | ✅ **נקלט + 8 variants ב-motion-specs** |
-| 03-messenger          | ✅    | ✅     | 🟡 ריק                                  |
-| 04-onboarding         | ✅    | ✅     | 🟡 ריק                                  |
-| 05-quiz-types         | ✅    | ✅     | 🟡 ריק                                  |
-| 06-settings-voices    | ✅    | ✅     | 🟡 ריק                                  |
-| **07-stats-feedback** | ✅    | ✅     | ✅ **נקלט + 10 variants + dark-tokens** |
+| #                     | video | prompt | response                                 |
+| --------------------- | ----- | ------ | ---------------------------------------- |
+| 01-create-course-flow | ✅    | ✅     | ✅ נקלט + V19-V23 (gamification)         |
+| **02-lesson-flow**    | ✅    | ✅     | ✅ **V1-V8 + light tokens**              |
+| 03-messenger          | ✅    | ✅     | ℹ️ נקלט (Magic-Link auth — לא animation) |
+| 04-onboarding         | ✅    | ✅     | ✅ נקלט + V24-V29 (transitions)          |
+| 05-quiz-types         | ✅    | ✅     | ✅ נקלט + V26-V29 (modal+grid)           |
+| 06-settings-voices    | ✅    | ✅     | ✅ נקלט + V30-V34 (toggle/pill/toast)    |
+| **07-stats-feedback** | ✅    | ✅     | ✅ **נקלט + 10 variants + dark-tokens**  |
 
 **סה"כ-גודל**: ~113MB (7 סרטונים).
 
