@@ -9,12 +9,13 @@
 
 ## Tier System (לעיבוד ב-StudiBuilder)
 
-| Tier                      | תוכן                                 | יעד ב-pipeline                     | סטטוס MVP                |
-| ------------------------- | ------------------------------------ | ---------------------------------- | ------------------------ |
-| **T1 — Quiz Source**      | שאלות-ותשובות (PDF/docx)             | ייבוא ישיר → `questions` table     | **חובה Phase 5**         |
-| **T2 — RAG Context**      | מצגות, סיכומים, חומרי-לימוד טקסטואלי | chunking → pgvector → "הסבר לעומק" | **חובה Phase 4-5**       |
-| **T3 — Legal Sources**    | PDF/docx של חוקים/תקנות              | chunking + scope-filter (21 IDs)   | **חובה Phase 4**         |
-| **T4 — Media (deferred)** | m4a, mp4, jpg, png                   | transcription dpost-deadline       | **דחוי post-2026-07-15** |
+| Tier                             | תוכן                                 | יעד ב-pipeline                     | סטטוס MVP                          |
+| -------------------------------- | ------------------------------------ | ---------------------------------- | ---------------------------------- |
+| **T1 — Quiz Source**             | שאלות-ותשובות (PDF/docx)             | ייבוא ישיר → `questions` table     | **חובה Phase 5**                   |
+| **T2 — RAG Context**             | מצגות, סיכומים, חומרי-לימוד טקסטואלי | chunking → pgvector → "הסבר לעומק" | **חובה Phase 4-5**                 |
+| **T3 — Legal Sources**           | PDF/docx של חוקים/תקנות              | chunking + scope-filter (21 IDs)   | **חובה Phase 4**                   |
+| **T4 — Audio/Images (deferred)** | m4a, jpg, png                        | transcription post-deadline        | **דחוי post-2026-07-15**           |
+| **❌ EXCLUDED — Video (mp4)**    | 5 קבצים, ~4.05 GB                    | לא לעיבוד                          | **הוחרגו ע"י motilev8 2026-05-30** |
 
 ---
 
@@ -28,7 +29,7 @@
 | ---- | ------ | ---------------------------------------------- | ------ | ---------------------------------------------- |
 | T1   | PDF    | מאגר שאלות הכנה לוועדה - כללי - ספטמבר 2025 ⭐ | 1.8 MB | `1BA9XpSDVNx-MVbiyQZCndeyMVROTZ0aG`            |
 | T2   | GDoc   | דשבורד חקיקה - ממונה בטיחות                    | 5.5 KB | `1rMFMljQ086AQk9PhmcYUJ1AiswU3SOgpAfNmV4-CPyI` |
-| T4   | mp4    | פקודת*הבטיחות\_\_פירוק*החוק                    | 18 MB  | `1KGTewoIU9GNM-ygvd_opOwF82GHCRZZh`            |
+| ❌   | mp4    | פקודת הבטיחות פירוק החוק (EXCLUDED — וידיאו)   | 18 MB  | `1KGTewoIU9GNM-ygvd_opOwF82GHCRZZh`            |
 | T4   | m4a    | חוק רישוי עסקים + צו + תקנות                   | 38 MB  | `1X0IF_kuDzsz1x-vgEClzf9Kkvtq3s1Wm`            |
 | T4   | m4a    | תקנות התאונות ומשלח-יד (הודעה) 1951            | 27 MB  | `1go2iba1J-tkAwXXDFyAFrqRcPp9_UKiz`            |
 | T4   | m4a    | תקנות מחלות מקצוע (חובת הודעה) 1980            | 34 MB  | `1czjhL92940hj_IaCdY_puUHlzvqh25ZX`            |
@@ -209,15 +210,15 @@
 
 **Folder ID**: `1Gg3ftl1AC49GSz1aniVhRVEL0Q2PA0wq`
 
-| Tier | סוג      | שם                                 | גודל    | File ID                             |
-| ---- | -------- | ---------------------------------- | ------- | ----------------------------------- |
-| T2   | docx     | שיעור 2 - חוקים                    | 7.4 MB  | `1ECwl3B7kCpX8hSlfO2-NuTAnC5_MYqpv` |
-| T2   | docx     | עסקים טעוני רישוי                  | 105 KB  | `1ieTVMFK0Aakx0n_iXkwvpj6DfzcNAXmw` |
-| T4   | mp4      | שיעור 1 מוקלט אטל (13.08.25)       | 803 MB  | `1WqkIK02EFejY21lYgKN2nj62rspb3OOK` |
-| T4   | mp4      | שיעור 2 מוקלט אטל (24.08.25)       | 1.5 GB  | `1Y2-sOV8s9xKgvMx6nSEB745Jg14KzVpd` |
-| T4   | mp4      | שיעור 3 מוקלט אטל (27.08.25)       | 898 MB  | `1XwdRcnWxdkndOeGbo-DS63T_5EZX39Zr` |
-| T4   | mp4      | שיעור 4 מוקלט אטל (03.09.25)       | 840 MB  | `1dX9zwv-D4nDZzZOASLgxiu7Ab8_ur8Xe` |
-| T4   | jpeg/jpg | 9 תמונות WhatsApp (אוג'-ספט' 2025) | ~1.4 MB | (9 IDs)                             |
+| Tier | סוג      | שם                                    | גודל    | File ID                             |
+| ---- | -------- | ------------------------------------- | ------- | ----------------------------------- |
+| T2   | docx     | שיעור 2 - חוקים                       | 7.4 MB  | `1ECwl3B7kCpX8hSlfO2-NuTAnC5_MYqpv` |
+| T2   | docx     | עסקים טעוני רישוי                     | 105 KB  | `1ieTVMFK0Aakx0n_iXkwvpj6DfzcNAXmw` |
+| ❌   | mp4      | שיעור 1 מוקלט אטל (13.08.25) EXCLUDED | 803 MB  | `1WqkIK02EFejY21lYgKN2nj62rspb3OOK` |
+| ❌   | mp4      | שיעור 2 מוקלט אטל (24.08.25) EXCLUDED | 1.5 GB  | `1Y2-sOV8s9xKgvMx6nSEB745Jg14KzVpd` |
+| ❌   | mp4      | שיעור 3 מוקלט אטל (27.08.25) EXCLUDED | 898 MB  | `1XwdRcnWxdkndOeGbo-DS63T_5EZX39Zr` |
+| ❌   | mp4      | שיעור 4 מוקלט אטל (03.09.25) EXCLUDED | 840 MB  | `1dX9zwv-D4nDZzZOASLgxiu7Ab8_ur8Xe` |
+| T4   | jpeg/jpg | 9 תמונות WhatsApp (אוג'-ספט' 2025)    | ~1.4 MB | (9 IDs)                             |
 
 ---
 
@@ -248,13 +249,14 @@
 
 ### לפי Tier
 
-| Tier                   |     קבצים | גודל סה"כ | אחוז |
-| ---------------------- | --------: | --------: | ---: |
-| **T1 — Quiz Source**   | **18** ⭐ |    ~10 MB |  14% |
-| **T2 — RAG Context**   |       ~52 |   ~360 MB |  40% |
-| **T3 — Legal Sources** |       ~10 |     ~6 MB |   8% |
-| **T4 — Media**         |       ~50 |   ~5.5 GB |  38% |
-| **Total**              |      ~130 |     ~6 GB | 100% |
+| Tier                          |     קבצים | גודל סה"כ |  אחוז |
+| ----------------------------- | --------: | --------: | ----: |
+| **T1 — Quiz Source**          | **18** ⭐ |    ~10 MB |   15% |
+| **T2 — RAG Context**          |       ~52 |   ~360 MB |   42% |
+| **T3 — Legal Sources**        |       ~10 |     ~6 MB |    8% |
+| **T4 — Audio/Images**         |       ~45 |   ~1.9 GB |   37% |
+| ❌ **EXCLUDED — Video (mp4)** |         5 |  ~4.05 GB | (out) |
+| **Total (in-scope)**          |      ~125 |  ~2.45 GB |  100% |
 
 ### תיוג עם 21 פריטי-scope (content-scope.md)
 
