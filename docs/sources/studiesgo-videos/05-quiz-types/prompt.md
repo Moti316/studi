@@ -1,69 +1,69 @@
 # 🎬 סרטון 05 — Quiz Types Showcase + Page-Grid
 
-> **תוכן**: 4 סוגי-שאלות-שונים בפעולה + מסך page-grid של 570 פריטים (בחירת-עמודים ביצירת-קורס). משלים את סרטון 02.
+> **תוכן**: 4 סוגי-שאלות בפעולה + page-grid לבחירת-עמודים (570 פריטים).
 > **משך**: 50 שניות · **גודל**: 15MB
-
-## 🟠 עדיפות-בינונית (משלים את 02)
-
-ראה בסרטון 02 קודם, אם משהו לא ברור — סרטון 05 משלים.
 
 ---
 
-## 📋 פרומפט לג'מיני
+## 📋 פרומפט לג'מיני — ניתוח פר-פריים (100ms)
 
 ```
-אני בונה אפליקציית-לימוד בעברית. אתה מקבל סרטון שמראה 4 סוגי-שאלות
-בפעולה (MCQ-long, MCQ-short, Matching, Explanation) + מסך page-grid
-לבחירת-עמודי-תוכן (570 פריטים, סקרול אנכי).
+אני בונה אפליקציית-לימוד בעברית. אתה מקבל סרטון 50 שניות של 4 סוגי-שאלות
+ב-StudiesGo (MCQ-long, MCQ-short, Matching, Explanation) + page-grid
+של 570 פריטים. אני צריך לשחזר ב-Framer-Motion.
 
-אנא תן תיאור-בעברית-מפורט של:
+⚡ חובה: תיאור פר-פריים ברזולוציה של 100ms.
+   זמנים: MM:SS.ms.
 
-1. **רצף הסוגים** (סמן MM:SS):
-   - באיזה סדר מוצגים?
-   - איך עוברים בין-סוגי-שאלות?
+## חלק א' — Timeline מלא (00:00.000 → סוף, פר-100ms)
 
-2. **MCQ-long (4 כרטיסים אנכיים)**:
-   - גודל-יחסי של כל card
-   - padding פנימי
-   - border / shadow
-   - selected state: צבע, animation
-   - hover/tap: האם יש?
+00:00.000 — [מסך + אלמנטים]
+00:00.100 — [שינויים]
+...
 
-3. **MCQ-short (2x2 grid)**:
-   - יחסי-גובה לעומת MCQ-long
-   - layout grid
+## חלק ב' — Deep-dive פר-50ms
 
-4. **Matching (תיוג זוגות)**:
-   - 2 עמודות
-   - איך מסמנים-בחירה?
-   - איך משלימים-זוג?
-   - color-coding?
+### B1. מעבר בין סוגי-שאלות (4 פעמים)
+- איזה transition בין-סוגים?
+- timing + easing
 
-5. **Explanation (כרטיס-טיפ)**:
-   - אייקון 💡 — איך נראה?
-   - הדגשת-טקסט?
-   - כפתור "המשך" — סטייל?
+### B2. MCQ-long (4 cards אנכיים)
+- selection-animation פר-50ms (T=0 → T=400ms)
+- border / background / scale change
+- האם יש ripple? glow?
 
-6. **Page-grid screen (570 פריטים)**:
-   - גודל-תאים? תוכן? (מספר עמוד + thumbnail?)
-   - מצב נבחר vs לא-נבחר: איך נראה ה-checkmark?
-   - "בחר הכל": מה קורה ויזואלית?
-   - scroll behavior: smooth? sticky-header?
-   - מונה "15 / 570 נבחרו" — איך מתעדכן בזמן-אמת?
+### B3. MCQ-short (2x2 grid)
+- selection פר-50ms
+- ההבדל מ-MCQ-long
 
-7. **שינויי-מצב**:
-   - מעבר מ-NOT-selected ל-SELECTED: animation? בועה? checkmark animate?
-   - הסרת-בחירה: כיצד?
-   - האם יש batch-select-feedback (לדוגמא: "20 פריטים נוספו")?
+### B4. Matching (זוגות)
+- בחירת-פריט: animation
+- השלמת-זוג: line-draw? color-pair?
+- error feedback אם טועים
 
-8. **Color tokens (מהמסך-הזה בלבד)**:
-   - background של card לא-נבחר
-   - background של card נבחר
-   - border colors
-   - text colors
-   - checkmark color
+### B5. Explanation card
+- כניסה: slide-up? scale? משך?
+- אייקון 💡: יש animation?
+- כפתור "המשך": pulse?
 
-החזר בעברית, מובנה לפי 8 הסעיפים-לעיל, עם MM:SS לכל-אירוע.
+### B6. Page-grid (570 פריטים)
+- scroll-behavior (smooth? momentum?)
+- selection פר-50ms על-card
+- "בחר הכל" → batch animation (stagger?)
+- מונה "X/570 נבחרו" — count-up?
+
+## חלק ג' — Design Tokens
+
+Color, radius, shadows, typography — לכל סוג-שאלה בנפרד.
+
+## חלק ד' — Sound + Haptic
+
+## TL;DR
+
+- "אנימציות-בחירה לכל סוג-שאלה" (4 דוגמאות)
+- "Page-grid patterns לאמץ"
+
+חזור בעברית, מפורט.
 ```
 
 ---

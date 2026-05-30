@@ -1,67 +1,70 @@
 # 🎬 סרטון 04 — Onboarding (First-Time UX)
 
-> **תוכן**: חוויית-משתמש-ראשונה — login → welcome → קלט שם-קורס → מצבים-ריקים → תחילת-יצירת-קורס. **20 frames** ייחודיים — הסרטון העשיר-ביותר אחרי 07.
+> **תוכן**: login → welcome → input-של-שם-קורס → מצבים-ריקים → תחילת-יצירת-קורס. **20 frames** ייחודיים.
 > **משך**: 37 שניות · **גודל**: 27MB (הגדול-ביותר)
-
-## ⚠️ חשוב ל-Phase 2-3 (Dashboard skeleton + Upload UI)
-
-מראה את הצעדים הראשונים שמשתמש-חדש עובר.
 
 ---
 
-## 📋 פרומפט לג'מיני
+## 📋 פרומפט לג'מיני — ניתוח פר-פריים (100ms)
 
 ```
-אני בונה אפליקציית-לימוד בעברית (StudiBuilder), בסגנון Duolingo. אתה
-מקבל סרטון screen-recording של חוויית-משתמש-ראשונה ב-StudiesGo:
-login → welcome → input-של-שם-קורס → מצבים-ריקים → תחילת-יצירה.
+אני בונה אפליקציית-לימוד בעברית. אתה מקבל סרטון 37 שניות של onboarding
+ב-StudiesGo: login → welcome → empty-states → first-action. אני צריך
+לשחזר ב-Framer-Motion.
 
-אנא תן תיאור-מפורט-בעברית של:
+⚡ חובה: תיאור פר-פריים ברזולוציה של 100ms.
+   זמנים: MM:SS.ms.
 
-1. **רצף-המסכים** (סמן MM:SS):
-   - מסך login: איזה ספקים? UI?
-   - welcome screen: יש onboarding-tour? כמה מסכי-ברוכים-הבאים?
-   - permissions: אם מבקשים — איך מנוסחים?
-   - dashboard ריק: מה רואים כשאין-קורסים? איך נראה ה-empty-state?
-   - input "איך נקרא לקורס?": איזה placeholder? איך נראה הטיפ?
+## חלק א' — Timeline מלא (00:00.000 → סוף, פר-100ms)
 
-2. **אנימציות-של-onboarding**:
-   - איך נכנסים מסכי-ה-welcome? slide? fade?
-   - האם יש progress-indicator (dots בתחתית)?
-   - האם הרובוט מנפנף/מציג-את-עצמו?
+00:00.000 — [תיאור-מסך-מלא, פוזת-מסקוט, צבעים]
+00:00.100 — [שינויים, או "ללא-שינוי"]
+...
 
-3. **Input של שם-קורס**:
-   - keyboard mobile עברי (RTL?)
-   - איך נראה ה-input בזמן-הקלדה? border זוהר?
-   - הטיפ מתחת (💡): מתי מופיע? איך נראה?
-   - כפתור "המשך": מתי הופך לפעיל?
+ציין לכל-שינוי: תנועה (px + easing), צבעים (hex), scale, opacity, glow.
 
-4. **Empty states**:
-   - dashboard ריק: יש איור? robot? CTA כפתור-יצירה?
-   - איך מזמינים אותך להתחיל?
+## חלק ב' — Deep-dive פר-50ms
 
-5. **Permissions / consent screens** (אם יש):
-   - תיאור-מילולי של הטקסט
-   - איך מסבירים את הצורך?
+### B1. כניסה למסך-login + ספקי-OAuth
+- איך נראים הכפתורים? animation בכניסה?
+- hover/focus states
 
-6. **Color + typography**:
-   - האם הוויזואל משתנה בין login לאפליקציה?
-   - איזה fonts בולטים?
-   - האם יש light/dark mode toggle?
+### B2. Welcome / first-screen animation
+- האם יש hero-animation?
+- האם המסקוט מציג-עצמו? (slide-in + wave-hand?)
+- האם יש onboarding-carousel?
 
-7. **דמות-המסקוט בהתחלה**:
-   - איזה pose בהתחלה? (חיוך? נדנוד-יד?)
-   - איך מתחלף מצב לפי-מסך?
+### B3. Empty-state ב-dashboard
+- איזה איור? robot-pose?
+- ה-CTA "צור-קורס-ראשון": איך נראה? פולסציה?
 
-8. **First-action animation**:
-   - מה קורה כשמשתמש לוחץ "צור קורס ראשון"?
-   - האם יש animation של הזמנה? confetti? slide?
+### B4. Input של שם-קורס
+- focus animation: border-glow? color-change?
+- האם מקלדת-עברית עולה? (RTL?)
+- ה-tip ("בחר שם קצר..."): מתי מופיע? איך?
+- כפתור "המשך": מתי הופך לפעיל? color-change?
 
-החזר בעברית, מובנה לפי 8 הסעיפים, עם MM:SS לכל-אירוע.
+### B5. Transition מ-empty ל-action
+- כשמשתמש לוחץ "צור קורס": איזה transition?
+- האם יש confetti? slide-in?
 
-בסוף, חלק:
-- "Onboarding patterns שצריך לאמץ" (לפי-עדיפות)
-- "Empty-states שצריך לעצב" (רשימה)
+## חלק ג' — Design Tokens
+
+Color-palette, border-radius, shadows, typography.
+
+## חלק ד' — Mascot
+
+- pose בכל מסך-onboarding
+- האם יש "first-meet" animation מיוחדת?
+
+## חלק ה' — Sound + Haptic
+
+## TL;DR
+
+- "5 patterns של onboarding לאמץ"
+- "Empty-states שצריך לעצב"
+
+חזור בעברית, מפורט.
 ```
 
 ---

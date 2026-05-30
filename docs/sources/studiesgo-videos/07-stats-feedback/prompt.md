@@ -1,101 +1,138 @@
-# 🎬 סרטון 07 — Stats + Feedback + Skill-Tree
+# 🎬 סרטון 07 — Stats + Feedback + Skill-Tree — PRIORITY-1
 
-> **תוכן**: סטטיסטיקות-משתמש (XP/streak/level), wrong-answer-feedback מלא עם "הסבר לעומק" + skill-tree dark-mode עם נודים-מחוברים (Duolingo-style). **30 frames** ייחודיים — העשיר ביותר!
+> **תוכן**: סטטיסטיקות + skill-tree dark-mode + wrong-answer-feedback מלא עם "הסבר לעומק". **30 frames** ייחודיים — העשיר ביותר!
 > **משך**: 44 שניות · **גודל**: 21MB
 
-## ⚠️ זה הסרטון הכי-קריטי ל-Phase 6 (Gamification) + Dark-mode design tokens!
-
-הכי-עשיר אנימציות. כדאי להתחיל איתו או עם 02.
+## ⚠️ הסרטון הכי-קריטי לאנימציות-Gamification + Dark-Mode Tokens
 
 ---
 
-## 📋 פרומפט לג'מיני
+## 📋 פרומפט לג'מיני — ניתוח פר-פריים (100ms)
 
 ```
-אני בונה אפליקציית-לימוד בעברית (StudiBuilder), בסגנון Duolingo. אתה
-מקבל סרטון שמראה מסך-סטטיסטיקות + skill-tree (מסך קורסים) + feedback
-מלא של תשובה-שגויה עם "הסבר לעומק". זה הסרטון העשיר-באנימציות.
+אני בונה אפליקציית-לימוד בעברית (StudiBuilder) שמשחזרת UX של StudiesGo
+ב-dark-mode-פרימיום. אתה מקבל סרטון 44 שניות של סטטיסטיקות, skill-tree,
+wrong-answer-feedback, ו-deep-explanation. אני צריך לשחזר את-כל-האנימציות
+ב-Framer-Motion + Tailwind.
 
-הסרטון ב-Dark-mode עם נייבי-עמוק, כחול-זוהר, וויזואל פרימיום.
+⚡ חובה: תיאור פר-פריים ברזולוציה של 100ms.
+   זמנים בפורמט MM:SS.ms.
+   אל-תקצר — זה הסרטון העשיר-ביותר ואני צריך כל-פרט.
 
-אנא תן תיאור-בעברית-מפורט-מאוד של:
+## חלק א' — Timeline פר-פריים מלא (00:00.000 → סוף)
 
-1. **רצף-המסכים** (סמן MM:SS לכל מעבר):
-   - איזה מסכים מוצגים?
-   - איך עוברים בין-מסכים?
+עבור על-כל-הסרטון, ותן רישום כזה:
 
-2. **Dark-mode design tokens (חשוב!)**:
-   - background: hex משוער (נייבי-עמוק?)
-   - primary blue: hex משוער (יש glow?)
-   - accent (XP/streak): hex
-   - text colors (לבן? אפור?)
-   - האם יש gradient-עמוק ברקע?
+00:00.000 — [מסך-נוכחי, כל-האלמנטים הגלויים, צבעים, פוזת-מסקוט]
+00:00.100 — [שינויים מ-100ms-קודמים, או "ללא-שינוי"]
+...
 
-3. **Skill-tree screen (Duolingo-style)**:
-   - layout: נודים-עגולים מחוברים בקו-מעוקל
-   - locked nodes (אפורים, מנעול): צבע, opacity
-   - unlocked nodes: צבע (כחול-זוהר?), glow-effect
-   - active/current node (יש play-button מואר): איך מבדל מהאחרים?
-   - האם הקווים-המעוקלים מצוירים בהדרגה? יש animation?
+חוקי-תיאור:
+- תנועה: מאיפה לאן (px) + כיוון + easing משוער
+- שינוי-צבע: hex-from → hex-to
+- scale: מ-1.0 ל-1.X
+- opacity changes: 0→1 או 1→0 + משך
+- glow/shadow changes: על-מה הוא מופיע? איזה צבע? איזה רדיוס?
 
-4. **דמות-המסקוט (Bob - הרובוט עם cyan glow)**:
-   - איזה pose בכל מסך?
-   - האם יש cyan-glow מסביב לו?
-   - idle animation? (idle-bobbing? מצמוץ?)
-   - תגובה לאירועים? (level-up? wrong-answer?)
+## חלק ב' — Deep-dive פר-50ms לאירועים-קריטיים
 
-5. **Wrong-answer feedback (קריטי!)**:
-   - איך נראה הצבע-אדום של התשובה השגויה?
-   - האם יש shake animation? משך?
-   - איך מופיע "התשובה הנכונה הייתה..."?
-   - איך נכנס הכפתור "הסבר לעומק"?
-   - מה קורה כשלוחצים? מודאל? bottom-sheet? slide-in?
+### B1. Wrong-Answer flow (אם יש)
+- T=0 (רגע-הקלקה על-תשובה-שגויה): מצב-מסך-מלא
+- T+50ms: מה השתנה?
+- T+100ms: ...
+- ... עד שלמודאל-הסבר-לעומק נפתח לחלוטין
 
-6. **Deep explanation modal**:
-   - איזה layout?
-   - האם יש robot שמסביר?
-   - האם יש citation מהמקור?
-   - איך סוגרים?
+### B2. Deep-Explanation modal opening
+- האם זה slide-up? scale-in? backdrop-fade?
+- timing מדויק לכל שלב
 
-7. **XP / Streak / Level indicators**:
-   - XP counter: איך מתעדכן? animation?
-   - Streak fire (🔥): האם מהבהבת? איזה צבע (כתום-אדום?)
-   - Level badge: איך נראה?
-   - האם יש progress-ring סביב הפרופיל?
+### B3. Skill-tree node-transition
+- מ-locked ל-unlocked: איך נראית האנימציה?
+- האם הקו-המעוקל מצוייר בהדרגה?
+- האם יש pop-in של ה-node?
 
-8. **Stats screen**:
-   - אילו metrics מוצגות (lessons done / XP earned / streak days)?
-   - האם יש graphs/charts? (line chart? bar chart?)
-   - האם יש calendar heatmap לימי-streak?
-   - איך מנופחים-הופעת-המספרים? count-up?
+### B4. XP / Streak / Level animations (אם יש בסרטון)
+- XP-counter: timing-of-count-up + easing
+- Streak fire flicker: pattern + timing
+- Level-up: כל-הרצף
 
-9. **Bottom-navigation (glassmorphism)**:
-   - 5 tabs (בית/קורסים/סטטיסטיקות/פרופיל/הגדרות)
-   - האם יש backdrop-blur אמיתי?
-   - active-tab indicator: איך נראה?
-   - איך נראה המעבר בין-tabs?
+### B5. Tab-switch ב-bottom-nav
+- אם רואה מעבר בין-tabs: איך נראה ה-indicator?
+- שינוי-תוכן-מסך: איזה transition?
 
-10. **Special animations (תיאור-עומק)**:
-    - level-up: איך נראה?
-    - streak-milestone: ?
-    - lesson-complete: ?
-    - mastery-celebration: confetti?
+## חלק ג' — Dark-Mode Design Tokens (קריטי!)
 
-11. **Particle effects + glows**:
-    - האם יש sparks/particles כאשר משהו מצליח?
-    - האם יש lens-flare על כפתורים-זוהרים?
-    - האם הרקע יש subtle-ambient-animation?
+הוצא מהסרטון hex-codes משוערים:
 
-12. **Sound (אם נשמע)**:
-    - איזה אירועים מלווים בצליל?
-    - תיאור הצליל לכל-אחד
+1. **Background palette**:
+   - bg-primary (הרקע-הראשי): hex
+   - bg-secondary (cards): hex
+   - bg-elevated (modals): hex
+   - האם יש gradient ברקע? (linear / radial / כיוון / color-stops)
 
-החזר בעברית, מובנה לפי 12 הסעיפים, עם MM:SS לכל-אירוע.
+2. **Brand colors**:
+   - primary-blue (כפתורים-ראשיים): hex
+   - האם יש glow? איזה צבע + spread?
+   - accent (כתום/אדום של XP/streak): hex
+   - cyan/turquoise (אם יש סביב המסקוט): hex
 
-בסוף, חלק TL;DR:
-- "TOP-5 אנימציות הכי-מרשימות לשחזר"
-- "Design-tokens של dark-mode (JSON-format)"
-- "Easing-curves אופייניות לכל-קטגוריה"
+3. **Functional colors**:
+   - success (תשובה-נכונה): hex
+   - error (תשובה-שגויה): hex
+   - warning: hex
+   - info: hex
+
+4. **Text colors**:
+   - heading (לבן/אפור-בהיר): hex
+   - body: hex
+   - muted: hex
+   - link: hex
+
+5. **Glassmorphism (bottom-nav וכו')**:
+   - background עם opacity (rgba)
+   - backdrop-blur amount (px)
+   - border (color + opacity)
+
+6. **Glows + shadows**:
+   - על-מה יש glow? איזה צבע? איזה spread (px)?
+   - drop-shadows על-cards: x/y/blur/color
+
+7. **Border-radius**:
+   - cards: px
+   - buttons: px
+   - input fields: px
+   - bottom-nav: px (rounded-top?)
+
+8. **Typography**:
+   - font-family משוער
+   - font-sizes: h1 / h2 / body / caption (px)
+   - font-weights: regular / medium / bold
+
+## חלק ד' — Mascot (Bob the robot)
+
+- איזה pose בכל-מסך?
+- האם יש cyan-glow מסביב? איזה רדיוס?
+- האם הוא מצמץ? מתנדנד?
+- תגובה-לאירועים — איזה pose-change ומתי?
+
+## חלק ה' — Particle Effects (אם יש)
+
+- האם רואה sparks/particles?
+- מתי הם מופיעים?
+- כיוון / משך / צבע
+
+## חלק ו' — Sound + Haptic
+
+לכל אירוע-עם-צליל: זמן + תיאור-הצליל.
+
+## TL;DR
+
+- **TOP-5 אנימציות הכי-מרשימות לשחזר** (לפי-עדיפות + סיבה)
+- **Dark-mode tokens ב-JSON**: יצא tokens.json שאוכל להעתיק ל-Tailwind config
+- **Easing-curves אופייניים**: מה ה-easing-של-StudiesGo? cubic-bezier(...)?
+- **אם הייתי בונה את-זה מ-0**: סדר-יישום מומלץ
+
+חזור בעברית. תיאור-מפורט. זה הסרטון-הכי-חשוב.
 ```
 
 ---
