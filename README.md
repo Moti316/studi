@@ -1,9 +1,11 @@
 # StudiBuilder
 
-> פלטפורמת AI בעברית שהופכת PDF/Word/PowerPoint לקורסי-לימוד אינטראקטיביים
-> בסגנון Duolingo - עם XP, streak, TTS עברית, ו-4 סוגי שאלות.
+> פלטפורמת AI בעברית להכנת קורסי-לימוד גיימיפיקטיביים מתוך מסמכי-מקור
+> (PDF / Word / PowerPoint). קורס-בכורה: הכנה לוועדת-הסמכה ממונה-בטיחות 2026-07-15.
+> Hebrew RTL · 5 סוגי-שאלות · TTS עברית · XP/streak · 3 מצבי-לימוד (Q&A / Scenario / AI-Chat).
 
-**מקור-השראה**: [StudiesGo](https://studiesgo.com) - ניתוח מלא מתועד ב-`docs/`.
+**מודל-עסקי** (Phase 10): Course-as-Product Factory — כל קורס שמוטי בונה נולד כמוצר-עצמאי
+עם landing page, checkout, וקמפיינים אוטומטיים.
 
 ---
 
@@ -128,7 +130,7 @@ pnpm lint          # ESLint + Prettier
 
 ## תיעוד-מקור
 
-- [`docs/concept.md`](./docs/concept.md) - מה StudiesGo, ערך-ייחודי
+- [`docs/concept.md`](./docs/concept.md) - חזון-המוצר וערך-ייחודי
 - [`docs/features.md`](./docs/features.md) - 10 קטגוריות פיצ'רים מפורטות
 - [`docs/sitemap.md`](./docs/sitemap.md) - מפת מסכים ו-flowchart
 - [`docs/architecture/ADR-001-stack.md`](./docs/architecture/ADR-001-stack.md) - בחירת stack
