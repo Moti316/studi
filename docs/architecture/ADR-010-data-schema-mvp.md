@@ -307,9 +307,51 @@ CREATE INDEX idx_sessions_started_at ON practice_sessions (user_id, started_at D
 
 ---
 
+### 6.5. `chat_sessions` (חדש 2026-05-30 — Mode C)
+
+תומך ב-Mode-C (AI Tutor Chat). שיחה-מודרכת עם Claude Sonnet על scope-ID או נושא-custom.
+
+```sql
+CREATE TABLE chat_sessions (
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id         UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+
+  -- Subject
+  scope_id        TEXT,         -- '2.1' / '5.3' / NULL לcustom
+  topic           TEXT NOT NULL,
+  depth           TEXT NOT NULL CHECK (depth IN ('foundation','advanced','review')),
+
+  -- Conversation
+  messages        JSONB NOT NULL DEFAULT '[]',
+  -- schema: [{role:'user'|'assistant', content:text, citations:[{chunk_id, snippet}], timestamp}]
+  message_count   INTEGER NOT NULL DEFAULT 0,
+
+  -- Cost tracking
+  total_tokens_in   INTEGER DEFAULT 0,
+  total_tokens_out  INTEGER DEFAULT 0,
+  total_cost_usd    DECIMAL(10,4) DEFAULT 0,
+
+  -- Lifecycle
+  started_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  ended_at        TIMESTAMPTZ,
+  last_message_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_chat_user_started ON chat_sessions (user_id, started_at DESC);
+CREATE INDEX idx_chat_scope        ON chat_sessions (scope_id) WHERE scope_id IS NOT NULL;
+```
+
+**RLS**: motilev8 בלבד ל-MVP — `auth.uid() = user_id`.
+
+**Storage growth estimate**: 30-min סשן ≈ 20 messages ≈ 50KB JSONB. 100 סשנים/חודש = 5MB.
+
+**Rollback**: `DROP TABLE chat_sessions CASCADE;`
+
+---
+
 ### 7. `coverage_tracker` (VIEW)
 
-מחשב כיסוי לכל scope_id מ-21 פריטי-החקיקה. מסך `/admin/coverage`.
+מחשב כיסוי לכל scope_id מ-57 פריטי-החקיקה (עודכן מ-21 ב-2026-05-30 לפי `docs/content-scope.md`). מסך `/admin/coverage`.
 
 ```sql
 CREATE VIEW coverage_tracker AS
