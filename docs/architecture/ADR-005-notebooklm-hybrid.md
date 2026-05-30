@@ -1,10 +1,24 @@
 # ADR-005: NotebookLM Hybrid — Content Curation + Claude Pipeline
 
-> **Status**: Accepted
+> **Status**: Accepted (revised 2026-05-29 ערב after megen review)
 > **Date**: 2026-05-29
 > **Authors**: ml-engineer · domain-expert · motilev8
 > **Phase**: 4 (pre-implementation)
 > **Supersedes**: חלק מ-ADR-001 (שדחה NotebookLM)
+
+---
+
+## Update — 2026-05-29 ערב
+
+סקירת ריפו `megen` (v1.2.0) גילתה שהנחות Phase 4.0 לא היו מדויקות:
+
+- **לא ייצוא ידני**: מוטי משתמש ב-`notebooklm-mcp` דרך Claude Code — גישה ישירה ל-NotebookLM, ללא copy-paste.
+- **לא JSON מומצא**: הפורמט האמיתי הוא `scenarios/*.md` (Markdown מובנה), לא JSON schema שהגדרנו.
+- **36 notebooks קיימים**: מאסטר + 33 ענפיות — workspace מוכן, לא צריך לבנות מאפס.
+- **3 מצבי-תשובה תקניים** מוגדרים כבר: `[מאומת]` / `[מוסקנא]` / `[לא ידוע - נא לאמת בנבו]`.
+- **System prompts ~30K תווים** (מגן + שגיא) — כוללים כללי citation מפורטים.
+
+הקונספט הכללי (NotebookLM = curation, Claude = generation) נשאר תקף. רק הפרטים הטכניים עודכנו.
 
 ---
 
@@ -29,40 +43,55 @@
 
 ### גבולות-אחריות
 
-| שלב                        | אחראי                                      | מה הוא עושה                                                    |
-| -------------------------- | ------------------------------------------ | -------------------------------------------------------------- |
-| 1. **Source ingestion**    | NotebookLM                                 | קולט PDFs/מסמכים מ-Drive, מבנה אינדקס פנימי                    |
-| 2. **Q&A curation**        | NotebookLM                                 | מוטי שואל שאלות, NotebookLM משיב עם ציטוטים — מוטי מאשר/דוחה   |
-| 3. **Export**              | Manual (Phase 4.0) / Automated (Phase 4.5) | JSON structured: `{question, answer, source_citations[]}`      |
-| 4. **Import to our stack** | Our backend                                | פרסור JSON → טבלאות `chunks`, `qa_pairs` ב-Supabase + pgvector |
-| 5. **Lesson generation**   | Claude Sonnet 4.6                          | מקבל chunks + qa_pairs כ-context → יוצר שיעורים בעברית         |
-| 6. **Question variation**  | Claude Sonnet 4.6                          | מקבל qa אחד → יוצר 3-4 וריאציות (MCQ/matching/explanation)     |
-| 7. **Deep explanations**   | Claude Sonnet 4.6                          | אם משתמש טועה → Claude מסביר על-בסיס המקור המקורי              |
-| 8. **Voice (TTS)**         | ElevenLabs (Phase 7)                       | בלי שינוי מ-ADR-001                                            |
+| שלב                        | אחראי                                              | מה הוא עושה                                                                        |
+| -------------------------- | -------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| 1. **Source ingestion**    | NotebookLM                                         | קולט PDFs/מסמכים מ-Drive, מבנה אינדקס פנימי                                        |
+| 2. **Q&A curation**        | NotebookLM                                         | מוטי שואל שאלות, NotebookLM משיב עם ציטוטים — מוטי מאשר/דוחה                       |
+| 3. **Export**              | notebooklm-mcp (Phase 4.0) / Automated (Phase 4.5) | גישה ישירה דרך Claude Code — ללא ייצוא ידני                                        |
+| 4. **Import to our stack** | Our backend                                        | קריאת `scenarios/*.md` מ-megen → טבלאות `chunks`, `qa_pairs` ב-Supabase + pgvector |
+| 5. **Lesson generation**   | Claude Sonnet 4.6                                  | מקבל chunks + qa_pairs כ-context → יוצר שיעורים בעברית                             |
+| 6. **Question variation**  | Claude Sonnet 4.6                                  | מקבל qa אחד → יוצר 3-4 וריאציות (MCQ/matching/explanation)                         |
+| 7. **Deep explanations**   | Claude Sonnet 4.6                                  | אם משתמש טועה → Claude מסביר על-בסיס המקור המקורי                                  |
+| 8. **Voice (TTS)**         | ElevenLabs (Phase 7)                               | בלי שינוי מ-ADR-001                                                                |
 
-### Data Contract — NotebookLM Export → Our Import
+### Data Contract — megen → Our Import
 
-```jsonc
-{
-  "course_id": "betichut-v1",
-  "source_documents": [{ "id": "doc-1", "title": "תקנות בטיחות בעבודה", "url": "drive://..." }],
-  "qa_pairs": [
-    {
-      "id": "qa-1",
-      "question": "מתי חייב להיערך מינוי-בטיחות?",
-      "answer": "...",
-      "citations": [{ "doc_id": "doc-1", "page": 14, "quote": "..." }],
-      "approved_by_human": true,
-    },
-  ],
-  "chunks": [{ "id": "chunk-1", "doc_id": "doc-1", "page": 14, "text": "...", "topic_tags": [] }],
-}
+**פורמט קלט אמיתי: `scenarios/*.md` (Markdown מובנה)**
+
+קבצי Markdown בריפו megen (לא JSON) — דוגמה לתרחיש:
+
 ```
+# תרחיש: עבודה בגובה (height)
+
+## שאלה
+מה חובת מעסיק לפני עבודה על גגות?
+
+## תשובה [מאומת]
+המעסיק חייב לספק ציוד מיגון מפני נפילה...
+(מקור: תקנות הבטיחות בעבודה, סעיף 14)
+
+## מקורות
+- notebook-id: <UUID מ-NotebookLM>
+- מסמך: תקנות בטיחות בעבודה, עמ' 22
+```
+
+**3 מצבי-תשובה תקניים (מגן):**
+
+| מצב                        | משמעות                             |
+| -------------------------- | ---------------------------------- |
+| `[מאומת]`                  | אומת מול מקור ראשוני — ניתן לשימוש |
+| `[מוסקנא]`                 | הסקה לוגית — לא מצוטט ישירות       |
+| `[לא ידוע - נא לאמת בנבו]` | דורש בדיקה לפני שימוש              |
+
+**Notebook references:**
+
+- 36 notebooks קיימים ב-NotebookLM: UUID per notebook
+- גישה דרך `notebooklm-mcp` (לא API ציבורי)
 
 ### Phase Plan
 
-- **Phase 4.0 (manual sync)**: מוטי מייצא JSON מ-NotebookLM ידנית (copy-paste), מעלה ל-admin route → backend מפרסר. מספיק ל-MVP.
-- **Phase 4.5 (semi-automated)**: NotebookLM API (אם יושק על-ידי Google) או scraping מבוקר עם cron-job.
+- **Phase 4.0 (notebooklm-mcp)**: מוטי קורא `scenarios/*.md` מ-megen דרך Claude Code + notebooklm-mcp — ללא ייצוא ידני. Backend מפרסר Markdown → `chunks`, `qa_pairs`. מספיק ל-MVP.
+- **Phase 4.5 (semi-automated)**: pipeline שמסתנכרן אוטומטית עם megen repo (webhook/cron) בכל עדכון תרחיש.
 
 ---
 
@@ -111,8 +140,9 @@
 
 ## Validation
 
-- [ ] Phase 4.0: ייצוא ידני של 50 qa-pairs לוקח < 4 שעות
-- [ ] Import script מפרסר JSON בלי שגיאות על 100% מ-pairs
+- [ ] Phase 4.0: קריאת 50 qa-pairs מ-scenarios/\*.md דרך notebooklm-mcp לוקחת < 1 שעה
+- [ ] Import script מפרסר Markdown בלי שגיאות על 100% מ-pairs
+- [ ] רק תשובות `[מאומת]` מוזרמות לייצור ללא בדיקה נוספת; `[מוסקנא]` מסומנות; `[לא ידוע]` חסומות
 - [ ] שאלות שנוצרו מ-qa-pairs שעברו human-review מקבלות ≥ 9/10 ב-spot-check (domain-expert)
 - [ ] Deep explanation כוללת citation בפועל מהמקור (לא הזיה)
 
@@ -122,5 +152,8 @@
 
 - ADR-001 (Stack — Claude+pgvector)
 - ADR-006 (Course-as-Product Factory)
+- ADR-009 (אם נכתב — megen integration)
 - NotebookLM docs: https://notebooklm.google.com/
+- megen repo: https://github.com/Moti316/megen
+- megen/CLAUDE.md (גישת השם של המערכת, system prompts, notebooklm-mcp config)
 - חלק י"ב בתוכנית-העל: Course-as-Product Factory
