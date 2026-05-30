@@ -1,0 +1,70 @@
+# 🎬 StudiesGo Videos — מקור-עיצוב פנימי
+
+> **תהליך**: 7 סרטוני-screen-recording של StudiesGo Mobile. כל-תיקייה כוללת:
+>
+> 1. **`video.mp4`** — הסרטון
+> 2. **`prompt.md`** — פרומפט-מותאם-לתוכן ל-Gemini
+> 3. **`gemini-response.md`** — קובץ-ריק שתעדכן עם תגובת-Gemini
+
+## איך לעבוד (לפי-הסדר-המומלץ)
+
+### עדיפות-1 (קריטי ל-Phase 5-6)
+
+| #   | תיקייה                                       | תוכן                                              | משך |
+| --- | -------------------------------------------- | ------------------------------------------------- | --- |
+| 02  | [`02-lesson-flow/`](./02-lesson-flow/)       | Quiz player — 4 סוגי-שאלות + feedback             | 42s |
+| 07  | [`07-stats-feedback/`](./07-stats-feedback/) | Dark-mode + skill-tree + XP/streak + wrong-answer | 44s |
+
+### עדיפות-2 (Phase 2-3)
+
+| #   | תיקייה                                               | תוכן                                   | משך |
+| --- | ---------------------------------------------------- | -------------------------------------- | --- |
+| 04  | [`04-onboarding/`](./04-onboarding/)                 | First-time UX + welcome + empty-states | 37s |
+| 01  | [`01-create-course-flow/`](./01-create-course-flow/) | 5 שלבי-יצירת-קורס                      | 49s |
+
+### עדיפות-3 (Phase 7+)
+
+| #   | תיקייה                                         | תוכן                           | משך |
+| --- | ---------------------------------------------- | ------------------------------ | --- |
+| 05  | [`05-quiz-types/`](./05-quiz-types/)           | המשך 02 + page-grid 570        | 50s |
+| 06  | [`06-settings-voices/`](./06-settings-voices/) | Settings + 4 קולות + preview   | 37s |
+| 03  | [`03-messenger/`](./03-messenger/)             | Share via Messenger (deeplink) | 15s |
+
+---
+
+## ה-flow המומלץ
+
+```
+1️⃣  לחץ על התיקייה (לדוגמא 02-lesson-flow)
+2️⃣  פתח prompt.md → לחץ-ארוך על בלוק-הקוד → Copy
+3️⃣  עבור לתיקייה → לחץ על video.mp4 → Download
+4️⃣  ב-Gemini app:
+     - העלה את ה-video
+     - Paste את הפרומפט
+     - שלח
+5️⃣  כשתקבל תגובה → חזור ל-GitHub
+6️⃣  פתח gemini-response.md → לחץ ✏️ (עריכה)
+7️⃣  מחק את התוכן-הקיים → Paste את תגובת-Gemini
+8️⃣  Commit Changes (פס תחתון)
+9️⃣  המתן עד שאני רואה את העדכון, אדביק ב-motion-specs.md ואממש
+```
+
+## מצב-נוכחי
+
+| #                     | video | prompt | response |
+| --------------------- | ----- | ------ | -------- |
+| 01-create-course-flow | ✅    | ✅     | 🟡 ריק   |
+| 02-lesson-flow        | ✅    | ✅     | 🟡 ריק   |
+| 03-messenger          | ✅    | ✅     | 🟡 ריק   |
+| 04-onboarding         | ✅    | ✅     | 🟡 ריק   |
+| 05-quiz-types         | ✅    | ✅     | 🟡 ריק   |
+| 06-settings-voices    | ✅    | ✅     | 🟡 ריק   |
+| 07-stats-feedback     | ✅    | ✅     | 🟡 ריק   |
+
+**סה"כ-גודל**: ~113MB (7 סרטונים).
+
+## הערות
+
+- **טיפ**: לעבד 1-2 סרטונים בזמן (לא את-כל-7 ברצף). אחרי שאני מטמיע את התגובות לקוד, נמשיך לבאים.
+- **דחיפות**: 02 + 07 הכי קריטיים — תתחיל איתם.
+- **שמירה**: אחרי commit של תגובה, אני אעבד אותה ב-סשן-הבא ו-(1) אוסיף ל-`docs/design/motion-specs.md`, (2) אמיר ל-Framer-Motion variants ב-`src/lib/animations/`, (3) אעדכן את-קובץ-זה לסטטוס ✅.
