@@ -69,7 +69,7 @@
 | 04-onboarding         | ✅    | ✅     | 🟡 ריק                                  |
 | 05-quiz-types         | ✅    | ✅     | 🟡 ריק                                  |
 | 06-settings-voices    | ✅    | ✅     | 🟡 ריק                                  |
-| 07-stats-feedback     | ✅    | ✅     | 🟡 ריק                                  |
+| **07-stats-feedback** | ✅    | ✅     | ✅ **נקלט + 10 variants + dark-tokens** |
 
 **סה"כ-גודל**: ~113MB (7 סרטונים).
 
