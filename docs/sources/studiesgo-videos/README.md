@@ -61,15 +61,15 @@
 
 ## מצב-נוכחי
 
-| #                     | video | prompt | response |
-| --------------------- | ----- | ------ | -------- |
-| 01-create-course-flow | ✅    | ✅     | 🟡 ריק   |
-| 02-lesson-flow        | ✅    | ✅     | 🟡 ריק   |
-| 03-messenger          | ✅    | ✅     | 🟡 ריק   |
-| 04-onboarding         | ✅    | ✅     | 🟡 ריק   |
-| 05-quiz-types         | ✅    | ✅     | 🟡 ריק   |
-| 06-settings-voices    | ✅    | ✅     | 🟡 ריק   |
-| 07-stats-feedback     | ✅    | ✅     | 🟡 ריק   |
+| #                     | video | prompt | response                                |
+| --------------------- | ----- | ------ | --------------------------------------- |
+| 01-create-course-flow | ✅    | ✅     | 🟡 ריק                                  |
+| **02-lesson-flow**    | ✅    | ✅     | ✅ **נקלט + 8 variants ב-motion-specs** |
+| 03-messenger          | ✅    | ✅     | 🟡 ריק                                  |
+| 04-onboarding         | ✅    | ✅     | 🟡 ריק                                  |
+| 05-quiz-types         | ✅    | ✅     | 🟡 ריק                                  |
+| 06-settings-voices    | ✅    | ✅     | 🟡 ריק                                  |
+| 07-stats-feedback     | ✅    | ✅     | 🟡 ריק                                  |
 
 **סה"כ-גודל**: ~113MB (7 סרטונים).
 
