@@ -93,6 +93,17 @@
 - **Phase 4.0 (notebooklm-mcp)**: מוטי קורא `scenarios/*.md` מ-megen דרך Claude Code + notebooklm-mcp — ללא ייצוא ידני. Backend מפרסר Markdown → `chunks`, `qa_pairs`. מספיק ל-MVP.
 - **Phase 4.5 (semi-automated)**: pipeline שמסתנכרן אוטומטית עם megen repo (webhook/cron) בכל עדכון תרחיש.
 
+### Committee Scope Filter (2026-05-29 לילה)
+
+motilev8 העלה PDF עם **21 פריטי-חקיקה** = ה-scope המדויק לוועדה. תיעוד מלא ב-`docs/content-scope.md`.
+
+**אכיפה ב-import**:
+
+- כל chunk מקבל metadata `in_scope: true|false` + `scope_refs: [{id, section}]`
+- רק `in_scope=true` eligible לשאלות-וועדה
+- `in_scope=false` נשמר כ-reference (יכול להגיע ל-"הסבר לעומק") אך לא ל-quiz
+- megen-content שלא תואם את ה-21 מסומן `out-of-scope` ולא נמחק — נשמר ל-Phase B (Megen ⊂ StudiBuilder, post-deadline)
+
 ---
 
 ## Alternatives Considered
