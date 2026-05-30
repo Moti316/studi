@@ -6,7 +6,10 @@
  * smoke test אמיתי על PDF קיים ב-repo.
  */
 
+import path from 'node:path';
+
 import { describe, expect, it } from 'vitest';
+
 import { parsePdfMcqFromText } from '../../../scripts/parsers/parse-pdf-mcq.js';
 
 const SAMPLE_MCQ = [
@@ -111,8 +114,11 @@ describe('parsePdfMcq: smoke test על PDF ממשי ב-repo', () => {
   it('קורא 1.5-teunot-machalot-1945.pdf ומחזיר ParseResult תקין', async () => {
     // בדיקה זו כוללת I/O אמיתי — מאשרת שה-wrapper עובד עם pdf-parse
     const { parsePdfMcq } = await import('../../../scripts/parsers/parse-pdf-mcq.js');
-    const pdfPath =
-      '/home/user/studi/docs/sources/laws/1-pikuach-1954/1.5-teunot-machalot-1945.pdf';
+    // שימוש ב-process.cwd() כדי להישאר portable בין dev local ל-CI runner
+    const pdfPath = path.resolve(
+      process.cwd(),
+      'docs/sources/laws/1-pikuach-1954/1.5-teunot-machalot-1945.pdf',
+    );
 
     const result = await parsePdfMcq(pdfPath);
 
