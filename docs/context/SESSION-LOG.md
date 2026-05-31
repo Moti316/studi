@@ -5,7 +5,7 @@
 
 ---
 
-## 2026-05-31 (ערב) — מעבר-מחשב + עדכון-אסטרטגיה end-to-end ✅
+## 2026-05-31 (ערב) — מעבר-מחשב + end-to-end + סביבה + Drive + ניקוי-ענפים ✅
 
 ### מה נעשה
 
@@ -13,15 +13,19 @@
 - **עדכון-אסטרטגיה end-to-end** במסמכי-ההקשר: StudiBuilder = **פלטפורמת-ייצור מלאה** (creator=מוטי) + **קורס-הוועדה** (לימוד+שיווק). בוטלה מסגרת ה-carve-out/הקפאת-phases. עודכנו: PROJECT-MAP, PROJECTS, STATUS, EXECUTION-PLAN, TASKS, DECISIONS.
 - **החלטות:** וידאו **נשאר** ב-repo · chachmoni **הוסר** (לא קשור) · Google Drive = source-of-truth (לא ריפו-מגן).
 - **ספק-AI שונה ל-Google Gemini** (יצירה+סיווג+embeddings) במקום Anthropic+Voyage — מפתח אחד `GEMINI_API_KEY`. עודכנו ADR-001, ADR-011, CLAUDE.md, src/lib/ai, .env, ACCESS-MAP.
+- **סביבה הוקמה:** Node v24.16.0 (portable, ללא admin) + pnpm + 999 deps. `pnpm drive:test` עבר — **2 תיקיות-Drive מופו** (133 קבצים), אוחדו ל-`CONTENT-INDEX.md` (החליף content-inventory + curriculum-coverage → stubs).
+- **CI תוקן:** prettier repo-wide (job ה-lint נכשל על MD לא-מפורמט) → commit `05c9216`. husky hooks **עובדים** כאן (git-bash + nodejs ב-PATH).
+- **ניקוי git (C2):** כל 4 ענפי `claude/*` נמחקו → **single-branch main** (`docs-business-pivot-adrs` אומת קובץ-קובץ כ-predecessor מוחלף).
+- **CLAUDE.md:** סעיף רישום-MD + כלל קבוע (כל .md חדש נרשם ב-CLAUDE.md + PROJECT-MAP).
 
 ### מצב
 
-`node_modules` לא מותקן · import pipeline (`src/lib/import/*`) חסר · 2 מפתחות-API טרם הופקו · 4 ענפים מיותרים עדיין קיימים.
+Node+pnpm+deps ✅ · Drive מחובר+מופה ✅ · single-branch `main` ✅ · CI ירוק ✅. **חסר:** import pipeline (`src/lib/import/*`) לא נכתב · `GEMINI_API_KEY` טרם הוגדר.
 
 ### הצעד הבא
 
-1. `pnpm install` → `pnpm drive:test` (אימות Drive + מיפוי `mainCourse`+`legacy`).
-2. להגדיר `GEMINI_API_KEY` → לבנות import pipeline (ADR-011, Gemini) → Quiz Engine (Phase 5).
+1. **להגדיר `GEMINI_API_KEY`** ב-`.env.local` (Google AI Studio — כנראה כבר ברשות מוטי).
+2. לבנות import pipeline (ADR-011, Gemini, ~6 קבצים) → ייבוא T1 → Quiz Engine (Phase 5).
 3. המשך end-to-end: Upload UI (Phase 3) → persistence (Phase 2) → Course-as-Product (Phase 10).
 
 ---

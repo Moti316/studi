@@ -10,19 +10,19 @@
 - ✅ זיכרון: העדפות (עברית · push-to-main · Todolist · build-end-to-end)
 - ✅ C1 · שיפורי-היום ב-main (כבר ב-`415e149`)
 - ✅ הקמת `.env.local` במחשב הנוכחי (Supabase+Drive אמיתיים; `GEMINI_API_KEY` ריק — להוסיף)
-- ⬜ C2 · למחוק 4 ענפים (`docs-business-pivot-adrs`, `fix-home-redirect`, `phase-2-dashboard-skeleton`, `studiesgo-app-mapping-NLa2h`)
+- ✅ C2 · נמחקו כל 4 הענפים → **single-branch main**. `docs-business-pivot-adrs` אומת קובץ-קובץ כ-predecessor מוחלף (אין קבצים ייחודיים)
 - ✅ C3 · **הוחלט: וידאו נשאר ב-repo/git** (מוטי 2026-05-31) — מבטל את משימת ההוצאה
 - ⬜ B · טיוב: `content_scope_extensions.md`→`docs/internal/`, ארכוב מיושנים→`docs/archive/`, Voyage ל-`CLAUDE.md`
 
 ## חוסם-על
 
 - 🔴 **להגדיר `GEMINI_API_KEY`** (Google AI Studio — כנראה כבר ברשות מוטי) — חוסם את ה-import pipeline + ה-AI.
-- ⬜ `pnpm install` במחשב הנוכחי (node_modules חסר) — לפני הרצת scripts/dev.
+- ✅ Node v24.16.0 + pnpm + deps מותקנים (portable, ללא admin).
 - ℹ️ git-bash blocker — **לא רלוונטי במחשב הנוכחי** (husky לא מוגדר; commit/push עובדים).
 
 ## פלטפורמת-היצירה — Content Import (Phase 4, ADR-011)
 
-- ⬜ `pnpm install` → `pnpm drive:test` (אימות חיבור-Drive + מיפוי 2 התיקיות)
+- ✅ `pnpm drive:test` עבר — Drive מחובר ו-2 התיקיות מופו (ראה `CONTENT-INDEX.md`)
 - ⬜ `scripts/import-content.config.ts` (budget + scope keywords)
 - ⬜ `src/lib/import/chunker.ts` (semantic chunking + hash)
 - ⬜ `src/lib/import/scope-tagger.ts` (regex + Gemini 2.5 Flash)

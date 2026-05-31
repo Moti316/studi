@@ -27,15 +27,14 @@
 ## 🔴 חוסמים פעילים
 
 - `GEMINI_API_KEY` טרם הוגדר → ה-import pipeline + ה-AI לא ניתנים-להרצה (שדה ריק ב-`.env.local`; כנראה כבר ברשות מוטי דרך מגן).
-- `node_modules` לא מותקן במחשב הנוכחי → `pnpm install` לפני הרצת scripts/dev/Drive.
-- ℹ️ git-bash blocker **לא קיים במחשב הנוכחי** (husky לא מוגדר; commit/push עובדים). היה רלוונטי רק למחשב הקודם — ראה `BUGS.md#git-bash-fork`.
+- ℹ️ Node v24.16.0 + pnpm + deps מותקנים; husky hooks **עובדים** כאן (git-bash + nodejs ב-PATH). מחשב קודם בלבד: ראה `BUGS.md#git-bash-fork`.
 
 ## הצעד הבא (priority)
 
-1. `pnpm install` → `pnpm drive:test` (אימות חיבור-Drive + מיפוי 2 התיקיות `mainCourse`+`legacy`).
-2. להגדיר `GEMINI_API_KEY` → לבנות import pipeline (ADR-011, Gemini) → Quiz Engine (Phase 5).
-3. ניקוי git: מחיקת 4 ענפים. (**וידאו נשאר ב-repo** — החלטת מוטי.)
-4. המשך end-to-end: Upload UI (Phase 3) → persistence (Phase 2) → Course-as-Product (Phase 10). ראה `EXECUTION-PLAN.md`.
+1. **להגדיר `GEMINI_API_KEY`** → לבנות import pipeline (ADR-011, Gemini, ~6 קבצים) → ייבוא T1 → Quiz Engine (Phase 5).
+2. המשך end-to-end: Upload UI (Phase 3) → persistence (Phase 2) → Course-as-Product (Phase 10). ראה `EXECUTION-PLAN.md`.
+
+> ✅ הושלם בסשן: Drive מחובר+מופה · ניקוי-git (single-branch `main`) · וידאו נשאר ב-repo · CI ירוק.
 
 ## מה לא קיים אך התיעוד מרמז שכן
 
