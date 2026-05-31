@@ -93,7 +93,7 @@ CREATE TABLE chunks (
   source_id     uuid        NOT NULL REFERENCES content_sources(id) ON DELETE CASCADE,
   chunk_index   int         NOT NULL,   -- אינדקס סדרתי בתוך המסמך
   text          text        NOT NULL,
-  embedding     vector(1024),           -- Voyage AI / pgvector; NULL עד חישוב
+  embedding     vector(1024),           -- Gemini embedding / pgvector; NULL עד חישוב (ממד יותאם למודל-Gemini הנבחר, ADR-011)
   in_scope      boolean     NOT NULL DEFAULT false,
   scope_refs    text[]      NOT NULL DEFAULT '{}',
   answer_status text        NOT NULL DEFAULT 'unknown',
@@ -239,7 +239,7 @@ CREATE TABLE question_attempts (
   llm_score           smallint,
   -- 0-100, ל-scenario_walkthrough בלבד
   llm_feedback        text,
-  -- פידבק-טקסטואלי מ-Claude לאחר הערכת-רובריקה
+  -- פידבק-טקסטואלי מ-Gemini לאחר הערכת-רובריקה
 
   attempted_at        timestamptz NOT NULL DEFAULT now(),
   time_spent_ms       int,         -- זמן-תשובה במילישניות
@@ -309,7 +309,7 @@ CREATE INDEX idx_sessions_started_at ON practice_sessions (user_id, started_at D
 
 ### 6.5. `chat_sessions` (חדש 2026-05-30 — Mode C)
 
-תומך ב-Mode-C (AI Tutor Chat). שיחה-מודרכת עם Claude Sonnet על scope-ID או נושא-custom.
+תומך ב-Mode-C (AI Tutor Chat). שיחה-מודרכת עם Gemini 2.5 Pro על scope-ID או נושא-custom.
 
 ```sql
 CREATE TABLE chat_sessions (

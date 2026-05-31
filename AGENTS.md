@@ -20,8 +20,8 @@
 
 ## צוות-הסוכנים
 
-21 סוכנים · טופולוגיה: **Sequential**. אינדקס: `teams/README.md`.
-roster: `accessibility-i18n`, `appsec`, `backend-engineer`, `cloud-specialist`, `content-writer`, `data-engineer`, `design-system`, `devops-engineer`, `domain-expert`, `e2e-qa`, `frontend-engineer`, `interaction-designer`, `ml-engineer`, `notifications-engineer`, `privacy-officer`, `product-owner`, `release-manager`, `tech-lead`, `test-engineer`, `ux-researcher`, `visual-designer`
+27 סוכנים (22 מומחי-תחום + 4 ראשי-צוות + 1 מתווך) · טופולוגיה: **Sequential**. אינדקס: `teams/README.md` · היררכיה: `teams/ORG.md`.
+roster (22 מומחי-תחום): `accessibility-i18n`, `appsec`, `backend-engineer`, `cloud-specialist`, `content-verifier`, `content-writer`, `data-engineer`, `design-system`, `devops-engineer`, `domain-expert`, `e2e-qa`, `frontend-engineer`, `interaction-designer`, `ml-engineer`, `notifications-engineer`, `privacy-officer`, `product-owner`, `release-manager`, `tech-lead`, `test-engineer`, `ux-researcher`, `visual-designer`
 
 ## זיכרון — קרא בתחילת כל סשן
 

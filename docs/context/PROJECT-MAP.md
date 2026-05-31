@@ -38,7 +38,7 @@
 
 **ארכיטקטורה (לפי-צורך, מקור לכל בחירה גדולה):**
 
-12. `docs/architecture/ADR-*.md` — 13 ADRs. בעיקר **001** (stack: Next.js+Supabase+Gemini) · **009** (מגן) · **010** (DB schema) · **011** (import pipeline).
+12. `docs/architecture/ADR-*.md` — 12 ADRs (000-template + 001-011). בעיקר **001** (stack: Next.js+Supabase+Gemini) · **009** (מגן) · **010** (DB schema) · **011** (import pipeline).
 
 ## עקרון
 

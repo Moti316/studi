@@ -59,6 +59,10 @@ storybook-static/
 /tmp/
 *.local
 
+# Cache + import logs (hold Drive document text — never commit)
+/.cache/
+/logs/
+
 # Personal working tracker (live todo, not committed)
 /Todolist.md
 

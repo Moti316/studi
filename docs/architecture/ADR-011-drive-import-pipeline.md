@@ -26,8 +26,8 @@
 יש 3 אילוצים-קשים:
 
 1. **Deadline 2026-07-15**: pipeline שעובד על T1 חייב להיות up-and-running סוף-שבוע-1.
-2. **Scope-filter חובה** (ADR-005 §Committee Scope Filter): כל chunk/question נושא `in_scope` + `scope_refs[]` מול 21 פריטי-חקיקה.
-3. **Cost-control**: ~130 קבצים × embeddings × Claude-classify יכול להגיע מהר ל-$30-50 לייבוא-יחיד. צריך תקציב-מקסימלי.
+2. **Scope-filter חובה** (ADR-005 §Committee Scope Filter): כל chunk/question נושא `in_scope` + `scope_refs[]` מול 57 פריטי-חקיקה.
+3. **Cost-control**: ~130 קבצים × embeddings × Gemini-classify יכול להגיע מהר ל-$30-50 לייבוא-יחיד. צריך תקציב-מקסימלי.
 
 ה-pipeline הזה איננו Phase-4 build-from-PDF pipeline (שבו משתמש-קצה מעלה PDF ומקבל קורס). זה pipeline **content-ingestion ל-creator** — מוטי, single-user, מזין pre-curated content שלו.
 
@@ -35,7 +35,7 @@
 
 ## Decision
 
-**`scripts/import-content.ts` = Node.js script (לא Inngest function), one-shot ידני, idempotent, מחולק ל-4 phases פר-tier. גישה ל-Drive דרך Google Drive API ישיר (לא notebooklm-mcp). Scope-filtering בשתי שכבות: regex-tagging מהיר בייבוא + Claude-Haiku verification ב-batch לאחר-מכן.**
+**`scripts/import-content.ts` = Node.js script (לא Inngest function), one-shot ידני, idempotent, מחולק ל-4 phases פר-tier. גישה ל-Drive דרך Google Drive API ישיר (לא notebooklm-mcp). Scope-filtering בשתי שכבות: regex-tagging מהיר בייבוא + Gemini-Flash verification ב-batch לאחר-מכן.**
 
 ### Runtime — Node.js script, לא Inngest
 
@@ -50,7 +50,7 @@
 
 **הכרעה**: Node.js script `scripts/import-content.ts` נקרא דרך `pnpm import:<phase>`. **Inngest dispatch** של אותו ה-pipeline נדחה ל-Phase 10 (כשיהיו paying users + scheduled-sync).
 
-החריג היחיד: **embedding-batch של T2** (~52 קבצים × ~30-100 chunks = ~3000 chunks → ~$5-15 ב-Voyage). אם מתברר ב-Phase 4 שמוטי רוצה לרענן embeddings מדי-שבוע — wrapper Inngest סביב אותה הפונקציה בלי לשנות את ה-core. **לא** wrapping מראש.
+החריג היחיד: **embedding-batch של T2** (~52 קבצים × ~30-100 chunks = ~3000 chunks → ~$5-15 ב-Gemini embeddings, או חינם ב-free-tier). אם מתברר ב-Phase 4 שמוטי רוצה לרענן embeddings מדי-שבוע — wrapper Inngest סביב אותה הפונקציה בלי לשנות את ה-core. **לא** wrapping מראש.
 
 ### Drive Access — Drive API ישיר, לא notebooklm-mcp
 
@@ -77,7 +77,7 @@
 
 **שלב 1 — Regex tagging ב-ingestion (זול, מהיר):**
 
-לכל chunk, חיפוש keywords של 21 ה-scope-IDs בשם-הקובץ + ב-100 התווים הראשונים של ה-chunk. דוגמה:
+לכל chunk, חיפוש keywords של 57 ה-scope-IDs בשם-הקובץ + ב-100 התווים הראשונים של ה-chunk. דוגמה:
 
 ```ts
 // Naive regex match — מהיר אבל לא מדויק
@@ -85,21 +85,21 @@ const SCOPE_KEYWORDS: Record<string, string[]> = {
   '1.0': ['חוק ארגון הפיקוח', 'ארגון הפיקוח על העבודה'],
   '1.1': ['ממונים על הבטיחות', 'תקנות ארגון הפיקוח (ממונים)'],
   '2.1': ['עבודה בגובה', 'גובה 2007'],
-  // ... (21 entries)
+  // ... (57 entries)
 };
 ```
 
-**שלב 2 — Claude Haiku 4.5 verification (batch, אחר-כך):**
+**שלב 2 — Gemini 2.5 Flash verification (batch, אחר-כך):**
 
-אחרי שכל ה-chunks ב-DB עם `in_scope_naive: bool`, רץ batch-job שני שמעביר כל chunk עם `in_scope_naive=true` דרך Haiku עם system-prompt:
+אחרי שכל ה-chunks ב-DB עם `in_scope_naive: bool`, רץ batch-job שני שמעביר כל chunk עם `in_scope_naive=true` דרך Gemini Flash עם system-prompt:
 
 ```
 אתה classifier לחקיקת-בטיחות-בעבודה ישראלית.
-INPUT: chunk של טקסט + רשימת 21 פריטי-חקיקה.
+INPUT: chunk של טקסט + רשימת 57 פריטי-חקיקה.
 OUTPUT: JSON: { in_scope: bool, scope_refs: [{id, section?, confidence: 0-1}] }
 ```
 
-עלות משוערת: ~3000 chunks × Haiku ≈ $0.50-1.00 לכל-הקורפוס. מתאזן מול דיוק.
+עלות משוערת: ~3000 chunks × Gemini Flash ≈ $0.50-1.00 לכל-הקורפוס (או חינם ב-free-tier). מתאזן מול דיוק.
 
 **ברירת-מחדל בטוחה**: chunk שלא נמצא לו match בשני השלבים → `in_scope=false`, `status='[לא ידוע - נא לאמת בנבו]'`. **חסום מ-quiz** (כלל ADR-005).
 
@@ -124,8 +124,8 @@ const contentHash = sha256(normalize(extractedText));
 ```ts
 // scripts/import-content.config.ts
 export const BUDGET = {
-  maxClaudeCallsPerRun: 200, // ~$5 ב-Haiku
-  maxEmbeddingTokens: 2_000_000, // ~$15 ב-Voyage 3
+  maxGeminiCallsPerRun: 200, // ~$5 ב-Gemini Flash (או חינם ב-free-tier)
+  maxEmbeddingTokens: 2_000_000, // ~$15 ב-gemini-embedding-001
   maxDriveApiCalls: 5_000, // הרבה-מתחת לרייט-לימיט
   totalUsdHardCap: 25, // אם עוברים — abort
 };
@@ -135,7 +135,7 @@ export const BUDGET = {
 
 ### Error handling — skip + report, לא abort
 
-קובץ שנכשל בפרסור / Claude-classify / embedding → log + skip. בסוף הריצה:
+קובץ שנכשל בפרסור / Gemini-classify / embedding → log + skip. בסוף הריצה:
 
 ```
 ═══ Import Report ═══
@@ -144,7 +144,7 @@ T2: 49/52 succeeded, 3 failed:
   - "מצגת חזרה כללית - שאדי.pdf" (26 MB) — pdf-parse OOM
   - ...
 T3: 10/10 succeeded
-Total cost: $4.23 (Claude) + $8.71 (Voyage) = $12.94
+Total cost: $4.23 (Gemini Flash) + $8.71 (Gemini embeddings) = $12.94
 Hash-collision skips: 2 (duplicates dedup'd)
 ═══
 ```
@@ -166,7 +166,7 @@ Hash-collision skips: 2 (duplicates dedup'd)
 │                                                                  │
 │  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐       │
 │  │ 4. Chunk +   │ -> │ 5. Tag scope │ -> │ 6. Embed     │       │
-│  │ Hash         │    │ (regex+Haiku)│    │ (Voyage)     │       │
+│  │ Hash         │    │ (regex+Gem.) │    │ (Gemini)     │       │
 │  └──────────────┘    └──────────────┘    └──────────────┘       │
 │                                                                  │
 │  ┌──────────────┐    ┌──────────────┐                            │
@@ -196,11 +196,11 @@ T2/T3 (chunks): semantic-chunking — חתיכות של 500-800 תווים, חו
 
 ### Stage 5 — Tag scope
 
-שני-שלבים (regex → Haiku) כמתואר למעלה. T3 הוא special-case: שם-קובץ של תקנה (למשל "תקנות הבטיחות בעבודה (חשמל) 1990") נותן scope_id מדויק (2.4) בוודאות-100%, בלי צורך ב-Haiku.
+שני-שלבים (regex → Gemini Flash) כמתואר למעלה. T3 הוא special-case: שם-קובץ של תקנה (למשל "תקנות הבטיחות בעבודה (חשמל) 1990") נותן scope_id מדויק (2.4) בוודאות-100%, בלי צורך ב-Gemini Flash.
 
 ### Stage 6 — Embed
 
-batch של 10 chunks → Voyage `voyage-3` (multilingual, יעיל לעברית). result נשמר כ-`vector(1024)` ב-Supabase pgvector.
+batch של 10 chunks → Gemini `gemini-embedding-001` (multilingual, יעיל לעברית). result נשמר כ-`vector(1024)` ב-Supabase pgvector (ממד-הוקטור יותאם למודל-Gemini הנבחר; ראה ADR-001 Amendment).
 
 T1 שאלות **לא** embed-נכנסות לוקטור — הן entities נפרדים בטבלת `questions`. אבל **כן** מקבלות text-search index (Hebrew tsvector).
 
@@ -276,8 +276,8 @@ export async function tagWithScope(chunk: Chunk): Promise<{
   if (naiveMatches.length === 0) {
     return { in_scope: false, scope_refs: [], status: '[לא ידוע - נא לאמת בנבו]' };
   }
-  // Stage 2: Haiku verification (batched הקריאה מבחוץ)
-  const verified = await haikuVerifyScope({
+  // Stage 2: Gemini Flash verification (batched הקריאה מבחוץ)
+  const verified = await geminiVerifyScope({
     text: chunk.text.slice(0, 1500), // truncate to save tokens
     candidates: naiveMatches,
   });
@@ -291,8 +291,8 @@ export async function embedAndStore(chunks: Chunk[]): Promise<void> {
   // batch של 10
   for (const batch of batches(chunks, 10)) {
     const texts = batch.map((c) => c.text);
-    const { embeddings } = await voyage.embed({
-      model: 'voyage-3',
+    const { embeddings } = await gemini.embed({
+      model: 'gemini-embedding-001',
       input: texts,
       input_type: 'document',
     });
@@ -308,7 +308,7 @@ export async function embedAndStore(chunks: Chunk[]): Promise<void> {
       { onConflict: 'content_hash' },
     );
 
-    // rate-limit: max 300 req/min ל-Voyage
+    // rate-limit: לפי מגבלות-ה-API של Gemini embeddings
     await sleep(200);
   }
 }
@@ -362,8 +362,8 @@ async function main() {
 - **Scope**: רק 18 קבצי-T1 (Quiz Source).
 - **Parsers**: PDF + docx.
 - **Output**: רק `questions` table (ב-ADR-010). אין chunking, אין embedding, אין scope-tagging אוטומטי.
-- **Scope-tagging**: **ידני** — מוטי מקבל UI פשוט (`/admin/questions/{id}/tag-scope`) שבו לכל שאלה הוא מסמן scope_id מתוך 21 (dropdown).
-- **למה ידני?** 18 קבצים × ממוצע 30 שאלות = ~540 שאלות. Haiku-tagging היה עולה ~$0.20 — אבל המהירות-לוועדה דורשת שמוטי יראה מיד תוצאות. ידני = 540 קליקים = ~30 דקות. שווה.
+- **Scope-tagging**: **ידני** — מוטי מקבל UI פשוט (`/admin/questions/{id}/tag-scope`) שבו לכל שאלה הוא מסמן scope_id מתוך 57 (dropdown).
+- **למה ידני?** 18 קבצים × ממוצע 30 שאלות = ~540 שאלות. Gemini-tagging היה עולה ~$0.20 (או חינם ב-free-tier) — אבל המהירות-לוועדה דורשת שמוטי יראה מיד תוצאות. ידני = 540 קליקים = ~30 דקות. שווה.
 - **Success criteria**: 540 questions ב-Supabase תוך 3 ימים, רובם עם scope_id חוקי.
 
 ### Phase 2 — T1+T3 (שבוע 2)
@@ -372,12 +372,12 @@ async function main() {
 - **Scope-filter אוטומטי** — שם-קובץ → scope_id (T3 special-case, וודאות גבוהה).
 - chunking של חוקים לפי **סעיפים** (regex `\n(סעיף|פרק) \d+`).
 - כל chunk נכנס ל-`chunks` עם `scope_refs=[{id, section}]`.
-- Voyage embeddings מתחילים פה (~5K chunks × $0.003 = $15).
+- Gemini embeddings מתחילים פה (~5K chunks × $0.003 = $15, או חינם ב-free-tier).
 
 ### Phase 3 — T1+T2+T3 (שבוע 3+)
 
 - מוסיף ~52 קבצי-T2 (RAG Context — מצגות, סיכומים).
-- Full scope-filter (regex + Haiku).
+- Full scope-filter (regex + Gemini Flash).
 - chunking semantic.
 - T2 כולל ~52 קבצים → ~3000 chunks → ~$5-15 ב-embeddings.
 - **Out-of-scope content** (חוזק חומרים, רובוטים, ריתוך וכו' — ראה `content-scope.md`) — נכנס ל-`chunks` עם `in_scope=false`. ישמש רק ל-"הסבר לעומק" אם רלוונטי.
@@ -454,11 +454,11 @@ pnpm import:rescope --all
 - ❌ סותר ADR-005 (scope-filter ב-Import הוא מנגנון-מוגדר)
 - **נדחה**: ingestion-time filter הוא הנכון
 
-### Option F — LLM-based parsing (Claude reads PDF directly)
+### Option F — LLM-based parsing (Gemini reads PDF directly)
 
 - ✅ עוקף PDF-parser RTL bugs
 - ❌ עלות עצומה (~$0.10 per PDF × 130 = $13 רק לפרסור)
-- ❌ Hebrew PDF tokenization בעיתי גם ב-Claude (נצרך multiple passes)
+- ❌ Hebrew PDF tokenization בעיתי גם ב-Gemini (נצרך multiple passes)
 - ❌ Latency 10-30s per file
 - **נדחה**: PDF/docx parsers ייעודיים זולים-ויעילים יותר
 
@@ -478,7 +478,7 @@ pnpm import:rescope --all
 
 - **OAuth refresh-token ב-`.env.local`** — secrets-management דורש משמעת. אם הטוקן נחשף → גישה-מלאה ל-Drive של מוטי. mitigation: scope=`drive.readonly` בלבד; rotation כל-90-יום.
 - **Drive API rate-limit** (1000 req/100s) — לא חוסם בפועל כי `discoverDriveFiles` הוא ~5 קריאות + `fetchFromDrive` × 130 = ~135 קריאות. בטוח-בטוח.
-- **Voyage embeddings vendor-lock** — אם נחליף ל-OpenAI/Cohere ב-עתיד, צריך re-embed של כל הקורפוס. mitigation: embedding-version נשמר בעמודה `embedding_model_version`.
+- **Gemini embeddings vendor-lock** — אם נחליף ל-OpenAI/Cohere ב-עתיד, צריך re-embed של כל הקורפוס. mitigation: embedding-version נשמר בעמודה `embedding_model_version`.
 - **Phase 1 scope-tagging ידני** — 30 דקות עבודה של מוטי. trade-off מודע: דחיינות-לאוטומציה עד שהקורפוס יציב.
 - **Cache local** (`./.cache/drive/`) — תופס דיסק. mitigation: `.gitignore` + cleanup script `pnpm import:cache:clear`.
 
@@ -499,14 +499,14 @@ pnpm import:rescope --all
 - [ ] Phase 3 — total cost של full-import ≤ $25 (תקציב).
 - [ ] Phase 3 — duplicates dedup'd אוטומטית לפי content-hash (2 קבצי "רעש מזיק" → 1 source ב-DB).
 - [ ] Re-running `pnpm import:full` יום אחרי — 0 חדשים נכנסים (idempotency check).
-- [ ] Budget-cap עובד — סימולציה של `maxClaudeCallsPerRun=5` עוצרת ריצה כצפוי.
+- [ ] Budget-cap עובד — סימולציה של `maxGeminiCallsPerRun=5` עוצרת ריצה כצפוי.
 
 ---
 
 ## Security Considerations
 
 - **Drive OAuth token**: `.env.local`, scope `drive.readonly`, refresh-token-rotation manual כל-90-יום (TODO ב-calendar).
-- **Voyage/Anthropic keys**: standard `.env.local`, לא ב-git.
+- **Gemini API key**: standard `.env.local`, לא ב-git.
 - **Supabase service-role key**: נדרש לpipeline (bypass RLS לטובת admin-write). **לעולם לא ב-client code**. כאן בלבד.
 - **Local cache** (`./.cache/drive/`): נשמר טקסט-מ-Drive ב-disk. במחשב-פיתוח אישי של מוטי — סביר. אם ה-script ירוץ ב-CI — חובת cleanup post-run.
 - **Logs**: יכולים להכיל קטעי-טקסט מהמסמכים. עברית, לא PII כללי. נשמרים מקומית בלבד, לא נדחפים ל-Sentry/observability.
@@ -516,7 +516,7 @@ pnpm import:rescope --all
 ## Open Questions
 
 1. **Hebrew PDF parsing fidelity** — האם `pdf-parse` נותן RTL-text תקין, או צריך `pdfjs-dist`? **בדיקה ב-Phase 1, יום-1**, על 3 קבצי T1 representative.
-2. **Voyage vs. OpenAI embeddings** — Voyage נבחר ב-CLAUDE.md, אבל לא נבדק על-עברית. **בדיקת-איכות** ב-Phase 3 — אם איכות-RAG נמוכה, להחליף.
+2. **Gemini embeddings על-עברית** — `gemini-embedding-001` נבחר (ADR-001 Amendment, Gemini ספק-יחיד), אבל לא נבדק על-עברית. **בדיקת-איכות** ב-Phase 3 — אם איכות-RAG נמוכה, לשקול מודל-Gemini אחר.
 3. **Re-classification flow** — איך מבצעים rescope-של-DB-קיים כשמשנים `SCOPE_KEYWORDS`? Migration script `pnpm import:rescope --all`. detail ייקבע ב-Phase 2.
 4. **Gap-IDs מ-`content-scope.md`** (8 scope-IDs חסרי-מקור) — האם import-script צריך flag-לזיהוי? **כן** — אם chunk תויג עם scope_id מ-gap-list → log-warn "covered-but-no-source-doc".
 
@@ -529,10 +529,10 @@ pnpm import:rescope --all
 - ADR-009 (Magen — Drive = source-of-truth)
 - ADR-010 (DB schema — `content_sources`, `chunks`, `questions`, `scenarios`)
 - `docs/content-inventory.md` — מיפוי 130 קבצים ל-tiers
-- `docs/content-scope.md` — 21 פריטי-חקיקה, כללי scope-filter
+- `docs/content-scope.md` — 57 פריטי-חקיקה, כללי scope-filter
 - `docs/mvp-plan-2026-07-15.md` §10.2 — Drive Discovery (שבוע 1)
 - [Google Drive API v3](https://developers.google.com/drive/api/v3/reference)
 - [`googleapis` npm](https://www.npmjs.com/package/googleapis)
 - [`pdf-parse` npm](https://www.npmjs.com/package/pdf-parse)
 - [`mammoth` npm](https://www.npmjs.com/package/mammoth)
-- [Voyage AI embeddings](https://docs.voyageai.com/)
+- [Gemini embeddings](https://ai.google.dev/gemini-api/docs/embeddings)

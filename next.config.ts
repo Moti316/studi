@@ -3,8 +3,8 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  typedRoutes: true, // promoted from experimental in Next 15.5 (was experimental.typedRoutes)
   experimental: {
-    typedRoutes: true,
     serverActions: {
       bodySizeLimit: '50mb', // upload PDF/Word/PPT up to 50MB
     },

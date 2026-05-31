@@ -1,4 +1,4 @@
-# ADR-005: NotebookLM Hybrid — Content Curation + Claude Pipeline
+# ADR-005: NotebookLM Hybrid — Content Curation + Gemini Pipeline
 
 > **Status**: Accepted (revised 2026-05-29 ערב after megen review)
 > **Date**: 2026-05-29
@@ -18,20 +18,20 @@
 - **3 מצבי-תשובה תקניים** מוגדרים כבר: `[מאומת]` / `[מוסקנא]` / `[לא ידוע - נא לאמת בנבו]`.
 - **System prompts ~30K תווים** (מגן + שגיא) — כוללים כללי citation מפורטים.
 
-הקונספט הכללי (NotebookLM = curation, Claude = generation) נשאר תקף. רק הפרטים הטכניים עודכנו.
+הקונספט הכללי (NotebookLM = curation, Gemini = generation) נשאר תקף. רק הפרטים הטכניים עודכנו.
 
 ---
 
 ## Context
 
-ב-ADR-001 (Stack) דחינו את NotebookLM ובחרנו **Build from scratch** עם Claude + pgvector — כדי לקבל שליטה מלאה על prompts, איכות ופורמט.
+ב-ADR-001 (Stack) דחינו את NotebookLM ובחרנו **Build from scratch** עם Gemini + pgvector — כדי לקבל שליטה מלאה על prompts, איכות ופורמט.
 
 מאז התברר כי:
 
 1. מוטי הוא **ה-creator** של הקורסים (לא משתמש-עולה-PDF סטנדרטי) — חלק י"ב בתוכנית-העל
 2. יש לו כבר **NotebookLM Workspace קיים** עם curated content לקורס ממונה-בטיחות
 3. **Source-grounding קריטי** לתחום-רגולציה: תשובות שגויות = כשלון-בחינה למשתמש
-4. NotebookLM מצטיין ב-source-grounded citation — Claude טוב יותר ב-presentation
+4. NotebookLM מצטיין ב-source-grounded citation — Gemini טוב יותר ב-presentation
 
 המסקנה: הבחירה לא צריכה להיות "או-או" אלא **היבריד**.
 
@@ -39,7 +39,7 @@
 
 ## Decision
 
-**NotebookLM משמש כ-content curator. Claude משמש כ-content generator.**
+**NotebookLM משמש כ-content curator. Gemini משמש כ-content generator.**
 
 ### גבולות-אחריות
 
@@ -49,9 +49,9 @@
 | 2. **Q&A curation**        | NotebookLM                                         | מוטי שואל שאלות, NotebookLM משיב עם ציטוטים — מוטי מאשר/דוחה                       |
 | 3. **Export**              | notebooklm-mcp (Phase 4.0) / Automated (Phase 4.5) | גישה ישירה דרך Claude Code — ללא ייצוא ידני                                        |
 | 4. **Import to our stack** | Our backend                                        | קריאת `scenarios/*.md` מ-megen → טבלאות `chunks`, `qa_pairs` ב-Supabase + pgvector |
-| 5. **Lesson generation**   | Claude Sonnet 4.6                                  | מקבל chunks + qa_pairs כ-context → יוצר שיעורים בעברית                             |
-| 6. **Question variation**  | Claude Sonnet 4.6                                  | מקבל qa אחד → יוצר 3-4 וריאציות (MCQ/matching/explanation)                         |
-| 7. **Deep explanations**   | Claude Sonnet 4.6                                  | אם משתמש טועה → Claude מסביר על-בסיס המקור המקורי                                  |
+| 5. **Lesson generation**   | Gemini 2.5 Pro                                     | מקבל chunks + qa_pairs כ-context → יוצר שיעורים בעברית                             |
+| 6. **Question variation**  | Gemini 2.5 Pro                                     | מקבל qa אחד → יוצר 3-4 וריאציות (MCQ/matching/explanation)                         |
+| 7. **Deep explanations**   | Gemini 2.5 Pro                                     | אם משתמש טועה → Gemini מסביר על-בסיס המקור המקורי                                  |
 | 8. **Voice (TTS)**         | ElevenLabs (Phase 7)                               | בלי שינוי מ-ADR-001                                                                |
 
 ### Data Contract — megen → Our Import
@@ -95,14 +95,14 @@
 
 ### Committee Scope Filter (2026-05-29 לילה)
 
-motilev8 העלה PDF עם **21 פריטי-חקיקה** = ה-scope המדויק לוועדה. תיעוד מלא ב-`docs/content-scope.md`.
+motilev8 העלה PDF עם **57 פריטי-חקיקה** (הורחב מ-21 ב-2026-05-30 לפי תוכנית-הלימודים) = ה-scope המדויק לוועדה. תיעוד מלא ב-`docs/content-scope.md`.
 
 **אכיפה ב-import**:
 
 - כל chunk מקבל metadata `in_scope: true|false` + `scope_refs: [{id, section}]`
 - רק `in_scope=true` eligible לשאלות-וועדה
 - `in_scope=false` נשמר כ-reference (יכול להגיע ל-"הסבר לעומק") אך לא ל-quiz
-- megen-content שלא תואם את ה-21 מסומן `out-of-scope` ולא נמחק — נשמר ל-Phase B (Megen ⊂ StudiBuilder, post-deadline)
+- megen-content שלא תואם את ה-57 מסומן `out-of-scope` ולא נמחק — נשמר ל-Phase B (Megen ⊂ StudiBuilder, post-deadline)
 
 ---
 
@@ -114,7 +114,7 @@ motilev8 העלה PDF עם **21 פריטי-חקיקה** = ה-scope המדויק 
 - ❌ אין שליטה על פורמט/UX/voice. NotebookLM ממשק קבוע
 - ❌ אין gamification (XP/streak)
 
-### Option B: Claude-only (ADR-001 המקורי)
+### Option B: Gemini-only (ADR-001 המקורי)
 
 - ✅ שליטה מלאה
 - ❌ סיכון-הזיות בתחום-רגולציה
@@ -134,8 +134,8 @@ motilev8 העלה PDF עם **21 פריטי-חקיקה** = ה-scope המדויק 
 ### Positive
 
 - כל question מיוצר מ-source-citation אמיתי → אמינות גבוהה
-- מוטי שומר על role של "מומחה-תחום" (curator), Claude עושה את ה-heavy lifting
-- ניתן להחליף NotebookLM ב-RAG עצמאי בעתיד (Voyage embeddings + pgvector) בלי לשבור את ה-data contract
+- מוטי שומר על role של "מומחה-תחום" (curator), Gemini עושה את ה-heavy lifting
+- ניתן להחליף NotebookLM ב-RAG עצמאי בעתיד (Gemini embeddings + pgvector) בלי לשבור את ה-data contract
 
 ### Negative
 
@@ -145,7 +145,7 @@ motilev8 העלה PDF עם **21 פריטי-חקיקה** = ה-scope המדויק 
 
 ### Neutral
 
-- ADR-001 מתעדכן (לא נמחק) — Claude נשאר LLM יחיד אצלנו, NotebookLM הוא pre-processing
+- ADR-001 מתעדכן (לא נמחק) — Gemini נשאר LLM יחיד אצלנו, NotebookLM הוא pre-processing
 
 ---
 
@@ -161,7 +161,7 @@ motilev8 העלה PDF עם **21 פריטי-חקיקה** = ה-scope המדויק 
 
 ## References
 
-- ADR-001 (Stack — Claude+pgvector)
+- ADR-001 (Stack — Gemini+pgvector)
 - ADR-006 (Course-as-Product Factory)
 - ADR-009 (אם נכתב — megen integration)
 - NotebookLM docs: https://notebooklm.google.com/

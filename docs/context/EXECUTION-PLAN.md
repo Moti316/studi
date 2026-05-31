@@ -74,6 +74,10 @@ StudiBuilder נבנה **מקצה-לקצה** כפלטפורמת-ייצור-קור
 - landing-page + checkout (ADR-008 payment) + ads לקורס "ממונה בטיחות".
 - אינטגרציית-מגן (ADR-009 Phase B, אם רלוונטי): personas (מגן/שגיא) + committee_bank.
 
+### שלב 5 — ציות ומוכנות-לאנץ' (Phase 9-10, pre-launch — לא חוסם v1)
+
+חובות-ציות חלות על **כל השירות לציבור**, לא רק דף-המכירה. נגישות (ת"י 5568/WCAG AA + הצהרת-נגישות) · פרטיות (מדיניות + תיקון 13) · הגנת-צרכן (ביטול 14 יום + גילוי) · תשלומים (PCI/חשבונית). פירוט מלא + task-force (privacy-officer מוביל) + משימות C1–C6: [`docs/compliance/COMPLIANCE.md`](../compliance/COMPLIANCE.md). ⚖️ בדיקה משפטית לפני מכירה.
+
 ## Definition of Done
 
 - **פלטפורמה:** מוטי מייצר קורס end-to-end דרך ה-UI (ייבוא → שאלות → lessons → publish).

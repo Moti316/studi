@@ -160,6 +160,10 @@ export const questions = pgTable(
     inScope: boolean('in_scope').notNull().default(true),
     status: contentStatus('status').notNull().default('מאומת'),
     difficulty: smallint('difficulty'),
+    // Stable provenance key for the import pipeline — lets `onConflict(source_ref)`
+    // make re-imports idempotent (e.g. a per-source-question deterministic ref).
+    // Nullable: questions generated without a source-ref (manual/ad-hoc) skip de-dup.
+    sourceRef: text('source_ref'),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => ({
@@ -168,6 +172,9 @@ export const questions = pgTable(
       .on(t.inScope)
       .where(sql`${t.inScope} = true`),
     statusIdx: index('idx_questions_status').on(t.status),
+    // Unique on source_ref enables ON CONFLICT (source_ref) idempotent imports.
+    // Postgres treats NULLs as distinct, so manual questions (NULL ref) are unaffected.
+    sourceRefIdx: uniqueIndex('idx_questions_source_ref').on(t.sourceRef),
     scenarioCheck: check(
       'scenario_needs_ref',
       sql`${t.type} != 'scenario_walkthrough' OR ${t.scenarioId} IS NOT NULL`,

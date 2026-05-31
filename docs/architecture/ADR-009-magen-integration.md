@@ -37,7 +37,7 @@
 | ----------- | ------------------------------------------- | ----------------------------- |
 | **שימוש**   | מוטי בלבד — ללימוד אישי לוועדה              | פיתוח-platform ברקע           |
 | **קוד**     | Python (Telegram bot)                       | TypeScript (Next.js)          |
-| **LLM**     | Gemini 2.5 Flash (bot) + Claude (subagents) | Claude Sonnet 4.6             |
+| **LLM**     | Gemini 2.5 Flash (bot) + Claude (subagents) | Gemini 2.5 Pro                |
 | **תוכן**    | NotebookLM 36 notebooks                     | אין עדיין — Phase 4           |
 | **גישה**    | Telegram + Claude Code                      | Web (studibuilder.vercel.app) |
 | **משתמשים** | מוטי + 4 חברי-לימוד (allowlist)             | מוטי לבד (testing)            |
@@ -82,7 +82,7 @@
 
 - ❌ net-loss טכני:
   - Python-web (Flask/FastAPI) פחות-בשל מ-Next.js App Router
-  - Gemini Flash < Claude Sonnet 4.6 לאיכות-עברית
+  - Gemini Flash (bot) < Gemini 2.5 Pro (StudiBuilder) לאיכות-עברית
   - השקעת StudiBuilder Phase 0-1-2 (3+ שבועות) הופכת throwaway
 - ❌ מודל-עסקי של megen (single-user) לא תומך ב-multi-user-paid
 
@@ -117,7 +117,7 @@
 
 - שני המוצרים ניגשים דרך `notebooklm-mcp` MCP server
 - מוטי הוא הבעלים-היחיד של כל ה-notebooks → SPOF לא-מסכן
-- אם Google מבטל NotebookLM: יש מסלול-מילוט ל-Voyage AI embeddings + pgvector עצמאי (ADR-005 חוזה-data תומך)
+- אם Google מבטל NotebookLM: יש מסלול-מילוט ל-Gemini embeddings + pgvector עצמאי (ADR-005 חוזה-data תומך)
 - Rate limit: צריך-מעקב. כיום no-limit ל-personal-account, אבל אם 2 consumers (megen-MCP + StudiBuilder-imports) → ייתכן throttling
 
 ### 4. **Hybrid Bridge — נדחה במפורש**
@@ -138,7 +138,7 @@ Red-Line של ה-Tech-Lead: לא over-engineering ל-scale שלא קיים. ה-c
 
 - **אפס-סיכון לוועדה** — מוטי ממשיך להשתמש ב-megen כפי שהוא יודע
 - **שימור-נכס** — 36 notebooks + scenarios + master-prompts לא הולכים-לאיבוד; נכנסים ל-StudiBuilder ב-Phase B
-- **שני LLM providers** = redundancy (Gemini ב-bot + Claude ב-web)
+- **ספק-LLM אחיד** = פשטות-תפעולית (Gemini ב-bot + Gemini ב-web; אין vendor כפול בנתיב-המשתמש)
 - **קורס-ראשון מסחרי מובטח** — ב-Phase 10, יש לנו ready-to-launch content
 
 ### Negative
@@ -171,7 +171,7 @@ Red-Line של ה-Tech-Lead: לא over-engineering ל-scale שלא קיים. ה-c
    - קורא Drive folders דרך Drive API (read-only scope)
    - normalizer: Drive files → Markdown מובנה (schema ב-MVP-plan §10.2)
    - מפרסר metadata (פקודה/תקנה/קושי) מ-headings + תיוגי `[מאומת]`/`[מוסקנא]`
-   - **Committee Scope Filter** (קריטי, ראה `docs/content-scope.md`): כל chunk מתויג `in_scope: true|false` + `scope_refs[]` מול 21 פריטי-החקיקה ב-PDF
+   - **Committee Scope Filter** (קריטי, ראה `docs/content-scope.md`): כל chunk מתויג `in_scope: true|false` + `scope_refs[]` מול 57 פריטי-החקיקה ב-PDF
    - רק `in_scope=true` עולה ל-quiz; `false` נשמר כ-reference
    - מייצר רשומות `lessons` + `questions` + `scenarios` ב-Supabase
 2. **Personas integration** — העתקת `magen.system.md` + `shagi.system.md` ל-`src/lib/ai/personas/`:
