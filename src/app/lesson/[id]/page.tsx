@@ -1,0 +1,98 @@
+import type { Metadata } from 'next';
+import { and, eq, sql } from 'drizzle-orm';
+import { requireAuth } from '@/lib/auth/server';
+import { db } from '@/lib/db';
+import { questions, type Question } from '../../../../drizzle/schema';
+import { isValidScopeId } from '@/lib/db/constants/scope-refs';
+import { LessonPlayer } from '@/features/lesson-player/LessonPlayer';
+
+export const metadata: Metadata = {
+  title: 'שיעור',
+};
+
+/** תלוי-session ו-DB (שאילתה אקראית) — חייב רינדור-דינמי (אסור static/ISR). */
+export const dynamic = 'force-dynamic';
+
+/** מספר השאלות המרבי בשיעור בודד. */
+const MAX_QUESTIONS = 20;
+
+/**
+ * טוען עד MAX_QUESTIONS שאלות `in_scope = true`.
+ *   - id === 'practice'  → דגימה אקראית (ORDER BY random()).
+ *   - אחרת               → סינון לפי scope-id (כל שאלה שה-scope_refs jsonb שלה
+ *     מכיל את ה-id), בסדר אקראי בתוך ההיקף.
+ * מזהה-היקף לא-תקין מטופל כ"ריק" (empty-state), לא כשגיאה.
+ */
+async function loadQuestions(rawId: string): Promise<Question[]> {
+  const inScope = eq(questions.inScope, true);
+
+  if (rawId === 'practice') {
+    return db
+      .select()
+      .from(questions)
+      .where(inScope)
+      .orderBy(sql`random()`)
+      .limit(MAX_QUESTIONS);
+  }
+
+  // scope-ref path: ID חייב להיות מוכר מתוך 57 פריטי-הוועדה (default-deny).
+  if (!isValidScopeId(rawId)) return [];
+
+  // jsonb containment: scope_refs @> '[{"id": "<rawId>"}]'. `rawId` עבר אימות
+  // מול ה-allowlist, ובכל-זאת מועבר כפרמטר (sql.placeholder) — אפס-זריקת-SQL.
+  const scopeMatch = sql`${questions.scopeRefs} @> ${JSON.stringify([{ id: rawId }])}::jsonb`;
+
+  return db
+    .select()
+    .from(questions)
+    .where(and(inScope, scopeMatch))
+    .orderBy(sql`random()`)
+    .limit(MAX_QUESTIONS);
+}
+
+/**
+ * `/lesson/[id]` — מסך השיעור (מחליף את ה-POC `/poc/matching`).
+ *
+ * Server Component:
+ *   1. `requireAuth` בראש (לא-מחובר → /beta-access).
+ *   2. טוען עד 20 שאלות in-scope מה-DB (אקראי ל-'practice', אחרת לפי scope-id).
+ *   3. שגיאת-DB → error-state נקי (לא חושפים תשתית, הלוג נשאר בשרת).
+ *   4. מרכיב את <LessonPlayer> (client) שמנהל את כל לולאת-השיעור.
+ *
+ * הערה: עד שהייבוא רץ ה-DB ריק — מטופל ב-empty-state הידידותי בתוך <LessonPlayer>.
+ */
+export default async function LessonPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  await requireAuth(`/lesson/${id}`);
+
+  let lessonQuestions: Question[];
+  try {
+    lessonQuestions = await loadQuestions(id);
+  } catch (error) {
+    // לא חושפים פרטי-תשתית; מציגים מצב-שגיאה נקי. הלוג נשאר בצד-השרת.
+    console.error('[lesson/[id]] failed to load questions', error);
+    return (
+      <main dir="rtl" className="mx-auto w-full max-w-2xl p-4 pb-8">
+        <div
+          role="alert"
+          data-testid="lesson-error"
+          className="flex flex-col items-center gap-3 rounded-card border border-quiz-error-border bg-quiz-error-bg px-6 py-12 text-center font-hebrew text-quiz-text-primary"
+        >
+          <span className="text-4xl" aria-hidden="true">
+            ⚠️
+          </span>
+          <h1 className="text-lg font-bold">טעינת השיעור נכשלה</h1>
+          <p className="mx-auto max-w-sm text-sm text-quiz-text-secondary">
+            לא הצלחנו לטעון את השאלות כרגע. ודאו שחיבור-ה-DB מוגדר ונסו לרענן.
+          </p>
+        </div>
+      </main>
+    );
+  }
+
+  return (
+    <main dir="rtl" className="mx-auto w-full max-w-2xl p-4 pb-8">
+      <LessonPlayer questions={lessonQuestions} />
+    </main>
+  );
+}
