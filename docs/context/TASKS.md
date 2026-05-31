@@ -1,45 +1,55 @@
 # TASKS — מאגר-המשימות המלא
 
 > המאגר המלא (backlog). `Todolist.md` בשורש = תת-קבוצה פעילה של הסשן הנוכחי.
-> ⬜ פתוח · 🔄 בתהליך · ✅ הושלם · ⏸️ דחוי · 🔴 חסום. מעודכן: 2026-05-31.
+> ⬜ פתוח · 🔄 בתהליך · ✅ הושלם · 🔴 חסום. מעודכן: 2026-05-31.
+> **מסגרת:** build end-to-end — אין דחיות. ראה [EXECUTION-PLAN.md](EXECUTION-PLAN.md).
 
-## עכשיו — תשתית-הקשר + ניקוי (סשן 2026-05-31)
+## עכשיו — תשתית + ניקוי
 
 - ✅ ארכיטקטורת-הקשר: 9 קבצי `docs/context/`
-- ✅ זיכרון: העדפות (עברית · push-to-main · Todolist) + git-bash blocker
-- 🔴 C1 · להנחית שיפורי-היום ל-main (auth-drive loopback, test-db, docs) — **חסום: git-bash**
-- 🔴 C2 · למחוק 4 ענפים (docs-business-pivot-adrs, fix-home-redirect, phase-2-dashboard-skeleton, studiesgo-app-mapping-NLa2h) — דורש push/gh
-- 🔴 C3 · להוציא ~113MB וידאו מ-git (rm --cached + .gitignore) — דורש commit
-- ⬜ B · טיוב: להעביר content_scope_extensions.md→docs/internal/, לארכב מיושנים→docs/archive/, להפנות phase-tables ל-STATUS.md, Voyage ל-CLAUDE.md
+- ✅ זיכרון: העדפות (עברית · push-to-main · Todolist · build-end-to-end)
+- ✅ C1 · שיפורי-היום ב-main (כבר ב-`415e149`)
+- ✅ הקמת `.env.local` במחשב הנוכחי (Supabase+Drive אמיתיים; `GEMINI_API_KEY` ריק — להוסיף)
+- ⬜ C2 · למחוק 4 ענפים (`docs-business-pivot-adrs`, `fix-home-redirect`, `phase-2-dashboard-skeleton`, `studiesgo-app-mapping-NLa2h`)
+- ✅ C3 · **הוחלט: וידאו נשאר ב-repo/git** (מוטי 2026-05-31) — מבטל את משימת ההוצאה
+- ⬜ B · טיוב: `content_scope_extensions.md`→`docs/internal/`, ארכוב מיושנים→`docs/archive/`, Voyage ל-`CLAUDE.md`
 
 ## חוסם-על
 
-- 🔴 **לפתור git-bash fork** (או להחליט על מנגנון-commit חלופי) — חוסם את כל ה-git-writes. ראה BUGS.md.
-- 🔴 להפיק `ANTHROPIC_API_KEY` + `VOYAGE_API_KEY` — חוסם את ה-import pipeline.
+- 🔴 **להגדיר `GEMINI_API_KEY`** (Google AI Studio — כנראה כבר ברשות מוטי) — חוסם את ה-import pipeline + ה-AI.
+- ⬜ `pnpm install` במחשב הנוכחי (node_modules חסר) — לפני הרצת scripts/dev.
+- ℹ️ git-bash blocker — **לא רלוונטי במחשב הנוכחי** (husky לא מוגדר; commit/push עובדים).
 
-## שלב 1 — Content Import (ADR-011)
+## פלטפורמת-היצירה — Content Import (Phase 4, ADR-011)
 
+- ⬜ `pnpm install` → `pnpm drive:test` (אימות חיבור-Drive + מיפוי 2 התיקיות)
 - ⬜ `scripts/import-content.config.ts` (budget + scope keywords)
 - ⬜ `src/lib/import/chunker.ts` (semantic chunking + hash)
-- ⬜ `src/lib/import/scope-tagger.ts` (regex + Haiku)
-- ⬜ `src/lib/import/embedder.ts` (Voyage batch)
+- ⬜ `src/lib/import/scope-tagger.ts` (regex + Gemini 2.5 Flash)
+- ⬜ `src/lib/import/embedder.ts` (Gemini embeddings batch)
 - ⬜ `src/lib/import/report.ts` (JSONL log + summary)
 - ⬜ `scripts/import-content.ts` + פקודות `import:t1`/`import:full`
 - ⬜ ייבוא T1 (18 קבצים) → `questions` + scope-tagging ידני
 
-## שלב 2 — Quiz Engine (Phase 5, לב ה-MVP)
+## חוויית-הלימוד — Quiz Engine (Phase 5)
 
 - ⬜ `MCQLong.tsx` · `MCQShort.tsx` · `ExplanationCard.tsx`
 - ⬜ `ScenarioWalkthrough.tsx` (type-5, LLM-rubric)
-- ⬜ route `/lesson/[id]` + `/lesson/practice` + `/lesson/exam` (mock-exam, טיימר)
+- ⬜ routes `/lesson/[id]` + `/lesson/practice` + `/lesson/exam` (mock-exam, טיימר)
 - ⬜ API: next-question · attempts · evaluate-scenario · deep-explanation (RAG)
 - ⬜ טסטים ל-4 הרכיבים החדשים
+- ⬜ Spaced-Repetition (SM-2; שדות כבר ב-schema) · Stats לפי-נושא
 
-## שלב 3 — Should-have
+## השלמת הפלטפורמה (creator end-to-end)
 
-- ⬜ Spaced-Repetition (SM-2) · ⬜ Stats לפי-נושא · ⬜ Hebrew-TTS על deep-explanation
+- ⬜ Phase 3 — Upload UI ל-creator (`/create/*`): מוטי מעלה מקורות → מפעיל pipeline מה-UI
+- ⬜ Phase 2 — persistence אמיתי ל-Dashboard (החלפת mock-data)
+- ⬜ Phase 6 — gamification (XP/streak/practice-log)
+- ⬜ Phase 7 — Hebrew-TTS על "הסבר לעומק" (קול-אחד → הרחבה ל-4)
 
-## דחוי (post-2026-07-15)
+## Course-as-Product (Phase 10, ADR-006)
 
-- ⏸️ Phase 3 Upload · Phase 6 Gamification מלא · Phase 7 TTS-4-voices · Phase 8 Credits · Phase 9 Polish · Phase 10 Factory
-- ⏸️ כיווץ היסטוריית-git מהווידאו (drastic) · איחוד עמוק של 4 קבצי-content
+- ⬜ landing-page לקורס "ממונה בטיחות"
+- ⬜ checkout + payment (ADR-008) + Phase 8 credits
+- ⬜ ads/marketing assets
+- ⬜ אינטגרציית-מגן (ADR-009 Phase B): personas (מגן/שגיא) + committee_bank (31 שאלות), אם רלוונטי

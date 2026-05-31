@@ -9,8 +9,7 @@
 | **Supabase**                  | project ref `nsinpdzkvvbsdthkobxu` · `studibuilder.supabase.co` · org Moti316 (Free) · region eu-central-1 | ✅ URL/anon/service_role/DATABASE_URL מוגדרים | `.env.local` + Vercel                    |
 | **Google Drive**              | GCP project `studibuilder-drive` · OAuth client "StudiBuilder Drive Import" (Desktop)                      | ✅ client_id/secret/refresh_token עובדים      | `.env.local` (+ להוסיף refresh ל-Vercel) |
 | **Google login**              | OAuth (Phase 1, login-only scope)                                                                          | ✅ פרודקשן                                    | Supabase Auth                            |
-| **Anthropic**                 | Claude Sonnet 4.6 + Haiku 4.5                                                                              | ❌ `ANTHROPIC_API_KEY` טרם הופק               | נדרש ל-import scope-tagging              |
-| **Voyage AI**                 | `voyage-3` embeddings                                                                                      | ❌ `VOYAGE_API_KEY` טרם הופק                  | נדרש ל-RAG                               |
+| **Google Gemini**             | 2.5 Pro (gen) + 2.5 Flash (classify) + `gemini-embedding-001`                                             | ⬜ `GEMINI_API_KEY` (כנראה כבר ברשות מוטי — מגן) | ה-AI היחיד: יצירה+סיווג+RAG (ADR-001 amend) |
 | **ElevenLabs**                | 4 קולות (Yoav/Tali/Michal/Ori)                                                                             | ❌ טרם (Phase 7)                              | —                                        |
 | **Inngest / Resend / Sentry** | async / mail / observability                                                                               | ❌ טרם                                        | —                                        |
 | **Vercel**                    | project `studibuilder` · `studibuilder.vercel.app` · **Deployment-Protection פעיל**                        | ✅ פרודקשן                                    | —                                        |
@@ -31,4 +30,4 @@
 ## TODO גישות
 
 - להוסיף `GOOGLE_REFRESH_TOKEN` ל-Vercel.
-- להפיק `ANTHROPIC_API_KEY` + `VOYAGE_API_KEY` לפני בניית ה-import pipeline.
+- לוודא `GEMINI_API_KEY` (מ-Google AI Studio) ב-`.env.local` + Vercel — מפתח אחד ל-AI כולו.

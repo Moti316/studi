@@ -7,8 +7,9 @@
 
 ## הפרויקט בקצרה
 
-StudiBuilder = פלטפורמת AI לבניית קורסי-לימוד בעברית מתוך מסמכים.
-דומיין: edtech · קהל: motilev8 (internal) · stack: TS · stage: greenfield.
+StudiBuilder = **פלטפורמת-ייצור-קורסים** בעברית מתוך מסמכים, נבנית **end-to-end** (בלי דחיות).
+creator-gated: רק מוטי מייצר קורסים. תוצר-ראשון: קורס "ממונה בטיחות" — ללימוד-אישי לוועדה **וגם** כמוצר לשיווק.
+דומיין: edtech · קהל: motilev8 (creator) + לומדים (מוצר) · stack: TS. ראה `docs/context/EXECUTION-PLAN.md`.
 
 ## עקרונות-יסוד (לעולם אל תוותר)
 
@@ -16,7 +17,7 @@ StudiBuilder = פלטפורמת AI לבניית קורסי-לימוד בעברי
 - **עברית RTL כאזרח-ראשון** - לא תיקון בדיעבד
 - **TDD-first** - בדיקה כושלת לפני הקוד, אחרי הקוד פוגעת באמינות
 - **secrets ב-.env.local בלבד** - לעולם לא ב-commit
-- **AI-call תמיד עם prompt-cache** - חוסך 90% עלות. ראה `src/lib/ai/`
+- **AI-call תמיד עם context-cache** (Gemini context caching) - חוסך עלות. ראה `src/lib/ai/`
 - **שגיאות הן מצב מתוכנן** - כל פעולת-משתמש עוטפת ב-try/catch + telemetry
 
 ## stack שנבחר (אסור לסטות בלי ADR)
@@ -24,7 +25,7 @@ StudiBuilder = פלטפורמת AI לבניית קורסי-לימוד בעברי
 - Next.js 15 (App Router, RSC) + TypeScript strict
 - Supabase: Postgres + pgvector + Auth + Storage + Realtime
 - Inngest: pipelines אסינכרוניים (5-stage course-build)
-- Claude API: Sonnet 4.6 (gen) + Haiku 4.5 (classification)
+- Google Gemini: 2.5 Pro (gen) + 2.5 Flash (classification) + Gemini embeddings (RAG). מפתח אחד `GEMINI_API_KEY`
 - ElevenLabs: TTS עברית (4 voices, cached)
 - shadcn/ui + Tailwind + tailwindcss-rtl
 - Vitest (unit) + Playwright (e2e)

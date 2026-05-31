@@ -8,6 +8,8 @@
 
 ---
 
+> **⚠️ עדכון 2026-05-31 — ספק-AI:** הצינור עובר ל-**Google Gemini** (ADR-001 Amendment): scope-tagging ב-**Gemini 2.5 Flash** (במקום Claude Haiku), embeddings ב-**`gemini-embedding-001`** (במקום voyage-3), SDK = **`@google/genai`** (במקום `@anthropic-ai/sdk`). דוגמאות-הקוד למטה ממחישות את ה**זרימה** — שמות-המודלים/SDK/קריאות-ה-embed יוחלפו ל-Gemini במימוש, וממד-הוקטור ב-pgvector (`vector(N)`) יתאים למודל-Gemini הנבחר. תקציבי-העלות יחושבו מחדש לפי תמחור-Gemini (זול יותר, כולל tier חינמי).
+
 ## Context
 
 מ-ADR-009 הוחלט: **Google Drive = source-of-truth** לכל תוכן-לימוד של מוטי. סריקת-Drive (2026-05-30) זיהתה ~130 קבצים ב-2 תיקיות-שורש, ~6 GB סה"כ, מסווגים ל-4 tiers:

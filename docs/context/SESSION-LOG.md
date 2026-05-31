@@ -5,6 +5,27 @@
 
 ---
 
+## 2026-05-31 (ערב) — מעבר-מחשב + עדכון-אסטרטגיה end-to-end ✅
+
+### מה נעשה
+
+- **מחשב חדש** (`b0066820`): חיבור-repo אומת, זהות-git מקומית הוגדרה, `.env.local` הוקם (Supabase+Drive אמיתיים; Anthropic+Voyage placeholders). git-bash blocker **לא קיים כאן** (husky לא מוגדר; commit/push עובדים).
+- **עדכון-אסטרטגיה end-to-end** במסמכי-ההקשר: StudiBuilder = **פלטפורמת-ייצור מלאה** (creator=מוטי) + **קורס-הוועדה** (לימוד+שיווק). בוטלה מסגרת ה-carve-out/הקפאת-phases. עודכנו: PROJECT-MAP, PROJECTS, STATUS, EXECUTION-PLAN, TASKS, DECISIONS.
+- **החלטות:** וידאו **נשאר** ב-repo · chachmoni **הוסר** (לא קשור) · Google Drive = source-of-truth (לא ריפו-מגן).
+- **ספק-AI שונה ל-Google Gemini** (יצירה+סיווג+embeddings) במקום Anthropic+Voyage — מפתח אחד `GEMINI_API_KEY`. עודכנו ADR-001, ADR-011, CLAUDE.md, src/lib/ai, .env, ACCESS-MAP.
+
+### מצב
+
+`node_modules` לא מותקן · import pipeline (`src/lib/import/*`) חסר · 2 מפתחות-API טרם הופקו · 4 ענפים מיותרים עדיין קיימים.
+
+### הצעד הבא
+
+1. `pnpm install` → `pnpm drive:test` (אימות Drive + מיפוי `mainCourse`+`legacy`).
+2. להגדיר `GEMINI_API_KEY` → לבנות import pipeline (ADR-011, Gemini) → Quiz Engine (Phase 5).
+3. המשך end-to-end: Upload UI (Phase 3) → persistence (Phase 2) → Course-as-Product (Phase 10).
+
+---
+
 ## 2026-05-31 — הקמת ארכיטקטורת-הקשר + פתרון חוסם-git ✅
 
 ### מה נעשה (committed + pushed ל-main `66eb19d`)

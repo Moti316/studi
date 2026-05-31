@@ -2,6 +2,7 @@
 
 > **מקור-האמת ל"איפה אנחנו".** טבלאות ה-Phases ב-CLAUDE.md/README.md/MEMORY.md מפנות לכאן.
 > מעודכן: 2026-05-31.
+> **מסגרת:** build end-to-end — פלטפורמת-ייצור (creator=מוטי) + קורס-הוועדה (לימוד+שיווק). אין דחיות. ראה [EXECUTION-PLAN.md](EXECUTION-PLAN.md).
 
 ## סטטוס Phases (מאומת מול הקוד)
 
@@ -21,18 +22,20 @@
 - ✅ Google Drive — auth (loopback) + `test-drive` עוברים.
 - ✅ DB connection — `test-db` עובר (DATABASE_URL תקין).
 - ✅ אפליקציה רצה מקומית: `localhost:3000` (`/poc/matching` עובד).
-- ✅ git: main = `ec77020` (מכיל 100% מהתוכן).
+- ✅ git: main = `415e149`. מחובר ב-2 מחשבים; במחשב הנוכחי `.env.local` הוקם ו-commit/push עובדים.
 
 ## 🔴 חוסמים פעילים
 
-- **git-bash שבור** (`fork: Resource temporarily unavailable`, 0xC0000142) → **כל commit/push מקומי חסום** כי husky מריץ hooks דרך git-bash. ראה `BUGS.md#git-bash-fork`. → git-writes נעשים דרך GitHub web עד שזה ייפתר.
-- `ANTHROPIC_API_KEY` + `VOYAGE_API_KEY` טרם הופקו → ה-import pipeline לא ניתן-להרצה.
+- `GEMINI_API_KEY` טרם הוגדר → ה-import pipeline + ה-AI לא ניתנים-להרצה (שדה ריק ב-`.env.local`; כנראה כבר ברשות מוטי דרך מגן).
+- `node_modules` לא מותקן במחשב הנוכחי → `pnpm install` לפני הרצת scripts/dev/Drive.
+- ℹ️ git-bash blocker **לא קיים במחשב הנוכחי** (husky לא מוגדר; commit/push עובדים). היה רלוונטי רק למחשב הקודם — ראה `BUGS.md#git-bash-fork`.
 
 ## הצעד הבא (priority)
 
-1. **להחליט על מנגנון-commit** (לאור git-bash השבור): לתקן git-bash / לאשר `--no-verify` + בדיקות-ידניות / לעבוד דרך GitHub. ראה `SESSION-LOG.md`.
-2. ניקוי git שאושר: מחיקת 4 ענפים, הוצאת וידאו (ממתין למנגנון-commit/push).
-3. בניית ה-import pipeline (אחרי מפתחות Anthropic+Voyage). ראה `EXECUTION-PLAN.md`.
+1. `pnpm install` → `pnpm drive:test` (אימות חיבור-Drive + מיפוי 2 התיקיות `mainCourse`+`legacy`).
+2. להגדיר `GEMINI_API_KEY` → לבנות import pipeline (ADR-011, Gemini) → Quiz Engine (Phase 5).
+3. ניקוי git: מחיקת 4 ענפים. (**וידאו נשאר ב-repo** — החלטת מוטי.)
+4. המשך end-to-end: Upload UI (Phase 3) → persistence (Phase 2) → Course-as-Product (Phase 10). ראה `EXECUTION-PLAN.md`.
 
 ## מה לא קיים אך התיעוד מרמז שכן
 

@@ -1,9 +1,19 @@
-# ADR-001: בחירת Stack — Next.js 15 + Supabase + Claude
+# ADR-001: בחירת Stack — Next.js 15 + Supabase + Gemini
 
-> **Status**: Accepted
+> **Status**: Accepted · **תיקון 2026-05-31**: ספק-LLM שונה ל-Google Gemini (ראה Amendment למטה)
 > **Date**: 2026-05-29
 > **Authors**: tech-lead · motilev8
 > **Phase**: 0
+
+---
+
+## Amendment (2026-05-31) — ספק-AI: Anthropic+Voyage → Google Gemini
+
+מוטי הכריע להשתמש ב-**Google Gemini** ליצירה+סיווג וב-**Gemini embeddings** ל-RAG, במקום
+Anthropic Claude + Voyage. נימוק: מוטי כבר עובד עם Gemini (מגן רץ על Gemini 2.5 Flash), יש tier
+חינמי, ומדובר ב-**מפתח אחד** (`GEMINI_API_KEY`) במקום שניים בתשלום. context-caching קיים גם ב-Gemini.
+TTS נשאר ElevenLabs (אין Gemini-TTS), ו-NotebookLM **לא** משמש כ-engine — לכן ה-"TTS+Notebook
+lock-in" שנשקל למטה אינו רלוונטי. שורות LLM+Embeddings בטבלה עודכנו בהתאם.
 
 ---
 
@@ -35,8 +45,8 @@
 | Realtime      | **Supabase Realtime**                         | progress push, balance updates                 |
 | ORM           | **Drizzle**                                   | type-safe, lightweight, SQL-first              |
 | Async jobs    | **Inngest**                                   | חוצה Vercel timeout, observability מובנה       |
-| LLM           | **Anthropic Claude (Sonnet 4.6 + Haiku 4.5)** | איכות עברית, prompt caching                    |
-| Embeddings    | **Voyage AI (voyage-3)**                      | זול, איכותי, multilingual                      |
+| LLM           | **Google Gemini (2.5 Pro gen + 2.5 Flash classify)** | עברית מצוינת, context-caching, מפתח-אחד (כבר ברשות מוטי) |
+| Embeddings    | **Gemini embeddings (`gemini-embedding-001`)**       | multilingual; ממד-וקטור תואם ב-pgvector (ADR-010/011)    |
 | TTS           | **ElevenLabs**                                | 4 קולות עברית עם איכות גבוהה                   |
 | Tests         | **Vitest + Playwright**                       | מהיר, native ESM                               |
 | Hosting       | **Vercel**                                    | edge functions, preview deploys                |
@@ -58,8 +68,8 @@
 
 ### LLM alternatives
 
-- **OpenAI GPT**: עברית טובה, אבל אין prompt caching בקנה-מידה
-- **Google Gemini**: עברית מצוינת אבל TTS+Notebook lock-in
+- **Anthropic Claude (Sonnet/Haiku)**: איכות-עברית גבוהה + prompt-caching — היה ה-choice המקורי, הוחלף ב-Gemini (ראה Amendment) כדי לאחד על Google ולחסוך מפתח/עלות
+- **OpenAI GPT**: עברית טובה, אבל ספק/מפתח נוסף
 - **Local LLM**: לא אפשרי לאיכות בעברית במכשירי-לקצה
 
 ### TTS alternatives
@@ -103,5 +113,5 @@
 
 - [Next.js 15 docs](https://nextjs.org/docs)
 - [Supabase + pgvector guide](https://supabase.com/docs/guides/ai)
-- [Anthropic prompt caching](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching)
+- [Gemini API](https://ai.google.dev/gemini-api/docs) · [Gemini context caching](https://ai.google.dev/gemini-api/docs/caching) · [Gemini embeddings](https://ai.google.dev/gemini-api/docs/embeddings)
 - [Inngest patterns](https://www.inngest.com/docs/learn)
