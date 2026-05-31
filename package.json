@@ -21,6 +21,8 @@
     "db:studio": "drizzle-kit studio",
     "drive:auth": "tsx scripts/auth-drive.ts",
     "drive:test": "tsx scripts/test-drive.ts",
+    "import:t1": "tsx scripts/import-content.ts t1 --execute",
+    "import:t1:dry": "tsx scripts/import-content.ts t1 --dry-run",
     "prepare": "husky"
   },
   "dependencies": {

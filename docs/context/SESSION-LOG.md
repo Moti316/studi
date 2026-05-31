@@ -5,6 +5,34 @@
 
 ---
 
+## 2026-06-01 (לילה) — Agent-OS + בניית-v1 (Phase 0 + M1 + M2) — על ענף `claude/v1` 🚧
+
+### מה נעשה (כל העבודה על ענף `claude/v1`, נדחף אחרי כל milestone)
+
+- **`.env.local`** עודכן עם מפתחות-Gemini (generation/classification/embedding) + service-role + DATABASE_URL. גיבוי-מקומי (tag+bundle) ל-`docs-business-pivot-adrs` לפני ניקוי remote-refs ישנים.
+- **Agent-OS (Phase 0):** היררכיית **27 סוכנים** (22 + 4 ראשי-צוות + מתווך "אמיר") תחת `teams/` — לכל סוכן identity+memory+activity-log · `ORG.md`+`PROJECT-CONTEXT.md` · פרוטוקול-7-שלבים · מחזור-חיים. commit `5545ff3`.
+- **M1:** `.gitignore`(.cache/logs) · creator-gate (`src/lib/auth/creator.ts`) · migration **0002** (questions.source_ref + unique index) · `scope-refs.ts`(57) · ניקוי Claude/Voyage→Gemini בתיעוד. commit `32384ce`.
+- **deps:** `@google/genai` נכנס, `@anthropic-ai/sdk` הוסר. + `docs/compliance/COMPLIANCE.md` + `docs/IDEAS.md` + נהלי-עבודה ב-CLAUDE.md. commit `46b2cb5`.
+- **M2 (צינור-ייבוא):** `src/lib/ai/client.ts` (Gemini) · `scope-tagger.ts` · `map-question.ts` · `upsert-questions.ts` · `scripts/import-content.ts` + `.config.ts` · `import:t1`/`import:t1:dry`. typecheck נקי · 299 בדיקות. commit (זה).
+
+### מצב
+
+על ענף **`claude/v1`** (main לא נגעה — **מיזוג ממתין לאישור מוטי**). typecheck+test ירוקים. צינור-הייבוא **כתוב אך טרם הורץ**.
+
+### הצעד הבא
+
+- **M3:** UI-תיוג creator-gated (`/admin/questions` + `QuestionTagger`) — עיצוב StudiesGo, מראה הצעת-Gemini.
+- **M4:** נגן-שיעור (`MCQLong`/`MCQShort` + `LessonPlayer` + `LessonHeader` + route `/lesson/[id]`).
+- **M5:** `pnpm db:push` (מחיל 0002 — **לוודא שה-unique index על `source_ref` קיים ב-0002 לפני**) → `pnpm import:t1` (≈540 שאלות + תיוג-Gemini) → אינטגרציה.
+- **M6:** code-review + security-review → דחיפה → **מיזוג main + מחיקת-ענף באישור מוטי בלבד**.
+- דגלים: T1 File-IDs חלקיים ב-CONTENT-INDEX §7 (discover בזמן-ריצה משלים) · אין `server-only` מותקן (guard ידני).
+
+### תזכורת (resume)
+
+`git checkout claude/v1`. נהלים: דחיפה אחרי כל משימה · מיזוג-main באישור-מוטי · כל .md חדש → memory+CLAUDE+PROJECT-MAP. תוכנית מלאה: `~/.claude/plans/snuggly-tumbling-kurzweil.md` + קבצי-זיכרון.
+
+---
+
 ## 2026-05-31 (ערב) — מעבר-מחשב + end-to-end + סביבה + Drive + ניקוי-ענפים ✅
 
 ### מה נעשה

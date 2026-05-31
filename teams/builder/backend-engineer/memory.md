@@ -47,4 +47,19 @@ DB, AI ו-UI עוברת דרך שכבת-השרת שלו — לכן הוא נקו
 
 ## לקחים מצטברים
 
-(ריק — יתעדכן עם הזמן; המשכיות בין-סשנים)
+- **schema.ts ↔ migration-SQL עלולים להיות לא-מסונכרנים.** האינדקס-הייחודי
+  `idx_questions_source_ref` קיים ב-`drizzle/schema.ts` אך חסר ב-`0001_initial_schema.sql`.
+  כותבים מול schema.ts (הסכמה-שבפועל ל-queries), אך onConflict דורש שהאינדקס יקיים
+  ב-DB בזמן-ריצה → סימון follow-up ל-data-engineer לפני db:push. תמיד להצליב את שני המקורות.
+- **vitest + vi.mock hoisting:** `vi.mock(factory)` עולה לראש-הקובץ; משתני-mock
+  שה-factory מפנה אליהם חייבים `vi.hoisted(() => {...})`, אחרת "Cannot access before initialization".
+- **dry-run ללא DATABASE_URL:** מודול `@/lib/db` זורק ב-import אם אין DATABASE_URL.
+  בסקריפט עם מצב-dry-run — לייבא דינמית (`await import`) את מודול-ה-DB רק במצב execute,
+  ולהשתמש ב-`import type` בלבד ל-types (נמחק בקומפילציה, לא טוען את המודול).
+- **eslint בפרויקט אוסר inline `import()` type-annotations** (consistent-type-imports);
+  להשתמש ב-`import type { X } from '...'` ברמת-המודול. tsconfig לא מפעיל noUnusedLocals,
+  אז import לא-בשימוש עובר typecheck אך נכשל ב-lint — לבדוק eslint על קוד-סקריפטים חדש.
+- **parsers מקבלים filePath ועושים readFileSync בעצמם.** האורקסטרטור שומר ל-cache
+  ואז מעביר את נתיב-ה-cache ל-parsePdfMcq/parseDocxQA (לא Buffer).
+- **חוזה tagScope-שבפועל:** `tagScope(text, filename?)` — לא טקסט-בלבד. ה-filename
+  נושא אות-scope חזק; להעביר אותו.
