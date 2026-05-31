@@ -82,3 +82,47 @@
   (snake_case) להתאמה לבדיקה; (b) mock-ה-DB הועבר ל-`vi.hoisted` (hoisting של
   `vi.mock`); (c) הוסר import לא-בשימוש (`readFileSync`) + הוחלפו inline-`import()`
   type-annotations בייבוא-type ברמת-המודול (eslint). אין באגים פתוחים.
+
+## [2026-06-01 00:43] שכבת-שרת ל-UI-תיוג — Server Actions (list + update)
+
+- **Outcome:** נבנו שני Server Actions ל-`/admin/questions` (מסך-תיוג creator-only):
+  `listQuestionsForTagging` (תור-תיוג, untagged-first) + `updateQuestionTags`
+  (פאטץ' חלקי על scope_refs/in_scope/status). שניהם creator-gated server-side.
+  typecheck נקי, 314/314 בדיקות עוברות (15 חדשות), eslint+prettier נקיים. PASS.
+- **What changed:**
+  - `src/app/admin/questions/actions.ts` — `'use server'`. (1) `listQuestionsForTagging({limit?,untaggedFirst?})`
+    דרך Drizzle `db.select().from(questions)`; ברירת-מחדל untaggedFirst → מיון
+    `asc(CASE WHEN status='לא ידוע' OR jsonb_array_length(scope_refs)=0 THEN 0 ELSE 1)` +
+    tiebreak `desc(createdAt)`; limit מוצמד ל-[1,500] (default 100). (2)
+    `updateQuestionTags(id, patch)` — פאטץ'-חלקי: כותב רק שדות שסופקו (scopeRefs
+    jsonb / inScope / status), `db.update().set().where(eq(id))`, ואז
+    `revalidatePath('/admin/questions')`. ולידציה server-side ("parse, don't validate"):
+    scope_refs מסונן דרך `isValidScopeId` + clamp confidence ל-[0,1] (מזהה-לא-ידוע
+    נזרק), status חייב להיות אחד מ-3 ערכי-enum, in_scope `=== true` (קוircizיה
+    מחמירה), id לא-ריק, ופאטץ'-ריק נדחה (אין SET-כלום). **כל action קורא
+    `requireCreator(TAGGING_PATH)` בתחילתו.**
+  - `tests/unit/admin/questions-actions.test.ts` — 15 בדיקות. db (select/update
+    chains) + `@/lib/auth/creator` + `next/cache` ממוקים דרך `vi.hoisted`
+    (דפוס upsert-questions + creator). מכסות: list ממיין untagged-first (2 order-args)
+    מול created-at-only (1), clamp-limit, החזרת-rows; update כותב jsonb נכון +
+    revalidate, פאטץ'-חלקי, סינון-מזהה-לא-ידוע+clamp, קוירציית in_scope; non-creator
+    נדחה לפני כל write בשני ה-actions; guards: פאטץ'-ריק / id-ריק / status-לא-תקין.
+- **Verification:** `pnpm typecheck`→exit 0. `vitest run` על הקובץ → 15/15.
+  `pnpm test` (כל-הסוויטה) → 38 קבצים/314 בדיקות ירוק (15 חדשות, אפס רגרסיה).
+  `eslint`+`prettier --check` על שני הקבצים → נקי. **לא הורץ** db:push/commit/push.
+- **Follow-ups:**
+  - `/admin/questions/page.tsx` + קומפוננטות-התיוג טרם קיימים → `frontend-engineer`
+    (ה-actions מוכנים לחיווט; page צריך גם `requireCreator` בראשו — defense-in-depth).
+  - חוזר על follow-up קיים: `idx_questions_source_ref` חסר ב-`0001_initial_schema.sql`
+    (לא חוסם את ה-actions האלה — לא נסמכים על onConflict; רלוונטי רק לצינור-הייבוא).
+  - אם נדרש pagination אמיתי — להוסיף offset/cursor (כרגע limit-only עם מיון יציב).
+- **Verdict:** PASS.
+- **Self-check:** בהקשר — creator-gated (requireCreator בראש כל action, אפס-הסתמכות-UI),
+  server-side enforcement, קוד מול הסכמה-שבפועל (schema.ts: questions, scopeRefs jsonb,
+  status content_status-enum, ScopeStatus מ-scope-tagger, isValidScopeId מ-scope-refs),
+  אפס-secrets, אפס-תלות-NotebookLM/Gemini בנתיב הזה. red-lines נשמרו (endpoint משנה-מצב
+  עם authz, ולידציה server-side, אין SET-כלום, אין הודעות-שגיאה חושפות-מבנה ללקוח —
+  השגיאות הן guards-פנימיים). לא הורץ commit/push/db:push.
+- **Bugs/Fixes:** במהלך-הפיתוח: בדיקת in_scope תוקנה — הקוירציה `=== true` הופכת
+  truthy לא-בוליאני (`1`) ל-`false` (התנהגות-הגנתית מכוונת); הבדיקה עודכנה לאמת
+  `false` במקום `true`. אין באגים פתוחים.
