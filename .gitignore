@@ -59,5 +59,8 @@ storybook-static/
 /tmp/
 *.local
 
+# Personal working tracker (live todo, not committed)
+/Todolist.md
+
 # Drizzle
 drizzle/meta/

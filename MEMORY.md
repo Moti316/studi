@@ -2,6 +2,8 @@
 
 <!-- תקרת-גודל: ~2,200 תווים. consolidation כשמתמלא. -->
 
+> 📍 **הקשר מלא ועדכני: [`docs/context/PROJECT-MAP.md`](docs/context/PROJECT-MAP.md)** (9 קבצי מקור-אמת).
+
 ## עובדות-פרויקט
 
 - **שם**: StudiBuilder
@@ -42,9 +44,11 @@
 
 ## Build phases (סטטוס)
 
-- [✅] Phase 0: workspace + planning הושלמו. 21 סוכנים + תיעוד
-- [⏳] **Phase 0 actual code**: Next.js scaffold + CI + Vercel deploy (הצעד הבא)
-- [ ] Phase 1-9: ראה `docs/build-roadmap.md`
+> **מקור-אמת חי: [`docs/context/STATUS.md`](docs/context/STATUS.md).** (סעיף זה היה מיושן — תוקן 2026-05-31.)
+
+- [✅] Phase 0 Foundation · [✅] Phase 1 Auth (בפרודקשן, ~78% טסטים)
+- [🟡] Phase 2 Dashboard (UI+mock) · [❌] Phase 3-5 כמעט-לא-קיימים (import pipeline טרם נכתב; Quiz 1/5 types)
+- תוכנית מלאה: [`docs/context/EXECUTION-PLAN.md`](docs/context/EXECUTION-PLAN.md)
 
 ## פערים פתוחים שדורשים החלטה
 

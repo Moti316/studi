@@ -1,0 +1,4 @@
+# Keep shell scripts & husky hooks as LF so git hooks run on Windows
+# (repo also sets core.autocrlf=false locally). Prevents the CRLF-breaks-husky bug.
+*.sh        text eol=lf
+.husky/**   text eol=lf

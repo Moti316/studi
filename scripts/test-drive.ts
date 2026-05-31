@@ -13,7 +13,8 @@
  *   2. The refresh-token was authorized for `drive.readonly` scope
  */
 
-import 'dotenv/config';
+import { config } from 'dotenv';
+config({ path: '.env.local' }); // secrets live in .env.local (see README)
 import { DRIVE_ROOT_FOLDERS, getMetadata, listFolder } from '../src/lib/drive/client';
 
 const SAMPLE_FILE_ID = '1BA9XpSDVNx-MVbiyQZCndeyMVROTZ0aG'; // "מאגר שאלות הכנה 2025"
