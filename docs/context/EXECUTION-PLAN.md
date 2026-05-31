@@ -21,18 +21,18 @@ StudiBuilder נבנה **מקצה-לקצה** כפלטפורמת-ייצור-קור
 
 ## ה-Roadmap המלא (10 phases) — הכל in-scope
 
-| Phase | תיאור                     | סטטוס        | הערה                                          |
-| ----- | ------------------------- | ------------ | --------------------------------------------- |
-| 0     | Foundation                | ✅           | —                                             |
-| 1     | Auth & Profile            | ✅           | בפרודקשן                                      |
-| 2     | Dashboard                 | 🟡 חלקי      | UI+mock → להוסיף persistence                  |
-| 3     | Upload UI (creator)       | ⬜ בתוכנית    | כלי-היצירה של מוטי (creator-gated)            |
-| 4     | Course Pipeline           | 🎯 בבנייה    | parsers ✅; **import pipeline חסר**           |
-| 5     | Quiz Engine (5 types)     | 🎯 1/5       | MatchingPairs ✅; **לב חוויית-הלימוד**        |
-| 6     | Gamification              | ⬜ בתוכנית    | XP/streak/practice-log                        |
-| 7     | TTS (קולות עברית)         | ⬜ בתוכנית    | —                                             |
-| 8     | Credits                   | ⬜ בתוכנית    | למוצר המסחרי                                  |
-| 9     | Polish & Launch           | ⬜ בתוכנית    | —                                             |
+| Phase | תיאור                     | סטטוס         | הערה                                         |
+| ----- | ------------------------- | ------------- | -------------------------------------------- |
+| 0     | Foundation                | ✅            | —                                            |
+| 1     | Auth & Profile            | ✅            | בפרודקשן                                     |
+| 2     | Dashboard                 | 🟡 חלקי       | UI+mock → להוסיף persistence                 |
+| 3     | Upload UI (creator)       | ⬜ בתוכנית    | כלי-היצירה של מוטי (creator-gated)           |
+| 4     | Course Pipeline           | 🎯 בבנייה     | parsers ✅; **import pipeline חסר**          |
+| 5     | Quiz Engine (5 types)     | 🎯 1/5        | MatchingPairs ✅; **לב חוויית-הלימוד**       |
+| 6     | Gamification              | ⬜ בתוכנית    | XP/streak/practice-log                       |
+| 7     | TTS (קולות עברית)         | ⬜ בתוכנית    | —                                            |
+| 8     | Credits                   | ⬜ בתוכנית    | למוצר המסחרי                                 |
+| 9     | Polish & Launch           | ⬜ בתוכנית    | —                                            |
 | 10    | Course-as-Product Factory | ⬜ בתוכנית 🎯 | **מטרה מפורשת** — landing+checkout+ads לקורס |
 
 🎯 = מוקד מיידי לקורס-הוועדה. שאר ה-phases נבנים end-to-end לפי סדר-התלויות — **לא נדחים**.

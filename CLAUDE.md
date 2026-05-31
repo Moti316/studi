@@ -5,6 +5,19 @@
 לפני כל פעולה: קרא `AGENTS.md` (קנוני), `USER.md` (העדפות motilev8),
 ואת `teams/<tier>/<slug>/identity.md` של הסוכן הרלוונטי.
 
+## מסמכי-תיעוד — רישום-חובה
+
+> **כלל קבוע (לעתיד):** כל קובץ `.md` חדש שנוצר בפרויקט **חייב להירשם כאן** וב-`docs/context/PROJECT-MAP.md`. אין מסמכים "יתומים".
+
+**קריאה-חובה בתחילת כל סשן (קרא במלואם, לא לדלג):**
+
+- **בסיס:** `CLAUDE.md` · `AGENTS.md` · `USER.md`
+- **הקשר-חי** (`docs/context/`): `PROJECT-MAP.md` · `PROJECTS.md` · `STATUS.md` · `EXECUTION-PLAN.md` · `TASKS.md` · `BUGS.md` · `DECISIONS.md` · `ACCESS-MAP.md` · `SESSION-LOG.md`
+- **תוכן/scope:** `docs/content-scope.md` · `docs/CONTENT-INDEX.md`
+- **ארכיטקטורה** (לפי-צורך): `docs/architecture/ADR-001..011`
+
+הרשימה המסודרת המלאה: `docs/context/PROJECT-MAP.md`.
+
 ## הפרויקט בקצרה
 
 StudiBuilder = **פלטפורמת-ייצור-קורסים** בעברית מתוך מסמכים, נבנית **end-to-end** (בלי דחיות).

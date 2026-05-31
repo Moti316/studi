@@ -34,23 +34,23 @@ lock-in" שנשקל למטה אינו רלוונטי. שורות LLM+Embeddings 
 
 **Stack מאוחד מבוסס TypeScript:**
 
-| שכבה          | בחירה                                         | למה                                            |
-| ------------- | --------------------------------------------- | ---------------------------------------------- |
-| Framework     | **Next.js 15 App Router + RSC**               | full-stack מאוחד, אקוסיסטם בוגר, Vercel native |
-| Language      | **TypeScript strict**                         | type safety לפרויקט שיגדל                      |
-| Styling       | **Tailwind + tailwindcss-rtl + shadcn/ui**    | RTL מובנה, components מותאמים                  |
-| Auth          | **Supabase Auth (Google OAuth + Magic Link)** | מנוהל, חינמי בהתחלה                            |
-| DB            | **Supabase Postgres + pgvector**              | מנוהל, vector search מובנה                     |
-| Storage       | **Supabase Storage**                          | קבצי-מקור של משתמשים, audio cache              |
-| Realtime      | **Supabase Realtime**                         | progress push, balance updates                 |
-| ORM           | **Drizzle**                                   | type-safe, lightweight, SQL-first              |
-| Async jobs    | **Inngest**                                   | חוצה Vercel timeout, observability מובנה       |
+| שכבה          | בחירה                                                | למה                                                      |
+| ------------- | ---------------------------------------------------- | -------------------------------------------------------- |
+| Framework     | **Next.js 15 App Router + RSC**                      | full-stack מאוחד, אקוסיסטם בוגר, Vercel native           |
+| Language      | **TypeScript strict**                                | type safety לפרויקט שיגדל                                |
+| Styling       | **Tailwind + tailwindcss-rtl + shadcn/ui**           | RTL מובנה, components מותאמים                            |
+| Auth          | **Supabase Auth (Google OAuth + Magic Link)**        | מנוהל, חינמי בהתחלה                                      |
+| DB            | **Supabase Postgres + pgvector**                     | מנוהל, vector search מובנה                               |
+| Storage       | **Supabase Storage**                                 | קבצי-מקור של משתמשים, audio cache                        |
+| Realtime      | **Supabase Realtime**                                | progress push, balance updates                           |
+| ORM           | **Drizzle**                                          | type-safe, lightweight, SQL-first                        |
+| Async jobs    | **Inngest**                                          | חוצה Vercel timeout, observability מובנה                 |
 | LLM           | **Google Gemini (2.5 Pro gen + 2.5 Flash classify)** | עברית מצוינת, context-caching, מפתח-אחד (כבר ברשות מוטי) |
 | Embeddings    | **Gemini embeddings (`gemini-embedding-001`)**       | multilingual; ממד-וקטור תואם ב-pgvector (ADR-010/011)    |
-| TTS           | **ElevenLabs**                                | 4 קולות עברית עם איכות גבוהה                   |
-| Tests         | **Vitest + Playwright**                       | מהיר, native ESM                               |
-| Hosting       | **Vercel**                                    | edge functions, preview deploys                |
-| Observability | **Sentry**                                    | error tracking, performance                    |
+| TTS           | **ElevenLabs**                                       | 4 קולות עברית עם איכות גבוהה                             |
+| Tests         | **Vitest + Playwright**                              | מהיר, native ESM                                         |
+| Hosting       | **Vercel**                                           | edge functions, preview deploys                          |
+| Observability | **Sentry**                                           | error tracking, performance                              |
 
 ---
 

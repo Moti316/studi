@@ -4,16 +4,16 @@
 
 ## שירותים חיצוניים
 
-| שירות                         | זיהוי / חשבון                                                                                              | סטטוס מפתחות                                  | איפה                                     |
-| ----------------------------- | ---------------------------------------------------------------------------------------------------------- | --------------------------------------------- | ---------------------------------------- |
-| **Supabase**                  | project ref `nsinpdzkvvbsdthkobxu` · `studibuilder.supabase.co` · org Moti316 (Free) · region eu-central-1 | ✅ URL/anon/service_role/DATABASE_URL מוגדרים | `.env.local` + Vercel                    |
-| **Google Drive**              | GCP project `studibuilder-drive` · OAuth client "StudiBuilder Drive Import" (Desktop)                      | ✅ client_id/secret/refresh_token עובדים      | `.env.local` (+ להוסיף refresh ל-Vercel) |
-| **Google login**              | OAuth (Phase 1, login-only scope)                                                                          | ✅ פרודקשן                                    | Supabase Auth                            |
-| **Google Gemini**             | 2.5 Pro (gen) + 2.5 Flash (classify) + `gemini-embedding-001`                                             | ⬜ `GEMINI_API_KEY` (כנראה כבר ברשות מוטי — מגן) | ה-AI היחיד: יצירה+סיווג+RAG (ADR-001 amend) |
-| **ElevenLabs**                | 4 קולות (Yoav/Tali/Michal/Ori)                                                                             | ❌ טרם (Phase 7)                              | —                                        |
-| **Inngest / Resend / Sentry** | async / mail / observability                                                                               | ❌ טרם                                        | —                                        |
-| **Vercel**                    | project `studibuilder` · `studibuilder.vercel.app` · **Deployment-Protection פעיל**                        | ✅ פרודקשן                                    | —                                        |
-| **NotebookLM**                | 36 מחברות (מאסטר `8692cad1`)                                                                               | ✅ דרך מגן/MCP                                | פרויקט מגן                               |
+| שירות                         | זיהוי / חשבון                                                                                              | סטטוס מפתחות                                     | איפה                                        |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------------- |
+| **Supabase**                  | project ref `nsinpdzkvvbsdthkobxu` · `studibuilder.supabase.co` · org Moti316 (Free) · region eu-central-1 | ✅ URL/anon/service_role/DATABASE_URL מוגדרים    | `.env.local` + Vercel                       |
+| **Google Drive**              | GCP project `studibuilder-drive` · OAuth client "StudiBuilder Drive Import" (Desktop)                      | ✅ client_id/secret/refresh_token עובדים         | `.env.local` (+ להוסיף refresh ל-Vercel)    |
+| **Google login**              | OAuth (Phase 1, login-only scope)                                                                          | ✅ פרודקשן                                       | Supabase Auth                               |
+| **Google Gemini**             | 2.5 Pro (gen) + 2.5 Flash (classify) + `gemini-embedding-001`                                              | ⬜ `GEMINI_API_KEY` (כנראה כבר ברשות מוטי — מגן) | ה-AI היחיד: יצירה+סיווג+RAG (ADR-001 amend) |
+| **ElevenLabs**                | 4 קולות (Yoav/Tali/Michal/Ori)                                                                             | ❌ טרם (Phase 7)                                 | —                                           |
+| **Inngest / Resend / Sentry** | async / mail / observability                                                                               | ❌ טרם                                           | —                                           |
+| **Vercel**                    | project `studibuilder` · `studibuilder.vercel.app` · **Deployment-Protection פעיל**                        | ✅ פרודקשן                                       | —                                           |
+| **NotebookLM**                | 36 מחברות (מאסטר `8692cad1`)                                                                               | ✅ דרך מגן/MCP                                   | פרויקט מגן                                  |
 
 ## תיקיות Drive (folder IDs)
 
