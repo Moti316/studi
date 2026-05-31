@@ -1,6 +1,6 @@
 # StudiBuilder — צוות-הסוכנים
 
-פרופיל: **Solo-Tool** · 21 סוכנים.
+פרופיל: **Solo-Tool** · 22 סוכנים.
 
 | Slug                     | תפקיד                           | Tier          | מודל     |
 | ------------------------ | ------------------------------- | ------------- | -------- |
@@ -8,6 +8,7 @@
 | `appsec`                 | Application Security Engineer   | `quality`     | `sonnet` |
 | `backend-engineer`       | Backend Engineer                | `builder`     | `sonnet` |
 | `cloud-specialist`       | Cloud / Self-Hosting Specialist | `builder`     | `sonnet` |
+| `content-verifier`       | Content Verifier (accuracy)     | `quality`     | `sonnet` |
 | `content-writer`         | UX Writer / Content Designer    | `builder`     | `sonnet` |
 | `data-engineer`          | Data Engineer                   | `builder`     | `sonnet` |
 | `design-system`          | Design System Engineer          | `builder`     | `sonnet` |

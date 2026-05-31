@@ -69,9 +69,8 @@
 
 ## 12. Project Focus
 
-**הפרויקט:** StudiBuilder — פלטפורמת AI שמחוללת קורסי-לימוד גיימיפיקטיביים בעברית מתוך מסמכי-מקור (PDF/Word/PPT) - בהשראת StudiesGo, לשימוש פנימי.
-דומיין: edtech · משתמשים: המפתח עצמו (motilev8). שימוש פנימי - הוא לומד וגם מנהל המערכת. ·
-שפה: he
+**הפרויקט:** StudiBuilder — פלטפורמת-ייצור-קורסים בעברית (RTL), נבנית **end-to-end**, creator-gated (רק מוטי מייצר). תוצר-ראשון: קורס "ממונה בטיחות" — ללימוד-אישי לוועדה (אבן-דרך 2026-07-15) **וגם** כמוצר לשיווק.
+דומיין: edtech · creator: motilev8 + לומדים (מוצר) · שפה: he
 
 **Skills:** `ci-cd`, `infrastructure-as-code`, `observability-basics`
 

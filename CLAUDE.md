@@ -15,6 +15,7 @@
 - **הקשר-חי** (`docs/context/`): `PROJECT-MAP.md` · `PROJECTS.md` · `STATUS.md` · `EXECUTION-PLAN.md` · `TASKS.md` · `BUGS.md` · `DECISIONS.md` · `ACCESS-MAP.md` · `SESSION-LOG.md`
 - **תוכן/scope:** `docs/content-scope.md` · `docs/CONTENT-INDEX.md`
 - **ארכיטקטורה** (לפי-צורך): `docs/architecture/ADR-001..011`
+- **סוכנים:** `teams/README.md` (רוסטר 22) · `teams/HOWTO-add-agent.md` (מתי+איך להקים סוכן) · `teams/<tier>/<slug>/identity.md` (12 שדות)
 
 הרשימה המסודרת המלאה: `docs/context/PROJECT-MAP.md`.
 
