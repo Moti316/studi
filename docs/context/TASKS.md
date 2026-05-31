@@ -9,14 +9,14 @@
 - ✅ ארכיטקטורת-הקשר: 9 קבצי `docs/context/`
 - ✅ זיכרון: העדפות (עברית · push-to-main · Todolist · build-end-to-end)
 - ✅ C1 · שיפורי-היום ב-main (כבר ב-`415e149`)
-- ✅ הקמת `.env.local` במחשב הנוכחי (Supabase+Drive אמיתיים; `GEMINI_API_KEY` ריק — להוסיף)
+- ✅ הקמת `.env.local` במחשב הנוכחי (Supabase+Drive+`GEMINI_API_KEY` — כולם מוגדרים ומאומתים)
 - ✅ C2 · נמחקו כל 4 הענפים → **single-branch main**. `docs-business-pivot-adrs` אומת קובץ-קובץ כ-predecessor מוחלף (אין קבצים ייחודיים)
 - ✅ C3 · **הוחלט: וידאו נשאר ב-repo/git** (מוטי 2026-05-31) — מבטל את משימת ההוצאה
 - ⬜ B · טיוב: `content_scope_extensions.md`→`docs/internal/`, ארכוב מיושנים→`docs/archive/`, Voyage ל-`CLAUDE.md`
 
 ## חוסם-על
 
-- 🔴 **להגדיר `GEMINI_API_KEY`** (Google AI Studio — כנראה כבר ברשות מוטי) — חוסם את ה-import pipeline + ה-AI.
+- ✅ **`GEMINI_API_KEY` מוגדר ומאומת** (50 מודלים · generateContent עובד) — ה-AI לא חסום עוד.
 - ✅ Node v24.16.0 + pnpm + deps מותקנים (portable, ללא admin).
 - ℹ️ git-bash blocker — **לא רלוונטי במחשב הנוכחי** (husky לא מוגדר; commit/push עובדים).
 

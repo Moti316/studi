@@ -26,12 +26,12 @@
 
 ## 🔴 חוסמים פעילים
 
-- `GEMINI_API_KEY` טרם הוגדר → ה-import pipeline + ה-AI לא ניתנים-להרצה (שדה ריק ב-`.env.local`; כנראה כבר ברשות מוטי דרך מגן).
+- ✅ `GEMINI_API_KEY` מוגדר ומאומת (50 מודלים זמינים · generateContent עובד). אין חוסמים פעילים — נותר לבנות את ה-import pipeline.
 - ℹ️ Node v24.16.0 + pnpm + deps מותקנים; husky hooks **עובדים** כאן (git-bash + nodejs ב-PATH). מחשב קודם בלבד: ראה `BUGS.md#git-bash-fork`.
 
 ## הצעד הבא (priority)
 
-1. **להגדיר `GEMINI_API_KEY`** → לבנות import pipeline (ADR-011, Gemini, ~6 קבצים) → ייבוא T1 → Quiz Engine (Phase 5).
+1. **לבנות את ה-import pipeline** (ADR-011, Gemini, ~6 קבצים) → ייבוא T1 → Quiz Engine (Phase 5). [`GEMINI_API_KEY` כבר מוגדר ✅]
 2. המשך end-to-end: Upload UI (Phase 3) → persistence (Phase 2) → Course-as-Product (Phase 10). ראה `EXECUTION-PLAN.md`.
 
 > ✅ הושלם בסשן: Drive מחובר+מופה · ניקוי-git (single-branch `main`) · וידאו נשאר ב-repo · CI ירוק.
