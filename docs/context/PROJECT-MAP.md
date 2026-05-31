@@ -36,6 +36,11 @@
 10. `docs/content-scope.md` — 57 פריטי-חקיקה לוועדה (scope-IDs).
 11. `docs/CONTENT-INDEX.md` — מפת-Drive ↔ תוכנית-לימודים ↔ כיסוי-scope (אינדקס מאוחד).
 
+**ציות ורעיונות:**
+
+- `docs/compliance/COMPLIANCE.md` — חובות-ציות (נגישות/פרטיות/צרכנות/תשלומים) + task-force + משימות C1–C6.
+- `docs/IDEAS.md` — backlog רעיונות/פיצ'רים/פידבק (להוסיף בחופשיות).
+
 **ארכיטקטורה (לפי-צורך, מקור לכל בחירה גדולה):**
 
 12. `docs/architecture/ADR-*.md` — 12 ADRs (000-template + 001-011). בעיקר **001** (stack: Next.js+Supabase+Gemini) · **009** (מגן) · **010** (DB schema) · **011** (import pipeline).
