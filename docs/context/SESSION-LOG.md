@@ -5,7 +5,7 @@
 
 ---
 
-## 2026-06-01 (לילה) — Agent-OS + בניית-v1 (Phase 0 + M1 + M2) — על ענף `claude/v1` 🚧
+## 2026-06-01 (לילה) — Agent-OS + v1 (Phase 0 + M1–M4) — ✅ מוזג ל-`main`, ענף נמחק
 
 ### מה נעשה (כל העבודה על ענף `claude/v1`, נדחף אחרי כל milestone)
 
@@ -17,7 +17,7 @@
 
 ### מצב
 
-על ענף **`claude/v1`** (main לא נגעה — **מיזוג ממתין לאישור מוטי**). typecheck+test ירוקים. צינור-הייבוא **כתוב אך טרם הורץ**.
+**מוזג ל-`main` (`4ca9c75`) ב-2026-06-01 באישור מוטי** — `claude/v1` נמחק (local+remote), חזרה ל-**single-branch main**. typecheck+test ירוקים (392). צינור-הייבוא **כתוב אך טרם הורץ** (M5).
 
 ### הצעד הבא — נשאר M5 (ייבוא) + M6 (סקירה+מיזוג). **כל הקוד הושלם ונדחף.**
 
@@ -35,7 +35,7 @@
 
 ### תזכורת (resume)
 
-`git checkout claude/v1`. נהלים: דחיפה אחרי כל משימה · מיזוג-main באישור-מוטי · כל .md חדש → memory+CLAUDE+PROJECT-MAP. תוכנית מלאה: `~/.claude/plans/snuggly-tumbling-kurzweil.md` + קבצי-זיכרון.
+`git checkout main && git pull` (הכל על main עכשיו — single-branch). נהלים: דחיפה אחרי כל משימה · כל .md חדש → memory+CLAUDE+PROJECT-MAP. M5/M6 רצים על main. תוכנית מלאה: `~/.claude/plans/snuggly-tumbling-kurzweil.md` + קבצי-זיכרון.
 
 ---
 
