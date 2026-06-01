@@ -2,7 +2,7 @@
 
 > **התוכנית האחת והאוטוריטטיבית.** מאחדת את build-roadmap (10 phases), ADR-006 (Course-as-Product Factory),
 > ואת המצב-בפועל (implementation-gaps). גוברת על מסמכי-התכנון הישנים (build-roadmap / mvp-plan).
-> מעודכן: 2026-05-31 · אבן-דרך ראשונה (קורס-הוועדה): **2026-07-15**.
+> מעודכן: 2026-06-02 (יישור-קו אחרי מיזוג v1, `main=93f6d79`) · אבן-דרך ראשונה (קורס-הוועדה): **2026-07-15**.
 
 ## מטרה — build end-to-end (בלי דחיות)
 
@@ -27,8 +27,8 @@ StudiBuilder נבנה **מקצה-לקצה** כפלטפורמת-ייצור-קור
 | 1     | Auth & Profile            | ✅            | בפרודקשן                                     |
 | 2     | Dashboard                 | 🟡 חלקי       | UI+mock → להוסיף persistence                 |
 | 3     | Upload UI (creator)       | ⬜ בתוכנית    | כלי-היצירה של מוטי (creator-gated)           |
-| 4     | Course Pipeline           | 🎯 בבנייה     | parsers ✅; **import pipeline חסר**          |
-| 5     | Quiz Engine (5 types)     | 🎯 1/5        | MatchingPairs ✅; **לב חוויית-הלימוד**       |
+| 4     | Course Pipeline           | 🟡 חלקי       | צינור-ייבוא-שאלות T1 ✅; RAG chunker/embedder חסר |
+| 5     | Quiz Engine (5 types)     | 🟡 ~3/5       | MatchingPairs+MCQShort+MCQLong+נגן+`/lesson/[id]` ✅; חסר ScenarioWalkthrough/exam |
 | 6     | Gamification              | ⬜ בתוכנית    | XP/streak/practice-log                       |
 | 7     | TTS (קולות עברית)         | ⬜ בתוכנית    | —                                            |
 | 8     | Credits                   | ⬜ בתוכנית    | למוצר המסחרי                                 |
@@ -47,20 +47,20 @@ StudiBuilder נבנה **מקצה-לקצה** כפלטפורמת-ייצור-קור
 - ✅ **וידאו: נשאר ב-repo/git** (החלטת מוטי 2026-05-31 — מבטל את ההחלטה הקודמת להוציאו).
 - ℹ️ חוסם git-bash **לא קיים במחשב הנוכחי** (husky לא מוגדר) — commit/push עובדים.
 
-### שלב 1 — Content Import (ADR-011) — חוסם את שאר הצינור
+### שלב 1 — Content Import (ADR-011) — ✅ צינור בנוי; נותרה הרצה (M5)
 
-דורש: `GEMINI_API_KEY` (יצירה+סיווג+embeddings), ובניית ~6 קבצים שלא קיימים:
-
-- `scripts/import-content.ts` (אורקסטרטור) + פקודות `import:t1`/`import:full`.
-- `src/lib/import/{chunker,scope-tagger,embedder,report}.ts`.
-- ייבוא T1 (18 קבצי-שאלות) → טבלת `questions`; scope-tagging ידני ב-MVP (ADR-011 §Phase-1).
+- ✅ `scripts/import-content.ts` (אורקסטרטור) + `import-content.config.ts` + פקודות `import:t1` / `import:t1:dry`.
+- ✅ `src/lib/import/{scope-tagger,map-question,upsert-questions}.ts` (idempotent, default-deny, hard-cap $5).
+- 🔴 **M5 — הרצת-ייבוא בפועל** (`--execute`): חסום — discovery רחב-מדי (dry-run מצא 69 קבצים, לצמצם ל-allow-list) + תלוי אישורי מוטי 1→3.
+- ⬜ **RAG (טרם נכתב):** `chunker`/`embedder` (pgvector) ל-"הסבר לעומק" — הצינור הנוכחי = ייבוא בנק-שאלות מוכן, לא RAG-chunking.
 - מקור-התוכן: Google Drive (2 תיקיות — `mainCourse` + `legacy`, מוגדרות ב-`src/lib/drive/client.ts`).
 
-### שלב 2 — Quiz Engine (Phase 5) — לב חוויית-הלימוד
+### שלב 2 — Quiz Engine (Phase 5) — ליבה בנויה; נותרו type-5 + מצבים
 
-- 4 הסוגים החסרים: `MCQLong`, `MCQShort`, `ExplanationCard`, **`ScenarioWalkthrough`** (type-5, קריטי — הוועדה scenario-based).
-- routes `/lesson/[id]` + `/lesson/practice` + `/lesson/exam` (mock-exam 30 שאלות, טיימר).
-- API: next-question, attempts, evaluate-scenario (Claude rubric), deep-explanation (RAG).
+- ✅ קיים: `MCQLong`, `MCQShort`, `McqQuestion`, `LessonPlayer`, `LessonHeader`, route `/lesson/[id]`, admin `/admin/questions`.
+- ⬜ חסר: `ExplanationCard`, **`ScenarioWalkthrough`** (type-5, קריטי — הוועדה scenario-based).
+- ⬜ routes `/lesson/practice` + `/lesson/exam` (mock-exam 30 שאלות, טיימר).
+- ⬜ API: next-question, attempts, evaluate-scenario (Gemini rubric), deep-explanation (RAG).
 - תבנית-ייחוס: `src/features/lesson-player/components/MatchingPairs.tsx`.
 
 ### שלב 3 — השלמת פלטפורמת-היצירה (creator end-to-end)

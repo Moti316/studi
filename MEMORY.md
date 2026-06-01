@@ -17,9 +17,9 @@
 - **Frontend**: Next.js 15 (App Router) + TypeScript strict + Tailwind + shadcn/ui + tailwindcss-rtl
 - **Backend**: Next.js Route Handlers + Server Actions
 - **DB**: Supabase (Postgres + pgvector + Auth + Storage + Realtime), Drizzle ORM
-- **Async jobs**: Inngest (5-stage course-build pipeline)
-- **LLM**: Anthropic Claude - Sonnet 4.6 (generation), Haiku 4.5 (classification). prompt caching חובה
-- **Embeddings**: Voyage AI (`voyage-3`)
+- **Async jobs**: Inngest (5-stage course-build pipeline) — כרגע ייבוא-T1 = CLI (`scripts/import-content.ts`), לא Inngest
+- **LLM**: Google Gemini — 2.5 Pro (generation), 2.5 Flash (classification/scope-tag). מפתח אחד `GEMINI_API_KEY`. SDK: `@google/genai` (לא Anthropic — הוחלף ב-commit 46b2cb5). context-caching במקום prompt-caching
+- **Embeddings**: Gemini embeddings (לא Voyage)
 - **TTS**: ElevenLabs (4 קולות עברית: Yoav/Tali/Michal/Ori)
 - **Hosting**: Vercel + Sentry
 - **Tests**: Vitest (unit) + Playwright (e2e)
@@ -39,16 +39,18 @@
 - עברית RTL כאזרח-ראשון (לא bolt-on)
 - TDD-first
 - secrets ב-`.env.local` בלבד
-- כל LLM call מ-`src/lib/ai/*` עם prompt caching מובנה
+- כל LLM call מ-`src/lib/ai/*` (Gemini, `@google/genai`) עם context-caching מובנה
 - שגיאות מטופלות, לא נבלעות
 
 ## Build phases (סטטוס)
 
-> **מקור-אמת חי: [`docs/context/STATUS.md`](docs/context/STATUS.md).** (סעיף זה היה מיושן — תוקן 2026-05-31.)
+> **מקור-אמת חי: [`docs/context/STATUS.md`](docs/context/STATUS.md).** (סעיף זה היה מיושן — תוקן 2026-06-02 אחרי מיזוג v1, `main=93f6d79`.)
 
 - [✅] Phase 0 Foundation · [✅] Phase 1 Auth (בפרודקשן, ~78% טסטים)
-- [🟡] Phase 2 Dashboard (UI+mock) · [❌] Phase 3-5 כמעט-לא-קיימים (import pipeline טרם נכתב; Quiz 1/5 types)
-- תוכנית מלאה: [`docs/context/EXECUTION-PLAN.md`](docs/context/EXECUTION-PLAN.md)
+- [🟡] Phase 2 Dashboard (UI+mock) · [❌] Phase 3 Upload UI
+- [🟡] Phase 4 צינור-ייבוא-שאלות T1 ✅ (`scripts/import-content.ts`+`src/lib/import/*`); RAG chunker/embedder חסר
+- [🟡] Phase 5 Quiz ~3/5 (MatchingPairs+MCQShort+MCQLong+LessonPlayer+`/lesson/[id]`+admin-תיוג; חסר ScenarioWalkthrough/exam/APIs)
+- 392 טסטים ירוקים (43 קבצים) · תוכנית מלאה: [`docs/context/EXECUTION-PLAN.md`](docs/context/EXECUTION-PLAN.md)
 
 ## פערים פתוחים שדורשים החלטה
 

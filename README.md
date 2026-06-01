@@ -19,9 +19,8 @@ pnpm install
 cp .env.example .env.local
 # ערוך את .env.local עם ה-credentials שלך:
 #   - Supabase (URL, anon key, service role, DATABASE_URL)
-#   - Google OAuth (client ID + secret)
-#   - Anthropic Claude API key
-#   - Voyage AI key
+#   - Google OAuth (client ID + secret) + Google Drive (לייבוא-תוכן)
+#   - GEMINI_API_KEY (generation + classification + embeddings — מפתח יחיד)
 #   - ElevenLabs key
 #   - Resend (mail)
 #   - Sentry DSN
@@ -41,22 +40,23 @@ pnpm lint          # ESLint + Prettier
 
 ## סטטוס
 
-**Phase**: 0/10 - Foundation ✅
+> **מקור-אמת חי: [`docs/context/STATUS.md`](./docs/context/STATUS.md).** מעודכן: 2026-06-02 (`main=93f6d79`).
 
-| #   | Phase                                 | סטטוס    |
-| --- | ------------------------------------- | -------- |
-| 0   | Foundation - scaffold + CI + תיעוד    | ✅ הושלם |
-| 1   | Auth & User Profile                   | 🚧 הבא   |
-| 2   | Dashboard skeleton                    | ⏳       |
-| 3   | Upload UI                             | ⏳       |
-| 4   | Course Pipeline (Parse→RAG→Questions) | ⏳       |
-| 5   | Quiz Engine (4 question types)        | ⏳       |
-| 6   | Gamification (XP/streak)              | ⏳       |
-| 7   | TTS (4 Hebrew voices)                 | ⏳       |
-| 8   | Credits System                        | ⏳       |
-| 9   | Polish & Launch                       | ⏳       |
+| #   | Phase                                 | סטטוס       |
+| --- | ------------------------------------- | ----------- |
+| 0   | Foundation - scaffold + CI + תיעוד    | ✅ הושלם    |
+| 1   | Auth & User Profile                   | ✅ הושלם    |
+| 2   | Dashboard skeleton                    | 🟡 UI+mock  |
+| 3   | Upload UI                             | ⏳          |
+| 4   | Course Pipeline (Parse→RAG→Questions) | 🟡 ייבוא-T1 ✅; RAG חסר |
+| 5   | Quiz Engine (5 question types)        | 🟡 ~3/5     |
+| 6   | Gamification (XP/streak)              | ⏳          |
+| 7   | TTS (4 Hebrew voices)                 | ⏳          |
+| 8   | Credits System                        | ⏳          |
+| 9   | Polish & Launch                       | ⏳          |
+| 10  | Course-as-Product Factory             | ⏳          |
 
-לפירוט מלא: [`docs/build-roadmap.md`](./docs/build-roadmap.md)
+לפירוט מלא: [`docs/context/EXECUTION-PLAN.md`](./docs/context/EXECUTION-PLAN.md) · משימות: [`TODO.md`](./TODO.md)
 
 ---
 
@@ -69,8 +69,8 @@ pnpm lint          # ESLint + Prettier
    ↓
 [Supabase: Postgres + pgvector + Auth + Storage + Realtime]
    ↓
-[Inngest workers] ←→ [Claude (Sonnet 4.6 + Haiku 4.5)]
-                  ←→ [Voyage AI embeddings]
+[Inngest workers] ←→ [Gemini 2.5 Pro (gen) + 2.5 Flash (classify)]
+                  ←→ [Gemini embeddings (RAG)]
                   ←→ [ElevenLabs TTS]
 ```
 

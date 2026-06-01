@@ -6,7 +6,7 @@
 
 - **פלטפורמת-ייצור-קורסים** מלאה בעברית (PDF/Word → קורסי-לימוד גיימיפיקטיביים), נבנית **end-to-end**.
 - creator-gated: **רק מוטי** מייצר קורסים. תוצר ראשון: קורס "ממונה בטיחות" — ללימוד-אישי לוועדה **וגם** כמוצר לשיווק.
-- Stack: Next.js 15 + Supabase + Inngest + Claude + Voyage + ElevenLabs + Vercel.
+- Stack: Next.js 15 + Supabase + Inngest + **Google Gemini** (gen/classify/embeddings) + ElevenLabs + Vercel.
 - מקומי: clone לפי-מחשב (מוטי עובד מכמה מחשבים). נוכחי: `C:\Users\b0066820\Desktop\Antigravity\studi`.
 - מצב: ראה `STATUS.md`. תוכנית: `EXECUTION-PLAN.md`. דיפלוי: `studibuilder.vercel.app`.
 

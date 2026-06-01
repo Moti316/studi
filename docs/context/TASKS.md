@@ -1,7 +1,7 @@
 # TASKS — מאגר-המשימות המלא
 
-> המאגר המלא (backlog). `Todolist.md` בשורש = תת-קבוצה פעילה של הסשן הנוכחי.
-> ⬜ פתוח · 🔄 בתהליך · ✅ הושלם · 🔴 חסום. מעודכן: 2026-05-31.
+> המאגר המלא (backlog). `TODO.md` בשורש = מקור-האמת למשימות-החיות (live). `Todolist.md` = תת-קבוצה פעילה.
+> ⬜ פתוח · 🔄 בתהליך · ✅ הושלם · 🔴 חסום. מעודכן: 2026-06-02 (יישור-קו אחרי מיזוג v1, `main=93f6d79`).
 > **מסגרת:** build end-to-end — אין דחיות. ראה [EXECUTION-PLAN.md](EXECUTION-PLAN.md).
 
 ## עכשיו — תשתית + ניקוי
@@ -23,21 +23,22 @@
 ## פלטפורמת-היצירה — Content Import (Phase 4, ADR-011)
 
 - ✅ `pnpm drive:test` עבר — Drive מחובר ו-2 התיקיות מופו (ראה `CONTENT-INDEX.md`)
-- ⬜ `scripts/import-content.config.ts` (budget + scope keywords)
-- ⬜ `src/lib/import/chunker.ts` (semantic chunking + hash)
-- ⬜ `src/lib/import/scope-tagger.ts` (regex + Gemini 2.5 Flash)
-- ⬜ `src/lib/import/embedder.ts` (Gemini embeddings batch)
-- ⬜ `src/lib/import/report.ts` (JSONL log + summary)
-- ⬜ `scripts/import-content.ts` + פקודות `import:t1`/`import:full`
-- ⬜ ייבוא T1 (18 קבצים) → `questions` + scope-tagging ידני
+- ✅ `scripts/import-content.config.ts` (budget hard-cap $5 + T1 allow-list + MIME routing)
+- ✅ `src/lib/import/scope-tagger.ts` (regex + Gemini 2.5 Flash, default-deny)
+- ✅ `src/lib/import/map-question.ts` + `upsert-questions.ts` (idempotent, source_ref + ON CONFLICT)
+- ✅ `scripts/import-content.ts` + פקודות `import:t1` / `import:t1:dry` (dry-run = חינם, ללא Gemini/DB)
+- 🔴 **M5: ייבוא T1 בפועל** (`--execute`, ~540 שאלות) — חסום: discovery רחב-מדי (dry-run מצא 69 קבצים, צריך לצמצם ל-allow-list) + תלוי אישורי מוטי 1→3
+- ⬜ **RAG (טרם נכתב):** `chunker.ts` (semantic chunking) + `embedder.ts` (Gemini embeddings → pgvector) ל-"הסבר לעומק". הצינור הנוכחי = ייבוא בנק-שאלות מוכן, **לא** RAG-chunking
 
 ## חוויית-הלימוד — Quiz Engine (Phase 5)
 
-- ⬜ `MCQLong.tsx` · `MCQShort.tsx` · `ExplanationCard.tsx`
-- ⬜ `ScenarioWalkthrough.tsx` (type-5, LLM-rubric)
-- ⬜ routes `/lesson/[id]` + `/lesson/practice` + `/lesson/exam` (mock-exam, טיימר)
+- ✅ `MCQLong.tsx` · `MCQShort.tsx` · `McqQuestion.tsx` · `LessonPlayer.tsx` · `LessonHeader.tsx`
+- ✅ route `/lesson/[id]` + admin `/admin/questions` (creator-gated, `QuestionTagger`)
+- ✅ טסטים לרכיבים (כלולים ב-392)
+- ⬜ `ExplanationCard.tsx`
+- ⬜ `ScenarioWalkthrough.tsx` (type-5, LLM-rubric — קריטי לוועדה)
+- ⬜ routes `/lesson/practice` + `/lesson/exam` (mock-exam, טיימר)
 - ⬜ API: next-question · attempts · evaluate-scenario · deep-explanation (RAG)
-- ⬜ טסטים ל-4 הרכיבים החדשים
 - ⬜ Spaced-Repetition (SM-2; שדות כבר ב-schema) · Stats לפי-נושא
 
 ## השלמת הפלטפורמה (creator end-to-end)
