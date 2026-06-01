@@ -35,6 +35,7 @@
 
 10. `docs/content-scope.md` — 57 פריטי-חקיקה לוועדה (scope-IDs).
 11. `docs/CONTENT-INDEX.md` — מפת-Drive ↔ תוכנית-לימודים ↔ כיסוי-scope (אינדקס מאוחד).
+11a. `docs/M5-discovery-curation.md` — קוריישן ה-discovery לפני הרצת-ייבוא (71→~19 בנקי-שאלות; ⏳ אישור-מוטי).
 
 **קורס safety-officer (`courses/safety-officer/`):**
 
