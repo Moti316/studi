@@ -5,6 +5,28 @@
 
 ---
 
+## 2026-06-01 (יום) — יסודות-קורס: מיפוי-תוכן Drive + חקיקה + כלל-זכויות ✅
+
+> נקודת-כניסה לתוכן-הקורס: `courses/safety-officer/` (instance #1; המבנה = תבנית-הפלטפורמה).
+
+### מה נעשה
+
+- **מיפוי-כיסוי מלא** (workflow, קריאה-מלאה של כל מסמכי-Drive): **48✅/7🟠/2🔴** מתוך 57 scope. חסר אמיתי: `5.3 ת"י31010`+`5.4 ת"י31000`. בנק-שאלות עשיר ~600+ (18 קבצים). → `courses/safety-officer/LEGISLATION-COVERAGE.md`.
+- **אינדקס-חקיקה** (workflow): **35/36 נוסחים אותרו בנבו free-full-text** (URLs). → `LEGISLATION-SOURCES.md`. שלד `sources/legislation/`. **טרם הורדו** — מחכה לאישור-טבלה ממוטי (הוצגה).
+- **תוכנית-אתגר** (קורס 1211762) נקראה במלואה → `curriculum-atgar.md` (11 פרקים, name-clean).
+- **כלל-זכויות מוחלט:** ללא שמות-מרצים · חומרי-מרצה=reference+שכתוב · חוקים=נחלת-כלל. נשמר בזיכרון (`no-lecturer-names-copyright`). **כל הקבצים name-clean.**
+- **החלטות:** מבנה=פרק→מיני-קורס×3-מצבים, ניווט-כפול, ייצור-היברידי · ATTRIBUTION = מקרה-במקרה · לא להתקין gstack · עיצוב/UX=עדיפות.
+
+### מצב / TODO (סשן הבא)
+
+- **workflow `web2hnr6q` רץ** — תכנית רשמית של משרד-העבודה (להשוות ל-אתגר/57). לאסוף + להשוות.
+- קבצים להשלים (name-clean, בתיקיית-הקורס): `LEARNING-MATERIALS` · `UNREAD-MEDIA` (אודיו/וידאו/תמונות→transcription/OCR) · `ATTRIBUTION` (פר-חומר) · `COURSE-DESIGN` · `docs/PROJECT-STRUCTURE.md`.
+- להוריד 35 נוסחי-חקיקה מנבו (אחרי אישור) · לכתוב 5.3/5.4 · לאתר 2.6.1.
+- עיגון: `COMPLIANCE.md`+`CLAUDE.md` (כלל-זכויות) · `teams/PROJECT-CONTEXT.md` (כל הסוכנים) · ADR-013 (תבנית-קורס) · ADR-012 (הסרת gstack-install).
+- ואז M5 (ייבוא בנק-השאלות). תוכנית: `~/.claude/plans/...iridescent-corbato.md`.
+
+---
+
 ## 2026-06-01 (לילה) — Agent-OS + v1 (Phase 0 + M1–M4) — ✅ מוזג ל-`main`, ענף נמחק
 
 ### מה נעשה (כל העבודה על ענף `claude/v1`, נדחף אחרי כל milestone)
@@ -24,6 +46,7 @@
 **הושלם ונדחף ל-`claude/v1`:** M2 (צינור `7d3c0a2`) · M3 (admin tagging UI `34e56d4`) · M4 (lesson player `05b900b`). typecheck+test ירוקים (392 בדיקות).
 
 **M5 — הרצת-ייבוא בפועל (מומלץ בסשן רענן, הקשר-מלא):**
+
 1. **דגל discovery:** `pnpm import:t1:dry` עבד (exit 0), אבל מצא **69 קבצים** (כולל T2/T3 — מצגות/חוקים/ריתוך), לא רק שאלות-T1. **לפני `--execute`:** או לצמצם filter ב-`scripts/import-content.ts`/`.config.ts` לקבצי-שאלות (filename: /שאל|מבחן|מאגר|שו"ת|בחינ|Emailing|לקט/), או לאמת שהפרסרים (parseDocxQA/parsePdfMcq) מחזירים 0 על קבצים-לא-שאלתיים (הם מחלצים Q&A בלבד — סביר שכן). אומדן-עלות dry: ~$1.60.
 2. **schema ל-DB אמיתי:** להחיל את `supabase/migrations/0002` (source_ref + unique index). מומלץ **הרצת ה-SQL של 0002 ישירות מול `DATABASE_URL`** (בטוח), ולא `pnpm db:push` (drizzle diff עלול לנסות לסנכרן הבדלים נוספים מול 0001 שהוחל-ביד).
 3. `pnpm import:t1` (execute) → ~540 שאלות + תיוג-Gemini Flash (hard-cap $5). report ב-`logs/`.
