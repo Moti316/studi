@@ -140,4 +140,4 @@ docs/
 
 ראה `docs/build-roadmap.md` לפירוט מלא של כל phase.
 
-> **מצב v1 (2026-06-01):** Agent-OS (27 סוכנים) + צינור-ייבוא + admin-תיוג (`/admin/questions`) + נגן-שיעור (`/lesson/[id]`) **נבנו, נבדקו (392) ונמזגו ל-`main`**. נשאר: **M5** (הרצת-ייבוא בפועל → ~540 שאלות) + **M6** (code-review/security-review). צעדים מדויקים: `docs/context/SESSION-LOG.md` (רשומה אחרונה) + זיכרון `studi-v1-next-steps`.
+> **מצב v1 (2026-06-02):** Agent-OS (27) + צינור-ייבוא + admin-תיוג + נגן-שיעור **נמזגו ל-`main`** (393 טסטים). **M6 (code-review+security-review) הושלם** — 14 ממצאים מאומתים, 8 תוקנו (`a1cc051`), 3 נדחו להחלטת-מוטי. **M5 חסום-תכנונית בלבד:** ה-discovery-gate תוקן (default-deny ל-allow-list); נותר לאשר את `docs/M5-discovery-curation.md` (רשימת-בנקי-השאלות ✅~19) → הרצת `import:t1`. צעדים: `docs/context/SESSION-LOG.md` (רשומה אחרונה).

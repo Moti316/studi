@@ -5,6 +5,24 @@
 
 ---
 
+## 2026-06-02 (לילה) — ריצת-לילה אוטונומית: יישור-קו + M6 + M5-prep ✅
+
+> instance #5 (overnight). אישור-מוטי קבוע; 3 commits ל-`main`. לוג-חי Google Doc #5→#7.
+
+### מה נעשה
+
+- **יישור-קו** (`dbd9bf9`): אומת מול הריפו ש-v1 מוזג (`main=93f6d79`, לא `415e149`). תוקן סחף ב-6 קבצים — STATUS/TASKS/EXECUTION-PLAN (Phase 4=ייבוא-T1 ✅/RAG חסר · Phase 5 ~3/5) + MEMORY/README/PROJECTS (stack Anthropic+Voyage→**Gemini**).
+- **M6 — code-review + security-review** (`a1cc051`, workflow · 20 סוכנים · 6 ממדים + אימות-אדוורסרי → **14 ממצאים מאומתים**). תוקנו 8: **P1** discovery default-deny gate (71→5 קבצים, מונע זיהום-DB) · **P2** source_ref content-hash (idempotency ל-mid-doc edits) · admin-telemetry (try/catch+logError) · **P3** scope-tagger fence + הורדת 'מאומת'→'מוסקנא' · map-question bounds-check · middleware `/admin` · sheet-width. **393 טסטים ירוקים** (+1 חדש).
+- **M5-prep** (`908e1d5`): `import:t1:dry` (חינם) אישר 71 קבצים, 5 ב-allow-list. נכתב `docs/M5-discovery-curation.md` — טבלת-קוריישן (✅~19 בנקי-שאלות / ⚠️2 / ❌~50 חומרים). **לא הורץ `--execute`** (default-deny על כסף; חסר אישור-טבלה).
+
+### מצב / TODO (סשן הבא — דורש את מוטי)
+
+- ⏳ **M5:** לאשר `docs/M5-discovery-curation.md` → להוסיף File-IDs ל-`T1_FILE_IDS` → `import:t1:dry` → `import:t1` (hard-cap $5).
+- ⏳ **3 ממצאי-M6 שנדחו:** MatchingPairs grading (graded↔guided-practice — החלטת-מוצר) · מונה-Gemini fidelity · MCQ a11y roving-tabindex · (+ `server-only` package, P3).
+- ⏳ נותרו (מהבוקר, דורשים מוטי): ISO 5.3/5.4 · הורדת חקיקה מנבו · פרויקט-גמר. ⏰ רפורמות 10/2026.
+
+---
+
 ## 2026-06-01 (ערב) — משימה 0: מסמכי-קורס safety-officer הושלמו ונדחפו ✅
 
 > instance #1. כל מסמכי-התוכן name-clean נכתבו (Workflow, 11 סוכנים במקביל) ונדחפו ל-`main`.
