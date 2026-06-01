@@ -36,6 +36,11 @@
 10. `docs/content-scope.md` — 57 פריטי-חקיקה לוועדה (scope-IDs).
 11. `docs/CONTENT-INDEX.md` — מפת-Drive ↔ תוכנית-לימודים ↔ כיסוי-scope (אינדקס מאוחד).
 
+**קורס safety-officer (`courses/safety-officer/`):**
+
+- `curriculum-atgar` (spine 11 פרקים) · `LEGISLATION-SOURCES` (37 חוקים+URLs) · `LEGISLATION-COVERAGE` (48/7/2) · `MOLSA-PROGRAM` (תכנית-משרד) · `LEARNING-MATERIALS` · `UNREAD-MEDIA` · `ATTRIBUTION` · `COURSE-DESIGN` · `FINAL-PROJECT` (capstone) · `REGULATORY-WATCH` (⏰10/2026) · `ISO-31010/31000-DRAFT` (טיוטות).
+- `docs/PROJECT-STRUCTURE.md` — מבנה פלטפורמה↔קורס.
+
 **ציות ורעיונות:**
 
 - `docs/compliance/COMPLIANCE.md` — חובות-ציות (נגישות/פרטיות/צרכנות/תשלומים) + task-force + משימות C1–C6.
@@ -43,7 +48,7 @@
 
 **ארכיטקטורה (לפי-צורך, מקור לכל בחירה גדולה):**
 
-12. `docs/architecture/ADR-*.md` — 12 ADRs (000-template + 001-011). בעיקר **001** (stack: Next.js+Supabase+Gemini) · **009** (מגן) · **010** (DB schema) · **011** (import pipeline).
+12. `docs/architecture/ADR-*.md` — 14 ADRs (000-template + 001-013). בעיקר **001** (stack) · **009** (מגן) · **010** (DB schema) · **011** (import pipeline) · **012** (נוהלי-פיתוח, single-branch main) · **013** (תבנית-קורס + capstone).
 
 ## עקרון
 

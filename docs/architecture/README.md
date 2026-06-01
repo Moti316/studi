@@ -20,12 +20,17 @@
 | 001 | בחירת Stack - Next.js + Supabase                     | proposed | 0     | 2026-05-29 |
 | 002 | Course pipeline - build from scratch (לא NotebookLM) | accepted | 4     | 2026-05-29 |
 | 003 | Auth - Google OAuth login-only + Magic Link          | accepted | 1     | 2026-05-29 |
+| 012 | נוהלי-פיתוח (single-branch main, doc-discipline)     | proposed | 0     | 2026-06-01 |
+| 013 | תבנית-קורס (פרק=מיני-קורס×3-מצבים + capstone)        | proposed | 10    | 2026-06-01 |
+
+> הערה: הטבלה חלקית — `ADR-004..011` קיימים גם הם ב-`docs/architecture/`; האינדקס המלא = הקבצים בתיקייה.
 
 ## חלוקה לפי Phase
 
 ### Phase 0
 
 - 001 Stack
+- 012 נוהלי-פיתוח
 
 ### Phase 1
 
@@ -48,6 +53,10 @@
 ### Phase 8
 
 - (TBD) 008 Credits model
+
+### Phase 10
+
+- 013 תבנית-קורס (course template + capstone)
 
 ## תהליך כתיבת ADR
 

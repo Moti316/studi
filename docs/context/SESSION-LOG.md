@@ -5,6 +5,29 @@
 
 ---
 
+## 2026-06-01 (ערב) — משימה 0: מסמכי-קורס safety-officer הושלמו ונדחפו ✅
+
+> instance #1. כל מסמכי-התוכן name-clean נכתבו (Workflow, 11 סוכנים במקביל) ונדחפו ל-`main`.
+
+### מה נעשה
+
+- **13 מסמכים נכתבו/עודכנו** (commit `c22d1f3`): `LEGISLATION-SOURCES` (37 נוסחי-נבו + URLs + מקרים-מיוחדים 2.10/2.11/2.6.1/ISO) · `MOLSA-PROGRAM` (תכנית-משרד 316ש/108 + מבחן 40/60 + רפורמות-2025) · `LEARNING-MATERIALS` · `UNREAD-MEDIA` (~53 פריטי-מדיה → OCR/תמלול) · `ATTRIBUTION` · `COURSE-DESIGN` (3 מצבים + capstone) · `FINAL-PROJECT` (מיני-קורס פרויקט-גמר) · `REGULATORY-WATCH` · `ISO-31010/31000-DRAFT` · `docs/PROJECT-STRUCTURE` · `ADR-012` · `ADR-013`.
+- **כיול-כיסוי:** אומת **48✅/7🟠/2🔴** פר-פריט מול byScope (מונה-גולמי שגוי "49/6/2" נדחה).
+- **גיבוי PDF פרויקט-גמר לדוגמה** מ-Drive → `courses/safety-officer/sources/final-project/` (commit `dc35c78`).
+- **עיגון:** COMPLIANCE (כלל-זכויות) · PROJECT-CONTEXT (עוגן-קורס + מדיניות-push) · CLAUDE + PROJECT-MAP + architecture/README (רישום ADR-012/013 + קורס) · זיכרון (`regulatory-watch-2025`, `always-hebrew`, `auto-push-each-task`).
+- **מדיניות חדשה:** push ישיר ל-`main` (single-branch) בסיום כל משימה-ירוקה — **אישור-מוטי קבוע**. עדכון-חי למוטי ב-Google Doc אחרי כל TODO.
+- **grep שמות-מרצים = 0** בכל תוצרי-המשימה · typecheck + 392 טסטים ירוקים (git-hooks).
+
+### מצב / TODO (סשן הבא)
+
+- ⏳ **טיוטות ISO 5.3/5.4** (`ISO-31010/31000-DRAFT.md`) — **לסקירת-מוטי והכרעה** על שילוב/מיקום.
+- ⏳ **להוריד ~35 נוסחי-חקיקה מנבו** (URLs ב-`LEGISLATION-SOURCES.md`, אחרי אישור-טבלה) → `sources/legislation/` · לאתר 2.6.1.
+- ⏳ **פרויקט-גמר:** מצגת-הנחיות-מדויקת ממשרד-העבודה (תגיע ממוטי) → לעדכן `FINAL-PROJECT.md`.
+- ⏰ **רפורמות תשפ"ה-2025:** בדיקה-מחודשת **10/2026** (`REGULATORY-WATCH.md`).
+- ואז **M5** (הרצת-ייבוא בנק-השאלות ~540 שאלות).
+
+---
+
 ## 2026-06-01 (יום) — יסודות-קורס: מיפוי-תוכן Drive + חקיקה + כלל-זכויות ✅
 
 > נקודת-כניסה לתוכן-הקורס: `courses/safety-officer/` (instance #1; המבנה = תבנית-הפלטפורמה).

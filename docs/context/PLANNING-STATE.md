@@ -11,17 +11,17 @@
 
 ## ממצאים (workflows שהושלמו)
 
-- **כיסוי-Drive:** 48✅/7🟠/2🔴 מתוך 57 (`LEGISLATION-COVERAGE.md`). חסר: ISO 31010+31000. בנק-שאלות ~600+ (18 קבצים).
+- **כיסוי-Drive:** 48✅/7🟠/2🔴 מתוך 57 (`LEGISLATION-COVERAGE.md`) — **אומת פר-פריט מול byScope** (מונה-סיכום גולמי שאמר בטעות "49/6/2" נדחה; ה-itemized הוא 48/7/2). חסר אמיתי: ISO 31010+31000. בנק-שאלות ~600+ (18 קבצים).
 - **חקיקה:** 35/36 נוסחים אותרו בנבו free (`LEGISLATION-SOURCES.md`) — **טרם הורדו** (מחכה לאישור-מוטי).
-- **תכנית רשמית (משרד-העבודה, workflow `web2hnr6q`):** מאמת — קורס מוכר ~**316 שעות / 108 נושאים** (תואם אתגר); **מבחן ועדת-בוחנים בעל-פה (60%) + עיוני (40%), עובר משוקלל 70**; **רפורמת תקנות-ממונים תשפ"ה-2025** (תוקף 24.6.2025 — להשתמש בנוסח המעודכן!); השתלמויות 12 ימים/3-שנים; דגש מוגבר על **ניהול-סיכונים** (+12h). מקור: `tasks/web2hnr6q.output`.
+- **תכנית רשמית (משרד-העבודה, workflow `web2hnr6q`):** מאמת — קורס מוכר ~**316 שעות / 108 נושאים** (תואם אתגר); **מבחן ועדת-בוחנים בעל-פה (60%) + עיוני (40%), עובר משוקלל 70**; **רפורמת תקנות-ממונים תשפ"ה-2025** (תוקף 24.6.2025 — להשתמש בנוסח המעודכן!); השתלמויות 12 ימים/3-שנים; דגש מוגבר על **ניהול-סיכונים** (+12h). מקור: `courses/safety-officer/MOLSA-PROGRAM.md`. **החלטה (1.6.26): רפורמות תשפ"ה-2025 לא נכנסות לקורס כעת** (בדיון משפטי, תחילה ~10/2026) → `courses/safety-officer/REGULATORY-WATCH.md`, ⏰ טריגר בדיקה-מחודשת 10/2026.
 
 ## פתוח — TODO (סשן הבא, להשלים לפני M5)
 
-1. **לאשר טבלת-חקיקה → להוריד 35 נוסחים מנבו** → `courses/safety-officer/sources/legislation/<פרק>/<scope>-<slug>`.
-2. **קבצים name-clean להשלים** בתיקיית-הקורס: `LEARNING-MATERIALS` (אינוונטר+מיפוי-פרקים) · `UNREAD-MEDIA` (אודיו/וידאו/תמונות → transcription/OCR) · `ATTRIBUTION` (פר-חומר, מקרה-במקרה) · `COURSE-DESIGN` (3-מצבים, "מול מפקחי-משרד-העבודה", מתודולוגיית-מגן) · `docs/PROJECT-STRUCTURE.md`.
-3. **לכתוב מאפס:** ISO 31010+31000 (5.3/5.4). **לאתר:** 2.6.1 עגורני-צריח.
-4. **עיגון:** `COMPLIANCE.md`+`CLAUDE.md` (כלל-זכויות) · `teams/PROJECT-CONTEXT.md` (כל הסוכנים) · `ADR-013` (תבנית-קורס) · `ADR-012` (הסרת gstack-install) · `PROJECT-MAP`/`STATUS`/`EXECUTION-PLAN`.
-5. **לשלב ממצאי משרד-העבודה** (רפורמת-2025) ל-scope/תוכנית במידת-הצורך.
+1. ✅ **בוצע (משימה 0):** כל קבצי-התוכן name-clean נכתבו ונדחפו — `LEARNING-MATERIALS` · `UNREAD-MEDIA` · `ATTRIBUTION` · `COURSE-DESIGN` · `MOLSA-PROGRAM` · `REGULATORY-WATCH` · `FINAL-PROJECT` (capstone) · `docs/PROJECT-STRUCTURE.md` · `ADR-012` · `ADR-013`. עיגון (COMPLIANCE/CLAUDE/PROJECT-CONTEXT/PROJECT-MAP) + גיבוי PDF פרויקט-גמר (`sources/final-project/`) — הושלמו.
+2. ✅ **ISO 5.3/5.4:** נכתבו **טיוטות תקציר-מקורי** (`ISO-31010-DRAFT.md` · `ISO-31000-DRAFT.md`) — **ממתינות לסקירת-מוטי והכרעה** על שילוב/מיקום.
+3. ⏳ **לאשר טבלת-חקיקה → להוריד ~35 נוסחים מנבו** → `courses/safety-officer/sources/legislation/<פרק>/<scope>-<slug>` (URLs ב-`LEGISLATION-SOURCES.md`). **לאתר:** 2.6.1 עגורני-צריח (בתוך תקנות-עגורנאים 1992, תקנה 65).
+4. ⏰ **רפורמות תשפ"ה-2025:** לא בקורס כעת → `REGULATORY-WATCH.md`, **בדיקה-מחודשת 10/2026**.
+5. ⏳ **פרויקט-גמר:** מצגת-הנחיות-מדויקת ממשרד-העבודה (תגיע ממוטי) → לעדכן `FINAL-PROJECT.md`.
 6. ואז **M5** (הרצת-ייבוא בנק-השאלות).
 
 > תוכנית-העבודה המלאה: `~/.claude/plans/https-github-com-moti316-studi-iridescent-corbato.md` + קבצי-זיכרון (`studibuilder-orientation`, `no-lecturer-names-copyright`).
