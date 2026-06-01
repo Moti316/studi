@@ -35,17 +35,6 @@ type DbQuestionType = NewQuestion['type'];
 /** The JSONB `correct_answer` shape this pipeline writes. */
 export type CorrectAnswer = { index: number } | { text: string };
 
-/**
- * Does this parsed question carry a usable answer key? MCQ → a valid
- * correctIndex; open → non-empty correctAnswerText. No key ⇒ default-deny.
- */
-function hasAnswerKey(parsed: ParsedQuestion): boolean {
-  if (typeof parsed.correctIndex === 'number' && Number.isInteger(parsed.correctIndex)) {
-    return true;
-  }
-  return typeof parsed.correctAnswerText === 'string' && parsed.correctAnswerText.trim().length > 0;
-}
-
 /** Map the parser's type onto the DB enum ('open' → 'explanation'). */
 function mapType(type: ParsedQuestion['type']): DbQuestionType {
   switch (type) {
@@ -65,14 +54,24 @@ function mapType(type: ParsedQuestion['type']): DbQuestionType {
 }
 
 /**
- * Build the `correct_answer` jsonb value.
- * - MCQ with a valid index → `{ index }`.
- * - Open with answer text   → `{ text }`.
- * - Otherwise               → `null` (no key; question will be default-denied).
+ * Build the `correct_answer` jsonb value, validating the index against the
+ * resolved options (M6 default-deny — never persist an unanswerable key).
+ * - MCQ with an IN-RANGE index (0 ≤ index < options.length) → `{ index }`.
+ * - Open with answer text → `{ text }`.
+ * - Otherwise (no options / out-of-range index / no text) → `null`
+ *   ⇒ the question is default-denied (in_scope:false, status:'לא ידוע').
  */
-function mapCorrectAnswer(parsed: ParsedQuestion): CorrectAnswer | null {
+function mapCorrectAnswer(
+  parsed: ParsedQuestion,
+  options: string[] | null,
+): CorrectAnswer | null {
   if (typeof parsed.correctIndex === 'number' && Number.isInteger(parsed.correctIndex)) {
-    return { index: parsed.correctIndex };
+    // An index is only a usable MCQ key if it points at a real option.
+    if (Array.isArray(options) && parsed.correctIndex >= 0 && parsed.correctIndex < options.length) {
+      return { index: parsed.correctIndex };
+    }
+    // Index present but out-of-range / no options ⇒ NOT a usable key; fall
+    // through (do not persist an unanswerable {index}).
   }
   const text = parsed.correctAnswerText?.trim();
   if (text) return { text };
@@ -95,8 +94,6 @@ export function mapQuestion(parsed: ParsedQuestion, sourceRef: string): NewQuest
   }
 
   const type = mapType(parsed.type);
-  const correctAnswer = mapCorrectAnswer(parsed);
-  const keyed = hasAnswerKey(parsed);
 
   // Options only for MCQ; null for explanation/open.
   const options =
@@ -106,7 +103,13 @@ export function mapQuestion(parsed: ParsedQuestion, sourceRef: string): NewQuest
         ? parsed.options
         : null;
 
-  // Default-deny: no answer key ⇒ untrusted ⇒ blocked, 'לא ידוע'.
+  // correctAnswer is validated against `options` (bounds-checked), and `keyed`
+  // is derived from it — so an MCQ whose index is out-of-range (or whose options
+  // are missing) has NO usable key and is default-denied, not marked in-scope.
+  const correctAnswer = mapCorrectAnswer(parsed, options);
+  const keyed = correctAnswer !== null;
+
+  // Default-deny: no usable answer key ⇒ untrusted ⇒ blocked, 'לא ידוע'.
   // Has key ⇒ provisional in-scope, 'מוסקנא' (inferred; verified later).
   const inScope = keyed;
   const status: NewQuestion['status'] = keyed ? 'מוסקנא' : 'לא ידוע';

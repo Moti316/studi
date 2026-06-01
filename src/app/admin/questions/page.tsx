@@ -34,9 +34,9 @@ export default async function AdminQuestionsPage() {
   let questions: Question[];
   try {
     questions = await listQuestionsForTagging();
-  } catch (error) {
-    // לא חושפים פרטי-תשתית; מציגים מצב-שגיאה נקי. הלוג נשאר בצד-השרת.
-    console.error('[admin/questions] failed to load tagging queue', error);
+  } catch {
+    // הכשל כבר תועד דרך logError ב-listQuestionsForTagging (טלמטריה אחידה,
+    // hook ל-Sentry ב-Phase 9). כאן רק מציגים מצב-שגיאה נקי בלי פרטי-תשתית.
     return (
       <div
         dir="rtl"

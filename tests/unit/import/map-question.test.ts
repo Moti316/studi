@@ -112,6 +112,21 @@ describe('mapQuestion — default-deny status + in_scope', () => {
     expect(row.status).toBe('לא ידוע');
   });
 
+  it('out-of-range MCQ index (index ≥ options.length) → DEFAULT-DENY, correct_answer null (M6)', () => {
+    const oob: ParsedQuestion = {
+      sourceId: 'f#1',
+      type: 'mcq_short',
+      question: 'שאלה עם אינדקס מחוץ-לטווח',
+      options: ['א', 'ב'], // only 2 options...
+      correctIndex: 3, // ...but the key points past them ⇒ unanswerable
+      scopeRefs: [],
+    };
+    const row = mapQuestion(oob, 'r');
+    expect(row.correctAnswer).toBeNull();
+    expect(row.inScope).toBe(false);
+    expect(row.status).toBe('לא ידוע');
+  });
+
   it('never emits מאומת from a raw parser mapping', () => {
     const row = mapQuestion(baseMcq, 'r');
     expect(row.status).not.toBe('מאומת');

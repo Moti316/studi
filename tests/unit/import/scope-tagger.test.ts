@@ -86,7 +86,7 @@ describe('tagScope — default-deny (no regex signal → no Gemini call)', () =>
 });
 
 describe('tagScope — stage 2 (regex hit → Gemini verify)', () => {
-  it('returns the model-verified tag on a clean response', async () => {
+  it('keeps the model refs but DOWNGRADES status מאומת→מוסקנא (untrusted text never mints the trusted tier)', async () => {
     generateJSONMock.mockResolvedValueOnce({
       in_scope: true,
       scope_refs: [{ id: '2.1', confidence: 0.95 }],
@@ -96,7 +96,9 @@ describe('tagScope — stage 2 (regex hit → Gemini verify)', () => {
     const tag = await tagScope('נוהל עבודה בגובה עם רתמת צניחה');
     expect(generateJSONMock).toHaveBeenCalledTimes(1);
     expect(tag.in_scope).toBe(true);
-    expect(tag.status).toBe('מאומת');
+    // SECURITY (M6): automated tagging of untrusted Drive text caps at 'מוסקנא';
+    // 'מאומת' is reserved for the downstream human content-verifier.
+    expect(tag.status).toBe('מוסקנא');
     expect(tag.scope_refs).toEqual([{ id: '2.1', confidence: 0.95 }]);
   });
 

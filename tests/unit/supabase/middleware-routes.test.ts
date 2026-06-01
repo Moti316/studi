@@ -9,6 +9,9 @@ describe('isProtected', () => {
     expect(isProtected('/settings')).toBe(true);
     expect(isProtected('/courses/123')).toBe(true);
     expect(isProtected('/create/upload')).toBe(true);
+    // /admin — defence-in-depth edge guard (M6); server-side requireCreator is authoritative.
+    expect(isProtected('/admin')).toBe(true);
+    expect(isProtected('/admin/questions')).toBe(true);
   });
 
   it('לא חוסם routes ציבוריים', () => {

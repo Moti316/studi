@@ -114,12 +114,16 @@ function cacheExtForMime(mime: string): 'pdf' | 'docx' {
 // ─── Deterministic provenance key ───────────────────────────────────────
 /**
  * Stable, collision-resistant source_ref for one question: short sha-256 of
- * `${fileId}#${index}`. Deterministic ⇒ re-import yields the same key ⇒
- * ON CONFLICT (source_ref) makes the whole pipeline idempotent.
+ * `${fileId}\n${content}`. Keyed on the question's CONTENT (not its positional
+ * index) so re-importing a file whose questions were inserted/removed mid-doc
+ * does NOT shift every downstream key and create duplicate rows. Deterministic
+ * ⇒ unchanged content ⇒ same key ⇒ ON CONFLICT (source_ref) stays idempotent
+ * for both PDF and DOCX parsers (whose per-question ids are themselves
+ * positional). See ADR-011 §"Idempotency — content-hash, לא file-modifiedTime".
  */
-function sourceRefFor(fileId: string, index: number): string {
-  const h = createHash('sha256').update(`${fileId}#${index}`).digest('hex').slice(0, 16);
-  return `t1:${fileId}:${index}:${h}`;
+function sourceRefFor(fileId: string, content: string): string {
+  const h = createHash('sha256').update(`${fileId}\n${content}`).digest('hex').slice(0, 16);
+  return `t1:${fileId}:${h}`;
 }
 
 // ─── Discovery ──────────────────────────────────────────────────────────
@@ -275,8 +279,31 @@ async function main(): Promise<void> {
   // 1. Discover.
   logLine('discovering Drive files…');
   const discovered = await discover();
-  const parseable = discovered.filter((f) => f.parseable);
-  logLine(`discovered ${discovered.length} files (${parseable.length} parseable T1).`);
+
+  // DEFAULT-DENY gate (M6 P1): only the curated T1 allow-list is ever
+  // parsed/upserted. The folder scan surfaces every parseable PDF/DOCX/GoogleDoc
+  // in the lecturer-organised Drive (slides, law texts, lecture notes — ~66 of
+  // them), which are NOT question banks; importing them would pollute the
+  // `questions` table. Non-curated parseable files are recorded as 'skipped' so
+  // the report/plan is honest. EXPANDING the allow-list to the full ~18 T1 banks
+  // is a curation step gated on creator approval — see docs/M5-discovery-curation.md.
+  const allParseable = discovered.filter((f) => f.parseable);
+  const parseable = allParseable.filter((f) => T1_FILE_ID_SET.has(f.id));
+  const skippedNotCurated = allParseable.filter((f) => !T1_FILE_ID_SET.has(f.id));
+  for (const f of skippedNotCurated) {
+    record({
+      ts: new Date().toISOString(),
+      fileId: f.id,
+      name: f.name,
+      mimeType: f.mimeType,
+      status: 'skipped',
+      reason: 'not in T1 allow-list (curation pending — see docs/M5-discovery-curation.md)',
+    });
+  }
+  logLine(
+    `discovered ${discovered.length} files; ${parseable.length} in T1 allow-list, ` +
+      `${skippedNotCurated.length} skipped (parseable but not curated).`,
+  );
 
   // 2. Pre-flight cost estimate + budget guard (default-deny).
   // We don't know question counts until we parse, so estimate against the
@@ -349,7 +376,8 @@ async function main(): Promise<void> {
 
       for (let i = 0; i < capped.length; i += 1) {
         const pq = capped[i]!;
-        const ref = sourceRefFor(file.id, i);
+        // Content-keyed provenance (not positional index) — see sourceRefFor.
+        const ref = sourceRefFor(file.id, pq.rawText ?? pq.question);
         const row = mapQuestion(pq, ref);
 
         // Scope-tag (Gemini) only while under the global call budget.

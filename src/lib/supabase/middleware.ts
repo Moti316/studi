@@ -2,8 +2,9 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 import { getSupabaseEnv, isSupabaseConfigured } from './env';
 
-/** routes שדורשים התחברות. */
-const PROTECTED_PREFIXES = ['/dashboard', '/courses', '/settings', '/stats', '/create'];
+/** routes שדורשים התחברות. (/admin נאכף סופית server-side ב-requireCreator —
+ * נכלל כאן ל-defence-in-depth: חסימת-קצה + fail-closed בפרודקשן-ללא-env.) */
+const PROTECTED_PREFIXES = ['/dashboard', '/courses', '/settings', '/stats', '/create', '/admin'];
 
 /** routes של auth — משתמש מחובר ינותב מהם ל-/dashboard. */
 const AUTH_ROUTES = ['/login', '/beta-access'];

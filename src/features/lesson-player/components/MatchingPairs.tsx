@@ -362,7 +362,7 @@ export function MatchingPairs({ pairs, onComplete, onDeepExplanation }: Matching
               aria-modal="true"
               aria-label="משוב על תשובה"
               data-testid="feedback-drawer"
-              className="fixed inset-x-0 bottom-0 z-50 rounded-sheet-top bg-quiz-error-drawer px-4 pb-8 pt-6 shadow-cardFloat"
+              className="fixed inset-x-0 bottom-0 z-50 mx-auto max-w-2xl rounded-sheet-top bg-quiz-error-drawer px-4 pb-8 pt-6 shadow-cardFloat"
               variants={safeBottomSheet}
               initial="hidden"
               animate="visible"

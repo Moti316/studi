@@ -26,6 +26,7 @@ import { questions, type Question } from '../../../../drizzle/schema';
 import { isValidScopeId } from '@/lib/db/constants/scope-refs';
 import type { ScopeStatus } from '@/lib/import/scope-tagger';
 import { requireCreator } from '@/lib/auth/creator';
+import { logError } from '@/lib/auth/telemetry';
 
 /** Path revalidated after a write so the tagging queue reflects the change. */
 const TAGGING_PATH = '/admin/questions';
@@ -97,11 +98,17 @@ export async function listQuestionsForTagging(opts?: ListQuestionsOptions): Prom
     ? [asc(untaggedPriority), desc(questions.createdAt)]
     : [desc(questions.createdAt)];
 
-  return db
-    .select()
-    .from(questions)
-    .orderBy(...orderBy)
-    .limit(limit);
+  try {
+    return await db
+      .select()
+      .from(questions)
+      .orderBy(...orderBy)
+      .limit(limit);
+  } catch (err) {
+    // Errors are a planned state — surface to telemetry before the page-level
+    // error UI renders (page.tsx catches the rethrow).
+    throw logError(err, { scope: 'admin.listQuestionsForTagging' });
+  }
 }
 
 /**
@@ -153,7 +160,13 @@ export async function updateQuestionTags(
     throw new Error('updateQuestionTags: patch contains no updatable fields.');
   }
 
-  await db.update(questions).set(set).where(eq(questions.id, id));
+  try {
+    await db.update(questions).set(set).where(eq(questions.id, id));
+  } catch (err) {
+    // Errors are a planned state — record before rethrowing so a DB/connection
+    // failure on the write path is observable (telemetry/Sentry), not silent.
+    throw logError(err, { scope: 'admin.updateQuestionTags', meta: { id } });
+  }
 
   // Refresh the tagging queue so the reviewer sees the row move/disappear.
   revalidatePath(TAGGING_PATH);
