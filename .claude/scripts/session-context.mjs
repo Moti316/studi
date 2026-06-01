@@ -37,12 +37,16 @@ try {
 
 const planning = read('docs/context/PLANNING-STATE.md') ?? '(docs/context/PLANNING-STATE.md missing)';
 const sessionLog = topEntry(read('docs/context/SESSION-LOG.md'));
+const todo = read('TODO.md') ?? '(TODO.md missing — create it)';
 
 process.stdout.write(
   `# ⚡ StudiBuilder — אוטו-הקשר (SessionStart hook) · קרא לפני עבודה
 
 > מקורות-אמת (git-synced): PLANNING-STATE = מה הלאה · SESSION-LOG = handoff אחרון · CLAUDE.md = reading-list מלא + כללים מוחלטים.
 > אם נדרשת תמונה מלאה — קרא גם: PROJECT-MAP · STATUS · courses/safety-officer/ · docs/architecture/ADR-* · teams/.
+
+## ✅ TODO — רשימת-המשימות החיה (מקור-אמת)
+${todo}
 
 ## 📋 PLANNING-STATE — מה הלאה
 ${planning}
