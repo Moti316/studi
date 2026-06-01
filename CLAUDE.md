@@ -137,3 +137,5 @@ docs/
 - [ ] Phase 10 - Course-Site Factory (landing+checkout+ads per course)
 
 ראה `docs/build-roadmap.md` לפירוט מלא של כל phase.
+
+> **מצב v1 (2026-06-01):** Agent-OS (27 סוכנים) + צינור-ייבוא + admin-תיוג (`/admin/questions`) + נגן-שיעור (`/lesson/[id]`) **נבנו, נבדקו (392) ונמזגו ל-`main`**. נשאר: **M5** (הרצת-ייבוא בפועל → ~540 שאלות) + **M6** (code-review/security-review). צעדים מדויקים: `docs/context/SESSION-LOG.md` (רשומה אחרונה) + זיכרון `studi-v1-next-steps`.
