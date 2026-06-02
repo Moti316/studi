@@ -70,3 +70,42 @@ export function isMatchingPairs(value: unknown): value is MatchingQuestionPair[]
     )
   );
 }
+
+/**
+ * One rubric criterion for a `scenario_walkthrough` question.
+ *
+ * Schema-as-is (drizzle/schema.ts): the `scenarios.rubric` jsonb holds the
+ * grading criteria as `{ criterion, points }[]`. Used by <ScenarioWalkthrough>
+ * for self-assessment (and later by the Gemini-rubric evaluator — D4).
+ */
+export type RubricCriterion = { criterion: string; points: number };
+
+/** Type-guard: a `scenarios.rubric` jsonb is a non-empty array of `{criterion, points}`. */
+export function isRubric(value: unknown): value is RubricCriterion[] {
+  return (
+    Array.isArray(value) &&
+    value.length > 0 &&
+    value.every(
+      (v) =>
+        typeof v === 'object' &&
+        v !== null &&
+        typeof (v as { criterion: unknown }).criterion === 'string' &&
+        typeof (v as { points: unknown }).points === 'number',
+    )
+  );
+}
+
+/**
+ * Case-study input for <ScenarioWalkthrough> (schema-as-is: `scenarios` table).
+ * A scenario question links to a `scenarios` row via `questions.scenario_id`.
+ */
+export type ScenarioInput = {
+  title: string;
+  background: string;
+  /** Optional supporting data (measurements, layout, readings). */
+  data?: string | null;
+  task: string;
+  /** Expert model-answer revealed after the learner attempts the task. */
+  solution: string;
+  rubric: RubricCriterion[];
+};
