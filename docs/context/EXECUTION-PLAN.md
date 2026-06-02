@@ -21,19 +21,19 @@ StudiBuilder נבנה **מקצה-לקצה** כפלטפורמת-ייצור-קור
 
 ## ה-Roadmap המלא (10 phases) — הכל in-scope
 
-| Phase | תיאור                     | סטטוס         | הערה                                         |
-| ----- | ------------------------- | ------------- | -------------------------------------------- |
-| 0     | Foundation                | ✅            | —                                            |
-| 1     | Auth & Profile            | ✅            | בפרודקשן                                     |
-| 2     | Dashboard                 | 🟡 חלקי       | UI+mock → להוסיף persistence                 |
-| 3     | Upload UI (creator)       | ⬜ בתוכנית    | כלי-היצירה של מוטי (creator-gated)           |
-| 4     | Course Pipeline           | 🟡 חלקי       | צינור-ייבוא-שאלות T1 ✅; RAG chunker/embedder חסר |
+| Phase | תיאור                     | סטטוס         | הערה                                                                               |
+| ----- | ------------------------- | ------------- | ---------------------------------------------------------------------------------- |
+| 0     | Foundation                | ✅            | —                                                                                  |
+| 1     | Auth & Profile            | ✅            | בפרודקשן                                                                           |
+| 2     | Dashboard                 | 🟡 חלקי       | UI+mock → להוסיף persistence                                                       |
+| 3     | Upload UI (creator)       | ⬜ בתוכנית    | כלי-היצירה של מוטי (creator-gated)                                                 |
+| 4     | Course Pipeline           | 🟡 חלקי       | צינור-ייבוא-שאלות T1 ✅; RAG chunker/embedder חסר                                  |
 | 5     | Quiz Engine (5 types)     | 🟡 ~3/5       | MatchingPairs+MCQShort+MCQLong+נגן+`/lesson/[id]` ✅; חסר ScenarioWalkthrough/exam |
-| 6     | Gamification              | ⬜ בתוכנית    | XP/streak/practice-log                       |
-| 7     | TTS (קולות עברית)         | ⬜ בתוכנית    | —                                            |
-| 8     | Credits                   | ⬜ בתוכנית    | למוצר המסחרי                                 |
-| 9     | Polish & Launch           | ⬜ בתוכנית    | —                                            |
-| 10    | Course-as-Product Factory | ⬜ בתוכנית 🎯 | **מטרה מפורשת** — landing+checkout+ads לקורס |
+| 6     | Gamification              | ⬜ בתוכנית    | XP/streak/practice-log                                                             |
+| 7     | TTS (קולות עברית)         | ⬜ בתוכנית    | —                                                                                  |
+| 8     | Credits                   | ⬜ בתוכנית    | למוצר המסחרי                                                                       |
+| 9     | Polish & Launch           | ⬜ בתוכנית    | —                                                                                  |
+| 10    | Course-as-Product Factory | ⬜ בתוכנית 🎯 | **מטרה מפורשת** — landing+checkout+ads לקורס                                       |
 
 🎯 = מוקד מיידי לקורס-הוועדה. שאר ה-phases נבנים end-to-end לפי סדר-התלויות — **לא נדחים**.
 
@@ -53,7 +53,7 @@ StudiBuilder נבנה **מקצה-לקצה** כפלטפורמת-ייצור-קור
 - ✅ `src/lib/import/{scope-tagger,map-question,upsert-questions}.ts` (idempotent, default-deny, hard-cap $5).
 - 🔴 **M5 — הרצת-ייבוא בפועל** (`--execute`): חסום — discovery רחב-מדי (dry-run מצא 69 קבצים, לצמצם ל-allow-list) + תלוי אישורי מוטי 1→3.
 - ⬜ **RAG (טרם נכתב):** `chunker`/`embedder` (pgvector) ל-"הסבר לעומק" — הצינור הנוכחי = ייבוא בנק-שאלות מוכן, לא RAG-chunking.
-- מקור-התוכן: Google Drive (2 תיקיות — `mainCourse` + `legacy`, מוגדרות ב-`src/lib/drive/client.ts`).
+- מקור-התוכן: Google Drive — **תיקייה אחת מאוחדת** "ממונה בטיחות 2025" עם תת-תיקיות (`DRIVE_FOLDERS` ב-`src/lib/drive/client.ts`; ארגון-מחדש 2026-06-02). בנקי-T1 מרוכזים ב-"שאלות ותשובות".
 
 ### שלב 2 — Quiz Engine (Phase 5) — ליבה בנויה; נותרו type-5 + מצבים
 

@@ -15,7 +15,7 @@
 
 import { config } from 'dotenv';
 config({ path: '.env.local' }); // secrets live in .env.local (see README)
-import { DRIVE_ROOT_FOLDERS, getMetadata, listFolder } from '../src/lib/drive/client';
+import { DRIVE_FOLDERS, getMetadata, listFolder } from '../src/lib/drive/client';
 
 const SAMPLE_FILE_ID = '1BA9XpSDVNx-MVbiyQZCndeyMVROTZ0aG'; // "מאגר שאלות הכנה 2025"
 
@@ -32,7 +32,7 @@ async function main() {
 
   // 2. List root folder
   console.log('Test 2: List "ממונה בטיחות 2025" folder');
-  const files = await listFolder(DRIVE_ROOT_FOLDERS.mainCourse);
+  const files = await listFolder(DRIVE_FOLDERS.root);
   console.log(`  ✅ Found ${files.length} items:`);
   files.slice(0, 5).forEach((f) => {
     console.log(`     - ${f.name} (${f.mimeType})`);

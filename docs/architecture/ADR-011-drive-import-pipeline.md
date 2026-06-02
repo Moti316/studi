@@ -12,7 +12,7 @@
 
 ## Context
 
-מ-ADR-009 הוחלט: **Google Drive = source-of-truth** לכל תוכן-לימוד של מוטי. סריקת-Drive (2026-05-30) זיהתה ~130 קבצים ב-2 תיקיות-שורש, ~6 GB סה"כ, מסווגים ל-4 tiers:
+מ-ADR-009 הוחלט: **Google Drive = source-of-truth** לכל תוכן-לימוד של מוטי. סריקת-Drive (2026-05-30) זיהתה ~130 קבצים, ~6 GB סה"כ, מסווגים ל-4 tiers. **עדכון 2026-06-02:** ה-Drive אורגן-מחדש ל**שורש אחד מאוחד** "ממונה בטיחות 2025" עם תת-תיקיות (בנקי-T1 מרוכזים ב-"שאלות ותשובות") — הישנה ריקה; File-IDs יציבים. מפה: `docs/CONTENT-INDEX.md`. ה-tiers:
 
 | Tier   | תוכן                        | קבצים | יעד ב-DB                       | קריטיות-MVP    |
 | ------ | --------------------------- | ----- | ------------------------------ | -------------- |
@@ -178,7 +178,7 @@ Hash-collision skips: 2 (duplicates dedup'd)
 
 ### Stage 1 — Discover
 
-קלט: 2 root folder-IDs מ-`docs/content-inventory.md`. פלט: רשימת קבצים (id, name, mimeType, modifiedTime, parents[], size).
+קלט: `DISCOVERY_ROOTS` (שורש אחד מאוחד, post-2026-06-02) מ-`src/lib/drive/client.ts`. פלט: רשימת קבצים (id, name, mimeType, modifiedTime, parents[], size).
 
 ### Stage 2 — Fetch & local-cache
 

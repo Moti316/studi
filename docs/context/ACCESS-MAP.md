@@ -17,11 +17,17 @@
 
 ## תיקיות Drive (folder IDs)
 
-- mainCourse "ממונה בטיחות 2025": `1pQQcc-PCzG5QXtPOspIGbThVDcDgfXSI`
-- legacy "ממונה בטיחות": `1Cd4iydy7aqUqO6C745j9lGIsHsFXpWfH`
-- learningMaterials "חומרי לימוד": `1Xr170fcoD-MUD0_3WtqMuN7Eqz6oBVbT`
-- (3 הנ"ל מוגדרים ב-`src/lib/drive/client.ts`, scope `drive.readonly`)
-- **session-logs "StudiBuilder — לוגי-סשן":** `1_GZY5fWK4z-BQRXUkySmsOUOPDnccVNw` — doc-לוג פר-סשן (נוצר דרך MCP Google Drive, **כתיבה**; ה-client של הפרויקט read-only). ראה נוהל ב-`CLAUDE.md`.
+> **שורש אחד מאוחד** (ארגון-מחדש 2026-06-02). מוגדר ב-`src/lib/drive/client.ts` `DRIVE_FOLDERS`, scope `drive.readonly`. מפה מלאה: `docs/CONTENT-INDEX.md`.
+
+- **root** "ממונה בטיחות 2025": `1pQQcc-PCzG5QXtPOspIGbThVDcDgfXSI`
+  - **questions** "שאלות ותשובות לוועדת הסמכה" (בנקי-T1): `1Ecc8JsCW-Gs4L4Q00ClU4s5O9oicYiUl`
+  - **learningMaterials** "חומרי לימוד": `1Xr170fcoD-MUD0_3WtqMuN7Eqz6oBVbT`
+    - **finalProject** "פרויקט גמר": `1k1u0rFoq5gM00mNdpb_vo9i6zKtf3k0P`
+    - **scaffolding** "פיגומים": `1z43_64mKTEQqIzjvxnx2rlM5lwxMYLn_`
+  - **summaries** "סיכומים וחזרות": `1w9yeJW59OjVqWUelmKr3i7LdnFy3FQ_h`
+  - **podcasts** "פודקסטים" (אודיו T4): `1LvsRhz56p6EEeatx4p_KAINjkkwdtXKy`
+- ⚠️ legacy "ממונה בטיחות" (`1Cd4iydy7aqUqO6C745j9lGIsHsFXpWfH`) — **ריק** (התרוקן 2026-06-02; הוסר מהקוד).
+- **session-logs "StudiBuilder — לוגי-סשן":** `1_GZY5fWK4z-BQRXUkySmsOUOPDnccVNw` — doc-לוג פר-סשן (MCP **כתיבה**; ה-client read-only). נוהל ב-`CLAUDE.md`.
 
 ## פעולות-בדיקה
 

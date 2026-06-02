@@ -81,12 +81,28 @@ export async function exportFile(
   return Buffer.from(res.data as ArrayBuffer);
 }
 
-// ─── Drive folder IDs from content-inventory.md ──────────────────────
-export const DRIVE_ROOT_FOLDERS = {
-  /** ממונה בטיחות 2025 */
-  mainCourse: '1pQQcc-PCzG5QXtPOspIGbThVDcDgfXSI',
-  /** ממונה בטיחות (additional materials + question banks) */
-  legacy: '1Cd4iydy7aqUqO6C745j9lGIsHsFXpWfH',
-  /** חומרי לימוד (sub-folder of mainCourse) */
+// ─── Drive folder IDs (single consolidated root — reorganized 2026-06-02) ───
+// "ממונה בטיחות 2025" is now the one root holding everything in named subfolders.
+// The old "ממונה בטיחות" (legacy `1Cd4…`) folder is now empty. Full map: docs/CONTENT-INDEX.md.
+export const DRIVE_FOLDERS = {
+  /** ממונה בטיחות 2025 — שורש מאוחד (כל התוכן). */
+  root: '1pQQcc-PCzG5QXtPOspIGbThVDcDgfXSI',
+  /** שאלות ותשובות לוועדת הסמכה — בנקי-שאלות (T1). */
+  questions: '1Ecc8JsCW-Gs4L4Q00ClU4s5O9oicYiUl',
+  /** חומרי לימוד — חומרי-מקור פר-נושא (T2/T3), כולל capstone + פיגומים. */
   learningMaterials: '1Xr170fcoD-MUD0_3WtqMuN7Eqz6oBVbT',
+  /** סיכומים וחזרות — מצגות-חזרה (T2). */
+  summaries: '1w9yeJW59OjVqWUelmKr3i7LdnFy3FQ_h',
+  /** פודקסטים — הקלטות-חקיקה m4a (T4 · UNREAD-MEDIA). */
+  podcasts: '1LvsRhz56p6EEeatx4p_KAINjkkwdtXKy',
+  /** חומרי לימוד/פרויקט גמר — הנחיות capstone (A3). */
+  finalProject: '1k1u0rFoq5gM00mNdpb_vo9i6zKtf3k0P',
+  /** חומרי לימוד/פיגומים. */
+  scaffolding: '1z43_64mKTEQqIzjvxnx2rlM5lwxMYLn_',
 } as const;
+
+/**
+ * Folders the import pipeline walks at Stage-1 Discover. Single consolidated root;
+ * the orchestrator descends one level into its subfolders (questions/summaries/podcasts/…).
+ */
+export const DISCOVERY_ROOTS: readonly string[] = [DRIVE_FOLDERS.root];

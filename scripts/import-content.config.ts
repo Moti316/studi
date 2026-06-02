@@ -9,7 +9,7 @@
  *
  * Sources:
  * - T1 File-IDs → docs/CONTENT-INDEX.md §7 ("קבצי-T1 לייבוא ראשון").
- * - ROOT_FOLDER_IDS → src/lib/drive/client.ts DRIVE_ROOT_FOLDERS (single
+ * - ROOT_FOLDER_IDS → src/lib/drive/client.ts DRIVE_FOLDERS (single
  *   source-of-truth; re-exported, NOT re-typed, so the two never drift).
  *
  * Design notes (per backend-engineer identity + PROJECT-CONTEXT):
@@ -22,13 +22,13 @@
  *   estimated spend exceeds `totalUsdHardCap`. Default-deny on budget overrun.
  */
 
-import { DRIVE_ROOT_FOLDERS } from '../src/lib/drive/client';
+import { DRIVE_FOLDERS, DISCOVERY_ROOTS } from '../src/lib/drive/client';
 
-/** Re-export the canonical Drive root folders (single source-of-truth). */
-export const ROOT_FOLDER_IDS = DRIVE_ROOT_FOLDERS;
+/** Re-export the canonical Drive folders (single source-of-truth). */
+export const ROOT_FOLDER_IDS = DRIVE_FOLDERS;
 
-/** Convenience: root folders as a flat list for discovery iteration. */
-export const ROOT_FOLDER_ID_LIST: readonly string[] = Object.values(DRIVE_ROOT_FOLDERS);
+/** Folders the discovery walk iterates (single consolidated root, post-2026-06-02 reorg). */
+export const ROOT_FOLDER_ID_LIST: readonly string[] = DISCOVERY_ROOTS;
 
 /** A single curated T1 source from CONTENT-INDEX §7. */
 export interface T1FileEntry {
@@ -36,8 +36,8 @@ export interface T1FileEntry {
   readonly id: string;
   /** Human label (Hebrew) — for the plan/report only, never load-bearing. */
   readonly label: string;
-  /** Where it lives in Drive (root folder key) — for the report. */
-  readonly location: keyof typeof DRIVE_ROOT_FOLDERS;
+  /** Where it lives in Drive (folder key) — for the report. */
+  readonly location: keyof typeof DRIVE_FOLDERS;
 }
 
 /**
@@ -47,34 +47,38 @@ export interface T1FileEntry {
  * groups with truncated IDs ("4× שאלות אייל הסמכה" → `1qbmxVzFHmhqffDyn...`,
  * "5× מבחני-שיעור אייל פלטק" → `1oH0Co...`); those are NOT listed (a truncated
  * ID is not a usable File-ID). The orchestrator's Drive discovery (listing the
- * `legacy` + `mainCourse` folders and filtering to question-bank MIME types) is
- * what surfaces the rest — this list is the deterministic seed, not the full set.
+ * consolidated root — esp. the "שאלות ותשובות לוועדת הסמכה" subfolder where the
+ * banks now live — and filtering to question-bank MIME types) surfaces the rest;
+ * this list is the deterministic seed, not the full set.
+ *
+ * NOTE (2026-06-02 reorg): the question banks are now consolidated under the
+ * `questions` subfolder; `location` is report-only and was updated accordingly.
  */
 export const T1_FILE_IDS: readonly T1FileEntry[] = [
   {
     id: '1CdpnnRPdsV02H474nbl0er480qr12SJr',
     label: 'Emailing שאלות סימולציה ערוך',
-    location: 'legacy',
+    location: 'questions',
   },
   {
     id: '19ZP5YxWIa2e-72VPeTgSHMP97JXQ6GOB',
     label: 'לקט שאלות ותשובות (docx)',
-    location: 'legacy',
+    location: 'questions',
   },
   {
     id: '1-9TTVJDSPoOWuPgYxmvPisBepjMBIlic',
     label: 'שאלות לבחינת וועדה (PDF)',
-    location: 'legacy',
+    location: 'questions',
   },
   {
     id: '1BA9XpSDVNx-MVbiyQZCndeyMVROTZ0aG',
     label: 'מאגר שאלות הכנה ספט׳2025 (PDF)',
-    location: 'mainCourse',
+    location: 'questions',
   },
   {
     id: '1RP2F2x-GwqX5sybXBWUORgtbO7VPFNLP',
     label: 'שו"ת ציוד מגן אישי (docx)',
-    location: 'mainCourse',
+    location: 'learningMaterials',
   },
 ] as const;
 
