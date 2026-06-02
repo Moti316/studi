@@ -1,6 +1,8 @@
 # ADR-009: Megen Integration — Phased Convergence Strategy
 
-> **Status**: Accepted
+> **Amended 2026-06-02: Phase B = HYBRID (לא verbatim-copy). מגן = השראה/reference; ללא copy/coupling.**
+
+> **Status**: Accepted (Amended 2026-06-02)
 > **Date**: 2026-05-29
 > **Authors**: tech-lead · product-owner · motilev8
 > **Phase**: Phase A — pre-deadline (now → 2026-07-15) · Phase B — Phase 10 (post-deadline)
@@ -27,6 +29,8 @@
 
 ## Decision: **Phased Convergence**
 
+> **🔒 כלל-מגן (firewall) — השראה-בלבד:** ריפו-מגן (`github.com/Moti316/megen` · איתן+שגיא) = **השראה/reference בלבד** למבנה/תכנון (תרחישים פר-ענף · `study_plan_90days` · committee_bank · 4-עקרונות-הוועדה). **אסור להעתיק/לקחת** קוד · תוכן · prompts. **לעולם לא מתערבב** עם ריפו-StudiBuilder (קריאה → תיקייה נפרדת בלבד). נדרשת פרסונה? **HYBRID** — מחלצים את המבנה-המוכח כ-spec, כותבים **native** (name-clean·RAG·cache·ציטוט), מאמתים **parity** מול committee_bank. **ללא copy/coupling.** ספק → מוטי. (גובר על ADR-009 Phase B — העתקה-verbatim מבוטלת.)
+
 שילוב דו-שלבי, אסטרטגיה תלוית-זמן ביחס ל-deadline של הוועדה:
 
 ### Phase A — Side-by-Side (now → 2026-07-15)
@@ -51,7 +55,7 @@
 תהליך:
 
 1. **Content import** — `megen/scenarios/*.md` מועלות ל-`courses/safety-officer/lessons/` ב-StudiBuilder
-2. **Personas migration** — master prompts (`magen.system.md`, `shagi.system.md`) מועתקים ל-`src/lib/ai/personas/` עם **prompt-cache** (כלל-יסוד מ-CLAUDE.md)
+2. **Personas migration** — ~~master prompts (`magen.system.md`, `shagi.system.md`) מועתקים ל-`src/lib/ai/personas/` עם **prompt-cache** (כלל-יסוד מ-CLAUDE.md)~~ — **🔧 תיקון 2026-06-02: העתקת-הפרומפטים בוטלה. הוחלפה ב-HYBRID** (ראה כלל-מגן firewall): לחלץ את המבנה-המוכח (4-עקרונות · Zero-Harm · common-pitfalls) כ-spec → לכתוב פרסונה **native** (name-clean · RAG · prompt-cache · ציטוט) → לאמת **parity** מול committee_bank. שגיא נשאר internal-only.
 3. **Subagents → Tutors** — 2 הסוכנים הופכים ל-AI-tutors בתוך `<LessonPlayer>` (Phase 5)
 4. **Course-Site Factory** (Phase 10 / ADR-006) — landing-page אוטומטית + payment
 5. **Telegram bot** — נשאר כ-personal-channel של מוטי + 4 חברים. **לא** נדחף ל-public-product
@@ -101,8 +105,8 @@
 ### 1. **2 הסוכנים (מגן + שגיא) — dual-life**
 
 - **Phase A**: נשארים Claude Code subagents (לעבודת-development שלי + לימוד-אישי של מוטי)
-- **Phase B**: Master prompts מועתקים ל-`src/lib/ai/personas/{magen,shagi}.system.md` בתוך StudiBuilder, נטענים עם **prompt-cache** (חיסכון 90% עלות-טוקנים, כלל-יסוד ב-CLAUDE.md)
-- **Sync mechanism**: כרגע manual (copy-paste). Phase 10.5 — script שמסנכרן git-submodule או scheduled diff
+- **Phase B**: ~~Master prompts מועתקים ל-`src/lib/ai/personas/{magen,shagi}.system.md` בתוך StudiBuilder, נטענים עם **prompt-cache** (חיסכון 90% עלות-טוקנים, כלל-יסוד ב-CLAUDE.md)~~ — **🔧 תיקון 2026-06-02: ההעתקה בוטלה → HYBRID.** מגן = השראה/reference בלבד; הפרסונה נכתבת **native** (name-clean · RAG · prompt-cache · ציטוט) מתוך spec-המבנה-המוכח, ומאומתת **parity** מול committee_bank. ללא copy/coupling.
+- **Sync mechanism**: ~~כרגע manual (copy-paste). Phase 10.5 — script שמסנכרן git-submodule או scheduled diff~~ — **🔧 תיקון 2026-06-02: לא-רלוונטי ב-HYBRID** (אין coupling, אין-מה-לסנכרן). ראה §Open-Question-1 (נסגרה).
 
 ### 2. **Telegram bot — נשאר personal-tool**
 
@@ -143,7 +147,7 @@ Red-Line של ה-Tech-Lead: לא over-engineering ל-scale שלא קיים. ה-c
 
 ### Negative
 
-- **Manual sync** של prompts/scenarios בין megen → StudiBuilder. סיכון drift. מתועד כ-open-question.
+- ~~**Manual sync** של prompts/scenarios בין megen → StudiBuilder. סיכון drift. מתועד כ-open-question.~~ — **🔧 תיקון 2026-06-02: בוטל ב-HYBRID.** אין coupling → אין-sync → אין-drift (§Open-Question-1 נסגרה). נותר רק ייבוא-content חד-פעמי (one-way, read-only) ב-Phase B.
 - **2 codebases לתחזק** — לפחות עד deprecation של ה-bot
 - **NotebookLM dependency** — אם Google מורידים את המוצר, יש עבודה לעבור ל-self-hosted RAG
 
@@ -174,9 +178,13 @@ Red-Line של ה-Tech-Lead: לא over-engineering ל-scale שלא קיים. ה-c
    - **Committee Scope Filter** (קריטי, ראה `docs/content-scope.md`): כל chunk מתויג `in_scope: true|false` + `scope_refs[]` מול 57 פריטי-החקיקה ב-PDF
    - רק `in_scope=true` עולה ל-quiz; `false` נשמר כ-reference
    - מייצר רשומות `lessons` + `questions` + `scenarios` ב-Supabase
-2. **Personas integration** — העתקת `magen.system.md` + `shagi.system.md` ל-`src/lib/ai/personas/`:
+2. **Personas integration** — ~~העתקת `magen.system.md` + `shagi.system.md` ל-`src/lib/ai/personas/`~~ — **🔧 תיקון 2026-06-02: ההעתקה (`magen/shagi.system.md` → `src/lib/ai/personas/`) בוטלה. HYBRID במקומה** (ראה כלל-מגן firewall):
+   - חילוץ המבנה-המוכח (4-עקרונות · Zero-Harm · common-pitfalls) כ-spec — **ללא** העתקת קוד/תוכן/prompts ממגן
+   - כתיבת פרסונה **native** (name-clean · RAG · ציטוט מ-PDF)
    - prompt-cache config
    - persona-router (איזה persona ל-איזה lesson type)
+   - אימות **parity** מול committee_bank (31 שאלות-וועדה)
+   - שגיא נשאר internal-only (לא עולה ל-public personas)
 3. **First public course** — "הכנה לוועדת ממונה-בטיחות" עולה ל-`betichut.studibuilder.app` (ADR-006 Course-as-Product Factory)
 
 ---
@@ -186,15 +194,15 @@ Red-Line של ה-Tech-Lead: לא over-engineering ל-scale שלא קיים. ה-c
 - [ ] Phase A: מוטי משתמש במגן כרגיל ללא הפרעה
 - [ ] Phase A: StudiBuilder dev-build מצליח לפתוח `notebooklm-mcp` ולקרוא notebook 1 (smoke test)
 - [ ] Phase B: import script מייבא 100% מ-scenarios ללא loss-of-fidelity
-- [ ] Phase B: persona-prompts ב-StudiBuilder מחזירים תשובות זהות-באיכות למה שמגן מחזיר ב-Telegram (spot-check)
+- [ ] Phase B: פרסונה ה-**native** ב-StudiBuilder עוברת **parity** מול committee_bank (31 שאלות-וועדה) — תשובות זהות-באיכות-ובמבנה (🔧 תיקון 2026-06-02: parity מול committee_bank, לא spot-check מול Telegram-מגן; אין coupling)
 
 ---
 
 ## Open Questions
 
-1. **Drift-management mechanism** — איך megen-prompts ו-StudiBuilder-personas נשארים מסונכרנים?
-   - אופציות: git submodule / sync-script / manual-quarterly-diff
-   - דחוי ל-Phase 10.5
+1. ~~**Drift-management mechanism** — איך megen-prompts ו-StudiBuilder-personas נשארים מסונכרנים?~~ — **✅ נסגרה 2026-06-02.** ב-HYBRID אין coupling בין מגן ל-StudiBuilder: הפרסונה נכתבת **native** מתוך spec-המבנה-המוכח, לא מועתקת. אין-מה-לסנכרן → אין סיכון-drift. השאלה (git submodule / sync-script / quarterly-diff) הופכת לא-רלוונטית.
+   - ~~אופציות: git submodule / sync-script / manual-quarterly-diff~~
+   - ~~דחוי ל-Phase 10.5~~
 2. **Telegram-bot deprecation date** — מתי לעצור את ה-bot?
    - TBD לפי-traction של StudiBuilder MVP-מסחרי
 3. **NotebookLM rate-limit עם 2-consumers** — האם יש throttling?

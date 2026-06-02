@@ -58,7 +58,9 @@
 
 ## ⬜ H · Course-as-Product (Phase 10 / ADR-006) · [📋 פירוט](docs/todo/H-course-product.md)
 
-17. **H1** landing · **H2** checkout+payment (ADR-008)+Phase 8 credits · **H3** ads/marketing · **H4** אינטגרציית-מגן (ADR-009 Phase B, אם רלוונטי).
+17. **H1** landing · **H2** checkout+payment (ADR-008)+Phase 8 credits · **H3** ads/marketing · **H4** מגן = **השראה-בלבד (firewall)** · פרסונה ב-**HYBRID** (חילוץ-מבנה→native→parity מול committee_bank) · **לא** verbatim-copy · ADR-009 תוקן.
+
+> **🔒 כלל-מגן (firewall) — השראה-בלבד:** ריפו-מגן (`github.com/Moti316/megen` · איתן+שגיא) = **השראה/reference בלבד** למבנה/תכנון (תרחישים פר-ענף · `study_plan_90days` · committee_bank · 4-עקרונות-הוועדה). **אסור להעתיק/לקחת** קוד · תוכן · prompts. **לעולם לא מתערבב** עם ריפו-StudiBuilder (קריאה → תיקייה נפרדת בלבד). נדרשת פרסונה? **HYBRID** — מחלצים את המבנה-המוכח כ-spec, כותבים **native** (name-clean·RAG·cache·ציטוט), מאמתים **parity** מול committee_bank. **ללא copy/coupling.** ספק → מוטי. (גובר על ADR-009 Phase B — העתקה-verbatim מבוטלת.)
 
 ## ⬜ I · ציות ומוכנות-לאנץ' (Phase 9-10, לא-חוסם v1) · [📋 פירוט](docs/todo/I-compliance-launch.md)
 

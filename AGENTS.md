@@ -53,3 +53,4 @@ roster (22 מומחי-תחום): `accessibility-i18n`, `appsec`, `backend-engine
 - secrets ב-`.env` בלבד — לעולם לא ב-config מסונכרן או בהיסטוריה.
 - כל סוכן פועל מתוקף `teams/<tier>/<slug>/identity.md` — הקווים-האדומים מחייבים.
 - git: **תחילת-סשן — `git fetch`+`git pull` לפני עבודה** (multi-machine; הקשר-ישן = סחף); commit+push אוטומטי בסיום.
+- > **🔒 כלל-מגן (firewall) — השראה-בלבד:** ריפו-מגן (`github.com/Moti316/megen` · איתן+שגיא) = **השראה/reference בלבד** למבנה/תכנון (תרחישים פר-ענף · `study_plan_90days` · committee_bank · 4-עקרונות-הוועדה). **אסור להעתיק/לקחת** קוד · תוכן · prompts. **לעולם לא מתערבב** עם ריפו-StudiBuilder (קריאה → תיקייה נפרדת בלבד). נדרשת פרסונה? **HYBRID** — מחלצים את המבנה-המוכח כ-spec, כותבים **native** (name-clean·RAG·cache·ציטוט), מאמתים **parity** מול committee_bank. **ללא copy/coupling.** ספק → מוטי. (גובר על ADR-009 Phase B — העתקה-verbatim מבוטלת.)

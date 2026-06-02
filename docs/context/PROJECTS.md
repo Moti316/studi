@@ -15,6 +15,9 @@
 - מערכת v1.2.0 production: סוכן-בטיחות (Claude Code subagents 🦺 מגן + 🛡️ שגיא) + **בוט-טלגרם** (Python + Gemini) + **36 מחברות NotebookLM** (44 מקורות-חקיקה).
 - **תפקיד:** כלי-הלימוד-החי של מוטי לוועדה (עובד היום, מייצר ערך — **אסור לפרק**).
 - **היחס ל-StudiBuilder:** מגן = curation/לימוד-חי; StudiBuilder = Quiz Engine על desktop. בעתיד (Phase 10) תוכן-מגן יהפוך לקורס-ראשון ב-StudiBuilder. ראה `docs/architecture/ADR-009-magen-integration.md`.
+
+> **🔒 כלל-מגן (firewall) — השראה-בלבד:** ריפו-מגן (`github.com/Moti316/megen` · איתן+שגיא) = **השראה/reference בלבד** למבנה/תכנון (תרחישים פר-ענף · `study_plan_90days` · committee_bank · 4-עקרונות-הוועדה). **אסור להעתיק/לקחת** קוד · תוכן · prompts. **לעולם לא מתערבב** עם ריפו-StudiBuilder (קריאה → תיקייה נפרדת בלבד). נדרשת פרסונה? **HYBRID** — מחלצים את המבנה-המוכח כ-spec, כותבים **native** (name-clean·RAG·cache·ציטוט), מאמתים **parity** מול committee_bank. **ללא copy/coupling.** ספק → מוטי. (גובר על ADR-009 Phase B — העתקה-verbatim מבוטלת.)
+
 - **הערה:** ה-CLAUDE.md הגלובלי (`C:\Users\USER\.claude\CLAUDE.md`) מתאר את מגן, **לא** את StudiBuilder. התוכנית `recursive-swimming-moon.md` בתיקיית-התוכניות = מגן/"איתן".
 
 ## כלל-אצבע
