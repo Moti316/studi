@@ -36,7 +36,7 @@
 
 ## ⬜ D · Phase 5 — השלמת Quiz Engine · [📋 פירוט](docs/todo/D-quiz-engine.md)
 
-9. **D1 · `ScenarioWalkthrough`** (type-5, קריטי — הוועדה scenario-based) · **D2** `ExplanationCard`.
+9. 🔄 **D1 · `ScenarioWalkthrough`** ✅ רכיב+POC+7-טסטים (`69d6f9a`; נותר D4-eval + lesson-loop) · **D2** `ExplanationCard`.
 10. **D3** routes `/lesson/practice` + `/lesson/exam` (mock-exam 30, טיימר).
 11. **D4** APIs: next-question · attempts · evaluate-scenario (Gemini rubric) · deep-explanation (RAG).
 12. **D5** טסטים לרכיבים החדשים · **D6** Spaced-Repetition (SM-2) + stats לפי-נושא.

@@ -5,6 +5,26 @@
 
 ---
 
+## 2026-06-02 (בוקר) — D1: ScenarioWalkthrough (type-5) נבנה + הודגם ✅
+
+> בקשת-מוטי: "צא לדרך תציג לי" → לבנות את D1 (סוג-השאלה הקריטי לוועדה) ולהריץ-להראות.
+
+### מה נעשה
+
+- **`ScenarioWalkthrough.tsx`** (`src/features/lesson-player/components/`) — type-5 `scenario_walkthrough`. case-study (schema `scenarios`: title/background/data/task/solution/rubric) ב-3 שלבים: **work** (free-text) → **review** (חשיפת פתרון-מומחה + מחוון) → **done** (הערכה-עצמית מול rubric + פירוט ✓/✗ + ציון). חוזה `onResult` אחיד. RTL · a11y (checkbox native · fieldset/legend) · design-tokens.
+- **`types.ts`** — `RubricCriterion` + `ScenarioInput` + `isRubric` guard (schema-as-is).
+- **`/poc/scenario`** — תרחיש עבודה-בגובה/פיגום אמיתי (name-clean, מתחבר ל-JSA/A3).
+- **7 בדיקות-יחידה** (guard + 3 שלבים + threshold pass/fail + single-report). typecheck נקי · pre-push ירוק.
+- **הודגם חי:** dev-server + Playwright → 3 צילומים (work/review/done). onResult="עבר" 6/8 נקודות. commit `69d6f9a`.
+- **grading = הערכה-עצמית דטרמיניסטית**; הערכת-LLM (free-text→ציון) = **D4** נפרד — הרכיב מוכן ל-swap ללא שינוי-חוזה.
+
+### מצב / הצעד הבא
+
+- **D1 🔄:** רכיב בנוי. נותר: D4 (`evaluate-scenario` LLM) + טעינת-`scenarios` ב-lesson-loop (`/lesson/[id]` join). ראה `docs/todo/D`.
+- שאר ה-backlog ללא-שינוי: שערי-מוטי A1/A2 · M5 (B) · D2–D6.
+
+---
+
 ## 2026-06-02 (בוקר) — מיפוי-מחדש Drive (שורש מאוחד) + A3 פרויקט-גמר ✅
 
 > בקשת-מוטי: ארגן-מחדש את ה-Drive לתיקייה אחת "ממונה בטיחות 2025" + תיקיות פרויקט-גמר/פיגומים → למפות-מחדש + לעדכן קוד/תיעוד/משימות.

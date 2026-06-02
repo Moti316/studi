@@ -1,7 +1,7 @@
 # TODO · D — Phase 5 — השלמת Quiz Engine
 
 > שלב D ב-[TODO.md](../../TODO.md) · לפי [EXECUTION-PLAN.md](../context/EXECUTION-PLAN.md).
-> מצב-על: ⬜ פתוח (זז בלי תלות-במוטי) · תלות: D4 deep-explanation תלוי ב-RAG (E) · תוכן-אמת מ-B מועיל · מעודכן: 2026-06-02.
+> מצב-על: 🔄 D1 רכיב-בנוי (`69d6f9a`); פתוח D2–D6 (זז בלי תלות-במוטי) · תלות: D4 deep-explanation תלוי ב-RAG (E) · תוכן-אמת מ-B מועיל · מעודכן: 2026-06-02.
 
 ## מטרה (Definition of Done)
 
@@ -13,7 +13,7 @@
 
 ## תתי-משימות
 
-- [ ] **D1** — `ScenarioWalkthrough.tsx` (type-5, scenario-based — קריטי לבחינה בעל-פה מול הוועדה, 60%). מצב-שדה מדומה → לומד מחליט ומנמק → הערכת-LLM לפי rubric (`[מאומת]/[מוסקנא]/[לא ידוע]`, מתודולוגיית-מגן). תבנית: `MatchingPairs.tsx` (reducer + RTL `dir="rtl"` + `respectReducedMotion` + bottom-sheet feedback + `onDeepExplanation`). · קריטריון-קבלה: רינדור תרחיש + קלט-נימוק חופשי → קריאת `evaluate-scenario` → הצגת ציון+מצב-תשובה+נימוק; RTL מלא (`ps-*/pe-*`); reduced-motion; keyboard-accessible; `onComplete(correct)` ו-`onDeepExplanation?` כמו בתבנית. · ref: [COURSE-DESIGN.md](../../courses/safety-officer/COURSE-DESIGN.md), [MatchingPairs.tsx](../../src/features/lesson-player/components/MatchingPairs.tsx)
+- [~] **D1** 🔄 — ✅ **רכיב נבנה ונבדק** (`69d6f9a`: `ScenarioWalkthrough.tsx` + `/poc/scenario` + 7 טסטים): case-study (schema `scenarios`) ב-3 שלבים work→review→done · חשיפת פתרון-מומחה · **הערכה-עצמית מול rubric** (דטרמיניסטי, `passThreshold`, חוזה `onResult`). RTL מלא · a11y (checkbox native) · design-tokens. **נותר:** (א) הערכת-LLM אוטומטית = **D4** (`evaluate-scenario`, free-text→ציון) — הרכיב מוכן ל-swap ללא שינוי-חוזה; (ב) **טעינת-`scenarios` ב-lesson-loop** (`/lesson/[id]` join + dispatch ב-`LessonPlayer`). · ref: [COURSE-DESIGN.md](../../courses/safety-officer/COURSE-DESIGN.md), [MatchingPairs.tsx](../../src/features/lesson-player/components/MatchingPairs.tsx)
 - [ ] **D2** — `ExplanationCard.tsx` (type-4, כרטיס-הסבר ללא-שאלה + `TipHighlight` פנימי מובלט). · קריטריון-קבלה: `<QuizHeader>`+`<ActionsRow>`(דגל/קול/הסבר); tip-card עם background-שונה; כפתור "הבנתי, המשך →" → `+5 XP` + next-question; TTS אופציונלי autoplay לפי opt-in; 🚩 פותח report-modal; RTL. · ref: [lesson-explanation.md](../screens-spec/lesson-explanation.md)
 - [ ] **D3** — routes `/lesson/practice` (תרגול-חופשי, ללא-לחץ) + `/lesson/exam` (מבחן-דמה **30 שאלות** + **טיימר** + ציון-עובר). · קריטריון-קבלה: practice = רצף next-question בלי-טיימר עם משוב-מיידי; exam = 30 שאלות, טיימר-יורד נראה, ללא-משוב-תוך-כדי, מסך-סיכום-ציון בסוף; שני המסכים RTL ומשתמשים ב-5 רכיבי-השאלה. · ref: [lesson-mcq-long.md](../screens-spec/lesson-mcq-long.md), [lesson-mcq-short.md](../screens-spec/lesson-mcq-short.md), [lesson-matching.md](../screens-spec/lesson-matching.md)
 - [ ] **D4** — API: `next-question` · `attempts` · `evaluate-scenario` (Gemini rubric) · `deep-explanation` (RAG — תלוי E). · קריטריון-קבלה: `GET /api/lessons/[id]/next-question`→question-object (מסונן `in_scope` + פר-נושא); `POST /api/attempts`→`{correct, correct_index, explanation, source_chunk_id, xp_earned}` + עדכון שדות-SM-2; `POST /api/scenarios/evaluate`→ציון+מצב-תשובה לפי-rubric; `POST /api/explanations/deep`→stream מ-RAG (stub/flag עד-E); כולן עטופות try/catch+telemetry. · ref: [lesson-feedback.md](../screens-spec/lesson-feedback.md), [COURSE-DESIGN.md](../../courses/safety-officer/COURSE-DESIGN.md)
