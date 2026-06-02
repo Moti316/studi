@@ -1,0 +1,9 @@
+# Verbatim legislation corpus — source-of-truth legal text fetched from Nevo.
+# Prettier MUST NOT reformat it: its markdown formatter renumbers ordered lists,
+# which would corrupt the legal section numbers (e.g. a repealed-section gap
+# "...4. ...6." would be silently renumbered). Keep the text byte-exact.
+courses/safety-officer/sources/legislation/**/*.md
+
+# Caches / logs (also gitignored).
+.cache/
+logs/

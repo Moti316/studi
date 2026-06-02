@@ -23,6 +23,9 @@
     "drive:test": "tsx scripts/test-drive.ts",
     "import:t1": "tsx scripts/import-content.ts t1 --execute",
     "import:t1:dry": "tsx scripts/import-content.ts t1 --dry-run",
+    "legislation:fetch": "tsx scripts/fetch-legislation.ts --execute",
+    "legislation:fetch:dry": "tsx scripts/fetch-legislation.ts --dry-run",
+    "legislation:verify": "tsx scripts/fetch-legislation.ts --verify",
     "prepare": "husky"
   },
   "dependencies": {

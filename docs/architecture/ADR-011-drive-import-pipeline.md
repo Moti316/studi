@@ -368,9 +368,10 @@ async function main() {
 
 ### Phase 2 — T1+T3 (שבוע 2)
 
-- מוסיף 10 קבצי-T3 (Legal Sources).
-- **Scope-filter אוטומטי** — שם-קובץ → scope_id (T3 special-case, וודאות גבוהה).
+- **מקור-T3 = קורפוס-החקיקה ב-`courses/safety-officer/sources/legislation/` (לא Drive).** נמשך מנבו ע"י [`scripts/fetch-legislation.ts`](../../scripts/fetch-legislation.ts) כ-**`.md` verbatim + frontmatter** (`scope_id`/`version_date`/`fetch_date`/`source_complete`...). 39 נוסחים, אומת L1–L5 + verify-live (ראה `LEGISLATION-SOURCES.md`). **הזרמה ל-DB:** `content_sources`/`chunks` עם `version_date`/`fetch_date` מה-frontmatter.
+- **Scope-filter אוטומטי** — שם-קובץ `<scope-id>-<slug>.md` → scope_id (T3 special-case, וודאות גבוהה; ללא תלות בסיומת).
 - chunking של חוקים לפי **סעיפים** (regex `\n(סעיף|פרק) \d+`).
+- ⚠️ 4 נוסחים מסומנים `source_complete: false` (תוספות-תמונה בנבו) — לא להציג כשלמים; לשחזר תוספת מ-OCR/רשומות לפני שימוש-לציטוט.
 - כל chunk נכנס ל-`chunks` עם `scope_refs=[{id, section}]`.
 - Gemini embeddings מתחילים פה (~5K chunks × $0.003 = $15, או חינם ב-free-tier).
 

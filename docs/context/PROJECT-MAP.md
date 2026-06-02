@@ -39,8 +39,14 @@
 
 **קורס safety-officer (`courses/safety-officer/`):**
 
-- `curriculum-atgar` (spine 11 פרקים) · `LEGISLATION-SOURCES` (37 חוקים+URLs) · `LEGISLATION-COVERAGE` (48/7/2) · `MOLSA-PROGRAM` (תכנית-משרד) · `LEARNING-MATERIALS` · `UNREAD-MEDIA` · `ATTRIBUTION` · `COURSE-DESIGN` · `FINAL-PROJECT` (capstone) · `REGULATORY-WATCH` (⏰10/2026) · `ISO-31010/31000-DRAFT` (טיוטות).
+- `curriculum-atgar` (spine 11 פרקים) · `LEGISLATION-SOURCES` (37 חוקים+URLs · **A2: 39 נוסחים הורדו כ-`.md`**) · `LEGISLATION-COVERAGE` (48/7/2) · `MOLSA-PROGRAM` (תכנית-משרד) · `LEARNING-MATERIALS` · `UNREAD-MEDIA` · `ATTRIBUTION` · `COURSE-DESIGN` · `FINAL-PROJECT` (capstone) · `REGULATORY-WATCH` (⏰10/2026) · `ISO-31010/31000-DRAFT` (טיוטות).
+- **`sources/legislation/<פרק>/<scope-id>-<slug>.md`** — קורפוס-החקיקה (39 נוסחי-נבו verbatim + frontmatter; `README.md` בתיקייה). 4 מסומנים `source_complete:false` (תוספות-תמונה).
 - `docs/PROJECT-STRUCTURE.md` — מבנה פלטפורמה↔קורס.
+
+**צינור-ייבוא + כלי-חקיקה (`scripts/` + `src/lib/import/`):**
+
+- `scripts/fetch-legislation.ts` (A2 — fetch+charset+strip+frontmatter+verify) · `scripts/legislation-manifest.ts` (39 מקורות) · `src/lib/import/strip-nevo-html.ts` (חילוץ דטרמיניסטי לא-גנרטיבי, L1 zero-loss) · `src/lib/import/verify-legislation.ts` (L1–L5). פקודות: `pnpm legislation:fetch[:dry]` · `legislation:verify`.
+- `scripts/import-content.ts` (T1 question-bank) · `src/lib/import/{scope-tagger,map-question,upsert-questions}.ts`.
 
 **ציות ורעיונות:**
 
