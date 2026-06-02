@@ -2,6 +2,10 @@
 
 ## אזהרת קריאה
 
+**צעד-0 (לפני הכל, כל סשן):** סנכרון מול הריפו — `git fetch`; אם מאחור → `git pull`.
+עובדים על **מספר מחשבים** (single-branch `main`, push אחרי כל משימה) → הקשר-ישן = סחף.
+ה-SessionStart hook ([.claude/scripts/session-context.mjs](.claude/scripts/session-context.mjs)) מתריע אוטומטית כשמאחור.
+
 לפני כל פעולה: קרא `AGENTS.md` (קנוני), `USER.md` (העדפות motilev8),
 ואת `teams/<tier>/<slug>/identity.md` של הסוכן הרלוונטי.
 
@@ -11,6 +15,7 @@
 
 **קריאה-חובה בתחילת כל סשן (קרא במלואם, לא לדלג):**
 
+- **צעד-0 — סנכרון-ריפו (הפעולה-הראשונה, לפני קריאת-המסמכים):** `git fetch` + `git pull` אם מאחור. ה-SessionStart hook מתריע אוטומטית.
 - **בסיס:** `CLAUDE.md` · `AGENTS.md` · `USER.md`
 - **הקשר-חי** (`docs/context/`): `PROJECT-MAP.md` · `PROJECTS.md` · `STATUS.md` · `EXECUTION-PLAN.md` · `TASKS.md` · `BUGS.md` · `DECISIONS.md` · `ACCESS-MAP.md` · `SESSION-LOG.md`
 - **תוכן/scope:** `docs/content-scope.md` · `docs/CONTENT-INDEX.md`

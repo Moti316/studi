@@ -35,6 +35,27 @@ try {
   /* ignore */
 }
 
+// repo-sync check — THE FIRST thing every session: is local behind origin?
+// StudiBuilder is built across multiple machines (single-branch main, push-after-each-task),
+// so a stale local repo = stale context = drift. fetch is non-fatal: offline / no-upstream
+// just prints a manual-check note and the rest of the context still gets injected.
+let repoSync =
+  'ℹ️ בדיקת-ריפו דילגה (offline / אין upstream) — בדוק ידנית: `git fetch && git status`';
+try {
+  execSync('git fetch --quiet origin', { cwd: root, timeout: 8000, stdio: 'ignore' });
+  const counts = execSync('git rev-list --left-right --count HEAD...origin/main', {
+    cwd: root,
+    encoding: 'utf8',
+  }).trim();
+  const [, behind] = counts.split(/\s+/).map(Number);
+  repoSync =
+    behind > 0
+      ? `⚠️ **ריפו לא-מסונכרן — אתה מאחור ב-${behind} commits!**\n> **הפעולה-הראשונה לפני כל עבודה:** \`git pull\` · ייתכן שנעשו דברים ממחשב אחר.`
+      : '✅ ריפו מסונכרן מול origin (up-to-date).';
+} catch {
+  /* keep the offline note above */
+}
+
 const planning = read('docs/context/PLANNING-STATE.md') ?? '(docs/context/PLANNING-STATE.md missing)';
 const sessionLog = topEntry(read('docs/context/SESSION-LOG.md'));
 const todo = read('TODO.md') ?? '(TODO.md missing — create it)';
@@ -44,6 +65,9 @@ process.stdout.write(
 
 > מקורות-אמת (git-synced): PLANNING-STATE = מה הלאה · SESSION-LOG = handoff אחרון · CLAUDE.md = reading-list מלא + כללים מוחלטים.
 > אם נדרשת תמונה מלאה — קרא גם: PROJECT-MAP · STATUS · courses/safety-officer/ · docs/architecture/ADR-* · teams/.
+
+## 🔄 סנכרון-ריפו (צעד-0 — לפני כל עבודה)
+${repoSync}
 
 ## ✅ TODO — רשימת-המשימות החיה (מקור-אמת)
 ${todo}

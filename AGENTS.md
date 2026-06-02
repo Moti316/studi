@@ -52,4 +52,4 @@ roster (22 מומחי-תחום): `accessibility-i18n`, `appsec`, `backend-engine
 
 - secrets ב-`.env` בלבד — לעולם לא ב-config מסונכרן או בהיסטוריה.
 - כל סוכן פועל מתוקף `teams/<tier>/<slug>/identity.md` — הקווים-האדומים מחייבים.
-- git: commit+push אוטומטי.
+- git: **תחילת-סשן — `git fetch`+`git pull` לפני עבודה** (multi-machine; הקשר-ישן = סחף); commit+push אוטומטי בסיום.

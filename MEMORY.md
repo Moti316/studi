@@ -36,6 +36,7 @@
 
 ## עקרונות
 
+- **סנכרון-ריפו תחילת-סשן (צעד-0)**: `git fetch`+`git pull` לפני עבודה — multi-machine, הקשר-ישן=סחף. SessionStart hook מתריע
 - עברית RTL כאזרח-ראשון (לא bolt-on)
 - TDD-first
 - secrets ב-`.env.local` בלבד
