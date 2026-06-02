@@ -15,17 +15,18 @@
 - **יישור-קו** (STATUS/TASKS/MEMORY/EXECUTION-PLAN/README/PROJECTS → מציאות, `dbd9bf9`).
 - **צעד-0 repo-sync** — SessionStart hook (fetch+אזהרה) + עיגון ב-CLAUDE/AGENTS/PROJECT-CONTEXT/ORG (`149bf76`).
 - **TODO דו-שכבתי** — master + `docs/todo/` פר-שלב (A–I).
+- **מיפוי-מחדש Drive** (שורש מאוחד "ממונה בטיחות 2025") + **A3 פרויקט-גמר** (הנחיות שולבו ל-FINAL-PROJECT) — `9cf7332`.
 
-## 🔴 A · שערי-מוטי — לסגור תכנון לפני M5 ⟵ הצעד-הבא [PLANNING-STATE] · [📋 פירוט](docs/todo/A-moti-gates.md)
+## 🔴 A · שערי-מוטי — לסגור תכנון לפני M5 (נותרו A1+A2; A3 ✅) ⟵ הצעד-הבא · [📋 פירוט](docs/todo/A-moti-gates.md)
 
 1. **A1 · ISO** — סקירת `ISO-31010/31000-DRAFT` עם מוטי → מיקום סופי.
 2. **A2 · חקיקה** — אישור טבלת-37-נוסחים → הורדת ~35 מנבו → `courses/safety-officer/sources/legislation/` (לאתר 2.6.1 — עגורני-צריח, תקנות-עגורנאים 1992 תקנה 65).
-3. **A3 · פרויקט-גמר** — מוטי יעלה מצגת-הנחיות → עדכון `FINAL-PROJECT.md` (פרויקט אמיתי).
+3. ✅ **A3 · פרויקט-גמר** — הנחיות-המשרד שולבו ל-`FINAL-PROJECT.md` (8 נושאים · פורמט-JSA · מבנה-6-חלקים · מטריצת-4×4). נותר: מימוש capstone בקוד (שלב D).
 
 ## 🟠 B · M5 — הרצת-ייבוא בנק-השאלות [חסום ע"י A + אישור-בנקים] · [📋 פירוט](docs/todo/B-m5-import.md)
 
 4. **B1** — אישור `docs/M5-discovery-curation.md` (~19 בנקים) → הוספת File-IDs ל-`T1_FILE_IDS`.
-5. **B2** — `import:t1:dry` (לוודא צמצום מ-69) → החלת migration `0002` מול ה-DB.
+5. **B2** — `import:t1:dry` (discovery כעת **71→19**, אומת; בנקים בתיקייה-אחת "שאלות ותשובות") → החלת migration `0002` מול ה-DB.
 6. **B3** — `import:t1 --execute` → **~540 שאלות** + תיוג-Gemini Flash (hard-cap $5) → report ב-`logs/`.
 7. **B4** — אימות: ספירה ב-DB · `/admin/questions` · `/lesson/practice` עם תוכן-אמת.
 
