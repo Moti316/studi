@@ -1,22 +1,65 @@
 # TODO — StudiBuilder · רשימת-משימות חיה
 
 > **מקור-אמת יחיד למשימות.** מסונכרן ב-git (כל מחשב), נטען אוטומטית בכל סשן (SessionStart hook),
-> ומשתקף ב-TodoWrite בתוך הסשן. סימון: ✅ הושלם · 🔄 בתהליך · ⬜ פתוח · ⏰ מתוזמן. מעודכן: 2026-06-02 (ריצת-לילה).
+> ומשתקף ב-TodoWrite בתוך הסשן. סימון: ✅ הושלם · 🔄 בתהליך · ⬜ פתוח · 🔴 חוסם · ⏰ מתוזמן.
+> **מסודר לפי [EXECUTION-PLAN.md](docs/context/EXECUTION-PLAN.md)** (סדר-תלויות). מעודכן: 2026-06-02 (בוקר — יישור ל-EXECUTION-PLAN, מאומת מול הקוד `main`).
 
-## ✅ הושלם
+## ✅ הושלם (מאומת מול הקוד)
 
-- **v1 (קוד):** Agent-OS (27 סוכנים) · צינור-ייבוא · admin-תיוג (`/admin/questions`) · נגן-שיעור (`/lesson/[id]`) — 393 טסטים, ב-`main`.
-- **תוכן-קורס safety-officer (משימה 0):** 13 מסמכים · כיסוי-scope 48/7/2 · אינדקס-חקיקה (37 נוסחים) — ב-`main`.
-- **יישור-קו** (STATUS/TASKS/MEMORY/EXECUTION-PLAN/README/PROJECTS → מציאות, `dbd9bf9`) · **SessionStart hook**.
-- **M6 — code-review + security-review** (workflow · 20 סוכנים · 14 ממצאים מאומתים): תוקנו 8 (P1 discovery-gate · source_ref content-hash · admin-telemetry · scope-tagger fence+downgrade · map-question bounds · middleware /admin · sheet-width) → `a1cc051`. 3 נדחו ל-מוטי (ראה M5-doc + לוג-לילה #7).
+- **Phase 0/1** — Foundation + Auth (בפרודקשן, ~78% טסטים) · **Agent-OS** (27 סוכנים).
+- **Phase 4 (חלקי)** — צינור-ייבוא-שאלות T1 בנוי (`scripts/import-content.ts` + `src/lib/import/{scope-tagger,map-question,upsert-questions}.ts`): idempotent · default-deny · hard-cap $5. **טרם הורץ.**
+- **Phase 5 (~3/5)** — `MatchingPairs` · `MCQShort` · `MCQLong` · `McqQuestion` · `LessonHeader` · `/lesson/[id]` · admin-תיוג `/admin/questions`. **393 טסטים**, ב-`main`.
+- **M6** — code-review + security-review (workflow · 14 ממצאים מאומתים; **8 תוקנו** → `a1cc051`; 3 נדחו למוטי → C).
+- **תוכן-קורס safety-officer** — 13 מסמכים · כיסוי-scope 48/7/2 · אינדקס-חקיקה (37 נוסחים) · טיוטות ISO.
+- **יישור-קו** (STATUS/TASKS/MEMORY/EXECUTION-PLAN/README/PROJECTS → מציאות, `dbd9bf9`).
+- **צעד-0 repo-sync** — SessionStart hook (fetch+אזהרה) + עיגון ב-CLAUDE/AGENTS/PROJECT-CONTEXT/ORG (`149bf76`).
 
-## ⬜ פתוח — לפי סדר (מ-PLANNING-STATE)
+## 🔴 A · שערי-מוטי — לסגור תכנון לפני M5 ⟵ הצעד-הבא [PLANNING-STATE]
 
-1. **ISO** — סקירת `ISO-31010/31000-DRAFT` עם מוטי → מיקום סופי.
-2. **חקיקה** — אישור טבלת-37-נוסחים → הורדת ~35 מנבו → `sources/legislation/` (לאתר 2.6.1 — עגורני-צריח, תקנות-עגורנאים 1992 תקנה 65).
-3. **פרויקט-גמר** — מוטי יעלה מצגת-הנחיות → עדכון `FINAL-PROJECT.md` (פרויקט אמיתי).
-4. **M5** — ייבוא בנק-השאלות (~540) + תיוג-Gemini Flash. **discovery-gate תוקן (M6)** + קוריישן מוכן: `docs/M5-discovery-curation.md` — צריך **אישורך** לרשימת-בנקי-השאלות (✅~19) → הוספה ל-`T1_FILE_IDS` → `import:t1:dry` → `import:t1` (hard-cap $5).
-5. ~~**M6**~~ ✅ הושלם (ראה למעלה). נותרו 3 ממצאים שדחיתי להחלטתך: MatchingPairs grading (graded↔practice) · מונה-Gemini · a11y roving-tabindex.
+1. **A1 · ISO** — סקירת `ISO-31010/31000-DRAFT` עם מוטי → מיקום סופי.
+2. **A2 · חקיקה** — אישור טבלת-37-נוסחים → הורדת ~35 מנבו → `courses/safety-officer/sources/legislation/` (לאתר 2.6.1 — עגורני-צריח, תקנות-עגורנאים 1992 תקנה 65).
+3. **A3 · פרויקט-גמר** — מוטי יעלה מצגת-הנחיות → עדכון `FINAL-PROJECT.md` (פרויקט אמיתי).
+
+## 🟠 B · M5 — הרצת-ייבוא בנק-השאלות [חסום ע"י A + אישור-בנקים]
+
+4. **B1** — אישור `docs/M5-discovery-curation.md` (~19 בנקים) → הוספת File-IDs ל-`T1_FILE_IDS`.
+5. **B2** — `import:t1:dry` (לוודא צמצום מ-69) → החלת migration `0002` מול ה-DB.
+6. **B3** — `import:t1 --execute` → **~540 שאלות** + תיוג-Gemini Flash (hard-cap $5) → report ב-`logs/`.
+7. **B4** — אימות: ספירה ב-DB · `/admin/questions` · `/lesson/practice` עם תוכן-אמת.
+
+## 🟡 C · 3 ממצאי-M6 שנדחו (החלטות-מוטי)
+
+8. **C1** MatchingPairs grading (graded↔guided-practice) · **C2** מונה-Gemini fidelity · **C3** MCQ a11y roving-tabindex · **C4** התקנת `server-only` (P3 guard).
+
+## ⬜ D · Phase 5 — השלמת Quiz Engine
+
+9. **D1 · `ScenarioWalkthrough`** (type-5, קריטי — הוועדה scenario-based) · **D2** `ExplanationCard`.
+10. **D3** routes `/lesson/practice` + `/lesson/exam` (mock-exam 30, טיימר).
+11. **D4** APIs: next-question · attempts · evaluate-scenario (Gemini rubric) · deep-explanation (RAG).
+12. **D5** טסטים לרכיבים החדשים · **D6** Spaced-Repetition (SM-2) + stats לפי-נושא.
+
+> תבנית-ייחוס: `src/features/lesson-player/components/MatchingPairs.tsx`.
+
+## ⬜ E · Phase 4 — השלמת RAG
+
+13. **E1** `chunker` + `embedder` (pgvector) ל-"הסבר לעומק" — טרם נכתב.
+
+## ⬜ F · פלטפורמת-היצירה (creator end-to-end)
+
+14. **F1 · Phase 3** Upload UI (`/create/*`) — מוטי מעלה מקורות → מפעיל pipeline מה-UI.
+15. **F2 · Phase 2** persistence אמיתי ל-Dashboard (החלפת mock-data).
+
+## ⬜ G · גיימיפיקציה ומדיה
+
+16. **G1 · Phase 6** gamification (XP/streak/practice-log) · **G2 · Phase 7** Hebrew-TTS על "הסבר לעומק" (קול-אחד→4).
+
+## ⬜ H · Course-as-Product (Phase 10 / ADR-006)
+
+17. **H1** landing · **H2** checkout+payment (ADR-008)+Phase 8 credits · **H3** ads/marketing · **H4** אינטגרציית-מגן (ADR-009 Phase B, אם רלוונטי).
+
+## ⬜ I · ציות ומוכנות-לאנץ' (Phase 9-10, לא-חוסם v1)
+
+18. נגישות (5568/WCAG AA + הצהרה) · פרטיות (תיקון 13) · הגנת-צרכן (ביטול 14 יום) · תשלומים (PCI/חשבונית). task-force: `docs/compliance/COMPLIANCE.md` (C1–C6).
 
 ## ⏰ מתוזמן
 
@@ -24,4 +67,4 @@
 
 ## 💡 עתידי (ראה `docs/IDEAS.md`)
 
-- סקירת-gstack (adopt/skip list, ללא התקנה) · Agent-OS starter-kit כ-Skill · דשבורד-סוכנים (playground) · ExplanationCard/ScenarioWalkthrough · API + Spaced-Repetition · Phase 6-10.
+- סקירת-gstack (adopt/skip list, ללא התקנה) · Agent-OS starter-kit כ-Skill · דשבורד-סוכנים (playground).
