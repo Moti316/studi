@@ -20,7 +20,8 @@
 - mainCourse "ממונה בטיחות 2025": `1pQQcc-PCzG5QXtPOspIGbThVDcDgfXSI`
 - legacy "ממונה בטיחות": `1Cd4iydy7aqUqO6C745j9lGIsHsFXpWfH`
 - learningMaterials "חומרי לימוד": `1Xr170fcoD-MUD0_3WtqMuN7Eqz6oBVbT`
-- (מוגדרים ב-`src/lib/drive/client.ts`)
+- (3 הנ"ל מוגדרים ב-`src/lib/drive/client.ts`, scope `drive.readonly`)
+- **session-logs "StudiBuilder — לוגי-סשן":** `1_GZY5fWK4z-BQRXUkySmsOUOPDnccVNw` — doc-לוג פר-סשן (נוצר דרך MCP Google Drive, **כתיבה**; ה-client של הפרויקט read-only). ראה נוהל ב-`CLAUDE.md`.
 
 ## פעולות-בדיקה
 
