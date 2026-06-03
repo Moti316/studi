@@ -16,7 +16,7 @@
   1. ✅ **OV-1** בקרה-חיצונית — `oversight-lead`(נדב) · `plan-compliance-auditor`(עידו) · `process-audit-officer`(הדס) — 3×3 קבצים + 3 stubs.
   2. ✅ **OV-2** קבצי-ענף — `_oversight-protocol` · `stop-orders-ledger` · `oversight-report` · `control-report` · `TEAM`.
   3. ✅ **OV-3** מבקר-תכנית — `curriculum-auditor-lead`(רותם) · `coverage-auditor`(שני) · `content-drift-auditor`(גיא) — 3×3 + 3 stubs.
-  4. ⬜ **OV-4** `_curriculum-audit-protocol` + עדכון-`TEAM` (סעיף מבקר-תכנית).
+  4. ✅ **OV-4** `_curriculum-audit-protocol` + עדכון-`TEAM` (זרוע-ב' → ✅).
   5. ⬜ **OV-5** עדכוני-ממשל — ORG · README · AGENTS · CLAUDE · PROJECT-CONTEXT · MEMORY · PROJECT-MAP → רוסטר 33.
   6. ⬜ **OV-6** גיבוי תוכנית-ממשל-v2 בריפו (`docs/context/GOVERNANCE-V2.md`) + פרומפט סשן-C.
   - 🚩 **שמות-עבריים** (נדב/עידו/הדס · רותם/שני/גיא) = **הצעה, ניתן-לשינוי-מוטי** (ההצעה המקורית אורי/יעל/אסף/מאיה התנגשה עם הרוסטר הקיים).

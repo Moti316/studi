@@ -31,7 +31,7 @@
 | עידו | `plan-compliance-auditor` | `opus` | מצליב `activity-log` ↔ TODO/EXECUTION-PLAN · מזהה סטייה-מתוכנית/סורר |
 | הדס  | `process-audit-officer`   | `opus` | שלמות-זרימת-הדיווח (ORG §קצב) · מאתר דגלים-שנבלעו ע"י המתווך         |
 
-### זרוע ב' — מבקר-תכנית-לימודים (3 סוכנים) 🔜 בהקמה (OV-3/4)
+### זרוע ב' — מבקר-תכנית-לימודים (3 סוכנים) ✅
 
 | שם   | slug                      | מודל     | מיקוד                                                                          |
 | ---- | ------------------------- | -------- | ------------------------------------------------------------------------------ |
@@ -59,4 +59,4 @@
 - **צו-עצירה:** קוורום 2/3 → [`stop-orders-ledger.md`](stop-orders-ledger.md) → `<<BROADCAST>>` → עוצר מסלול עד אישור-מועצה.
 - **אי-תלות במתווך:** הבקרה קוראת את תוצרי-המתווך (read-only) אך אינה מדווחת דרכו.
 
-פרוטוקולים: [`_oversight-protocol.md`](_oversight-protocol.md) (סמכויות-הבקרה) · `_curriculum-audit-protocol.md` (בדיקת-התכנית — נוצר ב-OV-4).
+פרוטוקולים: [`_oversight-protocol.md`](_oversight-protocol.md) (סמכויות-הבקרה) · [`_curriculum-audit-protocol.md`](_curriculum-audit-protocol.md) (בדיקת-התכנית).
