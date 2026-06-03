@@ -107,10 +107,10 @@
 
 | קובץ | תכלית | תגיות | עודכן |
 | --- | --- | --- | --- |
-| [DESIGN-PLAN-A.md](../../docs/design/DESIGN-PLAN-A.md) | כיוון: A · אתוס: הכי-קרוב-ל-StudiesGo — מסקוט מונפש, צבעוניות-תוססת, חוויית-Duolingo, גיימיפיקציה בקדמת-הבמה.… | docs design | — |
-| [DESIGN-PLAN-B.md](../../docs/design/DESIGN-PLAN-B.md) | אתוס: נקי · רגוע · רציני-ומכובד. מינימליזם חם (לא סטרילי). תחושת אמון ואיכות-פרימיום, מותאם לקהל-מקצועי בוגר … | docs design | — |
-| [DESIGN-PLAN-C.md](../../docs/design/DESIGN-PLAN-C.md) | כיוון C מתוך 3 כיווני-עיצוב ל-StudiBuilder · קורס "ממונה בטיחות". | docs design | — |
-| [DESIGN-PLANS-COMPARE.md](../../docs/design/DESIGN-PLANS-COMPARE.md) | תפקיד-המסמך: product-owner + design-system-lead מציג השוואה-מנומקת של 3 כיווני-העיצוב ל-StudiBuilder (מוצר-לש… | docs design | — |
+| [DESIGN-PLAN-A.md](../../docs/design/DESIGN-PLAN-A.md) | כיוון: A · אתוס: הכי-קרוב-ל-StudiesGo — מסקוט מונפש, צבעוניות-תוססת, חוויית-Duolingo, גיימיפיקציה בקדמת-הבמה.… | docs design | 2026-06-04 |
+| [DESIGN-PLAN-B.md](../../docs/design/DESIGN-PLAN-B.md) | אתוס: נקי · רגוע · רציני-ומכובד. מינימליזם חם (לא סטרילי). תחושת אמון ואיכות-פרימיום, מותאם לקהל-מקצועי בוגר … | docs design | 2026-06-04 |
+| [DESIGN-PLAN-C.md](../../docs/design/DESIGN-PLAN-C.md) | כיוון C מתוך 3 כיווני-עיצוב ל-StudiBuilder · קורס "ממונה בטיחות". | docs design | 2026-06-04 |
+| [DESIGN-PLANS-COMPARE.md](../../docs/design/DESIGN-PLANS-COMPARE.md) | תפקיד-המסמך: product-owner + design-system-lead מציג השוואה-מנומקת של 3 כיווני-העיצוב ל-StudiBuilder (מוצר-לש… | docs design | 2026-06-04 |
 | [mascot-brief.md](../../docs/design/mascot-brief.md) | גרסה: 1.0 | docs design | 2026-05-29 |
 | [motion-specs.md](../../docs/design/motion-specs.md) | מקור: ניתוח-Gemini מ-docs/sources/studiesgo-videos/<NN>/gemini-response.md + ניתוח-Claude מ-frames. | docs design | 2026-05-30 |
 | [_template.md](../../docs/screens-spec/_template.md) | Phase: N · State variants: loading / empty / populated / error · Mobile-first | docs screens-spec | 2026-05-29 |

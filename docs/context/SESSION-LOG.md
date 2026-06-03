@@ -15,11 +15,18 @@
 - **Phase 1 — אינדקס-MD חכם ✅:** `.claude/scripts/gen-md-index.mjs` מחולל אוטומטית את [`MD-INDEX.md`](MD-INDEX.md) — **328 קבצים · 17 קטגוריות** · 📌 קבצי-חובה נעוצים בראש · 🚀 ניווט-מהיר פר-נושא · תכלית+תגיות+עדכון-אחרון פר-קובץ · ⚠️ **איתור-יתומים** (זיהה `Todolist.md` הישן). Wiring: `pnpm index:md` + pre-commit-regen + SessionStart-regen + הפניה בשורה-1 של `CLAUDE.md` + `PROJECT-MAP`. + תיבת-הערות דו-כיוונית [`MOTI-INBOX.md`](MOTI-INBOX.md).
 - **Phase 3 — 3 תוכניות-עיצוב (Workflow · 5 סוכנים · 397K tok) ✅:** `docs/design/DESIGN-PLAN-A/B/C.md` + `DESIGN-PLANS-COMPARE.md` — בהשראת קורפוס-StudiesGo האמיתי (login · שאלון-onboarding · מעברים · כפתורים · הנפשות · מראה-מזמין · RTL/a11y · design-tokens · wireframes). **למוטי לבחור.**
 
+### מה נעשה — Phase 2 (תשתית לא-ויזואלית · אפס-כסף · TDD) ✅
+
+- **D-backend:** מנוע **SM-2** ([`src/lib/srs/sm2.ts`](../../src/lib/srs/sm2.ts), `a5807a9`) + **scheduler** תזמון-תור-תרגול ([`src/lib/srs/scheduler.ts`](../../src/lib/srs/scheduler.ts), `15e8224`).
+- **E·RAG:** **chunker** מודע-גבולות + **embedder** (DI) + Gemini-EmbedFn גדור ([`src/lib/rag/`](../../src/lib/rag/), `f95061c`).
+- **F2 stats-core:** גזירת XP/streak/accuracy מ-question_attempts ([`src/lib/stats/learner-stats.ts`](../../src/lib/stats/learner-stats.ts), `6515fc3`).
+- **503 טסטים ירוקים** (+60 חדשים) · typecheck נקי. כל המודולים לוגיקה-טהורה (קריאות-Gemini גדורות עד אישור-מוטי).
+
 ### מצב / הצעד הבא
 
-- ⏳ **Phase 2** (תשתית לא-ויזואלית): E·RAG-skeleton · D-backend (SM-2 + שלד-APIs) · F2-persistence — בתהליך.
-- 🚩 **דורש-מוטי:** (1) בחירת כיוון-עיצוב מ-3 התוכניות (`docs/design/DESIGN-PLANS-COMPARE.md`). (2) `Todolist.md` (יתום ישן 5/31, gitignored, הוחלף ע"י TODO.md) — להחליט אם למחוק.
-- ⏳ **Phase 4** (אופציונלי): תוצר-5 סקיל `agent-os` אם יישאר זמן.
+- 🚩 **דורש-מוטי:** (1) בחירת כיוון-עיצוב מ-3 התוכניות (`docs/design/DESIGN-PLANS-COMPARE.md`). (2) `Todolist.md` (יתום ישן 5/31, gitignored, הוחלף ע"י TODO.md) — להחליט אם למחוק. (3) הרצת-embedding/Gemini בפועל (עולה כסף) — השלד מוכן, ממתין לאישור.
+- ⏳ **Phase 4** (אופציונלי, אם יישאר זמן): תוצר-5 סקיל `agent-os` גנרי.
+- ⏳ **נותר לחיווט (דורש DB/route-tests — לא-בוצע):** D-APIs (route handlers שעוטפים scheduler/SM-2) · F2 DB-wiring (שאילתה→stats-core) · D-UI (נושא-עיצוב → 3 התוכניות).
 
 ---
 

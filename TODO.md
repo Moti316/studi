@@ -25,6 +25,7 @@
 ## ✅ הושלם (מאומת מול הקוד)
 
 - **🌙 ריצת-לילה 2026-06-04** — **אינדקס-MD חכם** ([`MD-INDEX.md`](docs/context/MD-INDEX.md) + מחולל אוטומטי · קבצי-חובה נעוצים · ניווט-מהיר · איתור-יתומים · אוטו-רענון) + תיבת-הערות [`MOTI-INBOX.md`](docs/context/MOTI-INBOX.md) · **3 תוכניות-עיצוב** ([`docs/design/`](docs/design/) A/B/C + COMPARE · Workflow · StudiesGo) → 🚩 **דורש בחירת-מוטי**.
+  - **Phase-2 תשתית (אפס-כסף · TDD · 503 טסטים):** SM-2 + scheduler ([`src/lib/srs/`](src/lib/srs/)) · RAG chunker+embedder ([`src/lib/rag/`](src/lib/rag/)) · stats-core ([`src/lib/stats/`](src/lib/stats/)). נותר חיווט-DB/API/UI (D/E/F).
 - **Phase 0/1** — Foundation + Auth (בפרודקשן, ~78% טסטים) · **Agent-OS** (27 סוכנים).
 - **Phase 4 (חלקי)** — צינור-ייבוא-שאלות T1 בנוי (`scripts/import-content.ts` + `src/lib/import/{scope-tagger,map-question,upsert-questions}.ts`): idempotent · default-deny · hard-cap $5. **טרם הורץ.**
 - **Phase 5 (~3/5)** — `MatchingPairs` · `MCQShort` · `MCQLong` · `McqQuestion` · `LessonHeader` · `/lesson/[id]` · admin-תיוג `/admin/questions`. **393 טסטים**, ב-`main`.
