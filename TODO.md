@@ -14,7 +14,7 @@
 - ✅ **סשן-A** — תוצר-4 (גבול פלטפורמה↔קורס · `3b01c40`) + תוצר-3 (סכמת-TODO מורחבת · `bf9624d`).
 - 🔄 **סשן-B** — הקמת ענף-בקרה `oversight` (6 סוכנים · רוסטר 27→33 · ב-tier חדש `oversight`):
   1. ✅ **OV-1** בקרה-חיצונית — `oversight-lead`(נדב) · `plan-compliance-auditor`(עידו) · `process-audit-officer`(הדס) — 3×3 קבצים + 3 stubs.
-  2. ⬜ **OV-2** קבצי-ענף — `_oversight-protocol` · `stop-orders-ledger` · `oversight-report` · `control-report` · `TEAM`.
+  2. ✅ **OV-2** קבצי-ענף — `_oversight-protocol` · `stop-orders-ledger` · `oversight-report` · `control-report` · `TEAM`.
   3. ⬜ **OV-3** מבקר-תכנית — `curriculum-auditor-lead`(רותם) · `coverage-auditor`(שני) · `content-drift-auditor`(גיא) — 3×3 + 3 stubs.
   4. ⬜ **OV-4** `_curriculum-audit-protocol` + עדכון-`TEAM` (סעיף מבקר-תכנית).
   5. ⬜ **OV-5** עדכוני-ממשל — ORG · README · AGENTS · CLAUDE · PROJECT-CONTEXT · MEMORY · PROJECT-MAP → רוסטר 33.
