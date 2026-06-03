@@ -14,7 +14,9 @@
 ## תתי-משימות
 
 - [ ] **F1** — Upload UI ל-creator: אשף 5-שלבים `/create/*` (source→topic→select→confirm→process) · קריטריון-קבלה: (1) Step-1 — drag-drop + multiple-files + validation format/size (≤50MB; PDF/Word/PPT/Excel/תמונות) + toggle קבצים/טקסט, draft נשמר ב-`course_drafts`+`course_files` וחזרה-לאחר-סגירה ממשיכה מאותו-מצב; (2) Step-2 — זיהוי-נושא דרך Inngest+Realtime (`course_draft:{id}`), confidence<70%=warning, אפס-נושא=הודעת-retry; (3) Step-3 — `PageGrid` עם virtual-scroll טוען ≥570 פריטים תוך ≤2s, toggle-בחירה + preview-modal, בחירה persisted ל-draft; (4) Step-4 — `CostBreakdown` מתעדכן בזמן-אמת מ-toggle "צירוף-מקור", not-enough-credits חוסם יצירה, "צור" → enqueue course-build → Step-5; (5) Step-5 — `PipelineSteps` (5 שלבים) מתעדכן ≤2s אחרי-emit דרך Realtime (`course:{id}`), idempotent ל-refresh, error-בשלב=alert+retry · ref: [create-1-source](../screens-spec/create-1-source.md) · [create-2-topic](../screens-spec/create-2-topic.md) · [create-3-select](../screens-spec/create-3-select.md) · [create-4-confirm](../screens-spec/create-4-confirm.md) · [create-5-process](../screens-spec/create-5-process.md)
+  - 📊 **מטא:** ⏱8h · 🤖3(frontend-engineer, interaction-designer, backend-engineer) · 💲$0 · 🟡 · ראש-צוות:builder-lead · — · אימות:Workflow
 - [ ] **F2** — persistence אמיתי ל-Dashboard (החלפת mock-data) · קריטריון-קבלה: (1) header-counters (credits/XP/streak) ו-grid-הקורסים נקראים מ-Supabase (`users`,`credits`,`attempts`,`streaks`,`lessons_completed`) במקום מ-mock (כיום credits=1500 קבוע); (2) שני-המצבים — first-time (אין-קורסים) ו-with-courses (grid מקורסים-שנוצרו ב-F1) — מונעים מ-state-אמיתי; (3) counters מתעדכנים live דרך Supabase Realtime; (4) greeting לפי-שעה + streak נשבר ב-00:00 (Asia/Jerusalem) · ref: [dashboard](../screens-spec/dashboard.md) · [build-roadmap](../build-roadmap.md)
+  - 📊 **מטא:** ⏱4h · 🤖2(frontend-engineer, data-engineer) · 💲$0 · 🟢 · ראש-צוות:builder-lead · — · אימות:Workflow
 
 ## מסמכי-ייחוס (קרא לפני עבודה)
 

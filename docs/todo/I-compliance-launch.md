@@ -14,11 +14,17 @@
 ## תתי-משימות
 
 - [ ] **I1** — נגישות: עמידה ב-ת"י 5568 (≈WCAG 2.0 AA) + הצהרת-נגישות · קריטריון-קבלה: audit axe ב-CI עובר ללא הפרות AA על כל מסך-ציבורי · Lighthouse a11y ≥90 (Gate-E) · עמוד `/accessibility` (הצהרת-נגישות) חי · FAB-נגישות פעיל · (לאמת: סף רכז-נגישות) · ref: [COMPLIANCE.md C2](../compliance/COMPLIANCE.md) · [build-roadmap Phase 9](../build-roadmap.md)
+  - 📊 **מטא:** ⏱4h · 🤖2(accessibility-i18n, e2e-qa) · 💲$0 · 🟡 · ראש-צוות:quality-lead · — · אימות:Workflow
 - [ ] **I2** — פרטיות: מדיניות-פרטיות + תיקון-13 (2025) · קריטריון-קבלה: עמוד `/privacy` חי + באנר/הסכמה לפני איסוף · אבטחה-לפי-רגישות (תקנות אבטחת-מידע 2017) · נוהל אירוע-אבטחה מתועד · (אם EU — עמידת GDPR · לאמת) · ref: [COMPLIANCE.md C3](../compliance/COMPLIANCE.md) · [EXECUTION-PLAN §שלב-5](../context/EXECUTION-PLAN.md)
+  - 📊 **מטא:** ⏱3h · 🤖2(privacy-officer, content-writer) · 💲$0 · 🟡 · ראש-צוות:quality-lead · 🚩דורש-מוטי (משפטי) · אימות:solo
 - [ ] **I3** — הגנת-צרכן: זכות-ביטול 14 יום + גילוי-נאות · קריטריון-קבלה: זרימת ביטול-עסקה (14 יום, תקנות מכר-מרחוק) ממומשת ובדוקה · גילוי-מלא בעמוד-מכירה (מחיר כולל מע"מ + זהות-עוסק) · עמוד תנאי-שימוש חי · ref: [COMPLIANCE.md C4](../compliance/COMPLIANCE.md) · [build-roadmap Phase 10](../build-roadmap.md)
+  - 📊 **מטא:** ⏱3h · 🤖2(privacy-officer, content-writer) · 💲$0 · 🟡 · ראש-צוות:quality-lead · 🚩דורש-מוטי (משפטי) · אימות:solo
 - [ ] **I4** — תשלומים: PCI/חשבונית · קריטריון-קבלה: סליקה דרך ספק נושא-רוב-נטל-PCI (Stripe/Cardcom/Tranzila) — ללא אחסון פרטי-כרטיס מקומי · הפקת חשבונית/מע"מ + רישום-עוסק · (תלוי Phase 8/10 · לאמת ספק) · ref: [COMPLIANCE.md C5](../compliance/COMPLIANCE.md) · [build-roadmap Phase 10](../build-roadmap.md)
+  - 📊 **מטא:** ⏱3h · 🤖2(backend-engineer, appsec) · 💲$0 · 🔴 · ראש-צוות:quality-lead · 🚩דורש-מוטי · אימות:Workflow
 - [ ] **I5** — service-role isolation (חופף C1 מ-M6) · קריטריון-קבלה: `SUPABASE_SERVICE_ROLE_KEY` server-only — לא דולף ל-client bundle · נוהל-secrets (secrets ב-`.env.local` בלבד, לא ב-commit) מאומת ע"י appsec · ref: [COMPLIANCE.md C1](../compliance/COMPLIANCE.md) · [EXECUTION-PLAN §שלב-5](../context/EXECUTION-PLAN.md)
+  - 📊 **מטא:** ⏱1h · 🤖1(appsec) · 💲$0 · 🟢 · ראש-צוות:quality-lead · — · אימות:Workflow (security-review)
 - [ ] **I6** — זכויות-נושא-מידע (מחיקה/ייצוא) · קריטריון-קבלה: מחיקה — `DeleteAccountModal` קיים → לאמת מחיקה-בפועל מ-DB · עיון/ייצוא נתוני-משתמש (export) ממומש · זכויות עיון/תיקון/מחיקה זמינות לנושא-המידע (תיקון-13) · ref: [COMPLIANCE.md C6](../compliance/COMPLIANCE.md) · [build-roadmap Phase 9](../build-roadmap.md)
+  - 📊 **מטא:** ⏱3h · 🤖2(backend-engineer, privacy-officer) · 💲$0 · 🟡 · ראש-צוות:quality-lead · — · אימות:Workflow
 
 ## מסמכי-ייחוס (קרא לפני עבודה)
 

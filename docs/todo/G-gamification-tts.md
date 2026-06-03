@@ -14,7 +14,9 @@
 ## תתי-משימות
 
 - [ ] **G1** — Phase 6 gamification (XP/streak/practice-log): רישום אירוע-פעילות לכל ניסיון/השלמת-שיעור (`attempts`, `lessons_completed`), צבירת XP + streak יומי + levels + daily-goal, והצגה ב-`/stats` עם 5 panels (XP-over-time, streak-heatmap, lessons-bar, accuracy, time-of-day). · קריטריון-קבלה: streak/XP מתעדכנים מפעולת-לומד אמיתית (לא mock); `/stats` מציג מצב-ריק כשאין נתונים (אין גרפים ריקים) ו-charts responsive (Recharts/Visx — לאמת ספרייה) כשיש; aggregate מעל `attempts`+`lessons_completed` (materialized-view `user_stats_daily` רענון-לילי — לאמת). · ref: [../screens-spec/stats.md](../screens-spec/stats.md)
+  - 📊 **מטא:** ⏱4h · 🤖2(frontend-engineer, backend-engineer) · 💲$0 · 🟢 · ראש-צוות:builder-lead · — · אימות:Workflow
 - [ ] **G2** — Phase 7 Hebrew-TTS על "הסבר לעומק" (ElevenLabs, קול-אחד → הרחבה ל-4, cached): wrapper ב-`src/lib/tts/` שמקריא טקסט "הסבר לעומק", רישום קולות ב-`src/lib/tts/voices.ts` (voice_id, name, gender, tone), preview-MP3 pre-cached ב-Supabase Storage (`tts-previews/<voice>.mp3`), בחירה ב-`user_settings.tts_voice` (yoav/tali/michal/ori) דרך `POST /api/settings/voice`. · קריטריון-קבלה: קול-אחד עובד end-to-end על "הסבר לעומק" ואינו עושה fetch כפול (audio cached); preview < 2s (cached); בחירה נשמרת מיד (debounce 300ms) + toast-אישור; ניתן להאזין לכמה preview ברצף (אחת בכל פעם); keyboard-nav (arrow keys) בין הקולות; AI-call/TTS תמיד עם cache (כלל-יסוד). · ref: [../screens-spec/settings-voices.md](../screens-spec/settings-voices.md)
+  - 📊 **מטא:** ⏱3h · 🤖2(ml-engineer, frontend-engineer) · 💲~$1–3 (ElevenLabs, cached) · 🟡 · ראש-צוות:builder-lead · — · אימות:Workflow
 
 ## מסמכי-ייחוס (קרא לפני עבודה)
 
