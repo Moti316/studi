@@ -7,7 +7,7 @@
 > מקור: סריקת-ריפו (2026-06-01). עוגנים: [`architecture/ADR-006-course-as-product-factory.md`](architecture/ADR-006-course-as-product-factory.md)
 > · [`architecture/ADR-010-data-schema-mvp.md`](architecture/ADR-010-data-schema-mvp.md)
 > · [`architecture/ADR-011-drive-import-pipeline.md`](architecture/ADR-011-drive-import-pipeline.md)
-> · [`../courses/safety-officer/README.md`](../courses/safety-officer/README.md). מעודכן: 2026-06-01
+> · [`../courses/safety-officer/README.md`](../courses/safety-officer/README.md). מעודכן: 2026-06-03
 
 ## הפלטפורמה (StudiBuilder)
 
@@ -30,6 +30,12 @@
 
 **עיקרון-הפרדה (ADR-006):** הפלטפורמה היא "מפעל-מוצר" — היא מקבלת תוכן-קורס מתוקנן ומפיקה ממנו מוצר
 (שו"ת · תרחישים · מורה-AI). הוספת קורס = הוספת `courses/<slug>/` + ריצת-ייבוא; **ללא** שינוי ב-`src/`.
+
+> ### 🚧 גבול-השכבות (red-line שענף-הבקרה אוכף)
+>
+> - **`src/` = פלטפורמה גנרית-קבועה** — קוד קורס-אגנוסטי בלבד. אסור שיכיל ידע-קורס (שמות-פרקים, נוסחי-חקיקה, scope-IDs ספציפיים-לקורס, תוכן-תכנית). הקבועים היחידים המותרים הם invariants-של-הפלטפורמה (למשל `scope-refs.ts` — סט-ה-scope הנעול).
+> - **`courses/<slug>/` = instance-נתונים** — כל הידע הספציפי-לקורס יושב כאן בלבד (`safety-officer` = **instance #1**). קורס-נוסף = תיקייה-נוספת + ייבוא, **ללא נגיעה ב-`src/`**.
+> - **הפרת-הגבול = דגל-בקרה:** ידע-קורס שמחלחל ל-`src/` (hard-coded chapter/legislation/PROGRAM) הוא **הפרת-גבול** → דגל לענף-הבקרה (`oversight` — **בהקמה, סשן-B**). זהו ה-checklist האובייקטיבי שמבקר-התכנית מצליב מול חוזה-התיקייה.
 
 **מקרא:** פלטפורמה = קוד-גנרי משותף לכל הקורסים · קורס = נתוני-instance בתוך `courses/<slug>/`.
 
@@ -109,8 +115,11 @@ courses/<slug>/sources/
    (ב-StudiBuilder הנוכחי 57 נעולים — invariant; קורס-נוסף יקבל החלטה-ייעודית).
 10. **ייבא** — `pnpm import:<phase> --dry-run` (תקציב) → `--execute` (ADR-011). אמת ב-`coverage_tracker`.
 11. **רשום את הקורס** — ב-`../CLAUDE.md` + `context/PROJECT-MAP.md` + רשומת-`context/SESSION-LOG.md`.
+12. **אימות-בקרה** — **מבקר-התכנית** (ענף-`oversight` — בהקמה, סשן-B) מאמת את הקורס-החדש מול ה-**PROGRAM הרשמי**
+    שלו (כיסוי spine/scope מול תכנית-הרגולטור; בקורס #1 = `MOLSA-PROGRAM.md` מול 905018) ומאשר שאין ידע-קורס
+    שחלחל ל-`src/` (גבול-השכבות לעיל). חוסר-כיסוי או הפרת-גבול = דגל-בקרה.
 
-**מקרא:** שלבים 1–8 = נתוני-קורס (תוכן) · 9–11 = שילוב-בפלטפורמה (קוד + רישום).
+**מקרא:** שלבים 1–8 = נתוני-קורס (תוכן) · 9–11 = שילוב-בפלטפורמה (קוד + רישום) · 12 = שער-בקרה (oversight).
 
 ## References
 
