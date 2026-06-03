@@ -1,0 +1,10 @@
+{
+  "_comment": "MERGE this SessionStart hook into your project's .claude/settings.json (do not overwrite existing hooks). It runs session-context.mjs at the start of every session to inject repo-sync status + key context docs.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [{ "type": "command", "command": "node .claude/scripts/session-context.mjs" }]
+      }
+    ]
+  }
+}

@@ -2,7 +2,7 @@
 
 > ⚠️ **קובץ מחולל — אל תערוך ידנית.** מקור: `.claude/scripts/gen-md-index.mjs` · רענון: `pnpm index:md`
 > (מתרענן גם אוטומטית ב-pre-commit). דלת-הכניסה לשליפה-מהירה של כל מסמך בריפו.
-> **סה״כ 332 קבצי-MD בריפו** · ⚠️ 1 יתומים-מקומיים (ראה תחתית) · עמודת "עודכן" = מתי הקובץ עודכן לאחרונה ב-git (לאיתור מסמכים שהתיישנו).
+> **סה״כ 332 קבצי-MD בריפו** · ⚠️ 13 יתומים-מקומיים (ראה תחתית) · עמודת "עודכן" = מתי הקובץ עודכן לאחרונה ב-git (לאיתור מסמכים שהתיישנו).
 
 ## 📌 קבצי-חובה — קרא/עבור עליהם בכל סשן (נעוץ)
 
@@ -464,5 +464,17 @@
 
 | קובץ | תאריך-דיסק | סטטוס |
 | --- | --- | --- |
+| .claude/skills/agent-os/SKILL.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
+| .claude/skills/agent-os/templates/_debate-protocol.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
+| .claude/skills/agent-os/templates/_oversight-protocol.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
+| .claude/skills/agent-os/templates/agent-stub.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
+| .claude/skills/agent-os/templates/comms-README.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
+| .claude/skills/agent-os/templates/HOWTO-add-agent.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
+| .claude/skills/agent-os/templates/identity-12-fields.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
+| .claude/skills/agent-os/templates/ORG.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
+| .claude/skills/agent-os/templates/PROJECT-CONTEXT.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
+| .claude/skills/agent-os/templates/quality-gates.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
+| .claude/skills/agent-os/templates/TEAM.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
+| .claude/skills/agent-os/templates/TODO-schema.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
 | Todolist.md | 2026-05-31 | ⚠️ לא-בריפו — לבדיקה |
 

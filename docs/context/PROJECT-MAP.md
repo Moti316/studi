@@ -63,6 +63,7 @@
 
 - `teams/PROJECT-CONTEXT.md` (עוגן-הקשר) · `teams/ORG.md` (היררכיה+7-שלבים+קצב-דיווח) · `teams/README.md` (רוסטר) · `teams/HOWTO-add-agent.md`.
 - **ענף-בקרה `teams/oversight/` (ממשל-v2, עצמאי):** `TEAM.md` · `_oversight-protocol.md` (צו-עצירה+read-authority+ערוץ-ישיר) · `_curriculum-audit-protocol.md` (כיסוי+drift) · `stop-orders-ledger.md` · `oversight-report.md` · `control-report.md` · 6×`<slug>/{identity,memory,activity-log}`. תוכנית-ממשל-v2 (סשן A/B/C): `GOVERNANCE-V2.md`.
+- **סקיל `agent-os` (`.claude/skills/agent-os/`):** ערכה **גנרית רב-פרויקטית** לסקאפולד ארכיטקטורת-הסוכנים — `SKILL.md` + 12 תבניות (ORG · HOWTO · identity-12 · \_debate · \_oversight · TEAM · PROJECT-CONTEXT · agent-stub · comms · TODO-schema · quality-gates · session-context-hook). placeholders · firewall-מגן. תוצר-5 ממשל-v2.
 
 ## עקרון
 

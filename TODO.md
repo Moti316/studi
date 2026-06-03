@@ -20,7 +20,7 @@
   5. ✅ **OV-5** עדכוני-ממשל — ORG · README · AGENTS · CLAUDE · PROJECT-CONTEXT · MEMORY · PROJECT-MAP → רוסטר 33.
   6. ✅ **OV-6** גיבוי תוכנית-ממשל-v2 בריפו (`docs/context/GOVERNANCE-V2.md`) + פרומפט סשן-C.
   - 🚩 **שמות-עבריים** (נדב/עידו/הדס · רותם/שני/גיא) = **הצעה, ניתן-לשינוי-מוטי** (ההצעה המקורית אורי/יעל/אסף/מאיה התנגשה עם הרוסטר הקיים).
-- ⬜ **סשן-C** — תוצר-5: SKILL `agent-os` גנרי (חילוץ-ארכיטקטורה · placeholders · ללא course-factory/stack/תוכן-קורס · מגן מוחרג). ראה GOVERNANCE-V2.md + `docs/IDEAS.md`.
+- ✅ **סשן-C** — תוצר-5: SKILL `agent-os` גנרי ב-[`.claude/skills/agent-os/`](.claude/skills/agent-os/SKILL.md) — SKILL + 12 תבניות · placeholders · **firewall-מגן מאומת** (grep + אימות-אדוורסרי) · 2026-06-04.
 
 ## ✅ הושלם (מאומת מול הקוד)
 
@@ -91,4 +91,4 @@
 
 ## 💡 עתידי (ראה `docs/IDEAS.md`)
 
-- סקירת-gstack (adopt/skip list, ללא התקנה) · Agent-OS starter-kit כ-Skill · דשבורד-סוכנים (playground).
+- סקירת-gstack (adopt/skip list, ללא התקנה) · **Agent-OS starter-kit כ-Skill ✅** (מומש — `.claude/skills/agent-os/`) · דשבורד-סוכנים (playground).
