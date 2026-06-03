@@ -2,7 +2,7 @@
 
 > ⚠️ **קובץ מחולל — אל תערוך ידנית.** מקור: `.claude/scripts/gen-md-index.mjs` · רענון: `pnpm index:md`
 > (מתרענן גם אוטומטית ב-pre-commit). דלת-הכניסה לשליפה-מהירה של כל מסמך בריפו.
-> **סה״כ 332 קבצי-MD בריפו** · ⚠️ 13 יתומים-מקומיים (ראה תחתית) · עמודת "עודכן" = מתי הקובץ עודכן לאחרונה ב-git (לאיתור מסמכים שהתיישנו).
+> **סה״כ 344 קבצי-MD בריפו** · ⚠️ 1 יתומים-מקומיים (ראה תחתית) · עמודת "עודכן" = מתי הקובץ עודכן לאחרונה ב-git (לאיתור מסמכים שהתיישנו).
 
 ## 📌 קבצי-חובה — קרא/עבור עליהם בכל סשן (נעוץ)
 
@@ -58,7 +58,7 @@
 | [BUGS.md](../../docs/context/BUGS.md) | זיכרון-מוסדי: בעיות שנפתרו + הפתרון. קרא לפני שאתה נתקל באותו דבר. מעודכן: 2026-05-31. | docs context | 2026-05-31 |
 | [DECISIONS.md](../../docs/context/DECISIONS.md) | החלטות-מפתח שורה-בשורה (מעבר ל-ADRs הפורמליים). חדש למעלה. מעודכן: 2026-05-31. | docs context | 2026-05-31 |
 | [EXECUTION-PLAN.md](../../docs/context/EXECUTION-PLAN.md) | התוכנית האחת והאוטוריטטיבית. מאחדת את build-roadmap (10 phases), ADR-006 (Course-as-Product Factory), | docs context | 2026-06-02 |
-| [GOVERNANCE-V2.md](../../docs/context/GOVERNANCE-V2.md) | גיבוי-בריפו של תוכנית-ממשל-v2 (המקור היה מקומי ב-/.claude/plans/, per-machine). | docs context | 2026-06-03 |
+| [GOVERNANCE-V2.md](../../docs/context/GOVERNANCE-V2.md) | גיבוי-בריפו של תוכנית-ממשל-v2 (המקור היה מקומי ב-/.claude/plans/, per-machine). | docs context | 2026-06-04 |
 | [MD-INDEX.md](../../docs/context/MD-INDEX.md) | ⚠️ קובץ מחולל — אל תערוך ידנית. מקור: .claude/scripts/gen-md-index.mjs · רענון: pnpm index:md | docs context | 2026-06-04 |
 | [MOTI-INBOX.md](../../docs/context/MOTI-INBOX.md) | ערוץ-תקשורת א-סינכרוני. מוטי כותב כאן הערות/הנחיות מכל מחשב (push ל-main); | docs context | 2026-06-04 |
 | [PLANNING-STATE.md](../../docs/context/PLANNING-STATE.md) | ⚠️ לסשן הבא: אנחנו במצב-תכנון רב-נושאי סביב מבנה-הקורס וחומרי-הלימוד — לא לקפוץ ל-build (M5) בלי לסגור את התכ… | docs context | 2026-06-01 |
@@ -183,7 +183,7 @@
 | [content-scope.md](../../docs/content-scope.md) | Source-of-truth: PDF "חקיקה ותקינה לממונה בטיחות" + PDF "מערכת שעות קורס 1211762 אוגוסט 2025" | docs | 2026-06-01 |
 | [curriculum-coverage.md](../../docs/curriculum-coverage.md) | ⚠️ קובץ זה אוחד אל CONTENT-INDEX.md (2026-05-31) — מטריצת קורס 1211762 × 57 scope-IDs × Drive, סטטיסטיקת-הכיס… | docs | 2026-05-31 |
 | [features.md](../../docs/features.md) | רשימת כל הפיצ'רים שזוהו בסרטונים, ממויינים לקטגוריות. מהווה בסיס ל-MVP scoping | docs | 2026-05-29 |
-| [IDEAS.md](../../docs/IDEAS.md) | Backlog חי לרעיונות / פיצ'רים-עתידיים / פידבקים. לא מחייב ביצוע. כל אחד (מוטי או סוכן) מוזמן להוסיף. | docs | 2026-06-02 |
+| [IDEAS.md](../../docs/IDEAS.md) | Backlog חי לרעיונות / פיצ'רים-עתידיים / פידבקים. לא מחייב ביצוע. כל אחד (מוטי או סוכן) מוזמן להוסיף. | docs | 2026-06-04 |
 | [implementation-gaps.md](../../docs/implementation-gaps.md) | תאריך: 2026-05-30 · נכתב על-בסיס סריקת-קוד ישירה (לא הסתמכות על התיעוד) | docs | 2026-05-31 |
 | [M5-discovery-curation.md](../../docs/M5-discovery-curation.md) | סטטוס: ⏳ ממתין לאישור-מוטי. נוצר 2026-06-02 (ריצת-לילה, instance #5). | docs | 2026-06-02 |
 | [mvp-plan-2026-07-15.md](../../docs/mvp-plan-2026-07-15.md) | מצב: Draft של Product Owner. מצפה לאישור מוטי לפני exit ל-execute. | docs 2026 | 2026-05-30 |
@@ -401,7 +401,7 @@
 | [stop-orders-ledger.md](../../teams/oversight/stop-orders-ledger.md) | ראיית-העצירה של ענף-הבקרה. כל צו-עצירה נחתם כאן לפני שהוא נכנס-לתוקף. | teams oversight | 2026-06-03 |
 | [TEAM.md](../../teams/oversight/TEAM.md) | מסמך-העוגן של ענף-הבקרה העצמאי ב-StudiBuilder. נקרא אחרי | teams oversight | 2026-06-03 |
 
-### ⚙️ .claude — agents · skills · scripts  ·  28
+### ⚙️ .claude — agents · skills · scripts  ·  40
 
 | קובץ | תכלית | תגיות | עודכן |
 | --- | --- | --- | --- |
@@ -433,6 +433,18 @@
 | [test-engineer.md](../../.claude/agents/test-engineer.md) | כותב ומתחזק בדיקות אוטומטיות ברמת unit ו-integration. הצלחה = רשת-בדיקות שתופסת רגרסיות לפני שהן מגיעות למשתמ… | .claude agents | 2026-05-28 |
 | [ux-researcher.md](../../.claude/agents/ux-researcher.md) | מבין את המשתמשים ומאמת הנחות דרך מחקר ו-personas. הצלחה = החלטות-מוצר נסמכות על ראיה, לא על הנחה. | .claude agents | 2026-05-28 |
 | [visual-designer.md](../../.claude/agents/visual-designer.md) | הבעלים של השפה הוויזואלית: צבע, טיפוגרפיה, אייקונוגרפיה. הצלחה = זהות-מותג עקבית ונגישה. | .claude agents | 2026-05-28 |
+| [SKILL.md](../../.claude/skills/agent-os/SKILL.md) | Bootstrap a complete, file-based multi-agent governance system into any repo in one command. The templates ar… | .claude skills agent-os | 2026-06-04 |
+| [_debate-protocol.md](../../.claude/skills/agent-os/templates/_debate-protocol.md) | פרוטוקול קבלת-החלטות של המועצה. הסתמכות על מודל יחיד מסוכנת (הזיות, | skills agent-os templates | 2026-06-04 |
+| [_oversight-protocol.md](../../.claude/skills/agent-os/templates/_oversight-protocol.md) | פרוטוקול-הסמכויות של ענף-הבקרה העצמאי (oversight). נקרא ע"י כל סוכני-הענף אחרי | skills agent-os templates | 2026-06-04 |
+| [agent-stub.md](../../.claude/skills/agent-os/templates/agent-stub.md) | { { AGENTMANDATE } } | skills agent-os templates | 2026-06-04 |
+| [comms-README.md](../../.claude/skills/agent-os/templates/comms-README.md) | תקשורת בין סוכנים מבוססת-קבצים, לא ישירה בזיכרון. כך נמנעים race | skills agent-os templates | 2026-06-04 |
+| [HOWTO-add-agent.md](../../.claude/skills/agent-os/templates/HOWTO-add-agent.md) | מדריך-תהליך להוספת סוכן לצוות {{PROJECTNAME}}. הרוסטר המלא: README.md. | skills agent-os templates | 2026-06-04 |
+| [identity-12-fields.md](../../.claude/skills/agent-os/templates/identity-12-fields.md) | תבנית גנרית למסמך-זהות של סוכן ({{TEAMSDIR}}/<tier>/<slug>/identity.md). | skills agent-os templates | 2026-06-04 |
+| [ORG.md](../../.claude/skills/agent-os/templates/ORG.md) | מסמך-העוגן של היררכיית-הסוכנים והממשל. כל סוכן קורא אותו אחרי | skills agent-os templates | 2026-06-04 |
+| [PROJECT-CONTEXT.md](../../.claude/skills/agent-os/templates/PROJECT-CONTEXT.md) | הקובץ הראשון שכל סוכן קורא בתחילת כל משימה, לפני identity.md ו-memory.md. | skills agent-os templates | 2026-06-04 |
+| [quality-gates.md](../../.claude/skills/agent-os/templates/quality-gates.md) | תבנית גנרית (Agent-OS starter-kit). סנתז משלושה מקורות: hook-קדם-קומיט, | skills agent-os templates | 2026-06-04 |
+| [TEAM.md](../../.claude/skills/agent-os/templates/TEAM.md) | מסמך-העוגן של הצוות ב-{{PROJECTNAME}}. נקרא אחרי | skills agent-os templates | 2026-06-04 |
+| [TODO-schema.md](../../.claude/skills/agent-os/templates/TODO-schema.md) | היררכיית-TODO דו-שכבתית. שכבה-1 = {{TODOMASTER}} בשורש (master — סקירה | skills agent-os templates | 2026-06-04 |
 
 ### 💬 comms — תקשורת בין-סוכנית  ·  1
 
@@ -464,17 +476,5 @@
 
 | קובץ | תאריך-דיסק | סטטוס |
 | --- | --- | --- |
-| .claude/skills/agent-os/SKILL.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
-| .claude/skills/agent-os/templates/_debate-protocol.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
-| .claude/skills/agent-os/templates/_oversight-protocol.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
-| .claude/skills/agent-os/templates/agent-stub.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
-| .claude/skills/agent-os/templates/comms-README.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
-| .claude/skills/agent-os/templates/HOWTO-add-agent.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
-| .claude/skills/agent-os/templates/identity-12-fields.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
-| .claude/skills/agent-os/templates/ORG.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
-| .claude/skills/agent-os/templates/PROJECT-CONTEXT.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
-| .claude/skills/agent-os/templates/quality-gates.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
-| .claude/skills/agent-os/templates/TEAM.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
-| .claude/skills/agent-os/templates/TODO-schema.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
 | Todolist.md | 2026-05-31 | ⚠️ לא-בריפו — לבדיקה |
 

@@ -22,11 +22,34 @@
 - **F2 stats-core:** גזירת XP/streak/accuracy מ-question_attempts ([`src/lib/stats/learner-stats.ts`](../../src/lib/stats/learner-stats.ts), `6515fc3`).
 - **503 טסטים ירוקים** (+60 חדשים) · typecheck נקי. כל המודולים לוגיקה-טהורה (קריאות-Gemini גדורות עד אישור-מוטי).
 
-### מצב / הצעד הבא
+### מה נעשה — Phase 4 (תוצר-5 ממשל-v2) ✅
 
-- 🚩 **דורש-מוטי:** (1) בחירת כיוון-עיצוב מ-3 התוכניות (`docs/design/DESIGN-PLANS-COMPARE.md`). (2) `Todolist.md` (יתום ישן 5/31, gitignored, הוחלף ע"י TODO.md) — להחליט אם למחוק. (3) הרצת-embedding/Gemini בפועל (עולה כסף) — השלד מוכן, ממתין לאישור.
-- ⏳ **Phase 4** (אופציונלי, אם יישאר זמן): תוצר-5 סקיל `agent-os` גנרי.
-- ⏳ **נותר לחיווט (דורש DB/route-tests — לא-בוצע):** D-APIs (route handlers שעוטפים scheduler/SM-2) · F2 DB-wiring (שאילתה→stats-core) · D-UI (נושא-עיצוב → 3 התוכניות).
+- **סקיל `agent-os` גנרי** ([`.claude/skills/agent-os/`](../../.claude/skills/agent-os/SKILL.md), `2f43982`): SKILL.md + 12 תבניות + settings-snippet. placeholders ({{PROJECT_NAME}}/{{DOMAIN}}/{{TIERS}}/...). **firewall מאומת** — grep-דטרמיניסטי + **אימות-אדוורסרי 3-עדשות** (firewall=נקי · placeholders · fidelity=נקי; 3 ממצאי-עקביות תוקנו). נבנה ב-2 Workflows (12 סוכני-חילוץ + 3 סוכני-אימות). עדכון: IDEAS 💡→✅ · GOVERNANCE-V2 תוצר-5 ✅ · TODO סשן-C ✅ · PROJECT-MAP + CLAUDE §סקילים.
+
+### 🌅 סיכום-בוקר — 8 commits נדחפו ל-`main` (כולם ירוקים)
+
+| תוצר                       | commit    | אימות               |
+| -------------------------- | --------- | ------------------- |
+| אינדקס-MD חכם + MOTI-INBOX | `72a5658` | מחולל · 332 קבצים   |
+| 3 תוכניות-עיצוב (Workflow) | `1d73650` | StudiesGo · COMPARE |
+| SM-2                       | `a5807a9` | 21 טסטים            |
+| RAG (chunker+embedder)     | `f95061c` | 20 טסטים            |
+| scheduler                  | `15e8224` | 11 טסטים            |
+| stats-core                 | `6515fc3` | 8 טסטים             |
+| agent-os skill (תוצר-5)    | `2f43982` | firewall + אדוורסרי |
+
+**503 טסטים ירוקים · typecheck נקי · 0 הוצאת-כסף · firewall-מגן נשמר.**
+
+### 🚩 דורש-מוטי (לבוקר)
+
+1. **בחירת כיוון-עיצוב** מ-3 התוכניות → `docs/design/DESIGN-PLANS-COMPARE.md`.
+2. `Todolist.md` (יתום ישן 5/31, gitignored, הוחלף ע"י TODO.md) — להחליט אם למחוק.
+3. הרצת-embedding/Gemini בפועל (עולה כסף) — השלד מוכן, ממתין לאישור. + יישור-מימדים `vector(1024)`→Gemini.
+4. הערות נוספות → כתוב ב-`docs/context/MOTI-INBOX.md` (אקרא ואגיב בצעד-0).
+
+### ⏳ נותר לחיווט (דורש DB/route-tests — לא-בוצע אוטונומית)
+
+D-APIs (route handlers שעוטפים scheduler/SM-2) · F2 DB-wiring (שאילתה→stats-core) · D-UI ו-Upload-UI (נושא-עיצוב → אחרי בחירת-כיוון).
 
 ---
 
