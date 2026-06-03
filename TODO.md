@@ -6,6 +6,22 @@
 > 📂 **פירוט תתי-משימות פר-שלב:** [docs/todo/](docs/todo/README.md) — כל שלב A–I בקובץ נפרד (קריטריוני-קבלה + מסמכי-ייחוס).
 > 📊 **פירוט-מורחב** (⏱זמן · 🤖סוכנים · 💲עלות · 🟢🟡🔴סיכון · ראש-צוות · 🚩דורש-מוטי · אימות) פר תת-משימה ב-[docs/todo/](docs/todo/README.md) — הסכמה+מקרא ב-README. (ממשל-v2 / תוצר-3.)
 
+## 🏛️ ממשל-v2 — ענף-בקרה עצמאי (סשן רב-שלבי) · [גיבוי-תוכנית: docs/context/GOVERNANCE-V2.md](docs/context/GOVERNANCE-V2.md)
+
+> 3 הכרעות-מוטי נעולות: ענף-`oversight` עצמאי מקביל-למתווך · צו-עצירה קוורום-2/3 + ledger (רק-מוטי-מבטל) · הכל-ברצף.
+> **שיטת-עבודה (מוטי 2026-06-03):** **גיבוי-ריפו (commit+push) + עדכון-TODO + doc-לוג Drive אחרי כל תת-משימה.**
+
+- ✅ **סשן-A** — תוצר-4 (גבול פלטפורמה↔קורס · `3b01c40`) + תוצר-3 (סכמת-TODO מורחבת · `bf9624d`).
+- 🔄 **סשן-B** — הקמת ענף-בקרה `oversight` (6 סוכנים · רוסטר 27→33 · ב-tier חדש `oversight`):
+  1. ⬜ **OV-1** בקרה-חיצונית — `oversight-lead`(נדב) · `plan-compliance-auditor`(עידו) · `process-audit-officer`(הדס) — 3×3 קבצים + 3 stubs.
+  2. ⬜ **OV-2** קבצי-ענף — `_oversight-protocol` · `stop-orders-ledger` · `oversight-report` · `control-report` · `TEAM`.
+  3. ⬜ **OV-3** מבקר-תכנית — `curriculum-auditor-lead`(רותם) · `coverage-auditor`(שני) · `content-drift-auditor`(גיא) — 3×3 + 3 stubs.
+  4. ⬜ **OV-4** `_curriculum-audit-protocol` + עדכון-`TEAM` (סעיף מבקר-תכנית).
+  5. ⬜ **OV-5** עדכוני-ממשל — ORG · README · AGENTS · CLAUDE · PROJECT-CONTEXT · MEMORY · PROJECT-MAP → רוסטר 33.
+  6. ⬜ **OV-6** גיבוי תוכנית-ממשל-v2 בריפו (`docs/context/GOVERNANCE-V2.md`) + פרומפט סשן-C.
+  - 🚩 **שמות-עבריים** (נדב/עידו/הדס · רותם/שני/גיא) = **הצעה, ניתן-לשינוי-מוטי** (ההצעה המקורית אורי/יעל/אסף/מאיה התנגשה עם הרוסטר הקיים).
+- ⬜ **סשן-C** — תוצר-5: SKILL `agent-os` גנרי (חילוץ-ארכיטקטורה · placeholders · ללא course-factory/stack/תוכן-קורס · מגן מוחרג). ראה GOVERNANCE-V2.md + `docs/IDEAS.md`.
+
 ## ✅ הושלם (מאומת מול הקוד)
 
 - **Phase 0/1** — Foundation + Auth (בפרודקשן, ~78% טסטים) · **Agent-OS** (27 סוכנים).
