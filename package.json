@@ -27,6 +27,7 @@
     "legislation:fetch:dry": "tsx scripts/fetch-legislation.ts --dry-run",
     "legislation:verify": "tsx scripts/fetch-legislation.ts --verify",
     "legislation:index": "tsx scripts/fetch-legislation.ts --index",
+    "index:md": "node .claude/scripts/gen-md-index.mjs",
     "prepare": "husky"
   },
   "dependencies": {

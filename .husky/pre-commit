@@ -1,1 +1,4 @@
 pnpm exec lint-staged
+
+# רענון-אוטומטי של אינדקס-ה-MD (חכם, תמיד-מעודכן). non-fatal אם לא ניתן לרוץ.
+node .claude/scripts/gen-md-index.mjs && git add docs/context/MD-INDEX.md || true

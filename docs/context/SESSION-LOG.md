@@ -5,6 +5,24 @@
 
 ---
 
+## 2026-06-04 (לילה) — ריצת-לילה אוטונומית: אינדקס-MD + תוכניות-עיצוב + תשתית
+
+> טייס-אוטומטי (אישור-מוטי "עבוד עד הבוקר"). היקף: אינדקס-MD (עדיפות-1) → תשתית לא-ויזואלית → עצירה-בעיצוב (3 תוכניות) → תוצר-5 אם יישאר זמן. כלים: לוג-ריפו (קובץ-זה) + `MOTI-INBOX.md` (דו-כיווני) + Drive Doc-תמצית. firewall-מגן · אפס-כסף · push אחרי כל תת-משימה.
+
+### מה נעשה
+
+- **צעד-0:** `git pull` — סונכרנו 24 commits (ענף-בקרה oversight · GOVERNANCE-V2 · קורפוס-חקיקה · ScenarioWalkthrough).
+- **Phase 1 — אינדקס-MD חכם ✅:** `.claude/scripts/gen-md-index.mjs` מחולל אוטומטית את [`MD-INDEX.md`](MD-INDEX.md) — **328 קבצים · 17 קטגוריות** · 📌 קבצי-חובה נעוצים בראש · 🚀 ניווט-מהיר פר-נושא · תכלית+תגיות+עדכון-אחרון פר-קובץ · ⚠️ **איתור-יתומים** (זיהה `Todolist.md` הישן). Wiring: `pnpm index:md` + pre-commit-regen + SessionStart-regen + הפניה בשורה-1 של `CLAUDE.md` + `PROJECT-MAP`. + תיבת-הערות דו-כיוונית [`MOTI-INBOX.md`](MOTI-INBOX.md).
+- **Phase 3 — 3 תוכניות-עיצוב (Workflow · 5 סוכנים · 397K tok) ✅:** `docs/design/DESIGN-PLAN-A/B/C.md` + `DESIGN-PLANS-COMPARE.md` — בהשראת קורפוס-StudiesGo האמיתי (login · שאלון-onboarding · מעברים · כפתורים · הנפשות · מראה-מזמין · RTL/a11y · design-tokens · wireframes). **למוטי לבחור.**
+
+### מצב / הצעד הבא
+
+- ⏳ **Phase 2** (תשתית לא-ויזואלית): E·RAG-skeleton · D-backend (SM-2 + שלד-APIs) · F2-persistence — בתהליך.
+- 🚩 **דורש-מוטי:** (1) בחירת כיוון-עיצוב מ-3 התוכניות (`docs/design/DESIGN-PLANS-COMPARE.md`). (2) `Todolist.md` (יתום ישן 5/31, gitignored, הוחלף ע"י TODO.md) — להחליט אם למחוק.
+- ⏳ **Phase 4** (אופציונלי): תוצר-5 סקיל `agent-os` אם יישאר זמן.
+
+---
+
 ## 2026-06-03 — ממשל-v2: סשן-A ✅ + סשן-B (ענף-בקרה oversight) ✅
 
 > בקשת-מוטי: ממשל-v2 (ענף-בקרה עצמאי). **שיטת-עבודה חדשה (2026-06-03): גיבוי-ריפו + עדכון-TODO + doc-לוג Drive אחרי כל תת-משימה.**

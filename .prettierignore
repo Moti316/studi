@@ -7,3 +7,7 @@ courses/safety-officer/sources/legislation/**/*.md
 # Caches / logs (also gitignored).
 .cache/
 logs/
+
+# Auto-generated MD index — מחולל ע"י .claude/scripts/gen-md-index.mjs.
+# Prettier אסור לעצב אותו מחדש (ייצור churn מול פלט-המחולל).
+docs/context/MD-INDEX.md

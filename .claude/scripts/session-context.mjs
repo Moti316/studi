@@ -60,11 +60,19 @@ const planning = read('docs/context/PLANNING-STATE.md') ?? '(docs/context/PLANNI
 const sessionLog = topEntry(read('docs/context/SESSION-LOG.md'));
 const todo = read('TODO.md') ?? '(TODO.md missing — create it)';
 
+// רענון אינדקס-ה-MD (חכם, תמיד-מעודכן) בכל פתיחת-סשן — עצמאי מ-git-hooks (non-fatal).
+try {
+  execSync('node .claude/scripts/gen-md-index.mjs', { cwd: root, stdio: 'ignore', timeout: 20000 });
+} catch {
+  /* offline / error — האינדקס נשאר כפי שחולל לאחרונה */
+}
+
 process.stdout.write(
   `# ⚡ StudiBuilder — אוטו-הקשר (SessionStart hook) · קרא לפני עבודה
 
 > מקורות-אמת (git-synced): PLANNING-STATE = מה הלאה · SESSION-LOG = handoff אחרון · CLAUDE.md = reading-list מלא + כללים מוחלטים.
 > אם נדרשת תמונה מלאה — קרא גם: PROJECT-MAP · STATUS · courses/safety-officer/ · docs/architecture/ADR-* · teams/.
+> 🗂️ **אינדקס-הכל:** \`docs/context/MD-INDEX.md\` — ניווט-מהיר לכל מסמך בריפו (מחולל-אוטומטית; רוענן עכשיו). שלוף ממנו את הרלוונטיים.
 
 ## 🔄 סנכרון-ריפו (צעד-0 — לפני כל עבודה)
 ${repoSync}
