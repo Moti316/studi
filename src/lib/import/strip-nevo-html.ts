@@ -41,6 +41,15 @@ export interface StripNevoResult {
   readonly headingCount: number;
   /** Leading section numbers found at paragraph starts (`^N.`), in order — for L2 continuity. */
   readonly sectionNumbers: readonly number[];
+  /**
+   * Count of embedded base64 content-images in the body. Nevo serves appendix
+   * tables / forms / figures / formulas as <img src="data:image…"> (NOT text),
+   * so a non-zero count means the `.md` text is INCOMPLETE (the binding Drive PDF
+   * has them). Drives `source_complete:false` + an auto `gap_note`.
+   */
+  readonly imageCount: number;
+  /** The heading/sentence immediately preceding each content-image (for the gap_note). */
+  readonly imageContexts: readonly string[];
 }
 
 /** Thrown when the structural extraction is not token-identical to the permissive one (L1). */
@@ -161,6 +170,31 @@ function toStructuralLines(region: string): string[] {
     .filter((l) => !/^#{1,2}$/.test(l)); // drop bare "#"/"##" (Nevo anchor wrappers)
 }
 
+/**
+ * Detect embedded base64 content-images (Nevo serves appendices/figures/formulas
+ * as <img src="data:image…">). Returns the count + the cleaned text preceding
+ * each (its heading/sentence) — used to auto-generate the gap_note.
+ */
+function detectContentImages(html: string): { count: number; contexts: string[] } {
+  const re = /<img\b[^>]*src=["']data:image\/[^"']+["'][^>]*>/gi;
+  const contexts: string[] = [];
+  let count = 0;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(html)) !== null) {
+    count += 1;
+    const before = decodeEntities(
+      html.slice(Math.max(0, m.index - 260), m.index).replace(/<[^>]+>/g, ' '),
+    )
+      .replace(/[A-Za-z0-9+/=]{16,}/g, ' ') // drop base64 tails of preceding images
+      .replace(/\s+/g, ' ')
+      .trim()
+      .slice(-90);
+    // Keep only contexts that are real Hebrew heading/text (base64 is ASCII-only).
+    if (/[א-ת]/.test(before) && !contexts.includes(before)) contexts.push(before);
+  }
+  return { count, contexts };
+}
+
 /** Find the body-region start: `<h1>` (template A), else `<body>` (template B), else 0. */
 function regionStartIndex(htmlNoChrome: string): number {
   const h1 = htmlNoChrome.search(/<h1[\s>]/i);
@@ -231,11 +265,15 @@ export function stripNevoHtml(html: string): StripNevoResult {
     }
   }
 
+  const images = detectContentImages(region);
+
   return {
     title,
     versionDate,
     body,
     headingCount: lines.filter((l) => l.startsWith('## ')).length,
     sectionNumbers: extractSectionNumbers(lines),
+    imageCount: images.count,
+    imageContexts: images.contexts,
   };
 }

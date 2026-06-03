@@ -236,16 +236,11 @@ export function verifyLegislationContent(content: string, opts: VerifyOptions = 
   for (let i = 1; i < maxN; i += 1) if (!present.has(i)) gaps.push(i);
   if (gaps.length) warnings.push(`L2: section-number gaps (likely repealed): ${gaps.join(', ')}`);
 
-  // Source-completeness: a declared gap, or a trailing תוספת heading with no body
-  // (Nevo serves that appendix as an embedded image — not text-extractable).
+  // Source-completeness: image-embedded content (Nevo serves appendices/figures
+  // as base64 PNG — not text-extractable; the binding Drive PDF has the full text).
   if (frontmatter.source_complete === 'false') {
-    warnings.push(`source incomplete: ${frontmatter.gap_note ?? '(no note)'}`);
-  }
-  const bodyLines = body.split('\n');
-  const lastLine = bodyLines[bodyLines.length - 1] ?? '';
-  if (/^##\s+.*תוספת/.test(lastLine)) {
     warnings.push(
-      'trailing תוספת heading with no content — appendix likely image-scanned (not extracted)',
+      `source incomplete (image-embedded content): ${frontmatter.gap_note ?? '(no note)'}`,
     );
   }
 

@@ -26,6 +26,7 @@
     "legislation:fetch": "tsx scripts/fetch-legislation.ts --execute",
     "legislation:fetch:dry": "tsx scripts/fetch-legislation.ts --dry-run",
     "legislation:verify": "tsx scripts/fetch-legislation.ts --verify",
+    "legislation:index": "tsx scripts/fetch-legislation.ts --index",
     "prepare": "husky"
   },
   "dependencies": {

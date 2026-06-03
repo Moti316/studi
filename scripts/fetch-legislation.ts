@@ -36,6 +36,9 @@ import {
   fileNameFor,
   relPathFor,
   validateManifest,
+  driveUrl,
+  DRIVE_LEGISLATION_FOLDER_ID,
+  CURRICULUM_DOC_FILE_ID,
 } from './legislation-manifest';
 import type { LegislationSource } from './legislation-manifest';
 import { stripNevoHtml } from '../src/lib/import/strip-nevo-html';
@@ -52,10 +55,10 @@ const LEGISLATION_ROOT = resolve('courses', 'safety-officer', 'sources', 'legisl
 const USER_AGENT =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) StudiBuilder/legislation-fetch (public-domain corpus)';
 const EXTRACTOR_TAG = 'fetch-legislation@1';
-const AUTHORITATIVE_SOURCE = 'רשומות / קובץ-התקנות';
+const AUTHORITATIVE_KIND = 'official-pdf-drive (records-of-law: רשומות/קובץ-התקנות)';
 const FETCH_DELAY_MS = 250; // be polite to Nevo between live fetches
 
-type Mode = 'dry-run' | 'execute' | 'verify' | 'verify-live';
+type Mode = 'dry-run' | 'execute' | 'verify' | 'verify-live' | 'index';
 
 interface Args {
   mode: Mode;
@@ -81,7 +84,8 @@ interface ReportRecord {
 function parseArgs(argv: string[]): Args {
   const args = argv.slice(2);
   let mode: Mode = 'dry-run';
-  if (args.includes('--verify-live')) mode = 'verify-live';
+  if (args.includes('--index')) mode = 'index';
+  else if (args.includes('--verify-live')) mode = 'verify-live';
   else if (args.includes('--verify')) mode = 'verify';
   else if (args.includes('--execute')) mode = 'execute';
   const onlyArg = args.find((a) => a.startsWith('--only='));
@@ -216,21 +220,35 @@ function buildMarkdown(
   stripped: ReturnType<typeof stripNevoHtml>,
   fetchDate: string,
 ): string {
+  const maxSection = stripped.sectionNumbers.length ? Math.max(...stripped.sectionNumbers) : 0;
+  const complete = stripped.imageCount === 0;
   const fm: string[] = ['---', `scope_id: ${yamlStr(source.scopeId)}`];
   if (source.subId) fm.push(`sub_id: ${yamlStr(source.subId)}`);
   fm.push(
     `title: ${yamlStr(stripped.title || source.officialTitle)}`,
+    `depth: ${yamlStr(source.depth)}`,
     `source: nevo`,
     `source_url: ${yamlStr(source.url)}`,
     `version_date: ${stripped.versionDate ? yamlStr(stripped.versionDate) : 'null'}`,
     `fetch_date: ${yamlStr(fetchDate)}`,
     `license: public-domain`,
-    `authoritative_source: ${yamlStr(AUTHORITATIVE_SOURCE)}`,
-    `section_count: ${stripped.sectionNumbers.length}`,
+    // Binding source-of-truth = the official PDF in Drive (COMPLETE — appendices included).
+    `authoritative_source: ${yamlStr(driveUrl(source.driveFileId))}`,
+    `authoritative_kind: ${yamlStr(AUTHORITATIVE_KIND)}`,
+    `section_count: ${maxSection}`,
     `heading_count: ${stripped.headingCount}`,
-    `source_complete: ${source.knownGap ? 'false' : 'true'}`,
+    `image_count: ${stripped.imageCount}`,
+    `source_complete: ${complete ? 'true' : 'false'}`,
   );
-  if (source.knownGap) fm.push(`gap_note: ${yamlStr(source.knownGap)}`);
+  if (!complete) {
+    const where = stripped.imageContexts.slice(0, 3).join(' · ');
+    fm.push(
+      `gap_note: ${yamlStr(
+        `${stripped.imageCount} תמונות-תוכן (תוספת/טבלה/איור/נוסחה) שנבו מטמיע כ-base64 ולא ניתנות-לחילוץ-טקסט — ` +
+          `הנוסח-המלא ב-PDF-המחייב (authoritative_source). הקשרים: ${where}`,
+      )}`,
+    );
+  }
   if (source.covers && source.covers.length) {
     fm.push(`covers: [${source.covers.map(yamlStr).join(', ')}]`);
   }
@@ -323,6 +341,90 @@ async function runFetch(args: Args, fetchDate: string): Promise<void> {
   else logLine(`planned: ${planned}`);
   logLine(`failed:  ${failed}`);
   logLine('AI cost: $0 (deterministic extraction)');
+}
+
+const INDEX_PATH = resolve('courses', 'safety-officer', 'sources', 'legislation', 'INDEX.md');
+const CHAPTER_TITLES: Record<string, string> = {
+  '1-irgun-hapikuach': 'פרק 1 — חוק ארגון הפיקוח + תקנותיו (scope 1.x)',
+  '2-pkudat-habetihut': 'פרק 2 — פקודת הבטיחות + תקנותיה (scope 2.x)',
+  '3-gehut': 'פרק 3 — תקנות גהות תעסוקתית (scope 3.x)',
+  '4-hukei-ezer': 'פרק 4 — חוקי-עזר (scope 4.x)',
+};
+const DEPTH_LABEL: Record<string, string> = {
+  core: '🟢 ליבה',
+  framework: '🔵 מסגרת',
+  topic: '🟡 ענפי',
+};
+
+/**
+ * Generate INDEX.md — the cross-reference map (scope ↔ Drive-PDF ↔ repo-.md ↔
+ * Nevo ↔ curriculum-depth). Regenerated from the manifest (zero-drift); reads
+ * each .md's frontmatter for completeness/version. No network.
+ */
+function runIndex(): void {
+  const byChapter = new Map<string, LegislationSource[]>();
+  for (const s of LEGISLATION_SOURCES) {
+    (byChapter.get(s.chapterDir) ?? byChapter.set(s.chapterDir, []).get(s.chapterDir)!).push(s);
+  }
+
+  const lines: string[] = [];
+  lines.push('# INDEX — מפת קורפוס-החקיקה (הקשרים)');
+  lines.push('');
+  lines.push(
+    '> **מחולל אוטומטית** מ-`scripts/legislation-manifest.ts` (`pnpm legislation:index`) — אל תערוך ידנית.',
+  );
+  lines.push(
+    '> כל שורה מקשרת: `scope ↔ 📄 PDF-מחייב (Drive) ↔ 📝 נוסח-עבודה (.md בריפו, נבו-verbatim) ↔ 🔗 נבו ↔ עומק-בתכנית`.',
+  );
+  lines.push(
+    `> **scope מוגדר ע"י:** [תכנית-הלימודים הרשמית — מינהל-הבטיחות 905018](${driveUrl(CURRICULUM_DOC_FILE_ID)}) (מתוקף תקנה 3(א) תשנ"ו-1996). [תיקיית-Drive "חוקים ותקנות"](https://drive.google.com/drive/folders/${DRIVE_LEGISLATION_FOLDER_ID}).`,
+  );
+  lines.push(
+    '> **`.md`** = "נוסח עדכני" נבו (RAG + מאתר-ציטוט). **PDF-Drive** = מקור-מחייב מלא (תוספות כלולות; creator-gated). `⚠️ חלקי` = תוספת/טבלה מוטמעת כתמונה בנבו → ראה ה-PDF.',
+  );
+  lines.push('');
+
+  let total = 0;
+  let partial = 0;
+  for (const chapterDir of ['1-irgun-hapikuach', '2-pkudat-habetihut', '3-gehut', '4-hukei-ezer']) {
+    const items = byChapter.get(chapterDir) ?? [];
+    lines.push(`## ${CHAPTER_TITLES[chapterDir]}`);
+    lines.push('');
+    lines.push('| scope | כותרת | עומק | 📄 PDF-מחייב | 📝 .md | 🔗 נבו | שלמות |');
+    lines.push('| --- | --- | --- | --- | --- | --- | --- |');
+    for (const s of items) {
+      total += 1;
+      const id = s.subId ?? s.scopeId;
+      const mdPath = relPathFor(s);
+      let completeness = '—';
+      const abs = resolve(mdPath);
+      if (existsSync(abs)) {
+        const { frontmatter } = splitFrontmatter(readFileSync(abs, 'utf8'));
+        if (frontmatter.source_complete === 'false') {
+          completeness = '⚠️ חלקי';
+          partial += 1;
+        } else {
+          completeness = '✓';
+        }
+      }
+      const pdf = `[PDF](${driveUrl(s.driveFileId)})`;
+      const md = `[.md](${mdPath})`;
+      const nevo = `[נבו](${s.url})`;
+      lines.push(
+        `| ${id} | ${s.officialTitle} | ${DEPTH_LABEL[s.depth]} | ${pdf} | ${md} | ${nevo} | ${completeness} |`,
+      );
+    }
+    lines.push('');
+  }
+  lines.push(
+    `> **סה"כ ${total} נוסחים** · ${partial} מסומנים \`⚠️ חלקי\` (תוספת-תמונה — הנוסח-המלא ב-PDF-המחייב). ` +
+      `דולגו (אין-נוסח-עצמאי): 2.6.1 (בתוך 2.6/2.0) · 2.11 (בתוך 2.0). 5.x ISO — בתשלום.`,
+  );
+  lines.push('');
+
+  mkdirSync(resolve('courses', 'safety-officer', 'sources', 'legislation'), { recursive: true });
+  writeFileSync(INDEX_PATH, lines.join('\n'), 'utf8');
+  logLine(`wrote INDEX.md (${total} sources, ${partial} partial) → ${INDEX_PATH}`);
 }
 
 async function runVerify(args: Args): Promise<void> {
@@ -424,7 +526,9 @@ async function main(): Promise<void> {
     `mode=${args.mode} only=${args.only ?? '(all)'} refresh=${args.refresh} sources=${selectSources(args.only).length}`,
   );
 
-  if (args.mode === 'verify' || args.mode === 'verify-live') {
+  if (args.mode === 'index') {
+    runIndex();
+  } else if (args.mode === 'verify' || args.mode === 'verify-live') {
     await runVerify(args);
   } else {
     await runFetch(args, fetchDate);

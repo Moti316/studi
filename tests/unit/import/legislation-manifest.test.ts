@@ -25,12 +25,19 @@ const CHAPTER_DIRS: readonly ChapterDir[] = [
 ];
 
 describe('legislation manifest — shape', () => {
-  it('has exactly 39 sources (37 catalog + 1.5.1 + 2.5)', () => {
-    expect(LEGISLATION_SOURCES.length).toBe(39);
+  it('has exactly 42 sources (39 + 2.8.1 traktorim + 4.3.2 tzav + 4.3.3 horaot-klaliot)', () => {
+    expect(LEGISLATION_SOURCES.length).toBe(42);
   });
 
-  it('passes the built-in validator (valid scopes, unique slug/url/filename)', () => {
+  it('passes the built-in validator (valid scopes, unique slug/url/filename/driveFileId)', () => {
     expect(validateManifest()).toEqual([]);
+  });
+
+  it('every source has a Drive PDF file-id + a depth tier', () => {
+    for (const s of LEGISLATION_SOURCES) {
+      expect(s.driveFileId, `driveFileId ${s.scopeId}`).toMatch(/^[A-Za-z0-9_-]{20,}$/);
+      expect(['core', 'framework', 'topic'], `depth ${s.scopeId}`).toContain(s.depth);
+    }
   });
 
   it('every canonical scopeId is a known committee scope', () => {
@@ -96,13 +103,20 @@ describe('legislation manifest — special cases', () => {
     expect(LEGISLATION_SOURCES.some((s) => s.scopeId === '2.5')).toBe(true);
   });
 
-  it('flags exactly the 4 image-appendix gaps found by the QA workflow', () => {
-    const gapped = LEGISLATION_SOURCES.filter((s) => s.knownGap).map((s) => s.subId ?? s.scopeId);
-    expect(new Set(gapped)).toEqual(new Set(['2.3', '2.6', '2.8', '3.5.2']));
-  });
-
   it("1.5.1 official title carries Nevo's full form (במקומות עבודה)", () => {
     const s = LEGISLATION_SOURCES.find((x) => x.scopeId === '1.5.1')!;
     expect(s.officialTitle).toContain('במקומות עבודה');
+  });
+
+  it('includes the 3 curriculum-mandated additions (2.8.1, 4.3.2, 4.3.3)', () => {
+    const ids = new Set(LEGISLATION_SOURCES.map((s) => s.subId ?? s.scopeId));
+    expect(ids.has('2.8.1')).toBe(true); // tractors-in-agriculture
+    expect(ids.has('4.3.2')).toBe(true); // business-licensing order
+    expect(ids.has('4.3.3')).toBe(true); // business-licensing general regs
+  });
+
+  it('scope 2.8 has 2 texts (machines + tractors) and 4.3 has 3 (law + order + general)', () => {
+    expect(LEGISLATION_SOURCES.filter((s) => s.scopeId === '2.8').length).toBe(2);
+    expect(LEGISLATION_SOURCES.filter((s) => s.scopeId === '4.3').length).toBe(3);
   });
 });

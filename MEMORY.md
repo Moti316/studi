@@ -49,9 +49,9 @@
 
 - [✅] Phase 0 Foundation · [✅] Phase 1 Auth (בפרודקשן, ~78% טסטים)
 - [🟡] Phase 2 Dashboard (UI+mock) · [❌] Phase 3 Upload UI
-- [🟡] Phase 4 צינור-ייבוא-שאלות T1 ✅ (`scripts/import-content.ts`+`src/lib/import/*`); **A2 ✅ קורפוס-חקיקה** (39 נוסחי-נבו verbatim `.md` ב-`courses/safety-officer/sources/legislation/`, חילוץ דטרמיניסטי+`legislation:verify`; 4 קבצים `source_complete:false`=תוספות-תמונה→דורש-מוטי OCR/רשומות); RAG chunker/embedder חסר
+- [🟡] Phase 4 צינור-ייבוא-שאלות T1 ✅ (`scripts/import-content.ts`+`src/lib/import/*`); **A2.1 ✅ קורפוס-חקיקה** (42 נוסחי-נבו verbatim `.md` ב-`courses/safety-officer/sources/legislation/` + `INDEX.md` מחולל; אומת 42/42 + מול תכנית-905018=כל-42-בתכנית; **PDF-מחייב ב-Drive "חוקים ותקנות"**→`authoritative_source`; 12 `source_complete:false`=תוכן-תמונה→PDF-Drive); RAG chunker/embedder חסר
 - [🟡] Phase 5 Quiz ~3/5 (MatchingPairs+MCQShort+MCQLong+LessonPlayer+`/lesson/[id]`+admin-תיוג; חסר ScenarioWalkthrough/exam/APIs)
-- 439 טסטים ירוקים · תוכנית מלאה: [`docs/context/EXECUTION-PLAN.md`](docs/context/EXECUTION-PLAN.md)
+- 443 טסטים ירוקים · תוכנית מלאה: [`docs/context/EXECUTION-PLAN.md`](docs/context/EXECUTION-PLAN.md)
 
 ## פערים פתוחים שדורשים החלטה
 

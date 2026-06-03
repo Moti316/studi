@@ -126,3 +126,25 @@ describe('stripNevoHtml — L2 section-number continuity', () => {
     expect(stripNevoHtml(NEVO_FIXTURE).headingCount).toBe(5);
   });
 });
+
+describe('stripNevoHtml — embedded content-image detection (source-completeness)', () => {
+  it('reports imageCount=0 for a text-only page', () => {
+    expect(stripNevoHtml(NEVO_FIXTURE).imageCount).toBe(0);
+  });
+
+  it('detects base64 content-images (Nevo image-appendix) + captures preceding context', () => {
+    const html =
+      `<h1>תקנות כלשהן, תשנ"ז-1997</h1>` +
+      `<p>1. הוראה ראשונה.</p>` +
+      `<h6>תוספת (תקנה 1) טבלת ציוד</h6>` +
+      `<img src="data:image/png;base64,iVBORw0KGgoAAAANSU="/>` +
+      `<img src="data:image/jpeg;base64,/9j/4AAQSkZJRg=="/>`;
+    const r = stripNevoHtml(html);
+    expect(r.imageCount).toBe(2);
+    expect(r.imageContexts.length).toBeGreaterThan(0);
+    expect(r.imageContexts.some((c) => c.includes('תוספת'))).toBe(true);
+    // the base64 blob itself must NOT leak into the verbatim body
+    expect(r.body).not.toContain('base64');
+    expect(r.body).not.toContain('iVBOR');
+  });
+});

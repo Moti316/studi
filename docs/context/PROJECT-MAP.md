@@ -40,7 +40,7 @@
 **קורס safety-officer (`courses/safety-officer/`):**
 
 - `curriculum-atgar` (spine 11 פרקים) · `LEGISLATION-SOURCES` (37 חוקים+URLs · **A2: 39 נוסחים הורדו כ-`.md`**) · `LEGISLATION-COVERAGE` (48/7/2) · `MOLSA-PROGRAM` (תכנית-משרד) · `LEARNING-MATERIALS` · `UNREAD-MEDIA` · `ATTRIBUTION` · `COURSE-DESIGN` · `FINAL-PROJECT` (capstone) · `REGULATORY-WATCH` (⏰10/2026) · `ISO-31010/31000-DRAFT` (טיוטות).
-- **`sources/legislation/<פרק>/<scope-id>-<slug>.md`** — קורפוס-החקיקה (39 נוסחי-נבו verbatim + frontmatter; `README.md` בתיקייה). 4 מסומנים `source_complete:false` (תוספות-תמונה).
+- **`sources/legislation/`** — קורפוס-החקיקה: 42 נוסחי-נבו verbatim `.md` + **`INDEX.md`** (מפת-הקשרים מחוללת: scope↔PDF-Drive↔נבו↔עומק) + `README.md`. אומת 42/42 + מול תכנית-905018. PDF-מחייב ב-Drive "חוקים ותקנות"; 12 `source_complete:false` (תוכן-תמונה).
 - `docs/PROJECT-STRUCTURE.md` — מבנה פלטפורמה↔קורס.
 
 **צינור-ייבוא + כלי-חקיקה (`scripts/` + `src/lib/import/`):**
