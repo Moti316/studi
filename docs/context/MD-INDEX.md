@@ -2,7 +2,7 @@
 
 > ⚠️ **קובץ מחולל — אל תערוך ידנית.** מקור: `.claude/scripts/gen-md-index.mjs` · רענון: `pnpm index:md`
 > (מתרענן גם אוטומטית ב-pre-commit). דלת-הכניסה לשליפה-מהירה של כל מסמך בריפו.
-> **סה״כ 328 קבצי-MD בריפו** · ⚠️ 5 יתומים-מקומיים (ראה תחתית) · עמודת "עודכן" = מתי הקובץ עודכן לאחרונה ב-git (לאיתור מסמכים שהתיישנו).
+> **סה״כ 332 קבצי-MD בריפו** · ⚠️ 1 יתומים-מקומיים (ראה תחתית) · עמודת "עודכן" = מתי הקובץ עודכן לאחרונה ב-git (לאיתור מסמכים שהתיישנו).
 
 ## 📌 קבצי-חובה — קרא/עבור עליהם בכל סשן (נעוץ)
 
@@ -10,15 +10,15 @@
 
 | # | קובץ-חובה | למה חשוב | עודכן |
 | --- | --- | --- | --- |
-| 1 | [CLAUDE.md](../../CLAUDE.md) | אילוצים-קשיחים · stack · עקרונות · reading-list | 2026-06-03 |
+| 1 | [CLAUDE.md](../../CLAUDE.md) | אילוצים-קשיחים · stack · עקרונות · reading-list | 2026-06-04 |
 | 2 | [AGENTS.md](../../AGENTS.md) | חוקי-על קנוניים חוצי-כלים | 2026-06-03 |
 | 3 | [USER.md](../../USER.md) | פרופיל motilev8 + העדפות-עבודה | 2026-05-29 |
-| 4 | [docs/context/PROJECT-MAP.md](../../docs/context/PROJECT-MAP.md) | דלת-כניסה אוצרת לכל ההקשר | 2026-06-03 |
+| 4 | [docs/context/PROJECT-MAP.md](../../docs/context/PROJECT-MAP.md) | דלת-כניסה אוצרת לכל ההקשר | 2026-06-04 |
 | 5 | [docs/context/STATUS.md](../../docs/context/STATUS.md) | איפה אנחנו — phase · עובד · חסום | 2026-06-02 |
 | 6 | [docs/context/EXECUTION-PLAN.md](../../docs/context/EXECUTION-PLAN.md) | התוכנית end-to-end | 2026-06-02 |
-| 7 | [TODO.md](../../TODO.md) | מקור-אמת למשימות (A–I + ממשל-v2) | 2026-06-03 |
-| 8 | [docs/context/SESSION-LOG.md](../../docs/context/SESSION-LOG.md) | handoff אחרון + הצעד-הבא | 2026-06-03 |
-| 9 | [docs/context/MOTI-INBOX.md](../../docs/context/MOTI-INBOX.md) | הערות-מוטי אליי — לקרוא בצעד-0 | — |
+| 7 | [TODO.md](../../TODO.md) | מקור-אמת למשימות (A–I + ממשל-v2) | 2026-06-04 |
+| 8 | [docs/context/SESSION-LOG.md](../../docs/context/SESSION-LOG.md) | handoff אחרון + הצעד-הבא | 2026-06-04 |
+| 9 | [docs/context/MOTI-INBOX.md](../../docs/context/MOTI-INBOX.md) | הערות-מוטי אליי — לקרוא בצעד-0 | 2026-06-04 |
 | 10 | [docs/context/DECISIONS.md](../../docs/context/DECISIONS.md) | לוג-החלטות-מפתח | 2026-05-31 |
 | 11 | [docs/context/PROJECTS.md](../../docs/context/PROJECTS.md) | StudiBuilder מול מגן — לא להתבלבל | 2026-06-02 |
 
@@ -44,10 +44,10 @@
 | קובץ | תכלית | תגיות | עודכן |
 | --- | --- | --- | --- |
 | [AGENTS.md](../../AGENTS.md) | קובץ-ההקשר הקנוני של ה-workspace. תקן חוצה-כלים (Claude Code / Cursor / Codex). |  | 2026-06-03 |
-| [CLAUDE.md](../../CLAUDE.md) | 🗂️ אינדקס-הכל (קרא ראשון!): docs/context/MD-INDEX.md — אינדקס-MD חכם ומחולל-אוטומטית של כל מסמכי-הפרויקט (ני… |  | 2026-06-03 |
+| [CLAUDE.md](../../CLAUDE.md) | 🗂️ אינדקס-הכל (קרא ראשון!): docs/context/MD-INDEX.md — אינדקס-MD חכם ומחולל-אוטומטית של כל מסמכי-הפרויקט (ני… |  | 2026-06-04 |
 | [MEMORY.md](../../MEMORY.md) | 📍 הקשר מלא ועדכני: docs/context/PROJECT-MAP.md (9 קבצי מקור-אמת). |  | 2026-06-03 |
 | [README.md](../../README.md) | פלטפורמת AI בעברית להכנת קורסי-לימוד גיימיפיקטיביים מתוך מסמכי-מקור |  | 2026-06-02 |
-| [TODO.md](../../TODO.md) | מקור-אמת יחיד למשימות. מסונכרן ב-git (כל מחשב), נטען אוטומטית בכל סשן (SessionStart hook), |  | 2026-06-03 |
+| [TODO.md](../../TODO.md) | מקור-אמת יחיד למשימות. מסונכרן ב-git (כל מחשב), נטען אוטומטית בכל סשן (SessionStart hook), |  | 2026-06-04 |
 | [USER.md](../../USER.md) | - שפת תקשורת: עברית, מותר לערב אנגלית-טכנית (RAG, prompt, LSP) |  | 2026-05-29 |
 
 ### 🧭 הקשר-חי — docs/context  ·  13
@@ -59,12 +59,12 @@
 | [DECISIONS.md](../../docs/context/DECISIONS.md) | החלטות-מפתח שורה-בשורה (מעבר ל-ADRs הפורמליים). חדש למעלה. מעודכן: 2026-05-31. | docs context | 2026-05-31 |
 | [EXECUTION-PLAN.md](../../docs/context/EXECUTION-PLAN.md) | התוכנית האחת והאוטוריטטיבית. מאחדת את build-roadmap (10 phases), ADR-006 (Course-as-Product Factory), | docs context | 2026-06-02 |
 | [GOVERNANCE-V2.md](../../docs/context/GOVERNANCE-V2.md) | גיבוי-בריפו של תוכנית-ממשל-v2 (המקור היה מקומי ב-/.claude/plans/, per-machine). | docs context | 2026-06-03 |
-| [MD-INDEX.md](../../docs/context/MD-INDEX.md) | ⚠️ קובץ מחולל — אל תערוך ידנית. מקור: .claude/scripts/gen-md-index.mjs · רענון: pnpm index:md | docs context | — |
-| [MOTI-INBOX.md](../../docs/context/MOTI-INBOX.md) | ערוץ-תקשורת א-סינכרוני. מוטי כותב כאן הערות/הנחיות מכל מחשב (push ל-main); | docs context | — |
+| [MD-INDEX.md](../../docs/context/MD-INDEX.md) | ⚠️ קובץ מחולל — אל תערוך ידנית. מקור: .claude/scripts/gen-md-index.mjs · רענון: pnpm index:md | docs context | 2026-06-04 |
+| [MOTI-INBOX.md](../../docs/context/MOTI-INBOX.md) | ערוץ-תקשורת א-סינכרוני. מוטי כותב כאן הערות/הנחיות מכל מחשב (push ל-main); | docs context | 2026-06-04 |
 | [PLANNING-STATE.md](../../docs/context/PLANNING-STATE.md) | ⚠️ לסשן הבא: אנחנו במצב-תכנון רב-נושאי סביב מבנה-הקורס וחומרי-הלימוד — לא לקפוץ ל-build (M5) בלי לסגור את התכ… | docs context | 2026-06-01 |
-| [PROJECT-MAP.md](../../docs/context/PROJECT-MAP.md) | קרא אותי ראשון בכל סשן. אני האינדקס שמכוון לכל שאר קבצי-ההקשר. | docs context | 2026-06-03 |
+| [PROJECT-MAP.md](../../docs/context/PROJECT-MAP.md) | קרא אותי ראשון בכל סשן. אני האינדקס שמכוון לכל שאר קבצי-ההקשר. | docs context | 2026-06-04 |
 | [PROJECTS.md](../../docs/context/PROJECTS.md) | 2 פרויקטים קשורים שמתערבבים. מסמך זה מונע בלבול (גם Claude התבלבל ביניהם). מעודכן: 2026-05-31. | docs context | 2026-06-02 |
-| [SESSION-LOG.md](../../docs/context/SESSION-LOG.md) | בכל סוף-סשן: "מה נעשה / מה הצעד הבא". חדש למעלה. | docs context | 2026-06-03 |
+| [SESSION-LOG.md](../../docs/context/SESSION-LOG.md) | בכל סוף-סשן: "מה נעשה / מה הצעד הבא". חדש למעלה. | docs context | 2026-06-04 |
 | [STATUS.md](../../docs/context/STATUS.md) | מקור-האמת ל"איפה אנחנו". טבלאות ה-Phases ב-CLAUDE.md/README.md/MEMORY.md מפנות לכאן. | docs context | 2026-06-02 |
 | [TASKS.md](../../docs/context/TASKS.md) | ⚠️ קובץ זה הוחלף (2026-06-02). ה-backlog-השטוח-לפי-אזור פוצל למבנה דו-שכבתי לפי סדר-הביצוע: | docs context | 2026-06-02 |
 
@@ -103,10 +103,14 @@
 | [ADR-013-course-template.md](../../docs/architecture/ADR-013-course-template.md) | Status: Proposed | docs architecture | 2026-06-03 |
 | [README.md](../../docs/architecture/README.md) | תיעוד כל ההחלטות-הארכיטקטוניות המשמעותיות לפרויקט. כל החלטה מקבלת ADR לפני implementation. | docs architecture | 2026-06-01 |
 
-### 🖼️ עיצוב ומסכים — screens-spec · design · screens  ·  25
+### 🖼️ עיצוב ומסכים — screens-spec · design · screens  ·  29
 
 | קובץ | תכלית | תגיות | עודכן |
 | --- | --- | --- | --- |
+| [DESIGN-PLAN-A.md](../../docs/design/DESIGN-PLAN-A.md) | כיוון: A · אתוס: הכי-קרוב-ל-StudiesGo — מסקוט מונפש, צבעוניות-תוססת, חוויית-Duolingo, גיימיפיקציה בקדמת-הבמה.… | docs design | — |
+| [DESIGN-PLAN-B.md](../../docs/design/DESIGN-PLAN-B.md) | אתוס: נקי · רגוע · רציני-ומכובד. מינימליזם חם (לא סטרילי). תחושת אמון ואיכות-פרימיום, מותאם לקהל-מקצועי בוגר … | docs design | — |
+| [DESIGN-PLAN-C.md](../../docs/design/DESIGN-PLAN-C.md) | כיוון C מתוך 3 כיווני-עיצוב ל-StudiBuilder · קורס "ממונה בטיחות". | docs design | — |
+| [DESIGN-PLANS-COMPARE.md](../../docs/design/DESIGN-PLANS-COMPARE.md) | תפקיד-המסמך: product-owner + design-system-lead מציג השוואה-מנומקת של 3 כיווני-העיצוב ל-StudiBuilder (מוצר-לש… | docs design | — |
 | [mascot-brief.md](../../docs/design/mascot-brief.md) | גרסה: 1.0 | docs design | 2026-05-29 |
 | [motion-specs.md](../../docs/design/motion-specs.md) | מקור: ניתוח-Gemini מ-docs/sources/studiesgo-videos/<NN>/gemini-response.md + ניתוח-Claude מ-frames. | docs design | 2026-05-30 |
 | [_template.md](../../docs/screens-spec/_template.md) | Phase: N · State variants: loading / empty / populated / error · Mobile-first | docs screens-spec | 2026-05-29 |
@@ -460,9 +464,5 @@
 
 | קובץ | תאריך-דיסק | סטטוס |
 | --- | --- | --- |
-| docs/design/DESIGN-PLAN-A.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
-| docs/design/DESIGN-PLAN-B.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
-| docs/design/DESIGN-PLAN-C.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
-| docs/design/DESIGN-PLANS-COMPARE.md | 2026-06-03 | ⚠️ לא-בריפו — לבדיקה |
 | Todolist.md | 2026-05-31 | ⚠️ לא-בריפו — לבדיקה |
 
