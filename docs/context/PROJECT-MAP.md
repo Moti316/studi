@@ -1,7 +1,7 @@
 # PROJECT-MAP — דלת-הכניסה להקשר StudiBuilder
 
 > **קרא אותי ראשון בכל סשן.** אני האינדקס שמכוון לכל שאר קבצי-ההקשר.
-> כל הקבצים כאן הם **מקור-אמת-יחיד, מסמכים-חיים**. מעודכן: 2026-06-02.
+> כל הקבצים כאן הם **מקור-אמת-יחיד, מסמכים-חיים**. מעודכן: 2026-06-03.
 
 ## מה זה StudiBuilder (במשפט)
 
@@ -56,6 +56,11 @@
 **ארכיטקטורה (לפי-צורך, מקור לכל בחירה גדולה):**
 
 12. `docs/architecture/ADR-*.md` — 14 ADRs (000-template + 001-013). בעיקר **001** (stack) · **009** (מגן) · **010** (DB schema) · **011** (import pipeline) · **012** (נוהלי-פיתוח, single-branch main) · **013** (תבנית-קורס + capstone).
+
+**ממשל-סוכנים (`teams/`, רוסטר 33):**
+
+- `teams/PROJECT-CONTEXT.md` (עוגן-הקשר) · `teams/ORG.md` (היררכיה+7-שלבים+קצב-דיווח) · `teams/README.md` (רוסטר) · `teams/HOWTO-add-agent.md`.
+- **ענף-בקרה `teams/oversight/` (ממשל-v2, עצמאי):** `TEAM.md` · `_oversight-protocol.md` (צו-עצירה+read-authority+ערוץ-ישיר) · `_curriculum-audit-protocol.md` (כיסוי+drift) · `stop-orders-ledger.md` · `oversight-report.md` · `control-report.md` · 6×`<slug>/{identity,memory,activity-log}`. תוכנית-ממשל-v2 (סשן A/B/C): `GOVERNANCE-V2.md`.
 
 ## עקרון
 

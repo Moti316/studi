@@ -66,6 +66,7 @@
   [`strategic/_debate-protocol.md`](strategic/_debate-protocol.md)); אישור-סופי = מוטי.
 - **Working-tree בלבד:** עבודה על עץ-העבודה המקומי.
 - **push ל-`main` מותר בסיום משימה-ירוקה** (אישור-מוטי קבוע, 2026-06-01): single-branch `main`, ללא ענפים, אחרי typecheck+test. ראה `../docs/architecture/ADR-012-dev-workflow-practices.md`.
+- **ענף-בקרה (`oversight`) עצמאי (ממשל-v2):** גוף-ביקורת בלתי-תלוי במתווך — מדווח **ישירות למועצה** (כי המתווך מבקר את-עצמו). 6 סוכנים (בקרה-חיצונית + מבקר-תכנית). סמכות: **צו-עצירה** קוורום-2/3 + ledger (רק-מוטי-מבטל). הבקרה **רק מבקרת** (read-only). ראה [`ORG.md`](ORG.md) §ענף-בקרה · [`oversight/TEAM.md`](oversight/TEAM.md).
 - היררכיה ותעבורת-דיווח: [`ORG.md`](ORG.md).
 
 ---

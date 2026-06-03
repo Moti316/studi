@@ -23,7 +23,7 @@
 - **קורס safety-officer** (`courses/safety-officer/`): `curriculum-atgar` · `LEGISLATION-SOURCES` · `LEGISLATION-COVERAGE` · `MOLSA-PROGRAM` · `LEARNING-MATERIALS` · `UNREAD-MEDIA` · `ATTRIBUTION` · `COURSE-DESIGN` · `FINAL-PROJECT` · `REGULATORY-WATCH` · `ISO-31010/31000-DRAFT` · `docs/PROJECT-STRUCTURE.md`
 - **ציות/רעיונות:** `docs/compliance/COMPLIANCE.md` (חובות-ציות + task-force) · `docs/IDEAS.md` (רעיונות/פידבק)
 - **ארכיטקטורה** (לפי-צורך): `docs/architecture/ADR-001..013`
-- **סוכנים:** `teams/PROJECT-CONTEXT.md` (עוגן-הקשר — נקרא ראשון) · `teams/ORG.md` (היררכיה+פרוטוקולים+מחזור-חיים) · `teams/README.md` (רוסטר 27) · `teams/HOWTO-add-agent.md` (מתי+איך להקים סוכן) · `teams/<tier>/<slug>/{identity.md,memory.md,activity-log.md}`
+- **סוכנים:** `teams/PROJECT-CONTEXT.md` (עוגן-הקשר — נקרא ראשון) · `teams/ORG.md` (היררכיה+פרוטוקולים+מחזור-חיים) · `teams/README.md` (רוסטר 33) · `teams/HOWTO-add-agent.md` (מתי+איך להקים סוכן) · `teams/oversight/` (ענף-בקרה עצמאי: TEAM · \_oversight-protocol · \_curriculum-audit-protocol · stop-orders-ledger) · `teams/<tier>/<slug>/{identity.md,memory.md,activity-log.md}`
 
 הרשימה המסודרת המלאה: `docs/context/PROJECT-MAP.md`.
 
@@ -31,7 +31,7 @@
 
 כל סוכן קורא `teams/PROJECT-CONTEXT.md` + `identity.md` + `memory.md` בתחילת הפעלה,
 ומתעד ב-`activity-log.md` בסיום. ההיררכיה והפרוטוקולים (זרימת-דיווח, בקרת-סחף, מחזור-חיים)
-מוגדרים ב-`teams/ORG.md`. הרוסטר (27 = 22 מבצעים + 4 ראשי-צוות + מתווך) ב-`teams/README.md`.
+מוגדרים ב-`teams/ORG.md`. הרוסטר (33 = 22 מבצעים + 4 ראשי-צוות + מתווך + 6 ענף-בקרה `oversight`) ב-`teams/README.md`. **ענף-הבקרה עצמאי** — מדווח ישירות למועצה (לא דרך המתווך), עם סמכות צו-עצירה (קוורום-2/3 + ledger, רק-מוטי-מבטל).
 
 ## הפרויקט בקצרה
 
@@ -152,4 +152,4 @@ docs/
 
 ראה `docs/build-roadmap.md` לפירוט מלא של כל phase.
 
-> **מצב v1 (2026-06-02):** Agent-OS (27) + צינור-ייבוא + admin-תיוג + נגן-שיעור **נמזגו ל-`main`** (439 טסטים). **M6 (code-review+security-review) הושלם** — 14 ממצאים מאומתים, 8 תוקנו (`a1cc051`), 3 נדחו להחלטת-מוטי. **A2.1 (קורפוס-חקיקה) הושלם:** 42 נוסחי-נבו כ-`.md` verbatim ב-`courses/safety-officer/sources/legislation/` (חילוץ דטרמיניסטי לא-גנרטיבי · אומת 42/42 L1–L5 + verify-live). **אומת מול תכנית-מינהל-הבטיחות 905018 — כל 42 בתכנית-ההסמכה** (`depth` פר-scope). **PDF-מחייב מלא ב-Drive "חוקים ותקנות"** (`authoritative_source`→Drive, creator-gated); מפת-הקשרים מחוללת `sources/legislation/INDEX.md`. 12 מסומנים `source_complete:false` (תוכן-תמונה בנבו → הנוסח-המלא ב-PDF-Drive). **M5 חסום-תכנונית בלבד:** ה-discovery-gate תוקן (default-deny ל-allow-list); נותר לאשר את `docs/M5-discovery-curation.md` (רשימת-בנקי-השאלות ✅~19) → הרצת `import:t1`. צעדים: `docs/context/SESSION-LOG.md` (רשומה אחרונה).
+> **מצב v1 (2026-06-03):** Agent-OS (**33** — +ענף-בקרה `oversight` עצמאי, ממשל-v2 סשן-A+B) + צינור-ייבוא + admin-תיוג + נגן-שיעור **נמזגו ל-`main`** (439+ טסטים). **ממשל-v2:** סשן-A (גבול פלטפורמה↔קורס + סכמת-TODO מורחבת) + סשן-B (ענף-בקרה 6 סוכנים · צו-עצירה קוורום-2/3) הושלמו; סשן-C (SKILL `agent-os` גנרי) נותר — ראה `docs/context/GOVERNANCE-V2.md`. **M6 (code-review+security-review) הושלם** — 14 ממצאים מאומתים, 8 תוקנו (`a1cc051`), 3 נדחו להחלטת-מוטי. **A2.1 (קורפוס-חקיקה) הושלם:** 42 נוסחי-נבו כ-`.md` verbatim ב-`courses/safety-officer/sources/legislation/` (חילוץ דטרמיניסטי לא-גנרטיבי · אומת 42/42 L1–L5 + verify-live). **אומת מול תכנית-מינהל-הבטיחות 905018 — כל 42 בתכנית-ההסמכה** (`depth` פר-scope). **PDF-מחייב מלא ב-Drive "חוקים ותקנות"** (`authoritative_source`→Drive, creator-gated); מפת-הקשרים מחוללת `sources/legislation/INDEX.md`. 12 מסומנים `source_complete:false` (תוכן-תמונה בנבו → הנוסח-המלא ב-PDF-Drive). **M5 חסום-תכנונית בלבד:** ה-discovery-gate תוקן (default-deny ל-allow-list); נותר לאשר את `docs/M5-discovery-curation.md` (רשימת-בנקי-השאלות ✅~19) → הרצת `import:t1`. צעדים: `docs/context/SESSION-LOG.md` (רשומה אחרונה).

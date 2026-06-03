@@ -20,8 +20,10 @@
 
 ## צוות-הסוכנים
 
-27 סוכנים (22 מומחי-תחום + 4 ראשי-צוות + 1 מתווך) · טופולוגיה: **Sequential**. אינדקס: `teams/README.md` · היררכיה: `teams/ORG.md`.
+33 סוכנים (22 מומחי-תחום + 4 ראשי-צוות + 1 מתווך + 6 ענף-בקרה) · טופולוגיה: **Sequential**. אינדקס: `teams/README.md` · היררכיה: `teams/ORG.md`.
 roster (22 מומחי-תחום): `accessibility-i18n`, `appsec`, `backend-engineer`, `cloud-specialist`, `content-verifier`, `content-writer`, `data-engineer`, `design-system`, `devops-engineer`, `domain-expert`, `e2e-qa`, `frontend-engineer`, `interaction-designer`, `ml-engineer`, `notifications-engineer`, `privacy-officer`, `product-owner`, `release-manager`, `tech-lead`, `test-engineer`, `ux-researcher`, `visual-designer`
+
+**ענף-בקרה `oversight` (6, עצמאי — מדווח ישירות למועצה, לא דרך המתווך):** `oversight-lead`, `plan-compliance-auditor`, `process-audit-officer` (בקרה-חיצונית) · `curriculum-auditor-lead`, `coverage-auditor`, `content-drift-auditor` (מבקר-תכנית). סמכות: **צו-עצירה** קוורום-2/3 + ledger (רק-מוטי-מבטל). ראה `teams/oversight/`.
 
 ## זיכרון — קרא בתחילת כל סשן
 

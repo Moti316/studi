@@ -17,7 +17,7 @@
   2. ✅ **OV-2** קבצי-ענף — `_oversight-protocol` · `stop-orders-ledger` · `oversight-report` · `control-report` · `TEAM`.
   3. ✅ **OV-3** מבקר-תכנית — `curriculum-auditor-lead`(רותם) · `coverage-auditor`(שני) · `content-drift-auditor`(גיא) — 3×3 + 3 stubs.
   4. ✅ **OV-4** `_curriculum-audit-protocol` + עדכון-`TEAM` (זרוע-ב' → ✅).
-  5. ⬜ **OV-5** עדכוני-ממשל — ORG · README · AGENTS · CLAUDE · PROJECT-CONTEXT · MEMORY · PROJECT-MAP → רוסטר 33.
+  5. ✅ **OV-5** עדכוני-ממשל — ORG · README · AGENTS · CLAUDE · PROJECT-CONTEXT · MEMORY · PROJECT-MAP → רוסטר 33.
   6. ⬜ **OV-6** גיבוי תוכנית-ממשל-v2 בריפו (`docs/context/GOVERNANCE-V2.md`) + פרומפט סשן-C.
   - 🚩 **שמות-עבריים** (נדב/עידו/הדס · רותם/שני/גיא) = **הצעה, ניתן-לשינוי-מוטי** (ההצעה המקורית אורי/יעל/אסף/מאיה התנגשה עם הרוסטר הקיים).
 - ⬜ **סשן-C** — תוצר-5: SKILL `agent-os` גנרי (חילוץ-ארכיטקטורה · placeholders · ללא course-factory/stack/תוכן-קורס · מגן מוחרג). ראה GOVERNANCE-V2.md + `docs/IDEAS.md`.
