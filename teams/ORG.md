@@ -1,7 +1,7 @@
 # ORG.md — מבנה-הארגון של Agent-OS (StudiBuilder)
 
 > מסמך-העוגן של היררכיית-הסוכנים והממשל. כל סוכן קורא אותו אחרי
-> [`PROJECT-CONTEXT.md`](PROJECT-CONTEXT.md). מעודכן: 2026-05-31 · בעלים: `tech-lead` (איתן).
+> [`PROJECT-CONTEXT.md`](PROJECT-CONTEXT.md). מעודכן: 2026-06-03 (ממשל-v2: +ענף-בקרה, רוסטר 33) · בעלים: `tech-lead` (איתן).
 > רוסטר תפעולי קצר: [`README.md`](README.md). תהליך-הקמה: [`HOWTO-add-agent.md`](HOWTO-add-agent.md).
 
 ---
