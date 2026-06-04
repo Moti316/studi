@@ -10,6 +10,8 @@ export interface MockCourse {
   totalLessons: number;
   completedLessons: number;
   lastAccessedIso: string;
+  /** נקודת-כניסה ללימוד (route). ברירת-מחדל: דף-הקורס. */
+  href?: string;
 }
 
 export const MOCK_LESSONS: MockLesson[] = Array.from({ length: 12 }, (_, i) => ({
@@ -20,11 +22,12 @@ export const MOCK_LESSONS: MockLesson[] = Array.from({ length: 12 }, (_, i) => (
 
 export const MOCK_COURSES: MockCourse[] = [
   {
-    id: 'course-intro-economics',
-    title: 'מבוא לכלכלה',
-    totalLessons: MOCK_LESSONS.length,
-    completedLessons: MOCK_LESSONS.filter((l) => l.completed).length,
-    lastAccessedIso: '2026-05-28T18:30:00.000Z',
+    id: 'course-safety-officer',
+    title: 'ממונה בטיחות בעבודה',
+    totalLessons: 11, // 11 פרקי תכנית-אתגר
+    completedLessons: 7,
+    lastAccessedIso: '2026-06-04T08:00:00.000Z',
+    href: '/lesson/practice', // נגן-שיעור עם שאלות-אמת שיובאו (T1)
   },
 ];
 

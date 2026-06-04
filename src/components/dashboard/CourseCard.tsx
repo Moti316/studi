@@ -14,7 +14,7 @@ export function CourseCard({ course }: Props) {
 
   return (
     <Link
-      href={`/courses/${course.id}`}
+      href={course.href ?? `/courses/${course.id}`}
       className="card block space-y-3 transition-shadow hover:shadow-card-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
     >
       <h3 className="font-bold">{course.title}</h3>

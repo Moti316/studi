@@ -2,21 +2,22 @@ import { describe, it, expect } from 'vitest';
 import { MOCK_COURSES, MOCK_LESSONS, coursePercent } from '@/lib/mock/courses';
 
 describe('MOCK_COURSES', () => {
-  it('קורס "מבוא לכלכלה" קיים עם 12 שיעורים', () => {
+  it('קורס "ממונה בטיחות בעבודה" קיים עם 11 פרקים + נקודת-כניסה ללימוד', () => {
     expect(MOCK_COURSES).toHaveLength(1);
-    expect(MOCK_COURSES[0]?.title).toBe('מבוא לכלכלה');
-    expect(MOCK_COURSES[0]?.totalLessons).toBe(12);
+    expect(MOCK_COURSES[0]?.title).toBe('ממונה בטיחות בעבודה');
+    expect(MOCK_COURSES[0]?.totalLessons).toBe(11);
+    expect(MOCK_COURSES[0]?.href).toBe('/lesson/practice');
   });
 
-  it('5 שיעורים הושלמו (לפי המוק)', () => {
+  it('7/11 פרקים הושלמו (מוק); MOCK_LESSONS עם 5 מושלמים', () => {
+    expect(MOCK_COURSES[0]?.completedLessons).toBe(7);
     expect(MOCK_LESSONS.filter((l) => l.completed)).toHaveLength(5);
-    expect(MOCK_COURSES[0]?.completedLessons).toBe(5);
   });
 });
 
 describe('coursePercent', () => {
-  it('5/12 ≈ 42%', () => {
-    expect(coursePercent(MOCK_COURSES[0]!)).toBe(42);
+  it('7/11 ≈ 64%', () => {
+    expect(coursePercent(MOCK_COURSES[0]!)).toBe(64);
   });
 
   it('0/0 → 0% (אין חלוקה באפס)', () => {

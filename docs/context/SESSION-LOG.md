@@ -16,9 +16,15 @@
 - דשבורד: "הקורסים שלי" + **"ראה הכל ←"** → `/courses` · StreakCard: הערת-streak-מרגיעה (B1) + ניגודיות amber→accent-700 · UserHeaderStats אייקון accent-600.
 - ✅ typecheck נקי · **503 טסטים ירוקים**.
 
+### פאזה 2 — שאלות-אמת (ייבוא-T1) ✅
+
+- **מיגרציה 0002** (`questions.source_ref` + index) הוחלה על ה-DB החי — לא-הוחלה קודם (ה-DB מ-0001 ישן) → הייבוא נכשל ב-`column does not exist`. `scripts/apply-migration-0002.ts` (אידמפוטנטי · אישור-מוטי).
+- **ייבוא-T1: 14 שאלות-אמת נכנסו** (שו"ת-כללי + ציוד-מגן-אישי · 2 DOCX), כולן `in_scope`, status `מוסקנא`, רובן scope **2.3** (PPE). spend ~$0.01. 3 PDFים הניבו 0 (פורמט לא-MCQ → פרסור-עשיר=follow-up). סוג=`explanation` (שו"ת פתוח). `scripts/verify-questions.ts` לאימות.
+- דשבורד: קורס **"ממונה בטיחות בעבודה"** (64%) → `/lesson/practice` (CourseCard `href`). typecheck נקי · 503 טסטים.
+
 ### הצעד הבא
 
-פאזה 2 (ייבוא-T1) → 3 (RAG הסבר-לעומק) → 4 (הרצה+אימות). a11y-sweep מלא לכל רכיבי-הדשבורד = DM4.
+פאזה 3 (RAG הסבר-לעומק מעוגן-חקיקה): probe-dim → ingest-חקיקה → retrieval → deep-explanation server-action → UI "הסבר לעומק" → פאזה 4 (הרצה+אימות end-to-end). פרסור-MCQ עשיר ל-PDFים + a11y-sweep רכיבי-דשבורד = follow-up.
 
 ---
 
