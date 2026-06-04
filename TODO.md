@@ -2,7 +2,7 @@
 
 > **מקור-אמת יחיד למשימות.** מסונכרן ב-git (כל מחשב), נטען אוטומטית בכל סשן (SessionStart hook),
 > ומשתקף ב-TodoWrite בתוך הסשן. סימון: ✅ הושלם · 🔄 בתהליך · ⬜ פתוח · 🔴 חוסם · ⏰ מתוזמן.
-> **מסודר לפי [EXECUTION-PLAN.md](docs/context/EXECUTION-PLAN.md)** (סדר-תלויות). מעודכן: 2026-06-03 (ממשל-v2 — סכמת-TODO מורחבת).
+> **מסודר לפי [EXECUTION-PLAN.md](docs/context/EXECUTION-PLAN.md)** (סדר-תלויות). מעודכן: 2026-06-04 (שער-עיצוב + הטמעת חומרי-חזרה Drive).
 > 📂 **פירוט תתי-משימות פר-שלב:** [docs/todo/](docs/todo/README.md) — כל שלב A–I בקובץ נפרד (קריטריוני-קבלה + מסמכי-ייחוס).
 > 📊 **פירוט-מורחב** (⏱זמן · 🤖סוכנים · 💲עלות · 🟢🟡🔴סיכון · ראש-צוות · 🚩דורש-מוטי · אימות) פר תת-משימה ב-[docs/todo/](docs/todo/README.md) — הסכמה+מקרא ב-README. (ממשל-v2 / תוצר-3.)
 
@@ -24,7 +24,7 @@
 
 ## ✅ הושלם (מאומת מול הקוד)
 
-- **🌙 ריצת-לילה 2026-06-04** — **אינדקס-MD חכם** ([`MD-INDEX.md`](docs/context/MD-INDEX.md) + מחולל אוטומטי · קבצי-חובה נעוצים · ניווט-מהיר · איתור-יתומים · אוטו-רענון) + תיבת-הערות [`MOTI-INBOX.md`](docs/context/MOTI-INBOX.md) · **3 תוכניות-עיצוב** ([`docs/design/`](docs/design/) A/B/C + COMPARE · Workflow · StudiesGo) → 🚩 **דורש בחירת-מוטי**.
+- **🌙 ריצת-לילה 2026-06-04** — **אינדקס-MD חכם** ([`MD-INDEX.md`](docs/context/MD-INDEX.md) + מחולל אוטומטי · קבצי-חובה נעוצים · ניווט-מהיר · איתור-יתומים · אוטו-רענון) + תיבת-הערות [`MOTI-INBOX.md`](docs/context/MOTI-INBOX.md) · **עיצוב: 3 תוכניות (A/B/C+COMPARE) + 5 דוגמאות-HTML מוחשיות** ([`docs/design/mockups/`](docs/design/mockups/) — A/B/C + B1/B2 היברידיות · דשבורד+נגן-שיעור · RTL · נגישות-AA) → 🚩 **דורש בחירת-כיוון** (ראה "שער-עיצוב" למטה).
   - **Phase-2 תשתית (אפס-כסף · TDD · 503 טסטים):** SM-2 + scheduler ([`src/lib/srs/`](src/lib/srs/)) · RAG chunker+embedder ([`src/lib/rag/`](src/lib/rag/)) · stats-core ([`src/lib/stats/`](src/lib/stats/)). נותר חיווט-DB/API/UI (D/E/F).
 - **Phase 0/1** — Foundation + Auth (בפרודקשן, ~78% טסטים) · **Agent-OS** (27 סוכנים).
 - **Phase 4 (חלקי)** — צינור-ייבוא-שאלות T1 בנוי (`scripts/import-content.ts` + `src/lib/import/{scope-tagger,map-question,upsert-questions}.ts`): idempotent · default-deny · hard-cap $5. **טרם הורץ.**
@@ -41,6 +41,15 @@
 1. **A1 · ISO** — סקירת `ISO-31010/31000-DRAFT` עם מוטי → מיקום סופי.
 2. **A2 · חקיקה** — אישור טבלת-37-נוסחים → הורדת ~35 מנבו → `courses/safety-officer/sources/legislation/` (לאתר 2.6.1 — עגורני-צריח, תקנות-עגורנאים 1992 תקנה 65).
 3. ✅ **A3 · פרויקט-גמר** — הנחיות-המשרד שולבו ל-`FINAL-PROJECT.md` (8 נושאים · פורמט-JSA · מבנה-6-חלקים · מטריצת-4×4). נותר: מימוש capstone בקוד (שלב D).
+
+## 🎨 DM · שער-עיצוב — בחירת-כיוון [חוסם את ה-UI של D/F/G · **מקבילי** למסלול-התוכן A/B] · [docs/design/](docs/design/)
+
+> אינו תלוי בתוכן — אפשר להכריע במקביל ל-A/B. הבחירה פותחת את שכבת-ה-UI של D (נגן/quiz), F (Upload/Dashboard) ו-G (גיימיפיקציה).
+
+- ✅ **DM1** — 3 תוכניות (A/B/C) + COMPARE + **5 דוגמאות-HTML מוחשיות** (`docs/design/mockups/` · A/B/C + B1/B2 · דשבורד+נגן-שיעור · RTL · נגישות-AA מאומתת · `index.html` להשוואה).
+- 🚩 **DM2** — **בחירת-כיוון מוטי** (A / B / C / B1 / B2 / היברידי-B-led). מוטי נוטה ל-B. **חוסם DM3.**
+- ⬜ **DM3** — עיגון design-system/tokens מהכיוון-הנבחר → עדכון `ADR-007-brand-identity` + `globals.css`/`tailwind.config` (Heebo→Rubik אם נבחר) + ספריית-רכיבים (`design-system`).
+- ⬜ **DM4** — החלת-הכיוון על D-UI (נגן/quiz) · F1 Upload-UI · F2 Dashboard · G גיימיפיקציה.
 
 ## 🟠 B · M5 — הרצת-ייבוא בנק-השאלות [חסום ע"י A + אישור-בנקים] · [📋 פירוט](docs/todo/B-m5-import.md)
 
@@ -62,9 +71,10 @@
 
 > תבנית-ייחוס: `src/features/lesson-player/components/MatchingPairs.tsx`.
 
-## ⬜ E · Phase 4 — השלמת RAG · [📋 פירוט](docs/todo/E-rag.md)
+## ⬜ E · Phase 4 — השלמת RAG + מקורות-תוכן · [📋 פירוט](docs/todo/E-rag.md)
 
-13. **E1** `chunker` + `embedder` (pgvector) ל-"הסבר לעומק" — טרם נכתב.
+13. **E1** `chunker` + `embedder` (pgvector) ל-"הסבר לעומק" — **שלד נבנה בריצת-לילה** (`src/lib/rag/`, לוגיקה-טהורה · DI). נותר: wiring ל-pgvector + **הרצת-embeddings בפועל** (💲 אישור-מוטי + יישור-מימדים `vector(1024)`→Gemini).
+14. **E2 · הטמעת חומרי-חזרה (Drive "סיכומים וחזרות")** — קריאת 4 הקבצים (`חזרה-לוועדה` ~150עמ' · `דגשים` · `סיכום-אחרון` · `מצגת-שאדי`) → **reference name-clean** ב-`courses/safety-officer/revision-materials/` (T2/T3) → הזנה ל-RAG/מורה-AI + **סיגנל-דגש** (מה הוועדה מדגישה) ל-quiz-generation + **cross-check כיסוי** מול 57-scope (`coverage-auditor`). ⚠️ **מצגת-"שאדי" = name-clean/reference-בלבד** (כלל-זכויות + firewall · אישור-מוטי). רישום ב-`CONTENT-INDEX`. (זיכרון `drive-revision-folder-vaada`.) 🚩 **דורש-מוטי:** תזמון (עכשיו / עם-E) + הכרעת-שאדי.
 
 ## ⬜ F · פלטפורמת-היצירה (creator end-to-end) · [📋 פירוט](docs/todo/F-upload-dashboard.md)
 

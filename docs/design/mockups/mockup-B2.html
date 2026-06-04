@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudiBuilder — כיוון B2 · Premium-Plus · חתימה</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── Reset & Base ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* Palette B — inherited verbatim from Premium-Clean */
+      --bg-app:        #FBFCFE;
+      --bg-warm:       #FAF9F7;
+      --surface:       #FFFFFF;
+      --sunken:        #F4F6FA;
+      --primary:       #1B4FD6;
+      --primary-deep:  #173FA8;
+      --primary-soft:  #EAF1FE;
+      --accent:        #F5A623;
+      --accent-soft:   #FEF4E2;
+      --success-border:#7FD8A0;
+      --success-bg:    #F1FBF5;
+      --success-text:  #1B7A45;
+      --error-border:  #F0A3A3;
+      --error-bg:      #FDF3F3;
+      --error-text:    #B42424;
+      --explanation:   #EEF4FF;
+      --text-primary:  #1A2233;
+      --text-secondary:#5B6678;
+      --text-muted:    #515E7A;
+      --border:        #E6EAF1;
+
+      /* B2 Addition — CTA glow */
+      --cta-glow:      0 4px 20px -2px rgba(27,79,214,.38);
+      --cta-glow-hover:0 6px 28px -2px rgba(27,79,214,.52);
+
+      /* Shadows — same as B */
+      --shadow-hairline: 0 0 0 1px #E6EAF1;
+      --shadow-soft:     0 2px 8px -2px rgba(26,34,51,.06);
+      --shadow-card:     0 4px 16px -4px rgba(26,34,51,.08);
+      --shadow-focus:    0 0 0 3px rgba(27,79,214,.22);
+
+      /* Radius — same as B */
+      --r-btn:   9999px;
+      --r-card:  14px;
+      --r-input: 12px;
+      --r-modal: 24px;
+
+      /* Typography */
+      --font: 'Rubik', 'Heebo', 'Assistant', system-ui, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg-warm);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    /* ─── Aurora drift keyframes (greeting area only) ─── */
+    @keyframes aurora-drift-1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33%       { transform: translate(-12px, 8px) scale(1.04); }
+      66%       { transform: translate(8px, -10px) scale(.97); }
+    }
+    @keyframes aurora-drift-2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      40%       { transform: translate(10px, 12px) scale(1.05); }
+      70%       { transform: translate(-8px, -6px) scale(.98); }
+    }
+    @keyframes aurora-drift-3 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50%       { transform: translate(-6px, -14px) scale(1.03); }
+      80%       { transform: translate(12px, 6px) scale(.96); }
+    }
+
+    /* ─── Direction Band ─── */
+    .band {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 40px 24px;
+    }
+    .band-name {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+    .band-tagline {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      margin-bottom: 4px;
+    }
+    .band-oneliner {
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+    .band-energy {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+    .swatches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .swatch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+    .swatch-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      box-shadow: var(--shadow-hairline);
+    }
+    .swatch-hex {
+      font-size: 10px;
+      color: var(--text-muted);
+      font-family: monospace;
+      white-space: nowrap;
+    }
+    .swatch-label {
+      font-size: 10px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+    /* Aurora swatch — special indicator */
+    .swatch-aurora .swatch-box {
+      background: conic-gradient(
+        from 200deg,
+        rgba(27,79,214,.25) 0%,
+        rgba(34,184,214,.18) 33%,
+        rgba(245,166,35,.22) 66%,
+        rgba(27,79,214,.25) 100%
+      );
+    }
+
+    /* ─── Hint bar ─── */
+    .hint-bar {
+      text-align: center;
+      font-size: 14px;
+      color: var(--text-secondary);
+      padding: 14px 20px;
+      background: var(--accent-soft);
+      border-bottom: 1px solid #f0d8a8;
+      letter-spacing: .01em;
+    }
+
+    /* ─── Frames row ─── */
+    .frames-row {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 36px;
+      padding: 40px 24px 60px;
+      flex-wrap: wrap;
+    }
+
+    .frame-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .frame-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: .04em;
+    }
+
+    /* Phone shell */
+    .phone {
+      width: 390px;
+      height: 780px;
+      border-radius: 44px;
+      background: var(--surface);
+      box-shadow:
+        0 0 0 1.5px #D0D8E8,
+        0 0 0 3px #F2F4F8,
+        0 24px 64px -12px rgba(26,34,51,.18);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .screen {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      background: var(--bg-app);
+      display: flex;
+      flex-direction: column;
+      scrollbar-width: none;
+    }
+    .screen::-webkit-scrollbar { display: none; }
+
+    /* ─── Dashboard ─── */
+    .dash-inner {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 68px;
+    }
+
+    /* Stat pills */
+    .stat-bar {
+      display: flex;
+      flex-direction: row-reverse;
+      gap: 8px;
+      padding: 16px 20px 0;
+      justify-content: flex-start;
+    }
+    .stat-pill {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-btn);
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      box-shadow: var(--shadow-soft);
+    }
+    .stat-pill .icon { font-size: 14px; }
+    .stat-pill.accent-pill .val { color: #7A4F00; } /* WCAG AA fix: replaces var(--accent) #F5A623 on #FFFFFF; ratio ~7:1 */
+    .stat-pill.primary-pill .val { color: var(--primary); }
+
+    /* ─── Greeting banner — B2 signature area ─── */
+    /*
+      Aurora mesh: 3 radial-gradients at fixed positions, subtle opacity.
+      Drift only when user has no reduced-motion preference.
+      The pseudo-elements hold the aurora blobs; the banner itself
+      stays clipped so blobs never escape outside the card.
+    */
+    .greeting-banner {
+      margin: 14px 16px 0;
+      background: linear-gradient(135deg, var(--primary-soft) 0%, var(--surface) 100%);
+      border: 1px solid rgba(27,79,214,.12);
+      border-radius: var(--r-card);
+      padding: 18px 18px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden; /* clips aurora blobs */
+      isolation: isolate;
+    }
+
+    /* Aurora blob 1 — blue at top-left (RTL: top-end) */
+    .greeting-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(60% 50% at 85% 12%, rgba(27,79,214,.10) 0%, transparent 60%),
+        radial-gradient(55% 45% at 8% 90%,  rgba(245,166,35,.10) 0%, transparent 60%),
+        radial-gradient(50% 40% at 50% 100%, rgba(34,184,214,.08) 0%, transparent 55%);
+      border-radius: inherit;
+      animation: aurora-drift-1 24s ease-in-out infinite;
+    }
+
+    /* Aurora blob 2 — additional depth layer */
+    .greeting-banner::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(45% 38% at 20% 20%, rgba(27,79,214,.07) 0%, transparent 55%),
+        radial-gradient(40% 35% at 75% 85%, rgba(34,184,214,.06) 0%, transparent 50%);
+      border-radius: inherit;
+      animation: aurora-drift-2 30s ease-in-out infinite;
+    }
+
+    /* Content inside banner sits above aurora */
+    .greeting-banner > * { position: relative; z-index: 1; }
+
+    /* ── prefers-reduced-motion: freeze aurora, keep gradient ── */
+    @media (prefers-reduced-motion: reduce) {
+      .greeting-banner::before,
+      .greeting-banner::after {
+        animation: none;
+      }
+    }
+
+    .greeting-text-col {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+    }
+
+    /* B2 signature: display-size greeting with one accented keyword */
+    .greeting-main {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+    }
+    .greeting-main .accent-word {
+      color: var(--primary);
+      /* no extra weight — 800 already applied from parent */
+    }
+    .greeting-sub {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    /* B2 CTA: adds blue glow on hover */
+    .cta-btn {
+      margin-top: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--primary);
+      color: #FFFFFF;
+      font-family: var(--font);
+      font-size: 15px;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--r-btn);
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background .15s, box-shadow .18s, transform .1s;
+      box-shadow: var(--cta-glow);
+    }
+    .cta-btn:hover {
+      background: var(--primary-deep);
+      box-shadow: var(--cta-glow-hover);
+    }
+    .cta-btn:focus-visible {
+      outline: none;
+      box-shadow: var(--shadow-focus);
+    }
+    .cta-btn:active { transform: scale(.97); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cta-btn { transition: background .15s; }
+    }
+
+    /* Mascot area in banner */
+    .mascot-banner {
+      flex-shrink: 0;
+      display: flex;
+      align-items: flex-end;
+      margin-inline-start: 12px;
+    }
+
+    /* Section label */
+    .section-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      padding: 18px 20px 8px;
+    }
+
+    /* Streak card */
+    .streak-card {
+      margin: 0 16px;
+      background: var(--surface);
+      border-radius: var(--r-card);
+      padding: 16px 18px;
+      box-shadow: var(--shadow-hairline), var(--shadow-soft);
+    }
+    .streak-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .streak-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .streak-badge {
+      font-size: 13px;
+      font-weight: 700;
+      color: #7A4F00; /* WCAG AA fix: replaces var(--accent) #F5A623 on #FEF4E2; ratio ~7:1 */
+      background: var(--accent-soft);
+      border: 1px solid #f0d08a;
+      border-radius: var(--r-btn);
+      padding: 3px 12px;
+    }
+    .streak-days {
+      display: flex;
+      flex-direction: row-reverse;
+      gap: 5px;
+      justify-content: flex-start;
+    }
+    .streak-day {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      flex: 1;
+    }
+    .streak-day-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .streak-dot {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--sunken);
+      border: 1.5px solid var(--border);
+      transition: background .2s;
+    }
+    .streak-dot.filled {
+      background: var(--accent);
+      border-color: #e09015;
+      box-shadow: 0 2px 6px rgba(245,166,35,.3);
+    }
+    .streak-dot.today {
+      border: 2px solid var(--primary);
+    }
+
+    /* Course cards */
+    .courses-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 0 16px;
+      margin-bottom: 0;
+      list-style: none; /* ul reset — role semantics on li */
+    }
+    .courses-list li { display: contents; } /* li transparent so course-card fills gap correctly */
+    .course-card {
+      background: var(--surface);
+      border-radius: var(--r-card);
+      padding: 14px 16px;
+      box-shadow: var(--shadow-hairline), var(--shadow-soft);
+      cursor: pointer;
+      transition: box-shadow .18s, transform .12s;
+    }
+    .course-card:hover {
+      box-shadow: var(--shadow-hairline), var(--shadow-card);
+      transform: translateY(-1px);
+    }
+    .course-card:focus-visible {
+      outline: none;
+      box-shadow: var(--shadow-focus);
+    }
+    .course-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+    .course-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.4;
+      flex: 1;
+      padding-inline-end: 12px;
+    }
+    .course-pct {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+    .progress-track {
+      height: 5px;
+      background: var(--sunken);
+      border-radius: var(--r-btn);
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary) 0%, #4E7FE0 100%);
+      border-radius: var(--r-btn);
+      transition: width .6s cubic-bezier(.4,0,.2,1);
+    }
+
+    /* Daily goal card */
+    .goal-card {
+      margin: 10px 16px 0;
+      background: var(--surface);
+      border-radius: var(--r-card);
+      padding: 14px 16px;
+      box-shadow: var(--shadow-hairline), var(--shadow-soft);
+    }
+    .goal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .goal-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .goal-count {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* Bottom nav — dark glass */
+    .bottom-nav {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 68px;
+      background: rgba(18,26,44,.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(255,255,255,.08);
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: center;
+      justify-content: space-around;
+      z-index: 10;
+    }
+    .nav-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 14px;
+      cursor: pointer;
+      border-radius: 12px;
+      border: none;
+      background: transparent;
+      transition: background .15s;
+    }
+    .nav-tab:hover { background: rgba(255,255,255,.06); }
+    .nav-tab:focus-visible {
+      outline: 2px solid #FFFFFF;
+      outline-offset: 2px;
+      box-shadow: none;
+    }
+    .nav-icon {
+      font-size: 20px;
+      color: rgba(255,255,255,.72); /* WCAG AA fix: replaces .45 (~2.3:1→~4.7:1 on rgba(18,26,44,.82)) */
+      transition: color .15s;
+    }
+    .nav-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: rgba(255,255,255,.72); /* WCAG AA fix: replaces .40 (~2.3:1→~4.7:1) */
+      transition: color .15s;
+    }
+    .nav-tab.active .nav-icon { color: #FFFFFF; }
+    .nav-tab.active .nav-label { color: rgba(255,255,255,.9); }
+
+    /* ─── Lesson player ─── */
+    .lesson-inner {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 68px;
+    }
+
+    /* Lesson header — clean B, micro aurora-hint only */
+    .lesson-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 18px 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Micro aurora hint: a single very-faint radial at the far edge */
+    .lesson-header::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(55% 80% at 95% 0%, rgba(27,79,214,.055) 0%, transparent 60%);
+      z-index: 0;
+    }
+    .lesson-header > * { position: relative; z-index: 1; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .lesson-header::after { display: none; }
+    }
+
+    .lesson-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .lesson-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      flex: 1;
+      padding-inline-end: 12px;
+    }
+    .lesson-stats {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .xp-badge {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-soft);
+      border-radius: var(--r-btn);
+      padding: 3px 10px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .streak-stat {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    /* Progress dots — RTL (fills right to left) */
+    .progress-dots {
+      display: flex;
+      flex-direction: row-reverse;
+      gap: 5px;
+    }
+    .pdot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+    }
+    .pdot.done    { background: var(--primary); }
+    .pdot.current { background: var(--primary); opacity: .45; }
+    .pdot.future  { background: var(--border); }
+
+    /* AI Notice */
+    .ai-notice {
+      margin: 12px 16px 0;
+      background: var(--sunken);
+      border: 1px solid var(--border);
+      border-radius: var(--r-input);
+      padding: 8px 12px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+    .ai-notice-icon { font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+
+    /* Question */
+    .question-area {
+      padding: 16px 18px 10px;
+    }
+    .question-text {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.55;
+    }
+
+    /* Answer cards */
+    .answers-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      padding: 4px 16px 0;
+    }
+    .answer-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-card);
+      padding: 13px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1.5;
+      cursor: pointer;
+      transition: border-color .12s, background .12s, box-shadow .12s, transform .08s;
+      min-height: 52px;
+      text-align: start;
+      width: 100%;
+      font-family: var(--font);
+      box-shadow: var(--shadow-hairline);
+    }
+    .answer-card:hover:not(:disabled) {
+      border-color: rgba(27,79,214,.3);
+      box-shadow: var(--shadow-soft);
+    }
+    .answer-card:active:not(:disabled) { transform: scale(.98); }
+    .answer-card:focus-visible {
+      outline: none;
+      box-shadow: var(--shadow-focus);
+    }
+    .answer-card.selected {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+      box-shadow: var(--shadow-soft);
+    }
+    .answer-card.correct {
+      border-color: var(--success-border);
+      background: var(--success-bg);
+      color: var(--success-text);
+      font-weight: 600;
+    }
+    .answer-card.wrong {
+      border-color: var(--error-border);
+      background: var(--error-bg);
+      color: var(--error-text);
+    }
+    .answer-card:disabled { cursor: default; }
+
+    /* Citation chip */
+    .citation-chip {
+      margin: 12px 16px 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--primary-soft);
+      border: 1px solid rgba(27,79,214,.18);
+      border-radius: var(--r-btn);
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--primary);
+      line-height: 1.4;
+      cursor: pointer;
+      transition: background .15s;
+      max-width: calc(100% - 32px);
+    }
+    .citation-chip:hover { background: #dce8fd; }
+    .citation-chip:focus-visible {
+      outline: none;
+      box-shadow: var(--shadow-focus);
+    }
+
+    /* Check button — same as B */
+    .check-btn {
+      margin: 14px 16px 0;
+      width: calc(100% - 32px);
+      padding: 14px;
+      background: var(--primary);
+      color: #FFFFFF;
+      font-family: var(--font);
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--r-btn);
+      cursor: pointer;
+      transition: background .15s, opacity .15s, transform .1s, box-shadow .15s;
+      box-shadow: 0 2px 12px -2px rgba(27,79,214,.28);
+    }
+    .check-btn:not(:disabled):hover { background: var(--primary-deep); }
+    .check-btn:not(:disabled):active { transform: scale(.97); }
+    .check-btn:focus-visible {
+      outline: none;
+      box-shadow: var(--shadow-focus);
+    }
+    .check-btn:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    /* Mascot float — same calm as B */
+    .mascot-lesson {
+      animation: float-calm 4s ease-in-out infinite;
+      filter: drop-shadow(0 2px 8px rgba(27,79,214,.12));
+    }
+    .mascot-banner-svg {
+      animation: float-calm 4s ease-in-out infinite;
+      filter: drop-shadow(0 3px 12px rgba(27,79,214,.15));
+    }
+    @keyframes float-calm {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-5px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .mascot-lesson    { animation: none; }
+      .mascot-banner-svg { animation: none; }
+    }
+
+    .lesson-mascot-row {
+      display: flex;
+      justify-content: flex-end;
+      padding: 10px 18px 0;
+    }
+
+    /* Feedback drawer */
+    .feedback-drawer {
+      position: absolute;
+      bottom: 68px;
+      left: 0;
+      right: 0;
+      border-radius: 20px 20px 0 0;
+      padding: 20px 18px 18px;
+      z-index: 8;
+      transform: translateY(100%);
+      transition: transform .32s cubic-bezier(.32,.72,0,1);
+    }
+    .feedback-drawer.open { transform: translateY(0); }
+    .feedback-drawer.correct-drawer {
+      background: var(--success-bg);
+      border-top: 2px solid var(--success-border);
+    }
+    .feedback-drawer.wrong-drawer {
+      background: var(--error-bg);
+      border-top: 2px solid var(--error-border);
+    }
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .drawer-title {
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .correct-drawer .drawer-title { color: var(--success-text); }
+    .wrong-drawer   .drawer-title { color: var(--error-text); }
+    .drawer-explanation {
+      font-size: 14px;
+      color: var(--text-primary);
+      line-height: 1.6;
+      background: var(--explanation);
+      border-radius: var(--r-input);
+      padding: 12px 14px;
+      border: 1px solid rgba(27,79,214,.1);
+    }
+
+    /* XP float toast */
+    .xp-float {
+      position: absolute;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%) translateY(0);
+      background: var(--accent);
+      color: #1A2233; /* WCAG AA fix: replaces #FFFFFF on #F5A623 (~2.8:1→~11:1) */
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: var(--r-btn);
+      padding: 6px 18px;
+      pointer-events: none;
+      opacity: 0;
+      z-index: 20;
+      transition: opacity .2s, transform .6s cubic-bezier(.2,.8,.2,1);
+      box-shadow: 0 4px 16px rgba(245,166,35,.35);
+    }
+    .xp-float.pop {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-32px);
+    }
+    .xp-float.fade-out {
+      opacity: 0;
+      transform: translateX(-50%) translateY(-52px);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .xp-float { transition: opacity .1s; }
+      .xp-float.pop { transform: translateX(-50%); }
+      /* WCAG 2.3.3 fix: suppress feedback-drawer slide animation */
+      .feedback-drawer { transition: none; }
+    }
+
+    /* Responsive */
+    @media (max-width: 860px) {
+      .frames-row { flex-direction: column; align-items: center; }
+      .band { padding: 22px 20px 18px; }
+    }
+    @media (max-width: 420px) {
+      .phone { width: 100%; border-radius: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── Direction Band ─── -->
+<div class="band">
+  <p class="band-name">StudiBuilder · כיוון B2</p>
+  <h1 class="band-tagline">Premium-Plus · חתימה</h1>
+  <p class="band-oneliner">פרימיום-אמין עם חתימה-ויזואלית — aurora-mesh עדין וכותרת-ענק במסך-הבית</p>
+  <p class="band-energy">רמת אנרגיה: בינונית 🔋🔋🔋 · בסיס B + נגיעת-C אחת (aurora עדין + כותרת display) · מסך-לימוד נשאר נקי-B</p>
+  <div class="swatches" role="list" aria-label="פלטת הכיוון">
+    <div class="swatch" role="listitem">
+      <div class="swatch-box" style="background:#FBFCFE;" aria-hidden="true"></div>
+      <span class="swatch-hex">#FBFCFE</span>
+      <span class="swatch-label">bg-app</span>
+    </div>
+    <div class="swatch" role="listitem">
+      <div class="swatch-box" style="background:#FFFFFF;border:1px solid #E6EAF1;" aria-hidden="true"></div>
+      <span class="swatch-hex">#FFFFFF</span>
+      <span class="swatch-label">surface</span>
+    </div>
+    <div class="swatch" role="listitem">
+      <div class="swatch-box" style="background:#1B4FD6;" aria-hidden="true"></div>
+      <span class="swatch-hex">#1B4FD6</span>
+      <span class="swatch-label">primary</span>
+    </div>
+    <div class="swatch" role="listitem">
+      <div class="swatch-box" style="background:#EAF1FE;" aria-hidden="true"></div>
+      <span class="swatch-hex">#EAF1FE</span>
+      <span class="swatch-label">primary-soft</span>
+    </div>
+    <div class="swatch" role="listitem">
+      <div class="swatch-box" style="background:#F5A623;" aria-hidden="true"></div>
+      <span class="swatch-hex">#F5A623</span>
+      <span class="swatch-label">accent ענבר</span>
+    </div>
+    <div class="swatch" role="listitem">
+      <div class="swatch-box" style="background:#1A2233;" aria-hidden="true"></div>
+      <span class="swatch-hex">#1A2233</span>
+      <span class="swatch-label">text-primary</span>
+    </div>
+    <div class="swatch" role="listitem">
+      <div class="swatch-box" style="background:#F4F6FA;" aria-hidden="true"></div>
+      <span class="swatch-hex">#F4F6FA</span>
+      <span class="swatch-label">sunken</span>
+    </div>
+    <!-- Aurora indicator swatch -->
+    <div class="swatch swatch-aurora" role="listitem">
+      <div class="swatch-box" aria-hidden="true"></div>
+      <span class="swatch-hex">aurora</span>
+      <span class="swatch-label">mesh-hint</span>
+    </div>
+  </div>
+</div>
+
+<!-- ─── Hint bar ─── -->
+<div class="hint-bar" role="note" aria-label="הוראות שימוש">
+  לחצו על תשובה ואז על "בדוק תשובה" כדי לראות את מצבי-המשוב
+</div>
+
+<!-- ─── Frames ─── -->
+<main class="frames-row">
+
+  <!-- ── Dashboard Frame ── -->
+  <div class="frame-wrapper">
+    <span class="frame-label" aria-hidden="true">דשבורד</span>
+    <div class="phone" role="region" aria-label="מסך דשבורד">
+      <div class="screen">
+        <div class="dash-inner">
+
+          <!-- Stat pills -->
+          <div class="stat-bar" role="group" aria-label="נתוני משתמש">
+            <div class="stat-pill primary-pill" aria-label="קרדיטים: 12">
+              <span class="icon">🎓</span>
+              <span class="val" style="color:var(--primary);">12</span>
+              <span style="color:var(--text-secondary);font-weight:500;font-size:12px;">קרדיטים</span>
+            </div>
+            <div class="stat-pill" aria-label="נקודות XP: 1,240">
+              <span class="icon">⚡</span>
+              <span class="val" style="color:#7A4F00;font-weight:700;">1,240</span><!-- WCAG AA fix: #7A4F00 on #FFFFFF ~7:1 -->
+            </div>
+            <div class="stat-pill" aria-label="רצף: 5 ימים">
+              <span class="icon">🔥</span>
+              <span class="val" style="color:var(--text-primary);font-weight:700;">5</span>
+            </div>
+          </div>
+
+          <!-- Greeting banner — B2 signature: display heading + aurora mesh -->
+          <div class="greeting-banner">
+            <div class="greeting-text-col">
+              <!--
+                Display-size greeting: 32px / weight-800.
+                Single accented keyword "בוקר" in primary blue.
+                Emoji stays as-is (content identical to B).
+              -->
+              <div class="greeting-main" aria-label="בוקר טוב, מוטי">
+                <span class="accent-word">בוקר</span> טוב, מוטי 👋
+              </div>
+              <div class="greeting-sub">בוא נמשיך ללמוד היום</div>
+              <!-- CTA: same label, gains glow on hover via CSS -->
+              <button class="cta-btn" aria-label="פתח קורס חדש">
+                <span aria-hidden="true">+</span> קורס חדש
+              </button>
+            </div>
+            <div class="mascot-banner" role="img" aria-label="רוני, קמע הבטיחות">
+              <!-- Mascot Roni — identical SVG to B -->
+              <svg viewBox="0 0 120 130" width="72" height="78" role="img" aria-label="רוני — קמע הלמידה" class="mascot-banner-svg">
+                <ellipse cx="60" cy="86" rx="30" ry="30" fill="#FFE3C2"/>
+                <ellipse cx="50" cy="82" rx="4.5" ry="4.5" fill="#1A2233"/>
+                <ellipse cx="70" cy="82" rx="4.5" ry="4.5" fill="#1A2233"/>
+                <circle cx="52" cy="80" r="1.5" fill="#FFFFFF"/>
+                <circle cx="72" cy="80" r="1.5" fill="#FFFFFF"/>
+                <path d="M50 97 q10 7 20 0" stroke="#1A2233" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <path d="M28 64 a32 30 0 0 1 64 0 z" fill="#F97316"/>
+                <rect x="22" y="62" width="76" height="9" rx="4.5" fill="#F97316"/>
+                <rect x="56" y="40" width="8" height="14" rx="3" fill="#F97316"/>
+                <rect x="38" y="55" width="44" height="4" rx="2" fill="rgba(27,79,214,.22)"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Streak card -->
+          <div class="section-label" role="heading" aria-level="2">הרצף השבועי</div>
+          <div class="streak-card" role="region" aria-label="כרטיס רצף שבועי">
+            <div class="streak-header">
+              <div class="streak-title">רצף ימים</div>
+              <div class="streak-badge" aria-label="5 ימים ברצף">5 ימים ברצף!</div>
+            </div>
+            <div class="streak-days" role="list" aria-label="ימי השבוע">
+              <div class="streak-day" role="listitem">
+                <span class="streak-day-label">א׳</span>
+                <div class="streak-dot filled" aria-label="יום ראשון — הושלם"></div>
+              </div>
+              <div class="streak-day" role="listitem">
+                <span class="streak-day-label">ב׳</span>
+                <div class="streak-dot filled" aria-label="יום שני — הושלם"></div>
+              </div>
+              <div class="streak-day" role="listitem">
+                <span class="streak-day-label">ג׳</span>
+                <div class="streak-dot filled" aria-label="יום שלישי — הושלם"></div>
+              </div>
+              <div class="streak-day" role="listitem">
+                <span class="streak-day-label">ד׳</span>
+                <div class="streak-dot filled" aria-label="יום רביעי — הושלם"></div>
+              </div>
+              <div class="streak-day" role="listitem">
+                <span class="streak-day-label">ה׳</span>
+                <div class="streak-dot filled" aria-label="יום חמישי — הושלם"></div>
+              </div>
+              <div class="streak-day" role="listitem">
+                <span class="streak-day-label">ו׳</span>
+                <div class="streak-dot today" aria-label="יום שישי — היום"></div>
+              </div>
+              <div class="streak-day" role="listitem">
+                <span class="streak-day-label">ש׳</span>
+                <div class="streak-dot" aria-label="שבת — עתידי"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Courses section -->
+          <div class="section-label" role="heading" aria-level="2">הקורסים שלי</div>
+          <ul class="courses-list" style="list-style:none;padding:0;margin:0;">
+            <li>
+              <button class="course-card" aria-label="ממונה בטיחות בעבודה — 64 אחוז הושלם">
+                <div class="course-card-top">
+                  <div class="course-name">ממונה בטיחות בעבודה</div>
+                  <div class="course-pct">64%</div>
+                </div>
+                <div class="progress-track" role="progressbar" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100" aria-label="התקדמות: 64%">
+                  <div class="progress-fill" style="width:64%"></div>
+                </div>
+              </button>
+            </li>
+            <li>
+              <button class="course-card" aria-label="עזרה ראשונה במקום העבודה — 20 אחוז הושלם">
+                <div class="course-card-top">
+                  <div class="course-name">עזרה ראשונה במקום העבודה</div>
+                  <div class="course-pct">20%</div>
+                </div>
+                <div class="progress-track" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" aria-label="התקדמות: 20%">
+                  <div class="progress-fill" style="width:20%"></div>
+                </div>
+              </button>
+            </li>
+          </ul>
+
+          <!-- Daily goal card -->
+          <div class="goal-card" role="region" aria-label="יעד יומי">
+            <div class="goal-header">
+              <div class="goal-label">יעד יומי</div>
+              <div class="goal-count" aria-label="3 מתוך 5 שיעורים">3 / 5 שיעורים</div>
+            </div>
+            <div class="progress-track" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" aria-label="60 אחוז מהיעד היומי הושלם">
+              <div class="progress-fill" style="width:60%;background:linear-gradient(90deg,var(--accent) 0%,#f0b84a 100%)"></div>
+            </div>
+          </div>
+
+        </div><!-- /dash-inner -->
+      </div><!-- /screen -->
+
+      <!-- Bottom nav -->
+      <nav class="bottom-nav" aria-label="ניווט ראשי">
+        <button class="nav-tab active" aria-label="בית — נוכחי" aria-current="page">
+          <span class="nav-icon" aria-hidden="true">🏠</span>
+          <span class="nav-label">בית</span>
+        </button>
+        <button class="nav-tab" aria-label="קורסים">
+          <span class="nav-icon" aria-hidden="true">📚</span>
+          <span class="nav-label">קורסים</span>
+        </button>
+        <button class="nav-tab" aria-label="נתונים">
+          <span class="nav-icon" aria-hidden="true">📊</span>
+          <span class="nav-label">נתונים</span>
+        </button>
+        <button class="nav-tab" aria-label="הגדרות">
+          <span class="nav-icon" aria-hidden="true">⚙️</span>
+          <span class="nav-label">הגדרות</span>
+        </button>
+      </nav>
+    </div><!-- /phone -->
+  </div><!-- /frame-wrapper -->
+
+  <!-- ── Lesson Player Frame ── -->
+  <div class="frame-wrapper">
+    <span class="frame-label" aria-hidden="true">נגן-שיעור</span>
+    <div class="phone" role="region" aria-label="מסך נגן שיעור">
+      <div class="screen" id="lesson-screen">
+        <div class="lesson-inner" id="lesson-inner">
+
+          <!-- Lesson header — clean B + micro aurora hint in corner -->
+          <div class="lesson-header">
+            <div class="lesson-header-top">
+              <div class="lesson-title">ממונה בטיחות בעבודה</div>
+              <div class="lesson-stats">
+                <div class="xp-badge" aria-label="1,240 נקודות XP">
+                  <span aria-hidden="true">⚡</span>
+                  <span>1,240</span>
+                </div>
+                <div class="streak-stat" aria-label="רצף 5 ימים">5 🔥</div>
+              </div>
+            </div>
+            <!-- Progress dots RTL: filled from right -->
+            <div class="progress-dots" role="progressbar" aria-label="שאלה 4 מתוך 8" aria-valuenow="4" aria-valuemin="0" aria-valuemax="8">
+              <div class="pdot done"   aria-hidden="true"></div>
+              <div class="pdot done"   aria-hidden="true"></div>
+              <div class="pdot done"   aria-hidden="true"></div>
+              <div class="pdot done"   aria-hidden="true"></div>
+              <div class="pdot future" aria-hidden="true"></div>
+              <div class="pdot future" aria-hidden="true"></div>
+              <div class="pdot future" aria-hidden="true"></div>
+              <div class="pdot future" aria-hidden="true"></div>
+            </div>
+          </div>
+
+          <!-- AI Notice -->
+          <div class="ai-notice" role="note" aria-label="הערת מידע AI">
+            <span class="ai-notice-icon" aria-hidden="true">ℹ</span>
+            <span>המידע נוצר על-ידי AI ועלול להכיל שגיאות</span>
+          </div>
+
+          <!-- Question -->
+          <div class="question-area">
+            <h2 class="question-text" id="question-heading">
+              מהו תפקידו המרכזי של ממונה הבטיחות במקום העבודה?
+            </h2>
+          </div>
+
+          <!-- Answer cards -->
+          <div class="answers-list" role="group" aria-labelledby="question-heading">
+            <button
+              class="answer-card"
+              id="ans-0"
+              data-correct="true"
+              aria-label="תשובה א: לייעץ למחזיק במקום העבודה בכל הנוגע לחוקי הבטיחות ולקדם את התודעה לבטיחות"
+              aria-pressed="false"
+              onclick="selectAnswer(0)"
+            >לייעץ למחזיק במקום העבודה בכל הנוגע לחוקי הבטיחות ולקדם את התודעה לבטיחות</button>
+
+            <button
+              class="answer-card"
+              id="ans-1"
+              data-correct="false"
+              aria-label="תשובה ב: לפקח על נוכחות העובדים ולנהל את שעות העבודה במפעל"
+              aria-pressed="false"
+              onclick="selectAnswer(1)"
+            >לפקח על נוכחות העובדים ולנהל את שעות העבודה במפעל</button>
+
+            <button
+              class="answer-card"
+              id="ans-2"
+              data-correct="false"
+              aria-label="תשובה ג: לייצג את העובדים מול ההנהלה במשא ומתן על שכר"
+              aria-pressed="false"
+              onclick="selectAnswer(2)"
+            >לייצג את העובדים מול ההנהלה במשא ומתן על שכר</button>
+
+            <button
+              class="answer-card"
+              id="ans-3"
+              data-correct="false"
+              aria-label="תשובה ד: לאשר תשלומי שכר ולנהל את מחלקת הכספים"
+              aria-pressed="false"
+              onclick="selectAnswer(3)"
+            >לאשר תשלומי שכר ולנהל את מחלקת הכספים</button>
+          </div>
+
+          <!-- Citation chip -->
+          <button
+            class="citation-chip"
+            aria-label="מקור: תקנות ארגון הפיקוח על העבודה (ממונים על הבטיחות), התשנ&quot;ו-1996 · תקנה 2"
+          >
+            <span aria-hidden="true">📄</span>
+            <span>מקור: תקנות ארגון הפיקוח על העבודה (ממונים), התשנ״ו-1996 · תק׳ 2</span>
+          </button>
+
+          <!-- Mascot (restrained advisor in corner — identical to B) -->
+          <div class="lesson-mascot-row" role="img" aria-label="רוני, קמע הבטיחות">
+            <svg viewBox="0 0 120 130" width="54" height="58" role="img" aria-label="רוני — יועץ שקט" class="mascot-lesson">
+              <ellipse cx="60" cy="86" rx="30" ry="30" fill="#FFE3C2"/>
+              <ellipse cx="50" cy="82" rx="4" ry="4" fill="#1A2233"/>
+              <ellipse cx="70" cy="82" rx="4" ry="4" fill="#1A2233"/>
+              <circle cx="51.5" cy="80.5" r="1.3" fill="#FFFFFF"/>
+              <circle cx="71.5" cy="80.5" r="1.3" fill="#FFFFFF"/>
+              <path d="M50 97 q10 7 20 0" stroke="#1A2233" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <path d="M28 64 a32 30 0 0 1 64 0 z" fill="#F97316"/>
+              <rect x="22" y="62" width="76" height="9" rx="4.5" fill="#F97316"/>
+              <rect x="56" y="40" width="8" height="14" rx="3" fill="#F97316"/>
+              <rect x="38" y="55" width="44" height="4" rx="2" fill="rgba(27,79,214,.2)"/>
+            </svg>
+          </div>
+
+          <!-- Check answer button -->
+          <button
+            class="check-btn"
+            id="check-btn"
+            disabled
+            aria-label="בדוק תשובה"
+            onclick="checkAnswer()"
+          >בדוק תשובה</button>
+
+        </div><!-- /lesson-inner -->
+      </div><!-- /screen -->
+
+      <!-- XP Float toast -->
+      <div class="xp-float" id="xp-float" aria-live="polite" aria-atomic="true" role="status">+10 XP</div>
+
+      <!-- Feedback drawer (correct) -->
+      <div
+        class="feedback-drawer correct-drawer"
+        id="feedback-correct"
+        role="region"
+        aria-label="משוב — תשובה נכונה"
+        aria-hidden="true"
+      >
+        <div class="drawer-header">
+          <svg viewBox="0 0 120 130" width="44" height="48" role="img" aria-label="רוני שמח" aria-hidden="true">
+            <ellipse cx="60" cy="86" rx="30" ry="30" fill="#FFE3C2"/>
+            <ellipse cx="50" cy="82" rx="4.5" ry="4" fill="#1A2233"/>
+            <ellipse cx="70" cy="82" rx="4.5" ry="4" fill="#1A2233"/>
+            <circle cx="51.5" cy="80.5" r="1.5" fill="#FFFFFF"/>
+            <circle cx="71.5" cy="80.5" r="1.5" fill="#FFFFFF"/>
+            <path d="M47 97 q13 11 26 0" stroke="#1A2233" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <path d="M28 64 a32 30 0 0 1 64 0 z" fill="#F97316"/>
+            <rect x="22" y="62" width="76" height="9" rx="4.5" fill="#F97316"/>
+            <rect x="56" y="40" width="8" height="14" rx="3" fill="#F97316"/>
+          </svg>
+          <div class="drawer-title">מצוין! תשובה נכונה</div>
+        </div>
+        <div class="drawer-explanation">
+          ממונה הבטיחות הוא הגורם המקצועי המייעץ למחזיק במקום העבודה בכל הנוגע לחוקי הבטיחות, ופועל לקידום התרבות הבטיחותית בארגון.
+        </div>
+      </div>
+
+      <!-- Feedback drawer (wrong) -->
+      <div
+        class="feedback-drawer wrong-drawer"
+        id="feedback-wrong"
+        role="region"
+        aria-label="משוב — תשובה שגויה"
+        aria-hidden="true"
+      >
+        <div class="drawer-header">
+          <svg viewBox="0 0 120 130" width="44" height="48" role="img" aria-label="רוני מעודד" aria-hidden="true">
+            <ellipse cx="60" cy="86" rx="30" ry="30" fill="#FFE3C2"/>
+            <ellipse cx="50" cy="82" rx="4.5" ry="4" fill="#1A2233"/>
+            <ellipse cx="70" cy="82" rx="4.5" ry="4" fill="#1A2233"/>
+            <circle cx="51.5" cy="80.5" r="1.5" fill="#FFFFFF"/>
+            <circle cx="71.5" cy="80.5" r="1.5" fill="#FFFFFF"/>
+            <path d="M50 98 q10 3 20 0" stroke="#1A2233" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M28 64 a32 30 0 0 1 64 0 z" fill="#F97316"/>
+            <rect x="22" y="62" width="76" height="9" rx="4.5" fill="#F97316"/>
+            <rect x="56" y="40" width="8" height="14" rx="3" fill="#F97316"/>
+          </svg>
+          <div class="drawer-title">לא נכון — בוא נלמד</div>
+        </div>
+        <div class="drawer-explanation">
+          ממונה הבטיחות הוא הגורם המקצועי המייעץ למחזיק במקום העבודה בכל הנוגע לחוקי הבטיחות, ופועל לקידום התרבות הבטיחותית בארגון.
+        </div>
+      </div>
+
+      <!-- Bottom nav -->
+      <nav class="bottom-nav" aria-label="ניווט ראשי">
+        <button class="nav-tab" aria-label="בית">
+          <span class="nav-icon" aria-hidden="true">🏠</span>
+          <span class="nav-label">בית</span>
+        </button>
+        <button class="nav-tab active" aria-label="קורסים — נוכחי" aria-current="page">
+          <span class="nav-icon" aria-hidden="true">📚</span>
+          <span class="nav-label">קורסים</span>
+        </button>
+        <button class="nav-tab" aria-label="נתונים">
+          <span class="nav-icon" aria-hidden="true">📊</span>
+          <span class="nav-label">נתונים</span>
+        </button>
+        <button class="nav-tab" aria-label="הגדרות">
+          <span class="nav-icon" aria-hidden="true">⚙️</span>
+          <span class="nav-label">הגדרות</span>
+        </button>
+      </nav>
+    </div><!-- /phone -->
+  </div><!-- /frame-wrapper -->
+
+</main>
+
+<script>
+  /* ─── Lesson Interaction Logic — identical to B ─── */
+
+  var selectedIndex = null;
+  var answered = false;
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function selectAnswer(idx) {
+    if (answered) return;
+
+    var cards = document.querySelectorAll('.answer-card');
+    cards.forEach(function(c) {
+      c.classList.remove('selected');
+      c.setAttribute('aria-pressed', 'false');
+    });
+
+    selectedIndex = idx;
+    var card = document.getElementById('ans-' + idx);
+    card.classList.add('selected');
+    card.setAttribute('aria-pressed', 'true');
+
+    var btn = document.getElementById('check-btn');
+    btn.disabled = false;
+
+    if (!reducedMotion) {
+      btn.style.transition = 'background .15s, transform .12s, box-shadow .15s';
+      btn.style.transform = 'scale(1.02)';
+      setTimeout(function() { btn.style.transform = ''; }, 180);
+    }
+  }
+
+  function checkAnswer() {
+    if (answered || selectedIndex === null) return;
+    answered = true;
+
+    var cards = document.querySelectorAll('.answer-card');
+    var selected = document.getElementById('ans-' + selectedIndex);
+    var isCorrect = selected.dataset.correct === 'true';
+
+    cards.forEach(function(c) {
+      c.disabled = true;
+      c.classList.remove('selected');
+    });
+
+    var btn = document.getElementById('check-btn');
+    btn.disabled = true;
+
+    if (isCorrect) {
+      selected.classList.add('correct');
+      selected.setAttribute('aria-label', selected.getAttribute('aria-label') + ' — נכון!');
+      showFeedback('correct');
+      showXpFloat();
+    } else {
+      selected.classList.add('wrong');
+      selected.setAttribute('aria-label', selected.getAttribute('aria-label') + ' — שגוי');
+      var correctCard = document.querySelector('.answer-card[data-correct="true"]');
+      correctCard.classList.add('correct');
+      correctCard.setAttribute('aria-label', correctCard.getAttribute('aria-label') + ' — התשובה הנכונה');
+      showFeedback('wrong');
+    }
+  }
+
+  function showFeedback(type) {
+    var drawer = document.getElementById('feedback-' + type);
+    drawer.setAttribute('aria-hidden', 'false');
+
+    if (!reducedMotion) {
+      setTimeout(function() { drawer.classList.add('open'); }, 60);
+    } else {
+      drawer.classList.add('open');
+    }
+  }
+
+  function showXpFloat() {
+    var el = document.getElementById('xp-float');
+    el.classList.remove('pop', 'fade-out');
+
+    if (reducedMotion) {
+      el.style.opacity = '1';
+      setTimeout(function() { el.style.opacity = '0'; }, 1200);
+      return;
+    }
+
+    void el.offsetWidth;
+    el.classList.add('pop');
+
+    setTimeout(function() {
+      el.classList.remove('pop');
+      el.classList.add('fade-out');
+      setTimeout(function() { el.classList.remove('fade-out'); }, 400);
+    }, 900);
+  }
+</script>
+
+</body>
+</html>

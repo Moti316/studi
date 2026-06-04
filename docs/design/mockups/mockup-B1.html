@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudiBuilder — כיוון B1 · Premium-Plus · רטנשן</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── Reset & Base ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* Palette B — inherited 1:1 */
+      --bg-app:        #FBFCFE;
+      --bg-warm:       #FAF9F7;
+      --surface:       #FFFFFF;
+      --sunken:        #F4F6FA;
+      --primary:       #1B4FD6;
+      --primary-deep:  #173FA8;
+      --primary-soft:  #EAF1FE;
+      --accent:        #F5A623;
+      --accent-soft:   #FEF4E2;
+      --success-border:#7FD8A0;
+      --success-bg:    #F1FBF5;
+      --success-text:  #1B7A45;
+      --error-border:  #F0A3A3;
+      --error-bg:      #FDF3F3;
+      --error-text:    #B42424;
+      --explanation:   #EEF4FF;
+      --text-primary:  #1A2233;
+      --text-secondary:#5B6678;
+      --text-muted:    #515E7A;
+      --border:        #E6EAF1;
+
+      /* B1-only additions — retention micro-elements */
+      --goal-ring-bg:  #EAF1FE;
+      --goal-ring-fill:#1B4FD6;
+      --streak-safe:   #EAF1FE;           /* streak-safe badge bg */
+      --streak-safe-border: rgba(27,79,214,.18);
+
+      /* Shadows (identical to B) */
+      --shadow-hairline: 0 0 0 1px #E6EAF1;
+      --shadow-soft:     0 2px 8px -2px rgba(26,34,51,.06);
+      --shadow-card:     0 4px 16px -4px rgba(26,34,51,.08);
+      --shadow-focus:    0 0 0 3px rgba(27,79,214,.22);
+
+      /* Radius */
+      --r-btn:   9999px;
+      --r-card:  14px;
+      --r-input: 12px;
+      --r-modal: 24px;
+
+      /* Typography */
+      --font: 'Rubik', 'Heebo', 'Assistant', system-ui, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg-warm);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    /* ─── Direction Band ─── */
+    .band {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 40px 24px;
+    }
+    .band-name {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+    .band-tagline {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      margin-bottom: 4px;
+    }
+    .band-oneliner {
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+    .band-energy {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+    .swatches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .swatch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+    .swatch-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      box-shadow: var(--shadow-hairline);
+    }
+    .swatch-hex {
+      font-size: 10px;
+      color: var(--text-muted);
+      font-family: monospace;
+      white-space: nowrap;
+    }
+    .swatch-label {
+      font-size: 10px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    /* ─── Hint bar ─── */
+    .hint-bar {
+      text-align: center;
+      font-size: 14px;
+      color: var(--text-secondary);
+      padding: 14px 20px;
+      background: var(--accent-soft);
+      border-bottom: 1px solid #f0d8a8;
+      letter-spacing: .01em;
+    }
+
+    /* ─── Frames row ─── */
+    .frames-row {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 36px;
+      padding: 40px 24px 60px;
+      flex-wrap: wrap;
+    }
+
+    .frame-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .frame-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: .04em;
+    }
+
+    /* Phone shell */
+    .phone {
+      width: 390px;
+      height: 780px;
+      border-radius: 44px;
+      background: var(--surface);
+      box-shadow:
+        0 0 0 1.5px #D0D8E8,
+        0 0 0 3px #F2F4F8,
+        0 24px 64px -12px rgba(26,34,51,.18);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .screen {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      background: var(--bg-app);
+      display: flex;
+      flex-direction: column;
+      scrollbar-width: none;
+    }
+    .screen::-webkit-scrollbar { display: none; }
+
+    /* ─── Dashboard ─── */
+    .dash-inner {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 68px;
+    }
+
+    /* Stat pills */
+    .stat-bar {
+      display: flex;
+      flex-direction: row-reverse;
+      gap: 8px;
+      padding: 16px 20px 0;
+      justify-content: flex-start;
+    }
+    .stat-pill {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-btn);
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      box-shadow: var(--shadow-soft);
+    }
+    .stat-pill .icon { font-size: 14px; }
+    /* WCAG AA fix: #7A5100 on #FFFFFF ≈ 5.1:1 (var(--accent) #F5A623 was ≈ 2.8:1) */
+    .stat-pill.accent-pill .val { color: #7A5100; }
+    .stat-pill.primary-pill .val { color: var(--primary); }
+
+    /* Greeting banner */
+    .greeting-banner {
+      margin: 14px 16px 0;
+      background: linear-gradient(135deg, var(--primary-soft) 0%, var(--surface) 100%);
+      border: 1px solid rgba(27,79,214,.12);
+      border-radius: var(--r-card);
+      padding: 18px 18px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow-soft);
+    }
+    .greeting-text-col {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+    }
+    .greeting-main {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+    .greeting-sub {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    .cta-btn {
+      margin-top: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--primary);
+      color: #FFFFFF;
+      font-family: var(--font);
+      font-size: 15px;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--r-btn);
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background .15s, box-shadow .15s, transform .1s;
+      box-shadow: 0 2px 12px -2px rgba(27,79,214,.28);
+    }
+    .cta-btn:hover { background: var(--primary-deep); }
+    .cta-btn:focus-visible {
+      outline: none;
+      box-shadow: var(--shadow-focus);
+    }
+    .cta-btn:active { transform: scale(.97); }
+
+    /* Mascot area in banner */
+    .mascot-banner {
+      flex-shrink: 0;
+      display: flex;
+      align-items: flex-end;
+      margin-inline-start: 12px;
+    }
+
+    /* Section label */
+    .section-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      padding: 18px 20px 8px;
+    }
+
+    /* ─── B1: Streak card with "safe-streak" note ─── */
+    .streak-card {
+      margin: 0 16px;
+      background: var(--surface);
+      border-radius: var(--r-card);
+      padding: 16px 18px;
+      box-shadow: var(--shadow-hairline), var(--shadow-soft);
+    }
+    .streak-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .streak-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .streak-badge {
+      font-size: 13px;
+      font-weight: 700;
+      /* WCAG AA fix: #7A5100 on #FEF4E2 ≈ 5.1:1 (was #F5A623 ≈ 1.7:1) */
+      color: #7A5100;
+      background: var(--accent-soft);
+      border: 1px solid #f0d08a;
+      border-radius: var(--r-btn);
+      padding: 3px 12px;
+    }
+    /* B1 addition: safe-streak reassurance line */
+    .streak-safe-note {
+      font-size: 11px;
+      color: var(--primary);
+      background: var(--streak-safe);
+      border: 1px solid var(--streak-safe-border);
+      border-radius: var(--r-btn);
+      padding: 4px 12px;
+      display: inline-block;
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+    .streak-days {
+      display: flex;
+      flex-direction: row-reverse;
+      gap: 5px;
+      justify-content: flex-start;
+    }
+    .streak-day {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      flex: 1;
+    }
+    .streak-day-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .streak-dot {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--sunken);
+      border: 1.5px solid var(--border);
+      transition: background .2s;
+    }
+    .streak-dot.filled {
+      background: var(--accent);
+      border-color: #e09015;
+      box-shadow: 0 2px 6px rgba(245,166,35,.3);
+    }
+    .streak-dot.today {
+      border: 2px solid var(--primary);
+    }
+
+    /* Course cards */
+    .courses-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 0 16px;
+      margin-bottom: 0;
+    }
+    .course-card {
+      background: var(--surface);
+      border-radius: var(--r-card);
+      padding: 14px 16px;
+      box-shadow: var(--shadow-hairline), var(--shadow-soft);
+      cursor: pointer;
+      transition: box-shadow .18s, transform .12s;
+    }
+    .course-card:hover {
+      box-shadow: var(--shadow-hairline), var(--shadow-card);
+      transform: translateY(-1px);
+    }
+    .course-card:focus-visible {
+      outline: none;
+      box-shadow: var(--shadow-focus);
+    }
+    .course-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+    .course-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.4;
+      flex: 1;
+      padding-inline-end: 12px;
+    }
+    .course-pct {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+    .progress-track {
+      height: 5px;
+      background: var(--sunken);
+      border-radius: var(--r-btn);
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary) 0%, #4E7FE0 100%);
+      border-radius: var(--r-btn);
+      transition: width .6s cubic-bezier(.4,0,.2,1);
+    }
+
+    /* ─── B1: Daily Goal Card with SVG ring ─── */
+    .goal-card {
+      margin: 10px 16px 0;
+      background: var(--surface);
+      border-radius: var(--r-card);
+      padding: 14px 16px;
+      box-shadow: var(--shadow-hairline), var(--shadow-soft);
+    }
+    .goal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .goal-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .goal-count {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .goal-body {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    /* SVG ring */
+    .goal-ring-wrap {
+      flex-shrink: 0;
+      position: relative;
+      width: 54px;
+      height: 54px;
+    }
+    .goal-ring-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .goal-ring-pct {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1;
+    }
+    .goal-ring-done {
+      /* checkmark appears after animation completes — hidden by default in demo */
+      font-size: 18px;
+      display: none;
+    }
+    .goal-detail {
+      flex: 1;
+    }
+    .goal-detail-label {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .goal-detail-note {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Bottom nav — dark glass */
+    .bottom-nav {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 68px;
+      background: rgba(18,26,44,.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(255,255,255,.08);
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: center;
+      justify-content: space-around;
+      z-index: 10;
+    }
+    .nav-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 14px;
+      cursor: pointer;
+      border-radius: 12px;
+      border: none;
+      background: transparent;
+      transition: background .15s;
+    }
+    .nav-tab:hover { background: rgba(255,255,255,.06); }
+    .nav-tab:focus-visible {
+      outline: 2px solid #FFFFFF;
+      outline-offset: 2px;
+      box-shadow: none;
+    }
+    .nav-icon {
+      font-size: 20px;
+      /* WCAG AA fix: rgba(255,255,255,.7) ≈ #C4CBDA on #2E3A52 ≈ 4.6:1 (was .45 ≈ 2.3:1) */
+      color: rgba(255,255,255,.7);
+      transition: color .15s;
+    }
+    .nav-label {
+      font-size: 10px;
+      font-weight: 600;
+      /* WCAG AA fix: rgba(255,255,255,.7) ≈ 4.6:1 (was .4 ≈ 2.3:1) */
+      color: rgba(255,255,255,.7);
+      transition: color .15s;
+    }
+    .nav-tab.active .nav-icon { color: #FFFFFF; }
+    .nav-tab.active .nav-label { color: rgba(255,255,255,.9); }
+
+    /* ─── Lesson player ─── */
+    .lesson-inner {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 68px;
+    }
+
+    /* Lesson header */
+    .lesson-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 18px 12px;
+    }
+    .lesson-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .lesson-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      flex: 1;
+      padding-inline-end: 12px;
+    }
+    .lesson-stats {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .xp-badge {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-soft);
+      border-radius: var(--r-btn);
+      padding: 3px 10px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    /* B1: XP badge counter element for count-up */
+    .xp-badge-val { transition: color .1s; }
+    .streak-stat {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    /* Progress dots — RTL */
+    .progress-dots {
+      display: flex;
+      flex-direction: row-reverse;
+      gap: 5px;
+    }
+    .pdot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+    }
+    .pdot.done  { background: var(--primary); }
+    .pdot.current { background: var(--primary); opacity: .45; }
+    .pdot.future { background: var(--border); }
+
+    /* AI Notice */
+    .ai-notice {
+      margin: 12px 16px 0;
+      background: var(--sunken);
+      border: 1px solid var(--border);
+      border-radius: var(--r-input);
+      padding: 8px 12px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+    .ai-notice-icon { font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+
+    /* Question */
+    .question-area {
+      padding: 16px 18px 10px;
+    }
+    .question-text {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.55;
+    }
+
+    /* Answer cards */
+    .answers-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      padding: 4px 16px 0;
+    }
+    .answer-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-card);
+      padding: 13px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1.5;
+      cursor: pointer;
+      transition: border-color .12s, background .12s, box-shadow .12s, transform .08s;
+      min-height: 52px;
+      text-align: start;
+      width: 100%;
+      font-family: var(--font);
+      box-shadow: var(--shadow-hairline);
+    }
+    .answer-card:hover:not(:disabled) {
+      border-color: rgba(27,79,214,.3);
+      box-shadow: var(--shadow-soft);
+    }
+    .answer-card:active:not(:disabled) { transform: scale(.98); }
+    .answer-card:focus-visible {
+      outline: none;
+      box-shadow: var(--shadow-focus);
+    }
+    .answer-card.selected {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+      box-shadow: var(--shadow-soft);
+    }
+    .answer-card.correct {
+      border-color: var(--success-border);
+      background: var(--success-bg);
+      color: var(--success-text);
+      font-weight: 600;
+    }
+    .answer-card.wrong {
+      border-color: var(--error-border);
+      background: var(--error-bg);
+      color: var(--error-text);
+    }
+    .answer-card:disabled { cursor: default; }
+
+    /* Citation chip */
+    .citation-chip {
+      margin: 12px 16px 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--primary-soft);
+      border: 1px solid rgba(27,79,214,.18);
+      border-radius: var(--r-btn);
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--primary);
+      line-height: 1.4;
+      cursor: pointer;
+      transition: background .15s;
+      max-width: calc(100% - 32px);
+    }
+    .citation-chip:hover { background: #dce8fd; }
+    .citation-chip:focus-visible {
+      outline: none;
+      box-shadow: var(--shadow-focus);
+    }
+
+    /* Check button */
+    .check-btn {
+      margin: 14px 16px 0;
+      width: calc(100% - 32px);
+      padding: 14px;
+      background: var(--primary);
+      color: #FFFFFF;
+      font-family: var(--font);
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--r-btn);
+      cursor: pointer;
+      transition: background .15s, opacity .15s, transform .1s, box-shadow .15s;
+      box-shadow: 0 2px 12px -2px rgba(27,79,214,.28);
+    }
+    .check-btn:not(:disabled):hover { background: var(--primary-deep); }
+    .check-btn:not(:disabled):active { transform: scale(.97); }
+    .check-btn:focus-visible {
+      outline: none;
+      box-shadow: var(--shadow-focus);
+    }
+    .check-btn:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    /* Mascot — lesson corner, calm float */
+    .lesson-mascot-row {
+      display: flex;
+      justify-content: flex-end;
+      padding: 10px 18px 0;
+    }
+    .mascot-lesson {
+      animation: float-calm 4s ease-in-out infinite;
+      filter: drop-shadow(0 2px 8px rgba(27,79,214,.12));
+    }
+    .mascot-banner-svg {
+      animation: float-calm 4s ease-in-out infinite;
+      filter: drop-shadow(0 3px 12px rgba(27,79,214,.15));
+    }
+    /* B1: mascot-react — brief upward nudge on correct answer */
+    .mascot-lesson.react-correct {
+      animation: mascot-happy-nod 0.55s ease-out forwards, float-calm 4s ease-in-out 0.56s infinite;
+    }
+    @keyframes float-calm {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-5px); }
+    }
+    @keyframes mascot-happy-nod {
+      0%   { transform: translateY(0) scale(1); }
+      35%  { transform: translateY(-9px) scale(1.06); }
+      65%  { transform: translateY(-4px) scale(1.02); }
+      100% { transform: translateY(0) scale(1); }
+    }
+
+    /* Feedback drawer */
+    .feedback-drawer {
+      position: absolute;
+      bottom: 68px;
+      left: 0;
+      right: 0;
+      border-radius: 20px 20px 0 0;
+      padding: 20px 18px 18px;
+      z-index: 8;
+      transform: translateY(100%);
+      transition: transform .32s cubic-bezier(.32,.72,0,1);
+    }
+    .feedback-drawer.open { transform: translateY(0); }
+    .feedback-drawer.correct-drawer {
+      background: var(--success-bg);
+      border-top: 2px solid var(--success-border);
+    }
+    .feedback-drawer.wrong-drawer {
+      background: var(--error-bg);
+      border-top: 2px solid var(--error-border);
+    }
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .drawer-title {
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .correct-drawer .drawer-title { color: var(--success-text); }
+    .wrong-drawer  .drawer-title  { color: var(--error-text); }
+    .drawer-explanation {
+      font-size: 14px;
+      color: var(--text-primary);
+      line-height: 1.6;
+      background: var(--explanation);
+      border-radius: var(--r-input);
+      padding: 12px 14px;
+      border: 1px solid rgba(27,79,214,.1);
+    }
+
+    /* B1: Roni voice line in wrong drawer (below explanation) */
+    .roni-voice {
+      margin-top: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 9px 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-input);
+    }
+    .roni-voice-icon { flex-shrink: 0; font-size: 15px; margin-top: 1px; }
+
+    /* ─── B1: XP count-up toast (replaces simple badge float) ─── */
+    .xp-float {
+      position: absolute;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%) translateY(0);
+      background: var(--accent);
+      /* WCAG AA fix: #1A2233 on #F5A623 ≈ 7.6:1 (was #FFFFFF ≈ 2.8:1) */
+      color: #1A2233;
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: var(--r-btn);
+      padding: 6px 18px;
+      pointer-events: none;
+      opacity: 0;
+      z-index: 20;
+      transition: opacity .2s, transform .6s cubic-bezier(.2,.8,.2,1);
+      box-shadow: 0 4px 16px rgba(245,166,35,.35);
+      white-space: nowrap;
+    }
+    .xp-float.pop {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-32px);
+    }
+    .xp-float.fade-out {
+      opacity: 0;
+      transform: translateX(-50%) translateY(-52px);
+    }
+
+    /* ─── B1: Confetti canvas ─── */
+    #confetti-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 19;
+    }
+
+    /* ─── reduced-motion: suppress ALL animations and transitions ─── */
+    @media (prefers-reduced-motion: reduce) {
+      /* Keyframe animations */
+      .mascot-lesson,
+      .mascot-banner-svg,
+      .mascot-lesson.react-correct {
+        animation: none !important;
+      }
+      /* Transitions */
+      .xp-float {
+        transition: opacity .1s !important;
+      }
+      .xp-float.pop  { transform: translateX(-50%) !important; }
+      .feedback-drawer { transition: none !important; }
+      .progress-fill { transition: none !important; }
+      .course-card { transition: none !important; }
+      .answer-card { transition: none !important; }
+      .cta-btn, .check-btn { transition: none !important; }
+      .streak-dot { transition: none !important; }
+      /* Canvas confetti */
+      #confetti-canvas { display: none !important; }
+    }
+
+    /* Responsive */
+    @media (max-width: 860px) {
+      .frames-row { flex-direction: column; align-items: center; }
+      .band { padding: 22px 20px 18px; }
+    }
+    @media (max-width: 420px) {
+      .phone { width: 100%; border-radius: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── Direction Band ─── -->
+<div class="band">
+  <p class="band-name">StudiBuilder · כיוון B1</p>
+  <h1 class="band-tagline">Premium-Plus · מנוע-רטנשן מבוקר</h1>
+  <p class="band-oneliner">פרימיום-אמין עם דופק — מנוע-רטנשן מבוקר בלי לשבור את הרצינות</p>
+  <p class="band-energy">רמת אנרגיה: בינונית 🔋🔋🔋 · בסיס B + הזרקת A מאופקת</p>
+  <div class="swatches" role="list" aria-label="פלטת הכיוון">
+    <div class="swatch" role="listitem">
+      <div class="swatch-box" style="background:#FBFCFE;" aria-hidden="true"></div>
+      <span class="swatch-hex">#FBFCFE</span>
+      <span class="swatch-label">bg-app</span>
+    </div>
+    <div class="swatch" role="listitem">
+      <div class="swatch-box" style="background:#FFFFFF;border:1px solid #E6EAF1;" aria-hidden="true"></div>
+      <span class="swatch-hex">#FFFFFF</span>
+      <span class="swatch-label">surface</span>
+    </div>
+    <div class="swatch" role="listitem">
+      <div class="swatch-box" style="background:#1B4FD6;" aria-hidden="true"></div>
+      <span class="swatch-hex">#1B4FD6</span>
+      <span class="swatch-label">primary</span>
+    </div>
+    <div class="swatch" role="listitem">
+      <div class="swatch-box" style="background:#EAF1FE;" aria-hidden="true"></div>
+      <span class="swatch-hex">#EAF1FE</span>
+      <span class="swatch-label">primary-soft</span>
+    </div>
+    <div class="swatch" role="listitem">
+      <div class="swatch-box" style="background:#F5A623;" aria-hidden="true"></div>
+      <span class="swatch-hex">#F5A623</span>
+      <span class="swatch-label">accent ענבר</span>
+    </div>
+    <div class="swatch" role="listitem">
+      <div class="swatch-box" style="background:#1A2233;" aria-hidden="true"></div>
+      <span class="swatch-hex">#1A2233</span>
+      <span class="swatch-label">text-primary</span>
+    </div>
+    <div class="swatch" role="listitem">
+      <div class="swatch-box" style="background:#F4F6FA;" aria-hidden="true"></div>
+      <span class="swatch-hex">#F4F6FA</span>
+      <span class="swatch-label">sunken</span>
+    </div>
+  </div>
+</div>
+
+<!-- ─── Hint bar ─── -->
+<div class="hint-bar" role="note" aria-label="הוראות שימוש">
+  לחצו על תשובה ואז על "בדוק תשובה" כדי לראות את מצבי-המשוב
+</div>
+
+<!-- ─── Frames ─── -->
+<main class="frames-row">
+
+  <!-- ── Dashboard Frame ── -->
+  <div class="frame-wrapper">
+    <span class="frame-label" aria-hidden="true">דשבורד</span>
+    <div class="phone" role="region" aria-label="מסך דשבורד">
+      <div class="screen">
+        <div class="dash-inner">
+
+          <!-- Stat pills -->
+          <div class="stat-bar" role="group" aria-label="נתוני משתמש">
+            <div class="stat-pill primary-pill" aria-label="קרדיטים: 12">
+              <span class="icon">🎓</span>
+              <span class="val" style="color:var(--primary);">12</span>
+              <span style="color:var(--text-secondary);font-weight:500;font-size:12px;">קרדיטים</span>
+            </div>
+            <div class="stat-pill accent-pill" aria-label="נקודות XP: 1,240">
+              <span class="icon">⚡</span>
+              <!-- color set via .accent-pill .val CSS rule (#7A5100 for WCAG AA) -->
+              <span class="val" style="font-weight:700;">1,240</span>
+            </div>
+            <div class="stat-pill" aria-label="רצף: 5 ימים">
+              <span class="icon">🔥</span>
+              <span class="val" style="color:var(--text-primary);font-weight:700;">5</span>
+            </div>
+          </div>
+
+          <!-- Greeting banner -->
+          <div class="greeting-banner">
+            <div class="greeting-text-col">
+              <div class="greeting-main">בוקר טוב, מוטי 👋</div>
+              <div class="greeting-sub">בוא נמשיך ללמוד היום</div>
+              <button class="cta-btn" aria-label="פתח קורס חדש">
+                <span aria-hidden="true">+</span> קורס חדש
+              </button>
+            </div>
+            <!-- aria-label removed: SVG inside carries role="img" + aria-label -->
+            <div class="mascot-banner" aria-hidden="true">
+              <svg viewBox="0 0 120 130" width="72" height="78" role="img" aria-label="רוני — קמע הלמידה" class="mascot-banner-svg">
+                <ellipse cx="60" cy="86" rx="30" ry="30" fill="#FFE3C2"/>
+                <ellipse cx="50" cy="82" rx="4.5" ry="4.5" fill="#1A2233"/>
+                <ellipse cx="70" cy="82" rx="4.5" ry="4.5" fill="#1A2233"/>
+                <circle cx="52" cy="80" r="1.5" fill="#FFFFFF"/>
+                <circle cx="72" cy="80" r="1.5" fill="#FFFFFF"/>
+                <path d="M50 97 q10 7 20 0" stroke="#1A2233" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <path d="M28 64 a32 30 0 0 1 64 0 z" fill="#F97316"/>
+                <rect x="22" y="62" width="76" height="9" rx="4.5" fill="#F97316"/>
+                <rect x="56" y="40" width="8" height="14" rx="3" fill="#F97316"/>
+                <rect x="38" y="55" width="44" height="4" rx="2" fill="rgba(27,79,214,.22)"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Streak card — B1: with safe-streak reassurance -->
+          <h2 class="section-label">הרצף השבועי</h2>
+          <div class="streak-card" role="region" aria-label="כרטיס רצף שבועי">
+            <div class="streak-header">
+              <div class="streak-title">רצף ימים</div>
+              <div class="streak-badge" aria-label="5 ימים ברצף">5 ימים ברצף!</div>
+            </div>
+            <!-- B1 addition: safe-streak note -->
+            <div class="streak-safe-note" role="note" aria-label="הרצף נשמר גם כשטועים">
+              הרצף שלך נשמר גם כשטועים
+            </div>
+            <!-- RTL: days render right-to-left -->
+            <div class="streak-days" role="list" aria-label="ימי השבוע">
+              <div class="streak-day" role="listitem">
+                <span class="streak-day-label">א׳</span>
+                <div class="streak-dot filled" aria-label="יום ראשון — הושלם"></div>
+              </div>
+              <div class="streak-day" role="listitem">
+                <span class="streak-day-label">ב׳</span>
+                <div class="streak-dot filled" aria-label="יום שני — הושלם"></div>
+              </div>
+              <div class="streak-day" role="listitem">
+                <span class="streak-day-label">ג׳</span>
+                <div class="streak-dot filled" aria-label="יום שלישי — הושלם"></div>
+              </div>
+              <div class="streak-day" role="listitem">
+                <span class="streak-day-label">ד׳</span>
+                <div class="streak-dot filled" aria-label="יום רביעי — הושלם"></div>
+              </div>
+              <div class="streak-day" role="listitem">
+                <span class="streak-day-label">ה׳</span>
+                <div class="streak-dot filled" aria-label="יום חמישי — הושלם"></div>
+              </div>
+              <div class="streak-day" role="listitem">
+                <span class="streak-day-label">ו׳</span>
+                <div class="streak-dot today" aria-label="יום שישי — היום"></div>
+              </div>
+              <div class="streak-day" role="listitem">
+                <span class="streak-day-label">ש׳</span>
+                <div class="streak-dot" aria-label="שבת — עתידי"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Courses section -->
+          <h2 class="section-label">הקורסים שלי</h2>
+          <!-- role="list" on ul; li holds listitem role; button has no conflicting role -->
+          <ul class="courses-list" role="list" style="list-style:none;padding:0;margin:0;">
+            <li role="listitem">
+              <button class="course-card" aria-label="ממונה בטיחות בעבודה — 64 אחוז הושלם">
+                <div class="course-card-top">
+                  <div class="course-name">ממונה בטיחות בעבודה</div>
+                  <div class="course-pct">64%</div>
+                </div>
+                <div class="progress-track" role="progressbar" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100" aria-label="התקדמות: 64%">
+                  <div class="progress-fill" style="width:64%"></div>
+                </div>
+              </button>
+            </li>
+            <li role="listitem">
+              <button class="course-card" aria-label="עזרה ראשונה במקום העבודה — 20 אחוז הושלם">
+                <div class="course-card-top">
+                  <div class="course-name">עזרה ראשונה במקום העבודה</div>
+                  <div class="course-pct">20%</div>
+                </div>
+                <div class="progress-track" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" aria-label="התקדמות: 20%">
+                  <div class="progress-fill" style="width:20%"></div>
+                </div>
+              </button>
+            </li>
+          </ul>
+
+          <!-- B1: Daily Goal Card with SVG progress ring -->
+          <div class="goal-card" role="region" aria-label="יעד יומי">
+            <div class="goal-header">
+              <div class="goal-label">יעד יומי</div>
+              <div class="goal-count" aria-label="3 מתוך 5 שיעורים">3 / 5 שיעורים</div>
+            </div>
+            <div class="goal-body">
+              <!-- SVG ring — 60% fill, drawn clockwise in RTL direction -->
+              <div class="goal-ring-wrap" aria-hidden="true">
+                <svg width="54" height="54" viewBox="0 0 54 54" role="presentation">
+                  <circle cx="27" cy="27" r="22" fill="none" stroke="#EAF1FE" stroke-width="5"/>
+                  <!-- stroke-dasharray=138.2 (circumference of r=22) -->
+                  <circle
+                    cx="27" cy="27" r="22"
+                    fill="none"
+                    stroke="#1B4FD6"
+                    stroke-width="5"
+                    stroke-linecap="round"
+                    stroke-dasharray="138.2"
+                    stroke-dashoffset="55.3"
+                    transform="rotate(-90 27 27)"
+                  />
+                </svg>
+                <div class="goal-ring-center">
+                  <span class="goal-ring-pct">60%</span>
+                </div>
+              </div>
+              <div class="goal-detail">
+                <div class="goal-detail-label">עוד 2 שיעורים להשלמת היעד</div>
+                <div class="goal-detail-note">יעד יומי מתאפס בחצות</div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /dash-inner -->
+      </div><!-- /screen -->
+
+      <!-- Bottom nav -->
+      <nav class="bottom-nav" aria-label="ניווט ראשי">
+        <button class="nav-tab active" aria-label="בית — נוכחי" aria-current="page">
+          <span class="nav-icon" aria-hidden="true">🏠</span>
+          <span class="nav-label">בית</span>
+        </button>
+        <button class="nav-tab" aria-label="קורסים">
+          <span class="nav-icon" aria-hidden="true">📚</span>
+          <span class="nav-label">קורסים</span>
+        </button>
+        <button class="nav-tab" aria-label="נתונים">
+          <span class="nav-icon" aria-hidden="true">📊</span>
+          <span class="nav-label">נתונים</span>
+        </button>
+        <button class="nav-tab" aria-label="הגדרות">
+          <span class="nav-icon" aria-hidden="true">⚙️</span>
+          <span class="nav-label">הגדרות</span>
+        </button>
+      </nav>
+    </div><!-- /phone -->
+  </div><!-- /frame-wrapper -->
+
+  <!-- ── Lesson Player Frame ── -->
+  <div class="frame-wrapper">
+    <span class="frame-label" aria-hidden="true">נגן-שיעור</span>
+    <div class="phone" role="region" aria-label="מסך נגן שיעור">
+
+      <!-- Confetti canvas — B1 -->
+      <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+      <div class="screen" id="lesson-screen">
+        <div class="lesson-inner" id="lesson-inner">
+
+          <!-- Lesson header -->
+          <div class="lesson-header">
+            <div class="lesson-header-top">
+              <div class="lesson-title">ממונה בטיחות בעבודה</div>
+              <div class="lesson-stats">
+                <div class="xp-badge" aria-label="1,240 נקודות XP" aria-live="polite">
+                  <span aria-hidden="true">⚡</span>
+                  <span id="xp-counter" class="xp-badge-val">1,240</span>
+                </div>
+                <div class="streak-stat" aria-label="רצף 5 ימים">5 🔥</div>
+              </div>
+            </div>
+            <div class="progress-dots" role="progressbar" aria-label="שאלה 4 מתוך 8" aria-valuenow="4" aria-valuemin="0" aria-valuemax="8">
+              <div class="pdot done"   aria-hidden="true"></div>
+              <div class="pdot done"   aria-hidden="true"></div>
+              <div class="pdot done"   aria-hidden="true"></div>
+              <div class="pdot done"   aria-hidden="true"></div>
+              <div class="pdot future" aria-hidden="true"></div>
+              <div class="pdot future" aria-hidden="true"></div>
+              <div class="pdot future" aria-hidden="true"></div>
+              <div class="pdot future" aria-hidden="true"></div>
+            </div>
+          </div>
+
+          <!-- AI Notice -->
+          <div class="ai-notice" role="note" aria-label="הערת מידע AI">
+            <span class="ai-notice-icon" aria-hidden="true">ℹ</span>
+            <span>המידע נוצר על-ידי AI ועלול להכיל שגיאות</span>
+          </div>
+
+          <!-- Question -->
+          <div class="question-area">
+            <h2 class="question-text" id="question-heading">
+              מהו תפקידו המרכזי של ממונה הבטיחות במקום העבודה?
+            </h2>
+          </div>
+
+          <!-- Answer cards -->
+          <div class="answers-list" role="group" aria-labelledby="question-heading">
+            <button
+              class="answer-card"
+              id="ans-0"
+              data-correct="true"
+              aria-label="תשובה א: לייעץ למחזיק במקום העבודה בכל הנוגע לחוקי הבטיחות ולקדם את התודעה לבטיחות"
+              aria-pressed="false"
+              onclick="selectAnswer(0)"
+            >לייעץ למחזיק במקום העבודה בכל הנוגע לחוקי הבטיחות ולקדם את התודעה לבטיחות</button>
+
+            <button
+              class="answer-card"
+              id="ans-1"
+              data-correct="false"
+              aria-label="תשובה ב: לפקח על נוכחות העובדים ולנהל את שעות העבודה במפעל"
+              aria-pressed="false"
+              onclick="selectAnswer(1)"
+            >לפקח על נוכחות העובדים ולנהל את שעות העבודה במפעל</button>
+
+            <button
+              class="answer-card"
+              id="ans-2"
+              data-correct="false"
+              aria-label="תשובה ג: לייצג את העובדים מול ההנהלה במשא ומתן על שכר"
+              aria-pressed="false"
+              onclick="selectAnswer(2)"
+            >לייצג את העובדים מול ההנהלה במשא ומתן על שכר</button>
+
+            <button
+              class="answer-card"
+              id="ans-3"
+              data-correct="false"
+              aria-label="תשובה ד: לאשר תשלומי שכר ולנהל את מחלקת הכספים"
+              aria-pressed="false"
+              onclick="selectAnswer(3)"
+            >לאשר תשלומי שכר ולנהל את מחלקת הכספים</button>
+          </div>
+
+          <!-- Citation chip -->
+          <button
+            class="citation-chip"
+            aria-label="מקור: תקנות ארגון הפיקוח על העבודה (ממונים על הבטיחות), התשנ״ו-1996 · תקנה 2"
+          >
+            <span aria-hidden="true">📄</span>
+            <span>מקור: תקנות ארגון הפיקוח על העבודה (ממונים), התשנ״ו-1996 · תק׳ 2</span>
+          </button>
+
+          <!-- Mascot (restrained, reacts on answer) -->
+          <!-- aria-label removed: SVG inside carries role="img" + aria-label -->
+          <div class="lesson-mascot-row" aria-hidden="true">
+            <svg id="mascot-lesson-svg" viewBox="0 0 120 130" width="54" height="58" role="img" aria-label="רוני — יועץ שקט" class="mascot-lesson">
+              <!-- neutral face — JS swaps path for smile/nod on correct -->
+              <ellipse cx="60" cy="86" rx="30" ry="30" fill="#FFE3C2"/>
+              <ellipse cx="50" cy="82" rx="4" ry="4" fill="#1A2233"/>
+              <ellipse cx="70" cy="82" rx="4" ry="4" fill="#1A2233"/>
+              <circle cx="51.5" cy="80.5" r="1.3" fill="#FFFFFF"/>
+              <circle cx="71.5" cy="80.5" r="1.3" fill="#FFFFFF"/>
+              <path id="mascot-mouth" d="M50 97 q10 7 20 0" stroke="#1A2233" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <path d="M28 64 a32 30 0 0 1 64 0 z" fill="#F97316"/>
+              <rect x="22" y="62" width="76" height="9" rx="4.5" fill="#F97316"/>
+              <rect x="56" y="40" width="8" height="14" rx="3" fill="#F97316"/>
+              <rect x="38" y="55" width="44" height="4" rx="2" fill="rgba(27,79,214,.2)"/>
+            </svg>
+          </div>
+
+          <!-- Check answer button -->
+          <button
+            class="check-btn"
+            id="check-btn"
+            disabled
+            aria-label="בדוק תשובה"
+            onclick="checkAnswer()"
+          >בדוק תשובה</button>
+
+        </div><!-- /lesson-inner -->
+      </div><!-- /screen -->
+
+      <!-- XP float toast (B1: count-up label) -->
+      <div class="xp-float" id="xp-float" aria-live="polite" aria-atomic="true" role="status">+10 XP</div>
+
+      <!-- Feedback drawer — correct -->
+      <div
+        class="feedback-drawer correct-drawer"
+        id="feedback-correct"
+        role="region"
+        aria-label="משוב — תשובה נכונה"
+        aria-hidden="true"
+      >
+        <div class="drawer-header">
+          <!-- B1: happy Roni in correct drawer -->
+          <svg viewBox="0 0 120 130" width="44" height="48" role="img" aria-label="רוני שמח" aria-hidden="true">
+            <ellipse cx="60" cy="86" rx="30" ry="30" fill="#FFE3C2"/>
+            <ellipse cx="50" cy="82" rx="4.5" ry="4" fill="#1A2233"/>
+            <ellipse cx="70" cy="82" rx="4.5" ry="4" fill="#1A2233"/>
+            <!-- wink left eye — happy tell -->
+            <path d="M46 82 q4 -4 8 0" stroke="#1A2233" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <circle cx="71.5" cy="80.5" r="1.5" fill="#FFFFFF"/>
+            <!-- big smile -->
+            <path d="M47 97 q13 11 26 0" stroke="#1A2233" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <path d="M28 64 a32 30 0 0 1 64 0 z" fill="#F97316"/>
+            <rect x="22" y="62" width="76" height="9" rx="4.5" fill="#F97316"/>
+            <rect x="56" y="40" width="8" height="14" rx="3" fill="#F97316"/>
+          </svg>
+          <div class="drawer-title">מצוין! תשובה נכונה</div>
+        </div>
+        <div class="drawer-explanation">
+          ממונה הבטיחות הוא הגורם המקצועי המייעץ למחזיק במקום העבודה בכל הנוגע לחוקי הבטיחות, ופועל לקידום התרבות הבטיחותית בארגון.
+        </div>
+      </div>
+
+      <!-- Feedback drawer — wrong -->
+      <div
+        class="feedback-drawer wrong-drawer"
+        id="feedback-wrong"
+        role="region"
+        aria-label="משוב — תשובה שגויה"
+        aria-hidden="true"
+      >
+        <div class="drawer-header">
+          <!-- B1: encouraging Roni in wrong drawer (composed, not sad) -->
+          <svg viewBox="0 0 120 130" width="44" height="48" role="img" aria-label="רוני מעודד" aria-hidden="true">
+            <ellipse cx="60" cy="86" rx="30" ry="30" fill="#FFE3C2"/>
+            <ellipse cx="50" cy="82" rx="4.5" ry="4" fill="#1A2233"/>
+            <ellipse cx="70" cy="82" rx="4.5" ry="4" fill="#1A2233"/>
+            <circle cx="51.5" cy="80.5" r="1.5" fill="#FFFFFF"/>
+            <circle cx="71.5" cy="80.5" r="1.5" fill="#FFFFFF"/>
+            <!-- composed neutral-slight-smile: not sad, not upset -->
+            <path d="M50 98 q10 4 20 0" stroke="#1A2233" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M28 64 a32 30 0 0 1 64 0 z" fill="#F97316"/>
+            <rect x="22" y="62" width="76" height="9" rx="4.5" fill="#F97316"/>
+            <rect x="56" y="40" width="8" height="14" rx="3" fill="#F97316"/>
+          </svg>
+          <div class="drawer-title">לא נכון — בוא נלמד</div>
+        </div>
+        <div class="drawer-explanation">
+          ממונה הבטיחות הוא הגורם המקצועי המייעץ למחזיק במקום העבודה בכל הנוגע לחוקי הבטיחות, ופועל לקידום התרבות הבטיחותית בארגון.
+        </div>
+        <!-- B1: Roni voice line — calm, B-tone, not childish -->
+        <div class="roni-voice" role="note" aria-label="הערת רוני">
+          <span class="roni-voice-icon" aria-hidden="true">💬</span>
+          <span>לא נכון — אבל אתה בכיוון הנכון. הרצף שלך לא נשבר.</span>
+        </div>
+      </div>
+
+      <!-- Bottom nav -->
+      <nav class="bottom-nav" aria-label="ניווט ראשי">
+        <button class="nav-tab" aria-label="בית">
+          <span class="nav-icon" aria-hidden="true">🏠</span>
+          <span class="nav-label">בית</span>
+        </button>
+        <button class="nav-tab active" aria-label="קורסים — נוכחי" aria-current="page">
+          <span class="nav-icon" aria-hidden="true">📚</span>
+          <span class="nav-label">קורסים</span>
+        </button>
+        <button class="nav-tab" aria-label="נתונים">
+          <span class="nav-icon" aria-hidden="true">📊</span>
+          <span class="nav-label">נתונים</span>
+        </button>
+        <button class="nav-tab" aria-label="הגדרות">
+          <span class="nav-icon" aria-hidden="true">⚙️</span>
+          <span class="nav-label">הגדרות</span>
+        </button>
+      </nav>
+    </div><!-- /phone -->
+  </div><!-- /frame-wrapper -->
+
+</main>
+
+<script>
+  /* ─── B1 Lesson Interaction Logic ─── */
+
+  var selectedIndex = null;
+  var answered = false;
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* XP state */
+  var xpBase = 1240;
+
+  function selectAnswer(idx) {
+    if (answered) return;
+
+    var cards = document.querySelectorAll('.answer-card');
+    cards.forEach(function(c) {
+      c.classList.remove('selected');
+      c.setAttribute('aria-pressed', 'false');
+    });
+
+    selectedIndex = idx;
+    var card = document.getElementById('ans-' + idx);
+    card.classList.add('selected');
+    card.setAttribute('aria-pressed', 'true');
+
+    var btn = document.getElementById('check-btn');
+    btn.disabled = false;
+
+    if (!reducedMotion) {
+      btn.style.transform = 'scale(1.02)';
+      setTimeout(function() { btn.style.transform = ''; }, 180);
+    }
+  }
+
+  function checkAnswer() {
+    if (answered || selectedIndex === null) return;
+    answered = true;
+
+    var cards = document.querySelectorAll('.answer-card');
+    var selected = document.getElementById('ans-' + selectedIndex);
+    var isCorrect = selected.dataset.correct === 'true';
+
+    cards.forEach(function(c) {
+      c.disabled = true;
+      c.classList.remove('selected');
+    });
+
+    var btn = document.getElementById('check-btn');
+    btn.disabled = true;
+
+    if (isCorrect) {
+      selected.classList.add('correct');
+      selected.setAttribute('aria-label', selected.getAttribute('aria-label') + ' — נכון!');
+      showFeedback('correct');
+      showXpFloat();
+      runXpCountUp();
+      if (!reducedMotion) {
+        triggerMascotHappy();
+        triggerConfetti();
+      }
+    } else {
+      selected.classList.add('wrong');
+      selected.setAttribute('aria-label', selected.getAttribute('aria-label') + ' — שגוי');
+      var correctCard = document.querySelector('.answer-card[data-correct="true"]');
+      correctCard.classList.add('correct');
+      correctCard.setAttribute('aria-label', correctCard.getAttribute('aria-label') + ' — התשובה הנכונה');
+      showFeedback('wrong');
+    }
+  }
+
+  function showFeedback(type) {
+    var drawer = document.getElementById('feedback-' + type);
+    drawer.setAttribute('aria-hidden', 'false');
+
+    if (!reducedMotion) {
+      setTimeout(function() { drawer.classList.add('open'); }, 60);
+    } else {
+      drawer.classList.add('open');
+    }
+  }
+
+  /* ─── B1: XP count-up in badge ─── */
+  function runXpCountUp() {
+    var counterEl = document.getElementById('xp-counter');
+    if (!counterEl) return;
+
+    var start = xpBase;
+    var end = xpBase + 10;
+    var duration = reducedMotion ? 0 : 600;
+    var startTime = null;
+
+    function step(ts) {
+      if (!startTime) startTime = ts;
+      var progress = Math.min((ts - startTime) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3); /* ease-out cubic */
+      var current = Math.round(start + (end - start) * eased);
+      counterEl.textContent = current.toLocaleString('he-IL');
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        xpBase = end;
+      }
+    }
+    if (duration === 0) {
+      counterEl.textContent = end.toLocaleString('he-IL');
+      xpBase = end;
+    } else {
+      requestAnimationFrame(step);
+    }
+  }
+
+  /* ─── B1: XP float toast ─── */
+  function showXpFloat() {
+    var el = document.getElementById('xp-float');
+    el.classList.remove('pop', 'fade-out');
+
+    if (reducedMotion) {
+      el.style.opacity = '1';
+      setTimeout(function() { el.style.opacity = '0'; }, 1200);
+      return;
+    }
+
+    void el.offsetWidth;
+    el.classList.add('pop');
+    setTimeout(function() {
+      el.classList.remove('pop');
+      el.classList.add('fade-out');
+      setTimeout(function() { el.classList.remove('fade-out'); }, 400);
+    }, 900);
+  }
+
+  /* ─── B1: Mascot happy nod ─── */
+  function triggerMascotHappy() {
+    var svg = document.getElementById('mascot-lesson-svg');
+    if (!svg) return;
+
+    /* Swap mouth to big smile */
+    var mouth = document.getElementById('mascot-mouth');
+    if (mouth) {
+      mouth.setAttribute('d', 'M47 97 q13 11 26 0');
+      mouth.setAttribute('stroke-width', '3.5');
+    }
+
+    svg.classList.remove('react-correct');
+    void svg.offsetWidth; /* reflow to retrigger */
+    svg.classList.add('react-correct');
+
+    /* Restore neutral mouth after nod completes */
+    setTimeout(function() {
+      if (mouth) {
+        mouth.setAttribute('d', 'M50 97 q10 7 20 0');
+        mouth.setAttribute('stroke-width', '3');
+      }
+    }, 2400);
+  }
+
+  /* ─── B1: Restrained confetti (~40 particles, primary/accent palette only) ─── */
+  function triggerConfetti() {
+    var canvas = document.getElementById('confetti-canvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+
+    canvas.width  = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    /* B palette only — no foreign saturated colors */
+    var palette = [
+      '#1B4FD6', /* primary */
+      '#4E7FE0', /* primary-light */
+      '#EAF1FE', /* primary-soft */
+      '#F5A623', /* accent amber */
+      '#FEF4E2', /* accent-soft */
+      '#FFFFFF'  /* white */
+    ];
+
+    var count = 40;
+    var particles = [];
+
+    for (var i = 0; i < count; i++) {
+      particles.push({
+        x:     Math.random() * canvas.width,
+        y:     Math.random() * canvas.height * 0.35, /* emit from upper half */
+        vx:    (Math.random() - 0.5) * 2.2,
+        vy:    Math.random() * 2.4 + 1.2,
+        angle: Math.random() * Math.PI * 2,
+        spin:  (Math.random() - 0.5) * 0.18,
+        size:  Math.random() * 5 + 3,
+        color: palette[Math.floor(Math.random() * palette.length)],
+        alpha: 1
+      });
+    }
+
+    var startTs = null;
+    var lifetime = 1800; /* ms */
+
+    function drawFrame(ts) {
+      if (!startTs) startTs = ts;
+      var elapsed = ts - startTs;
+      var progress = Math.min(elapsed / lifetime, 1);
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach(function(p) {
+        p.x     += p.vx;
+        p.y     += p.vy;
+        p.angle += p.spin;
+        p.vy    += 0.07; /* gentle gravity */
+        p.alpha  = Math.max(0, 1 - progress * 1.6);
+
+        ctx.save();
+        ctx.globalAlpha = p.alpha;
+        ctx.fillStyle   = p.color;
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.angle);
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.55);
+        ctx.restore();
+      });
+
+      if (progress < 1) {
+        requestAnimationFrame(drawFrame);
+      } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    requestAnimationFrame(drawFrame);
+  }
+</script>
+
+</body>
+</html>

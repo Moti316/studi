@@ -62,7 +62,7 @@
 **עיצוב (`docs/design/`):**
 
 - `DESIGN-PLAN-A/B/C.md` + `DESIGN-PLANS-COMPARE.md` — 3 כיווני-עיצוב (A משחקי-תוסס · B פרימיום-נקי · C bold-modern/aurora) + השוואה+המלצה (היברידי B-led). `motion-specs.md` · `mascot-brief.md`.
-- **`docs/design/mockups/`** — 3 דוגמאות-HTML מוחשיות (`mockup-A/B/C.html` · דשבורד+נגן-שיעור · RTL · Rubik · אינטראקטיבי · נגישות-AA מאומתת) + `index.html` (דף-השוואה זה-לצד-זה). נבנו 2026-06-04 (Workflow · סוכני-עיצוב+נגישות) לבחירת-כיוון. ⏳ **ממתין-להכרעת-מוטי.**
+- **`docs/design/mockups/`** — **5 דוגמאות-HTML מוחשיות**: `mockup-A/B/C.html` (3 הכיוונים) + `mockup-B1.html` (B+רטנשן) + `mockup-B2.html` (B+חתימה/aurora) · דשבורד+נגן-שיעור · RTL · Rubik · אינטראקטיבי · נגישות-AA מאומתת + `index.html` (דף-השוואה). נבנו 2026-06-04 (Workflows · סוכני-עיצוב+נגישות) לבחירת-כיוון. **מוטי נוטה ל-B.** ⏳ **ממתין-להכרעת-כיוון** (ראה TODO §DM).
 
 **ממשל-סוכנים (`teams/`, רוסטר 33):**
 
