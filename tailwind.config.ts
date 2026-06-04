@@ -7,25 +7,26 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-heebo)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-rubik)', 'var(--font-heebo)', 'system-ui', 'sans-serif'],
+        rubik: ['var(--font-rubik)', 'system-ui', 'sans-serif'],
         heebo: ['var(--font-heebo)', 'system-ui', 'sans-serif'],
-        hebrew: ['Rubik', 'Assistant', 'system-ui', 'sans-serif'],
+        hebrew: ['var(--font-rubik)', 'Assistant', 'system-ui', 'sans-serif'],
       },
       colors: {
         // === Brand: extracted from StudiesGo screenshots ===
         primary: {
-          50: '#e8f0fe',
-          100: '#d2e1fd',
-          500: '#1d6bf2', // הכחול של "Go" וכפתורים ראשיים
-          600: '#1559d4',
-          700: '#0e47b1',
+          50: '#eaf1fe',
+          100: '#d4e2fc',
+          500: '#1b4fd6', // B1 ink-blue (Premium-Clean)
+          600: '#173fa8',
+          700: '#12307d',
         },
         accent: {
-          50: '#fef4ec',
-          100: '#fde3d2',
-          500: '#f47b29', // הכתום של XP/streak/בחירה
-          600: '#dc6720',
-          700: '#b85318',
+          50: '#fef4e2',
+          100: '#fde6bf',
+          500: '#f5a623', // B1 warm amber — point-accent only
+          600: '#cf8910',
+          700: '#9a6200', // amber-as-text (WCAG AA on light)
         },
         success: '#10b981',
         warning: '#f59e0b',
@@ -33,7 +34,7 @@ const config: Config = {
 
         // === Surfaces ===
         background: {
-          DEFAULT: '#fafafa',
+          DEFAULT: '#fbfcfe',
           dark: '#0f172a',
         },
         card: {
@@ -41,7 +42,7 @@ const config: Config = {
           dark: '#1e293b',
         },
         border: {
-          DEFAULT: '#e2e8f0',
+          DEFAULT: '#e6eaf1',
           dark: '#334155',
         },
 
@@ -49,25 +50,25 @@ const config: Config = {
         quiz: {
           bg: '#ffffff',
           primary: {
-            active: '#4b8df8',
-            disabled: '#a0c3ff',
+            active: '#1b4fd6', // B1 ink-blue
+            disabled: '#bcd2f7',
           },
-          accent: '#ffb23d', // border-בחירה כתום
+          accent: '#f5a623', // B1 amber — selection
           success: {
-            border: '#86efac',
-            bg: '#f0fdf4',
+            border: '#7fd8a0',
+            bg: '#f1fbf5',
           },
           error: {
-            border: '#fca5a5',
-            bg: '#fef2f2',
-            drawer: '#fff0f2',
+            border: '#f0a3a3',
+            bg: '#fdf3f3',
+            drawer: '#fdf3f3',
           },
-          explanation: '#f0f7ff',
+          explanation: '#eef4ff',
           text: {
-            primary: '#1f2937',
-            secondary: '#9ca3af',
+            primary: '#1a2233', // B1 deep, high-contrast
+            secondary: '#5b6678', // B1 AA secondary
           },
-          border: '#e5e7eb',
+          border: '#e6eaf1',
         },
 
         // === Dark-mode tokens — gemini-response 07-stats-feedback ===
@@ -111,9 +112,9 @@ const config: Config = {
         'sheet-top': '16px 16px 0 0',
       },
       boxShadow: {
-        card: '0 2px 8px rgba(0, 0, 0, 0.06)',
-        'card-hover': '0 4px 16px rgba(0, 0, 0, 0.1)',
-        button: '0 2px 4px rgba(29, 107, 242, 0.2)',
+        card: '0 2px 8px -2px rgba(26, 34, 51, 0.06), 0 1px 2px rgba(26, 34, 51, 0.04)',
+        'card-hover': '0 4px 16px -4px rgba(26, 34, 51, 0.08), 0 2px 4px rgba(26, 34, 51, 0.04)',
+        button: '0 4px 12px -2px rgba(27, 79, 214, 0.18)',
         // === Dark-mode tokens ===
         glowPrimary: '0 0 15px -3px rgba(26, 86, 219, 0.5)',
         glowCyan: '0 0 20px -5px rgba(6, 182, 212, 0.6)',

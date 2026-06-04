@@ -23,7 +23,7 @@ export function StreakCard({ streakDays, today }: Props) {
           רצף-למידה
         </h2>
         {!empty && (
-          <span className="flex items-center gap-1 text-sm font-bold text-accent-600">
+          <span className="flex items-center gap-1 text-sm font-bold text-accent-700">
             <Flame className="size-4" aria-hidden="true" />
             <span>
               {streakDays} {streakDays === 1 ? 'יום' : 'ימים'}
@@ -35,7 +35,7 @@ export function StreakCard({ streakDays, today }: Props) {
       {empty ? (
         <p className="text-foreground/60 text-sm">אין רצף עדיין — למד היום כדי להתחיל!</p>
       ) : (
-        <p className="text-foreground/60 text-sm">המשך כך — כל יום נחשב.</p>
+        <p className="text-foreground/60 text-sm">הרצף נשמר גם כשטועים — כל יום של תרגול נחשב.</p>
       )}
 
       <ol className="flex justify-between gap-1" aria-label="ימי השבוע">

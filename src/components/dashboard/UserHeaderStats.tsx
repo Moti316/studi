@@ -15,7 +15,7 @@ export function UserHeaderStats({ credits, xpToday, streakDays }: Props) {
   return (
     <div className="flex items-center gap-3 text-sm" role="group" aria-label="סיכום-משתמש">
       <Stat
-        icon={<Coins className="size-4 text-accent-500" />}
+        icon={<Coins className="size-4 text-accent-600" />}
         value={formatNumber(credits)}
         label="קרדיטים"
       />

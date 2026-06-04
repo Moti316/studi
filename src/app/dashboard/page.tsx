@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { requireAuth } from '@/lib/auth/server';
 import { BottomNav } from '@/components/dashboard/BottomNav';
 import { GreetingBanner } from '@/components/dashboard/GreetingBanner';
@@ -70,9 +71,17 @@ export default async function DashboardPage() {
         <LevelBadge level={user.level} />
 
         <section aria-labelledby="active-courses-heading" className="space-y-3">
-          <h2 id="active-courses-heading" className="text-lg font-bold">
-            קורסים פעילים
-          </h2>
+          <header className="flex items-center justify-between">
+            <h2 id="active-courses-heading" className="text-lg font-bold">
+              הקורסים שלי
+            </h2>
+            <Link
+              href="/courses"
+              className="text-sm font-medium text-primary-600 underline-offset-4 hover:underline"
+            >
+              ראה הכל ←
+            </Link>
+          </header>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {MOCK_COURSES.map((c) => (
               <CourseCard key={c.id} course={c} />

@@ -47,9 +47,11 @@
 > אינו תלוי בתוכן — אפשר להכריע במקביל ל-A/B. הבחירה פותחת את שכבת-ה-UI של D (נגן/quiz), F (Upload/Dashboard) ו-G (גיימיפיקציה).
 
 - ✅ **DM1** — 3 תוכניות (A/B/C) + COMPARE + **5 דוגמאות-HTML מוחשיות** (`docs/design/mockups/` · A/B/C + B1/B2 · דשבורד+נגן-שיעור · RTL · נגישות-AA מאומתת · `index.html` להשוואה).
-- 🚩 **DM2** — **בחירת-כיוון מוטי** (A / B / C / B1 / B2 / היברידי-B-led). מוטי נוטה ל-B. **חוסם DM3.**
-- ⬜ **DM3** — עיגון design-system/tokens מהכיוון-הנבחר → עדכון `ADR-007-brand-identity` + `globals.css`/`tailwind.config` (Heebo→Rubik אם נבחר) + ספריית-רכיבים (`design-system`).
-- ⬜ **DM4** — החלת-הכיוון על D-UI (נגן/quiz) · F1 Upload-UI · F2 Dashboard · G גיימיפיקציה.
+- ✅ **DM2** — **מוטי בחר B1** (Premium+רטנשן) + טיפול-קורסים מ-A ("ראה הכל →"). נעול: תוכן=ייבוא-T1 בתשלום · embedding=768/text-embedding-004 · timing=הבסיס-החוקי-היום.
+- 🔄 **DM3** — החלת-B1 על האפליקציה (token-driven): `tailwind.config` (primary `#1B4FD6` · accent `#F5A623` · quiz-alias · soft-shadows) + Rubik (`layout`) + "ראה הכל" (`dashboard`). **[בביצוע — היום]**
+- ⬜ **DM4** — החלת-B1 מלאה: נגן/quiz · F1 Upload-UI · F2 Dashboard · G גיימיפיקציה. (+ עדכון `ADR-007-brand-identity`.)
+
+> **שיטת-עבודה (מוטי 2026-06-04):** commit+push + עדכון-לוג (SESSION-LOG) **אחרי כל תת-משימה** — שוטף במהלך ובסיום.
 
 ## 🟠 B · M5 — הרצת-ייבוא בנק-השאלות [חסום ע"י A + אישור-בנקים] · [📋 פירוט](docs/todo/B-m5-import.md)
 
