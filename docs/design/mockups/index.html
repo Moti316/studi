@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>StudiBuilder · 3 כיווני-עיצוב להשוואה</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #16203a;
+      --muted: #5b6678;
+      --line: #e4e8f0;
+      --bg: #f4f6fb;
+      --surface: #ffffff;
+      --a: #2d7df6; --a2: #ff9f1c;
+      --b: #1b4fd6; --b2: #f5a623;
+      --c: #1e63e0; --c2: #f97316;
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Rubik', 'Heebo', 'Assistant', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+
+    /* Sticky top nav */
+    .topbar {
+      position: sticky; top: 0; z-index: 50;
+      display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+      padding: 14px 24px;
+      background: rgba(255,255,255,0.86);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar .brand { font-weight: 800; font-size: 18px; letter-spacing: -0.01em; }
+    .topbar .brand span { color: var(--a); }
+    .topbar nav { display: flex; gap: 8px; margin-inline-start: auto; }
+    .jump {
+      text-decoration: none; font-weight: 700; font-size: 14px;
+      padding: 8px 16px; border-radius: 999px; border: 1px solid var(--line);
+      background: #fff; color: var(--ink); transition: transform .12s ease, box-shadow .12s ease;
+      min-height: 44px; display: inline-flex; align-items: center;
+    }
+    .jump:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(22,32,58,.10); }
+    .jump:focus-visible { outline: 3px solid var(--a); outline-offset: 2px; }
+    .jump.a { border-color: var(--a); } .jump.b { border-color: var(--b); } .jump.c { border-color: var(--c2); }
+
+    .wrap { max-width: 1240px; margin: 0 auto; padding: 32px 24px 80px; }
+
+    .lead h1 { font-size: 34px; font-weight: 800; letter-spacing: -0.02em; margin: 8px 0 6px; }
+    .lead p { color: var(--muted); margin: 0 0 8px; max-width: 760px; }
+    .lead .hint { font-size: 14px; color: var(--muted); }
+    .lead .hint b { color: var(--ink); }
+
+    /* Legend cards */
+    .legend { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 26px 0 8px; }
+    .lc {
+      background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 18px; box-shadow: 0 2px 10px rgba(22,32,58,.05);
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .lc .badge {
+      width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center;
+      font-weight: 800; font-size: 20px; color: #fff;
+    }
+    .lc.a .badge { background: linear-gradient(135deg,#2d7df6,#1e63e0); }
+    .lc.b .badge { background: linear-gradient(135deg,#1b4fd6,#173fa8); }
+    .lc.c .badge { background: linear-gradient(135deg,#3b8bff,#1a56db 60%,#1e40af); }
+    .lc h3 { margin: 2px 0 0; font-size: 17px; font-weight: 700; }
+    .lc .one { color: var(--muted); font-size: 14px; min-height: 44px; }
+    .lc .energy { font-size: 13px; color: var(--muted); }
+    .lc .energy b { color: var(--ink); }
+    .swatches { display: flex; gap: 6px; flex-wrap: wrap; }
+    .sw { width: 26px; height: 26px; border-radius: 7px; border: 1px solid rgba(0,0,0,.06); }
+    .lc .go {
+      margin-top: 4px; text-decoration: none; font-weight: 700; font-size: 14px;
+      padding: 9px 14px; border-radius: 999px; color: #fff; text-align: center;
+      min-height: 44px; display: inline-flex; align-items: center; justify-content: center;
+    }
+    .lc.a .go { background: #2d7df6; } .lc.b .go { background: #1b4fd6; } .lc.c .go { background: #1e63e0; }
+    .lc .go:focus-visible { outline: 3px solid #16203a; outline-offset: 2px; }
+
+    /* Direction sections */
+    .section { margin-top: 40px; scroll-margin-top: 80px; }
+    .band {
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+      padding: 14px 18px; border-radius: 14px 14px 0 0; color: #fff;
+    }
+    .section.a .band { background: linear-gradient(100deg,#2d7df6,#1e63e0); }
+    .section.b .band { background: linear-gradient(100deg,#1b4fd6,#173fa8); }
+    .section.c .band { background: linear-gradient(135deg,#3b8bff,#1a56db 60%,#1e40af); }
+    .band .t { font-weight: 800; font-size: 18px; }
+    .band .s { font-size: 14px; opacity: .92; }
+    .band .open {
+      margin-inline-start: auto; text-decoration: none; color: #fff;
+      border: 1px solid rgba(255,255,255,.6); border-radius: 999px;
+      padding: 7px 14px; font-size: 13px; font-weight: 700;
+      min-height: 40px; display: inline-flex; align-items: center;
+    }
+    .band .open:hover { background: rgba(255,255,255,.15); }
+    .frame-wrap {
+      border: 1px solid var(--line); border-top: 0; border-radius: 0 0 14px 14px;
+      overflow: hidden; background: #fff;
+    }
+    iframe { width: 100%; height: 1060px; border: 0; display: block; background: #fff; }
+
+    footer { margin-top: 56px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); padding-top: 18px; }
+    footer b { color: var(--ink); }
+
+    @media (max-width: 880px) {
+      .legend { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">Studi<span>Builder</span> · השוואת-עיצוב</div>
+    <nav aria-label="ניווט בין כיוונים">
+      <a class="jump a" href="#dir-a">A · משחקי</a>
+      <a class="jump b" href="#dir-b">B · פרימיום</a>
+      <a class="jump c" href="#dir-c">C · נועז</a>
+    </nav>
+  </div>
+
+  <main class="wrap">
+    <section class="lead">
+      <h1>3 כיווני-עיצוב — אותם 2 מסכים בכל אחד</h1>
+      <p>כל כיוון מציג את אותו <b>דשבורד</b> ואת אותו <b>נגן-שיעור</b>, עם אותו תוכן-דמו בדיוק — כדי שההשוואה תהיה הוגנת ויורגש ההבדל-הטונאלי. עברית RTL, פונט Rubik. הדוגמאות אינטראקטיביות: בחרו תשובה ולחצו "בדוק תשובה" כדי לראות את מצבי-המשוב.</p>
+      <p class="hint">💡 <b>זו לא הבחירה הסופית</b> — להחלטה. ההמלצה-המנומקת (היברידי B-led) ב-<b>DESIGN-PLANS-COMPARE.md</b>. כאן רואים את שלושת הקצוות כדי לבחור.</p>
+    </section>
+
+    <section class="legend" aria-label="מקרא הכיוונים">
+      <article class="lc a">
+        <div class="badge" aria-hidden="true">A</div>
+        <h3>StudiesGo-Faithful · משחקי-תוסס</h3>
+        <div class="one">הכי-קרוב-ל-StudiesGo, הכי-כיף, הכי-ממכר — גיימיפיקציה בקדמת-הבמה.</div>
+        <div class="energy">אנרגיה: <b>גבוהה-מאוד</b> 🔋🔋🔋🔋🔋</div>
+        <div class="swatches" aria-hidden="true">
+          <span class="sw" style="background:#2d7df6" title="#2D7DF6"></span>
+          <span class="sw" style="background:#1e63e0" title="#1E63E0"></span>
+          <span class="sw" style="background:#ff9f1c" title="#FF9F1C"></span>
+          <span class="sw" style="background:#ffb23d" title="#FFB23D"></span>
+          <span class="sw" style="background:#1e3a8a" title="#1E3A8A"></span>
+          <span class="sw" style="background:#f7f9fc" title="#F7F9FC"></span>
+        </div>
+        <a class="go" href="#dir-a">צפו בכיוון A ↓</a>
+      </article>
+
+      <article class="lc b">
+        <div class="badge" aria-hidden="true">B</div>
+        <h3>Premium-Clean · מקצועי-אמין</h3>
+        <div class="one">שקט-תכליתי שמרגיש יקר — פרימיום-מהוגן שמכבד את הלומד.</div>
+        <div class="energy">אנרגיה: <b>נמוכה-מבוקרת</b> 🔋🔋</div>
+        <div class="swatches" aria-hidden="true">
+          <span class="sw" style="background:#1b4fd6" title="#1B4FD6"></span>
+          <span class="sw" style="background:#173fa8" title="#173FA8"></span>
+          <span class="sw" style="background:#f5a623" title="#F5A623"></span>
+          <span class="sw" style="background:#eaf1fe" title="#EAF1FE"></span>
+          <span class="sw" style="background:#1a2233" title="#1A2233"></span>
+          <span class="sw" style="background:#fbfcfe" title="#FBFCFE"></span>
+        </div>
+        <a class="go" href="#dir-b">צפו בכיוון B ↓</a>
+      </article>
+
+      <article class="lc c">
+        <div class="badge" aria-hidden="true">C</div>
+        <h3>Bold-Modern · מונע-מושן</h3>
+        <div class="one">edtech של 2026 — aurora-mesh כשפת-רקע, כותרות-ענק, מבדל-ויזואלית.</div>
+        <div class="energy">אנרגיה: <b>גבוהה</b> 🔋🔋🔋🔋</div>
+        <div class="swatches" aria-hidden="true">
+          <span class="sw" style="background:#2d7df6" title="#2D7DF6"></span>
+          <span class="sw" style="background:#1e63e0" title="#1E63E0"></span>
+          <span class="sw" style="background:#f97316" title="#F97316"></span>
+          <span class="sw" style="background:#ff9f2d" title="#FF9F2D"></span>
+          <span class="sw" style="background:#eaf2ff" title="#EAF2FF"></span>
+          <span class="sw" style="background:#fff4e6" title="#FFF4E6"></span>
+        </div>
+        <a class="go" href="#dir-c">צפו בכיוון C ↓</a>
+      </article>
+    </section>
+
+    <section class="section a" id="dir-a">
+      <div class="band">
+        <span class="t">A — StudiesGo-Faithful · משחקי-תוסס</span>
+        <span class="s">דשבורד + נגן-שיעור</span>
+        <a class="open" href="mockup-A.html" target="_blank" rel="noopener">פתחו במסך-מלא ↗</a>
+      </div>
+      <div class="frame-wrap">
+        <iframe src="mockup-A.html" title="דוגמת-עיצוב A — StudiesGo-Faithful" loading="lazy"></iframe>
+      </div>
+    </section>
+
+    <section class="section b" id="dir-b">
+      <div class="band">
+        <span class="t">B — Premium-Clean · מקצועי-אמין</span>
+        <span class="s">דשבורד + נגן-שיעור</span>
+        <a class="open" href="mockup-B.html" target="_blank" rel="noopener">פתחו במסך-מלא ↗</a>
+      </div>
+      <div class="frame-wrap">
+        <iframe src="mockup-B.html" title="דוגמת-עיצוב B — Premium-Clean" loading="lazy"></iframe>
+      </div>
+    </section>
+
+    <section class="section c" id="dir-c">
+      <div class="band">
+        <span class="t">C — Bold-Modern · מונע-מושן</span>
+        <span class="s">דשבורד + נגן-שיעור</span>
+        <a class="open" href="mockup-C.html" target="_blank" rel="noopener">פתחו במסך-מלא ↗</a>
+      </div>
+      <div class="frame-wrap">
+        <iframe src="mockup-C.html" title="דוגמת-עיצוב C — Bold-Modern" loading="lazy"></iframe>
+      </div>
+    </section>
+
+    <footer>
+      <p>StudiBuilder · קורס "ממונה בטיחות" · נוצר 2026-06-04 · 3 דוגמאות-עיצוב מוחשיות (A/B/C). תוכן-הדמו זהה בכל הדוגמאות. <b>ההכרעה של מוטי.</b></p>
+    </footer>
+  </main>
+</body>
+</html>

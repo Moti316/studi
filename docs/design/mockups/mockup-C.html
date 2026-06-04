@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudiBuilder — Mockup C · Bold-Modern · מונע-מושן</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ─── RESET ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+
+    /* ─── DESIGN TOKENS — C: Bold-Modern ─── */
+    :root {
+      --bg-app:            #F7F9FC;
+      --bg-surface:        #FFFFFF;
+      --bg-aurora-1:       #EAF2FF;
+      --bg-aurora-2:       #FFF4E6;
+      --bg-aurora-3:       #F0FBFF;
+
+      --primary:           #2D7DF6;
+      --primary-deep:      #1E63E0;
+      --primary-disabled:  #A0C3FF;
+      --primary-grad:      linear-gradient(135deg, #2D7DF6 0%, #1E63E0 100%);
+      --primary-grad-bold: linear-gradient(135deg, #3B8BFF 0%, #1A56DB 60%, #1E40AF 100%);
+
+      --accent:            #FF9F2D;
+      --accent-deep:       #F97316;
+      --accent-grad:       linear-gradient(135deg, #FFB23D 0%, #F97316 100%);
+
+      --success-border:    #86EFAC;
+      --success-bg:        #F0FDF4;
+      --error-border:      #FCA5A5;
+      --error-bg:          #FEF2F2;
+      --error-drawer:      #FFF0F2;
+      --explanation-bg:    #F0F7FF;
+
+      --text-primary:      #1F2937;
+      --text-secondary:    #696F7D;
+      --text-muted:        #696F7D;
+      --border:            #E5E7EB;
+
+      --r-card:            16px;
+      --r-card-lg:         20px;
+      --r-modal:           24px;
+      --r-pill:            9999px;
+
+      --sh-card:           0 2px 8px -2px rgba(31,41,55,.06);
+      --sh-card-hover:     0 8px 24px -6px rgba(45,125,246,.18);
+      --sh-cta:            0 6px 20px -4px rgba(45,125,246,.40);
+      --sh-accent:         0 4px 16px -4px rgba(249,115,22,.35);
+
+      --font: 'Rubik', 'Heebo', 'Assistant', system-ui, sans-serif;
+    }
+
+    /* ─── BASE ─── */
+    body {
+      font-family: var(--font);
+      background: var(--bg-app);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 24px 16px 40px;
+      direction: rtl;
+    }
+
+    /* ─── DIRECTION BAND ─── */
+    .direction-band {
+      background: var(--bg-surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-modal);
+      padding: 20px 24px 16px;
+      margin-bottom: 28px;
+      box-shadow: var(--sh-card);
+    }
+    .band-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .band-left { flex: 1; min-width: 200px; }
+    .band-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+    .band-accent { color: var(--accent-deep); }
+    .band-tagline {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    .band-energy {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #FFF4E6, #FFEDD5);
+      border: 1px solid #FED7AA;
+      border-radius: var(--r-pill);
+      padding: 3px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent-deep);
+    }
+    .swatches {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 4px;
+    }
+    .swatch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      color: var(--text-secondary);
+      font-family: monospace;
+    }
+    .swatch-box {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid rgba(0,0,0,.08);
+    }
+    .swatch-grad {
+      background: var(--primary-grad-bold);
+    }
+
+    /* ─── HINT ─── */
+    .interaction-hint {
+      background: linear-gradient(135deg, #EFF6FF, #EEF2FF);
+      border: 1px solid #C7D2FE;
+      border-radius: var(--r-card);
+      padding: 10px 16px;
+      font-size: 13px;
+      color: #4338CA;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    /* ─── FRAMES WRAPPER ─── */
+    .frames-wrapper {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .frame-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .frame-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    /* ─── PHONE FRAME ─── */
+    .phone {
+      width: 390px;
+      height: 780px;
+      border-radius: 40px;
+      border: 3px solid #D1D5DB;
+      background: var(--bg-app);
+      overflow: hidden;
+      box-shadow:
+        0 0 0 6px #F3F4F6,
+        0 24px 48px -12px rgba(31,41,55,.22),
+        inset 0 1px 0 rgba(255,255,255,.8);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    .phone-inner {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      scrollbar-width: thin;
+      scrollbar-color: #E5E7EB transparent;
+    }
+
+    /* ─── AURORA BACKGROUND ─── */
+    .aurora-bg {
+      background-color: var(--bg-app);
+      background-image:
+        radial-gradient(60% 50% at 85% 10%, #EAF2FF 0%, transparent 60%),
+        radial-gradient(55% 45% at 10% 90%, #FFF4E6 0%, transparent 60%),
+        radial-gradient(50% 40% at 50% 100%, #F0FBFF 0%, transparent 55%);
+      animation: aurora-drift 20s ease-in-out infinite;
+    }
+    @keyframes aurora-drift {
+      0%, 100% {
+        background-image:
+          radial-gradient(60% 50% at 85% 10%, #EAF2FF 0%, transparent 60%),
+          radial-gradient(55% 45% at 10% 90%, #FFF4E6 0%, transparent 60%),
+          radial-gradient(50% 40% at 50% 100%, #F0FBFF 0%, transparent 55%);
+      }
+      33% {
+        background-image:
+          radial-gradient(60% 50% at 88% 14%, #EAF2FF 0%, transparent 60%),
+          radial-gradient(55% 45% at 7% 86%, #FFF4E6 0%, transparent 60%),
+          radial-gradient(50% 40% at 52% 98%, #F0FBFF 0%, transparent 55%);
+      }
+      66% {
+        background-image:
+          radial-gradient(60% 50% at 82% 8%, #EAF2FF 0%, transparent 60%),
+          radial-gradient(55% 45% at 13% 93%, #FFF4E6 0%, transparent 60%),
+          radial-gradient(50% 40% at 48% 102%, #F0FBFF 0%, transparent 55%);
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .aurora-bg { animation: none; }
+      .mascot-float { animation: none !important; }
+      .streak-flame { animation: none !important; }
+      .xp-float { animation: none !important; }
+      .btn-cta:hover { transform: none !important; }
+      /* btn-enable-pop and drawer-slide-up must also be suppressed */
+      .btn-check.enabled { animation: none !important; }
+      .feedback-drawer.visible { animation: none !important; }
+    }
+
+    /* ─────────────────────────
+       DASHBOARD SCREEN
+    ───────────────────────── */
+    .dash-screen {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Hero + Aurora */
+    .dash-hero {
+      padding: 20px 16px 16px;
+      background-color: var(--bg-app);
+      background-image:
+        radial-gradient(60% 50% at 85% 10%, rgba(234,242,255,.85) 0%, transparent 60%),
+        radial-gradient(55% 45% at 10% 90%, rgba(255,244,230,.85) 0%, transparent 60%),
+        radial-gradient(50% 40% at 50% 100%, rgba(240,251,255,.85) 0%, transparent 55%);
+      animation: aurora-drift 20s ease-in-out infinite;
+      position: relative;
+    }
+
+    /* Stat Pills */
+    .stat-pills {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .stat-pill {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255,255,255,.85);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-pill);
+      padding: 5px 11px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      backdrop-filter: blur(8px);
+    }
+    .stat-pill .icon { font-size: 14px; }
+
+    /* Greeting Banner */
+    .greeting-banner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255,255,255,.70);
+      border-radius: var(--r-card);
+      padding: 14px 14px;
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,.9);
+      box-shadow: var(--sh-card);
+    }
+    .greeting-text { flex: 1; }
+    .greeting-title {
+      font-size: 30px;
+      font-weight: 800;
+      line-height: 1.2;
+      color: var(--text-primary);
+    }
+    .greeting-accent { color: var(--accent-deep); }
+    .greeting-sub {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+      font-weight: 400;
+    }
+
+    /* Mascot */
+    .mascot-wrap {
+      flex-shrink: 0;
+    }
+    .mascot-float {
+      animation: mascot-idle 3s ease-in-out infinite;
+      display: block;
+    }
+    @keyframes mascot-idle {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* CTA */
+    .dash-cta-row {
+      padding: 14px 16px 0;
+    }
+    .btn-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      height: 50px;
+      background: var(--primary-grad-bold);
+      background-size: 200% 100%;
+      background-position: 0% 50%;
+      border: none;
+      border-radius: var(--r-pill);
+      color: #fff;
+      font-family: var(--font);
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: var(--sh-cta);
+      transition: transform .15s, box-shadow .15s, background-position .4s;
+      outline: none;
+    }
+    .btn-cta:hover {
+      background-position: 100% 50%;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px -6px rgba(45,125,246,.50);
+    }
+    .btn-cta:active { transform: scale(.96); }
+    .btn-cta:focus-visible {
+      outline: 3px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    /* Cards area */
+    .dash-cards {
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    /* Streak Card */
+    .streak-card {
+      background: var(--bg-surface);
+      border-radius: var(--r-card);
+      padding: 14px 16px;
+      box-shadow: var(--sh-card);
+      border: 1.5px solid var(--border);
+    }
+    .streak-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .streak-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .streak-badge {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--accent-grad);
+      border-radius: var(--r-pill);
+      padding: 3px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      box-shadow: var(--sh-accent);
+    }
+    .streak-flame {
+      animation: flame-pulse 2s ease-in-out infinite;
+      display: inline-block;
+    }
+    @keyframes flame-pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.12); }
+    }
+    .streak-days {
+      display: flex;
+      gap: 5px;
+      direction: rtl;
+    }
+    .day-dot {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      flex: 1;
+    }
+    .day-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .day-circle {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      background: var(--bg-app);
+      transition: background .2s, border-color .2s, box-shadow .2s;
+    }
+    .day-circle.filled {
+      background: var(--accent-grad);
+      border-color: var(--accent-deep);
+      box-shadow: var(--sh-accent);
+    }
+
+    /* Course Cards */
+    .course-card {
+      background: var(--bg-surface);
+      border-radius: var(--r-card);
+      padding: 14px 16px;
+      box-shadow: var(--sh-card);
+      border: 1.5px solid var(--border);
+      cursor: pointer;
+      transition: transform .15s, box-shadow .2s;
+    }
+    .course-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--sh-card-hover);
+    }
+    .course-card:focus-visible {
+      outline: 3px solid var(--primary);
+      outline-offset: 2px;
+    }
+    .course-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .course-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      flex: 1;
+    }
+    .course-pct {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    .progress-track {
+      height: 6px;
+      background: var(--border);
+      border-radius: var(--r-pill);
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      border-radius: var(--r-pill);
+      background: var(--primary-grad);
+      transition: width .6s ease;
+    }
+    .progress-bar.accent { background: var(--accent-grad); }
+
+    /* Daily Goal */
+    .goal-card {
+      background: linear-gradient(135deg, #EFF6FF, #EEF2FF);
+      border: 1.5px solid #C7D2FE;
+      border-radius: var(--r-card);
+      padding: 14px 16px;
+    }
+    .goal-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .goal-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #3730A3;
+    }
+    .goal-count {
+      font-size: 13px;
+      font-weight: 600;
+      color: #4338CA;
+    }
+
+    /* Bottom Nav */
+    .bottom-nav {
+      display: flex;
+      background: rgba(17,24,39,.85);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding: 8px 0 12px;
+      flex-shrink: 0;
+      border-radius: 0 0 37px 37px;
+    }
+    .nav-tab {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 4px 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      transition: transform .15s;
+    }
+    .nav-tab:hover { transform: translateY(-2px); }
+    .nav-tab:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+      border-radius: 8px;
+    }
+    .nav-icon {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-icon svg { transition: transform .2s; }
+    .nav-tab.active .nav-icon svg { transform: scale(1.15); }
+    .nav-label {
+      font-size: 10px;
+      font-weight: 500;
+      color: rgba(255,255,255,.45);
+      font-family: var(--font);
+    }
+    .nav-tab.active .nav-label { color: #FFFFFF; font-weight: 700; }
+    .nav-tab.active .nav-icon svg path,
+    .nav-tab.active .nav-icon svg rect,
+    .nav-tab.active .nav-icon svg circle {
+      stroke: var(--primary);
+    }
+
+    /* ─────────────────────────
+       LESSON PLAYER SCREEN
+    ───────────────────────── */
+    .lesson-screen {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-app);
+    }
+
+    /* Header */
+    .lesson-header {
+      padding: 16px 16px 12px;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .lesson-header-row1 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .btn-back {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      min-width: 44px;
+      min-height: 44px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      border-radius: 8px;
+      color: var(--text-secondary);
+      flex-shrink: 0;
+      padding: 4px;
+      margin-inline-start: 4px;
+    }
+    .btn-back:focus-visible {
+      outline: 3px solid var(--primary);
+      outline-offset: 2px;
+    }
+    .btn-back:hover { background: var(--border); }
+    .lesson-course-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary);
+      flex: 1;
+    }
+    .lesson-stats {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .lesson-stat {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    /* Progress dots — fill right→left */
+    .progress-dots {
+      display: flex;
+      direction: rtl;
+      gap: 5px;
+    }
+    .pdot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: background .2s, box-shadow .2s;
+    }
+    .pdot.filled {
+      background: var(--accent-deep);
+      box-shadow: 0 0 0 2px rgba(249,115,22,.25);
+    }
+
+    /* Lesson body */
+    .lesson-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px 14px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* AI Notice */
+    .ai-notice {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+      border-radius: var(--r-card);
+      padding: 7px 12px;
+      font-size: 12px;
+      color: #92400E;
+    }
+
+    /* Question */
+    .question-text {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: var(--text-primary);
+    }
+
+    /* Answer Cards */
+    .answers { display: flex; flex-direction: column; gap: 8px; }
+    .answer-card {
+      background: var(--bg-surface);
+      border: 2px solid var(--border);
+      border-radius: var(--r-card-lg);
+      padding: 13px 14px;
+      min-height: 44px;
+      cursor: pointer;
+      font-family: var(--font);
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text-primary);
+      line-height: 1.45;
+      text-align: right;
+      width: 100%;
+      transition: border-color .12s, box-shadow .12s, transform .08s, background .12s;
+      box-shadow: var(--sh-card);
+      outline: none;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .answer-card:hover {
+      border-color: #C7D2FE;
+      box-shadow: var(--sh-card-hover);
+      transform: translateY(-1px);
+    }
+    .answer-card:focus-visible {
+      outline: 3px solid var(--primary);
+      outline-offset: 2px;
+    }
+    .answer-card:active { transform: scale(.98); }
+    .answer-card.selected {
+      border-color: var(--accent-deep);
+      background: rgba(249,115,22,.04);
+      box-shadow: var(--sh-accent);
+    }
+    .answer-card.correct {
+      border-color: var(--success-border);
+      background: var(--success-bg);
+      box-shadow: 0 0 0 3px rgba(134,239,172,.3);
+    }
+    .answer-card.wrong {
+      border-color: var(--error-border);
+      background: var(--error-bg);
+    }
+    .answer-indicator {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+      margin-top: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .12s, border-color .12s;
+      font-size: 12px;
+    }
+    .answer-card.selected .answer-indicator {
+      background: var(--accent-deep);
+      border-color: var(--accent-deep);
+      color: #fff;
+    }
+    .answer-card.correct .answer-indicator {
+      background: #22C55E;
+      border-color: #22C55E;
+      color: #fff;
+    }
+    .answer-card.wrong .answer-indicator {
+      background: #EF4444;
+      border-color: #EF4444;
+      color: #fff;
+    }
+    .answer-text { flex: 1; }
+
+    /* Citation chip */
+    .citation-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--explanation-bg);
+      border: 1px solid #BFDBFE;
+      border-radius: var(--r-pill);
+      padding: 4px 12px;
+      font-size: 11px;
+      color: var(--primary-deep);
+      font-weight: 500;
+      cursor: pointer;
+      transition: background .15s;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .citation-chip:hover { background: #DBEAFE; }
+    .citation-chip:focus-visible {
+      outline: 3px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    /* Check button */
+    .btn-check {
+      width: 100%;
+      height: 50px;
+      border: none;
+      border-radius: var(--r-pill);
+      background: var(--primary-disabled);
+      color: rgba(255,255,255,.65);
+      font-family: var(--font);
+      font-size: 17px;
+      font-weight: 700;
+      cursor: not-allowed;
+      transition: background .2s, color .2s, transform .1s, box-shadow .2s;
+      outline: none;
+    }
+    .btn-check.enabled {
+      background: var(--primary-grad-bold);
+      background-size: 200% 100%;
+      background-position: 0% 50%;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: var(--sh-cta);
+      animation: btn-enable-pop .4s ease;
+    }
+    @keyframes btn-enable-pop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+      100% { transform: scale(1); }
+    }
+    .btn-check.enabled:hover {
+      background-position: 100% 50%;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px -6px rgba(45,125,246,.50);
+    }
+    .btn-check.enabled:active { transform: scale(.95); }
+    .btn-check.enabled:focus-visible {
+      outline: 3px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    /* Mascot row */
+    .mascot-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .mascot-speech {
+      flex: 1;
+      background: rgba(255,255,255,.8);
+      border: 1px solid var(--border);
+      border-radius: var(--r-card);
+      padding: 8px 12px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      backdrop-filter: blur(8px);
+    }
+
+    /* Feedback drawer */
+    .feedback-drawer {
+      background: var(--bg-surface);
+      border-top: 2px solid var(--border);
+      border-radius: 20px 20px 0 0;
+      padding: 14px 14px 12px;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 -8px 32px -8px rgba(31,41,55,.12);
+      animation: drawer-slide-up .35s cubic-bezier(.34,1.56,.64,1);
+      flex-shrink: 0;
+    }
+    @keyframes drawer-slide-up {
+      from { transform: translateY(100%); opacity: .8; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .feedback-drawer.visible { display: flex; }
+    .feedback-drawer.correct-state { border-top-color: var(--success-border); background: var(--success-bg); }
+    .feedback-drawer.wrong-state { border-top-color: var(--error-border); background: var(--error-bg); }
+
+    .feedback-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .feedback-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .feedback-icon.correct { background: #22C55E; color: #fff; }
+    .feedback-icon.wrong { background: #EF4444; color: #fff; }
+    .feedback-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+    .feedback-body {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      background: var(--explanation-bg);
+      border-radius: 12px;
+      padding: 10px 12px;
+      border: 1px solid #BFDBFE;
+    }
+
+    /* XP Float */
+    .xp-float {
+      position: absolute;
+      background: var(--accent-grad);
+      color: #fff;
+      font-weight: 800;
+      font-size: 14px;
+      border-radius: var(--r-pill);
+      padding: 3px 12px;
+      box-shadow: var(--sh-accent);
+      pointer-events: none;
+      opacity: 0;
+      z-index: 100;
+      animation: xp-rise .9s ease forwards;
+    }
+    @keyframes xp-rise {
+      0% { opacity: 0; transform: translateY(0) scale(.8); }
+      20% { opacity: 1; transform: translateY(-6px) scale(1); }
+      70% { opacity: 1; transform: translateY(-24px) scale(1); }
+      100% { opacity: 0; transform: translateY(-40px) scale(.9); }
+    }
+
+    /* Success ripple overlay */
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(45,125,246,.18);
+      transform: scale(0);
+      animation: ripple-expand .5s ease forwards;
+      pointer-events: none;
+    }
+    @keyframes ripple-expand {
+      to { transform: scale(8); opacity: 0; }
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 840px) {
+      .frames-wrapper { flex-direction: column; align-items: center; }
+    }
+    @media (max-width: 420px) {
+      .phone { width: 100%; max-width: 390px; border-radius: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── DIRECTION BAND ─── -->
+  <div class="direction-band">
+    <div class="band-row">
+      <div class="band-left">
+        <div class="band-title">כיוון C — <span class="band-accent">Bold-Modern</span> · מונע-מושן</div>
+        <div class="band-tagline">edtech של 2026 — aurora-mesh כשפת-רקע, כותרות-ענק, מבדל-ויזואלית</div>
+        <div class="band-energy">רמת אנרגיה: גבוהה 🔋🔋🔋🔋</div>
+      </div>
+      <div class="swatches">
+        <div class="swatch">
+          <div class="swatch-box" style="background:#F7F9FC;border:1.5px solid #E5E7EB;"></div>
+          <span>#F7F9FC</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-box swatch-grad"></div>
+          <span>Primary Grad</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-box" style="background:#2D7DF6;"></div>
+          <span>#2D7DF6</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-box" style="background:#F97316;"></div>
+          <span>#F97316</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-box" style="background:#EAF2FF;border:1.5px solid #BFDBFE;"></div>
+          <span>Aurora-1</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-box" style="background:#1F2937;"></div>
+          <span>#1F2937</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── INTERACTION HINT ─── -->
+  <div class="interaction-hint" role="note">
+    💡 לחצו על תשובה ואז על "בדוק תשובה" כדי לראות את מצבי-המשוב
+  </div>
+
+  <!-- ─── TWO PHONE FRAMES ─── -->
+  <div class="frames-wrapper">
+
+    <!-- FRAME A: DASHBOARD -->
+    <div class="frame-col">
+      <div class="frame-label" aria-hidden="true">דשבורד</div>
+      <div class="phone" aria-label="מסך דשבורד">
+        <div class="phone-inner">
+          <div class="dash-screen">
+
+            <!-- HERO -->
+            <div class="dash-hero">
+              <!-- Stat Pills -->
+              <div class="stat-pills" role="region" aria-label="סטטיסטיקות">
+                <div class="stat-pill" aria-label="קרדיטים: 12">
+                  <span class="icon" aria-hidden="true">💳</span>
+                  <span>12 קרדיטים</span>
+                </div>
+                <div class="stat-pill" aria-label="נקודות ניסיון: 1,240">
+                  <span class="icon" aria-hidden="true">⚡</span>
+                  <span>1,240 XP</span>
+                </div>
+                <div class="stat-pill" aria-label="רצף: 5 ימים">
+                  <span class="icon" aria-hidden="true">🔥</span>
+                  <span>5 רצף</span>
+                </div>
+              </div>
+
+              <!-- Greeting Banner -->
+              <div class="greeting-banner" role="banner">
+                <div class="greeting-text">
+                  <div class="greeting-title">בוקר טוב, <span class="greeting-accent">מוטי</span> 👋</div>
+                  <div class="greeting-sub">בוא נמשיך ללמוד היום</div>
+                </div>
+                <!-- Mascot "Roni" — safety helmet inline SVG -->
+                <div class="mascot-wrap">
+                  <svg class="mascot-float" viewBox="0 0 120 130" width="62" height="68"
+                       role="img" aria-label="רוני, קמע הבטיחות">
+                    <!-- Body -->
+                    <ellipse cx="60" cy="108" rx="22" ry="14" fill="#E5E7EB" opacity=".4"/>
+                    <!-- Face -->
+                    <ellipse cx="60" cy="86" rx="30" ry="30" fill="#FFE3C2"/>
+                    <!-- Eyes -->
+                    <circle cx="50" cy="84" r="4.5" fill="#1F2937"/>
+                    <circle cx="70" cy="84" r="4.5" fill="#1F2937"/>
+                    <!-- Eye highlights -->
+                    <circle cx="52" cy="82" r="1.5" fill="#fff"/>
+                    <circle cx="72" cy="82" r="1.5" fill="#fff"/>
+                    <!-- Smile -->
+                    <path d="M50 98 q10 9 20 0" stroke="#1F2937" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                    <!-- Helmet dome -->
+                    <path d="M28 64 a32 30 0 0 1 64 0 z" fill="#F97316"/>
+                    <!-- Helmet brim -->
+                    <rect x="22" y="62" width="76" height="9" rx="4.5" fill="#F97316"/>
+                    <!-- Helmet strap detail -->
+                    <rect x="54" y="40" width="12" height="14" rx="4" fill="#EA6C00"/>
+                    <!-- Helmet shine -->
+                    <ellipse cx="45" cy="55" rx="7" ry="4" fill="rgba(255,255,255,.25)" transform="rotate(-20,45,55)"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="dash-cta-row">
+              <button class="btn-cta" type="button" aria-label="צור קורס חדש">
+                <span aria-hidden="true">+</span> קורס חדש
+              </button>
+            </div>
+
+            <!-- CARDS -->
+            <div class="dash-cards">
+
+              <!-- Streak Card -->
+              <div class="streak-card" aria-label="כרטיס רצף שבועי">
+                <div class="streak-header">
+                  <div class="streak-title">רצף שבועי</div>
+                  <div class="streak-badge" aria-label="5 ימים ברצף">
+                    <span class="streak-flame" aria-hidden="true">🔥</span>
+                    5 ימים ברצף!
+                  </div>
+                </div>
+                <div class="streak-days" role="list" aria-label="ימי לימוד בשבוע">
+                  <!-- RTL: ש ו ה ד ג ב א — filled right-to-left, 5 filled -->
+                  <div class="day-dot" role="listitem">
+                    <div class="day-circle filled" aria-label="ראשון — הושלם"></div>
+                    <div class="day-label" aria-hidden="true">א׳</div>
+                  </div>
+                  <div class="day-dot" role="listitem">
+                    <div class="day-circle filled" aria-label="שני — הושלם"></div>
+                    <div class="day-label" aria-hidden="true">ב׳</div>
+                  </div>
+                  <div class="day-dot" role="listitem">
+                    <div class="day-circle filled" aria-label="שלישי — הושלם"></div>
+                    <div class="day-label" aria-hidden="true">ג׳</div>
+                  </div>
+                  <div class="day-dot" role="listitem">
+                    <div class="day-circle filled" aria-label="רביעי — הושלם"></div>
+                    <div class="day-label" aria-hidden="true">ד׳</div>
+                  </div>
+                  <div class="day-dot" role="listitem">
+                    <div class="day-circle filled" aria-label="חמישי — הושלם"></div>
+                    <div class="day-label" aria-hidden="true">ה׳</div>
+                  </div>
+                  <div class="day-dot" role="listitem">
+                    <div class="day-circle" aria-label="שישי — לא הושלם"></div>
+                    <div class="day-label" aria-hidden="true">ו׳</div>
+                  </div>
+                  <div class="day-dot" role="listitem">
+                    <div class="day-circle" aria-label="שבת — לא הושלם"></div>
+                    <div class="day-label" aria-hidden="true">ש׳</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Course Card 1 -->
+              <div class="course-card" role="button" tabindex="0" aria-label="ממונה בטיחות בעבודה, 64 אחוז הושלם"
+                   onclick="this.dispatchEvent(new CustomEvent('card-activate',{bubbles:true}))"
+                   onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+                <div class="course-row">
+                  <div class="course-name">ממונה בטיחות בעבודה</div>
+                  <div class="course-pct">64%</div>
+                </div>
+                <div class="progress-track" role="progressbar" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100">
+                  <div class="progress-bar" style="width:64%"></div>
+                </div>
+              </div>
+
+              <!-- Course Card 2 -->
+              <div class="course-card" role="button" tabindex="0" aria-label="עזרה ראשונה במקום העבודה, 20 אחוז הושלם"
+                   onclick="this.dispatchEvent(new CustomEvent('card-activate',{bubbles:true}))"
+                   onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+                <div class="course-row">
+                  <div class="course-name">עזרה ראשונה במקום העבודה</div>
+                  <div class="course-pct" style="color:var(--accent-deep);">20%</div>
+                </div>
+                <div class="progress-track" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                  <div class="progress-bar accent" style="width:20%"></div>
+                </div>
+              </div>
+
+              <!-- Daily Goal -->
+              <div class="goal-card" aria-label="יעד יומי">
+                <div class="goal-row">
+                  <div class="goal-title">🎯 יעד יומי</div>
+                  <div class="goal-count">3 / 5 שיעורים</div>
+                </div>
+                <div class="progress-track" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" aria-label="60 אחוז מהיעד היומי">
+                  <div class="progress-bar" style="width:60%;background:linear-gradient(135deg,#818CF8,#4338CA);"></div>
+                </div>
+              </div>
+
+            </div><!-- /dash-cards -->
+
+            <!-- BOTTOM NAV -->
+            <nav class="bottom-nav" aria-label="ניווט ראשי">
+              <button class="nav-tab active" type="button" aria-label="בית — נוכחי" aria-current="page">
+                <div class="nav-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2D7DF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+                  </svg>
+                </div>
+                <div class="nav-label">בית</div>
+              </button>
+              <button class="nav-tab" type="button" aria-label="קורסים">
+                <div class="nav-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                  </svg>
+                </div>
+                <div class="nav-label">קורסים</div>
+              </button>
+              <button class="nav-tab" type="button" aria-label="נתונים">
+                <div class="nav-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+                  </svg>
+                </div>
+                <div class="nav-label">נתונים</div>
+              </button>
+              <button class="nav-tab" type="button" aria-label="הגדרות">
+                <div class="nav-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                  </svg>
+                </div>
+                <div class="nav-label">הגדרות</div>
+              </button>
+            </nav>
+
+          </div><!-- /dash-screen -->
+        </div>
+      </div>
+    </div>
+
+    <!-- FRAME B: LESSON PLAYER -->
+    <div class="frame-col">
+      <div class="frame-label" aria-hidden="true">נגן-שיעור</div>
+      <div class="phone" aria-label="מסך נגן שיעור">
+        <div class="phone-inner" id="lesson-phone">
+          <div class="lesson-screen" id="lesson-screen">
+
+            <!-- LESSON HEADER -->
+            <div class="lesson-header">
+              <div class="lesson-header-row1">
+                <div class="lesson-course-name">ממונה בטיחות בעבודה</div>
+                <div class="lesson-stats" role="group" aria-label="סטטוס שיעור">
+                  <div class="lesson-stat" aria-label="נקודות ניסיון: 1,240">
+                    <span aria-hidden="true">⚡</span> 1,240
+                  </div>
+                  <div class="lesson-stat" aria-label="רצף: 5 ימים">
+                    <span aria-hidden="true">🔥</span> 5
+                  </div>
+                </div>
+                <button class="btn-back" type="button" aria-label="חזרה לרשימת השיעורים">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="9 18 15 12 9 6"/>
+                  </svg>
+                </button>
+              </div>
+              <!-- Progress Dots 4/8 — RTL fills right-to-left -->
+              <div class="progress-dots" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="8" aria-label="שאלה 4 מתוך 8">
+                <div class="pdot filled" aria-hidden="true"></div>
+                <div class="pdot filled" aria-hidden="true"></div>
+                <div class="pdot filled" aria-hidden="true"></div>
+                <div class="pdot filled" aria-hidden="true"></div>
+                <div class="pdot" aria-hidden="true"></div>
+                <div class="pdot" aria-hidden="true"></div>
+                <div class="pdot" aria-hidden="true"></div>
+                <div class="pdot" aria-hidden="true"></div>
+              </div>
+            </div>
+
+            <!-- LESSON BODY -->
+            <div class="lesson-body" id="lesson-body">
+
+              <!-- AI Notice -->
+              <div class="ai-notice" role="note">
+                <span aria-hidden="true">ℹ</span>
+                <span>המידע נוצר על-ידי AI ועלול להכיל שגיאות</span>
+              </div>
+
+              <!-- Question -->
+              <h2 class="question-text" id="question-heading">
+                מהו תפקידו המרכזי של ממונה הבטיחות במקום העבודה?
+              </h2>
+
+              <!-- Answers -->
+              <div class="answers" role="group" aria-labelledby="question-heading">
+
+                <button class="answer-card" id="ans-0" type="button"
+                        data-correct="true"
+                        aria-pressed="false"
+                        onclick="selectAnswer(this, event)">
+                  <div class="answer-indicator" aria-hidden="true" id="ind-0"></div>
+                  <div class="answer-text">לייעץ למחזיק במקום העבודה בכל הנוגע לחוקי הבטיחות ולקדם את התודעה לבטיחות</div>
+                </button>
+
+                <button class="answer-card" id="ans-1" type="button"
+                        data-correct="false"
+                        aria-pressed="false"
+                        onclick="selectAnswer(this, event)">
+                  <div class="answer-indicator" aria-hidden="true" id="ind-1"></div>
+                  <div class="answer-text">לפקח על נוכחות העובדים ולנהל את שעות העבודה במפעל</div>
+                </button>
+
+                <button class="answer-card" id="ans-2" type="button"
+                        data-correct="false"
+                        aria-pressed="false"
+                        onclick="selectAnswer(this, event)">
+                  <div class="answer-indicator" aria-hidden="true" id="ind-2"></div>
+                  <div class="answer-text">לייצג את העובדים מול ההנהלה במשא ומתן על שכר</div>
+                </button>
+
+                <button class="answer-card" id="ans-3" type="button"
+                        data-correct="false"
+                        aria-pressed="false"
+                        onclick="selectAnswer(this, event)">
+                  <div class="answer-indicator" aria-hidden="true" id="ind-3"></div>
+                  <div class="answer-text">לאשר תשלומי שכר ולנהל את מחלקת הכספים</div>
+                </button>
+
+              </div><!-- /answers -->
+
+              <!-- Citation Chip -->
+              <button class="citation-chip" type="button" aria-label="מקור: תקנות ארגון הפיקוח על העבודה, תשנ״ו-1996 תקנה 2">
+                <span aria-hidden="true">📄</span>
+                מקור · תקנות ארגון הפיקוח על העבודה (ממונים על הבטיחות), התשנ״ו-1996 · תק׳ 2
+              </button>
+
+              <!-- Mascot Row -->
+              <div class="mascot-row" aria-live="polite" aria-atomic="true">
+                <svg class="mascot-float" viewBox="0 0 120 130" width="52" height="58"
+                     role="img" aria-label="רוני, קמע הבטיחות" id="lesson-mascot">
+                  <ellipse cx="60" cy="86" rx="30" ry="30" fill="#FFE3C2"/>
+                  <circle cx="50" cy="84" r="4.5" fill="#1F2937"/>
+                  <circle cx="70" cy="84" r="4.5" fill="#1F2937"/>
+                  <circle cx="52" cy="82" r="1.5" fill="#fff"/>
+                  <circle cx="72" cy="82" r="1.5" fill="#fff"/>
+                  <path d="M50 98 q10 9 20 0" stroke="#1F2937" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                  <path d="M28 64 a32 30 0 0 1 64 0 z" fill="#F97316"/>
+                  <rect x="22" y="62" width="76" height="9" rx="4.5" fill="#F97316"/>
+                  <rect x="54" y="40" width="12" height="14" rx="4" fill="#EA6C00"/>
+                  <ellipse cx="45" cy="55" rx="7" ry="4" fill="rgba(255,255,255,.25)" transform="rotate(-20,45,55)"/>
+                </svg>
+                <div class="mascot-speech" id="mascot-speech">
+                  קרא את השאלה בעיון ובחר את התשובה הנכונה
+                </div>
+              </div>
+
+              <!-- Check Button -->
+              <button class="btn-check" id="btn-check" type="button"
+                      disabled aria-disabled="true"
+                      onclick="checkAnswer(event)">
+                בדוק תשובה
+              </button>
+
+            </div><!-- /lesson-body -->
+
+            <!-- Feedback Drawer (hidden until answer checked) -->
+            <div class="feedback-drawer" id="feedback-drawer" role="status" aria-live="polite">
+              <div class="feedback-header">
+                <div class="feedback-icon" id="feedback-icon" aria-hidden="true"></div>
+                <div class="feedback-title" id="feedback-title"></div>
+              </div>
+              <div class="feedback-body" id="feedback-body"></div>
+            </div>
+
+            <!-- BOTTOM NAV (lesson) -->
+            <nav class="bottom-nav" aria-label="ניווט ראשי">
+              <button class="nav-tab" type="button" aria-label="בית">
+                <div class="nav-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+                  </svg>
+                </div>
+                <div class="nav-label">בית</div>
+              </button>
+              <button class="nav-tab active" type="button" aria-label="קורסים — נוכחי" aria-current="page">
+                <div class="nav-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2D7DF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                  </svg>
+                </div>
+                <div class="nav-label">קורסים</div>
+              </button>
+              <button class="nav-tab" type="button" aria-label="נתונים">
+                <div class="nav-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+                  </svg>
+                </div>
+                <div class="nav-label">נתונים</div>
+              </button>
+              <button class="nav-tab" type="button" aria-label="הגדרות">
+                <div class="nav-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                  </svg>
+                </div>
+                <div class="nav-label">הגדרות</div>
+              </button>
+            </nav>
+
+          </div><!-- /lesson-screen -->
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /frames-wrapper -->
+
+  <!-- ─── VANILLA JS INTERACTIVITY ─── -->
+  <script>
+    (function () {
+      'use strict';
+
+      // Respect reduced motion
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      let selectedCard = null;
+      let answered = false;
+
+      // Answer card indicators text map
+      const indicators = { selected: '●', correct: '✓', wrong: '✕' };
+
+      function selectAnswer(card, evt) {
+        if (answered) return;
+
+        // Deselect previous
+        if (selectedCard && selectedCard !== card) {
+          selectedCard.classList.remove('selected');
+          selectedCard.setAttribute('aria-pressed', 'false');
+          const prevInd = selectedCard.querySelector('.answer-indicator');
+          prevInd.textContent = '';
+        }
+
+        selectedCard = card;
+        card.classList.add('selected');
+        card.setAttribute('aria-pressed', 'true');
+
+        const ind = card.querySelector('.answer-indicator');
+        ind.textContent = '●';
+
+        // Enable check button
+        const btn = document.getElementById('btn-check');
+        btn.classList.add('enabled');
+        btn.disabled = false;
+        btn.removeAttribute('aria-disabled');
+
+        // Success ripple on card (non-intrusive)
+        if (!reducedMotion && evt) {
+          const rect = card.getBoundingClientRect();
+          const ripple = document.createElement('div');
+          ripple.className = 'ripple';
+          const size = Math.max(rect.width, rect.height);
+          const x = evt.clientX - rect.left - size / 2;
+          const y = evt.clientY - rect.top - size / 2;
+          ripple.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px;`;
+          card.style.position = 'relative';
+          card.style.overflow = 'hidden';
+          card.appendChild(ripple);
+          setTimeout(() => ripple.remove(), 600);
+        }
+      }
+
+      function checkAnswer(evt) {
+        if (!selectedCard || answered) return;
+        answered = true;
+
+        const isCorrect = selectedCard.dataset.correct === 'true';
+        const correctCard = document.querySelector('.answer-card[data-correct="true"]');
+
+        // Disable all cards
+        document.querySelectorAll('.answer-card').forEach(c => {
+          c.style.cursor = 'default';
+          c.setAttribute('tabindex', '-1');
+        });
+
+        // Disable check button
+        const btn = document.getElementById('btn-check');
+        btn.disabled = true;
+        btn.style.opacity = '.6';
+        btn.style.cursor = 'default';
+
+        if (isCorrect) {
+          selectedCard.classList.remove('selected');
+          selectedCard.classList.add('correct');
+          const ind = selectedCard.querySelector('.answer-indicator');
+          ind.textContent = '✓';
+          showFeedback(true);
+          showXpFloat(evt);
+          updateMascot(true);
+        } else {
+          selectedCard.classList.remove('selected');
+          selectedCard.classList.add('wrong');
+          const wrongInd = selectedCard.querySelector('.answer-indicator');
+          wrongInd.textContent = '✕';
+
+          // Highlight correct too
+          correctCard.classList.add('correct');
+          correctCard.querySelector('.answer-indicator').textContent = '✓';
+
+          showFeedback(false);
+          updateMascot(false);
+
+          // Screen shake
+          if (!reducedMotion) {
+            const screen = document.getElementById('lesson-screen');
+            screen.style.animation = 'none';
+            screen.style.transform = 'translateX(0)';
+            let shakeFrames = [
+              { x: -8 }, { x: 8 }, { x: -5 }, { x: 5 }, { x: -3 }, { x: 3 }, { x: 0 }
+            ];
+            let i = 0;
+            const shakeTimer = setInterval(() => {
+              if (i < shakeFrames.length) {
+                screen.style.transform = `translateX(${shakeFrames[i].x}px)`;
+                i++;
+              } else {
+                screen.style.transform = 'translateX(0)';
+                clearInterval(shakeTimer);
+              }
+            }, 35);
+          }
+        }
+      }
+
+      function showFeedback(correct) {
+        const drawer = document.getElementById('feedback-drawer');
+        const icon = document.getElementById('feedback-icon');
+        const title = document.getElementById('feedback-title');
+        const body = document.getElementById('feedback-body');
+
+        drawer.classList.remove('correct-state', 'wrong-state');
+        drawer.classList.add(correct ? 'correct-state' : 'wrong-state');
+
+        icon.className = 'feedback-icon ' + (correct ? 'correct' : 'wrong');
+        icon.textContent = correct ? '✓' : '✕';
+        title.textContent = correct ? 'כל הכבוד! תשובה נכונה 🎉' : 'לא נכון — אבל בסדר גמור';
+        body.textContent = 'ממונה הבטיחות הוא הגורם המקצועי המייעץ למחזיק במקום העבודה בכל הנוגע לחוקי הבטיחות, ופועל לקידום התרבות הבטיחותית בארגון.';
+
+        drawer.classList.add('visible');
+
+        // Scroll into view
+        setTimeout(() => drawer.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'nearest' }), 50);
+      }
+
+      function showXpFloat(evt) {
+        const body = document.getElementById('lesson-body');
+        const xp = document.createElement('div');
+        xp.className = 'xp-float';
+        xp.textContent = '+10 XP';
+        xp.setAttribute('aria-live', 'polite');
+        xp.setAttribute('aria-label', 'הרווחת 10 נקודות ניסיון');
+        xp.style.position = 'absolute';
+        xp.style.top = '50%';
+        xp.style.right = '20px';
+        body.style.position = 'relative';
+        body.appendChild(xp);
+        setTimeout(() => xp.remove(), 1000);
+      }
+
+      function updateMascot(correct) {
+        const speech = document.getElementById('mascot-speech');
+        if (correct) {
+          speech.textContent = 'מצוין! ידעתי שתצליח 💪';
+          speech.style.color = '#166534';
+          speech.style.background = 'rgba(240,253,244,.9)';
+          speech.style.borderColor = '#86EFAC';
+        } else {
+          speech.textContent = 'לא נורא — קרא את ההסבר ותמשיך 💡';
+          speech.style.color = '#7F1D1D';
+          speech.style.background = 'rgba(254,242,242,.9)';
+          speech.style.borderColor = '#FCA5A5';
+        }
+      }
+
+      // Expose to global (onclick handlers)
+      window.selectAnswer = selectAnswer;
+      window.checkAnswer = checkAnswer;
+    })();
+  </script>
+
+</body>
+</html>

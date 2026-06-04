@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudiBuilder — כיוון A: StudiesGo-Faithful · משחקי-תוסס</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* Palette — Direction A */
+      --bg-app: #FFFFFF;
+      --bg-subtle: #F7F9FC;
+      --bg-lesson: linear-gradient(180deg, #FFFFFF 0%, #EEF4FF 100%);
+      --primary: #2D7DF6;
+      --primary-text: #1A6FE8;
+      --primary-grad: linear-gradient(100deg, #2D7DF6 0%, #1A6FE8 100%);
+      --accent: #FFB23D;
+      --accent-strong: #FF9F1C;
+      --success-border: #86EFAC;
+      --success-bg: #F0FDF4;
+      --error-border: #FCA5A5;
+      --error-bg: #FEF2F2;
+      --explanation-bg: #F0F7FF;
+      --text-primary: #1F2937;
+      --text-secondary: #6B7280;
+      --heading-deep: #1E3A8A;
+      --border: #E5E7EB;
+      --credit-pill: #EAF1FF;
+      --nav-glass: rgba(17, 24, 39, 0.85);
+      /* Shape */
+      --r-card: 12px;
+      --r-answer: 14px;
+      --r-pill: 9999px;
+      --r-modal: 24px;
+      --shadow-cta: 0 4px 14px rgba(45, 125, 246, 0.25);
+      /* Type */
+      --font: 'Rubik', 'Heebo', 'Assistant', system-ui, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: #F0F4FA;
+      color: var(--text-primary);
+      min-height: 100vh;
+      direction: rtl;
+    }
+
+    /* ===== DIRECTION BAND ===== */
+    .direction-band {
+      background: linear-gradient(135deg, #1E3A8A 0%, #2D7DF6 60%, #1E63E0 100%);
+      color: #fff;
+      padding: 28px 32px 24px;
+      text-align: center;
+    }
+    .direction-band h1 {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      margin-bottom: 6px;
+    }
+    .direction-band .tagline {
+      font-size: 15px;
+      font-weight: 500;
+      opacity: 0.9;
+      margin-bottom: 10px;
+    }
+    .energy-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: var(--r-pill);
+      padding: 4px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+    .palette-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+    .swatch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .swatch-block {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+    .swatch-label {
+      font-size: 10px;
+      font-weight: 500;
+      opacity: 0.85;
+      font-family: monospace;
+      color: #fff;
+    }
+
+    /* ===== HINT BAR ===== */
+    .hint-bar {
+      background: #FFFBEB;
+      border-bottom: 1px solid #FDE68A;
+      text-align: center;
+      padding: 10px 16px;
+      font-size: 13px;
+      color: #92400E;
+      font-weight: 500;
+    }
+
+    /* ===== PHONES LAYOUT ===== */
+    .phones-section {
+      padding: 32px 24px 48px;
+    }
+    .phones-row {
+      display: flex;
+      gap: 28px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .phone-column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .phone-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #6B7280;
+      text-transform: uppercase;
+    }
+
+    /* ===== PHONE FRAME ===== */
+    .phone-frame {
+      width: 390px;
+      height: 780px;
+      border-radius: 42px;
+      background: var(--bg-app);
+      border: 3px solid #D1D5DB;
+      box-shadow:
+        0 0 0 1px rgba(0,0,0,0.06),
+        0 24px 60px rgba(0,0,0,0.18),
+        inset 0 1px 0 rgba(255,255,255,0.9);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    .phone-notch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 28px;
+      background: #111827;
+      border-radius: 0 0 18px 18px;
+      z-index: 100;
+    }
+    .phone-inner {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-top: 32px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .phone-inner::-webkit-scrollbar { display: none; }
+
+    /* ===== DASHBOARD SCREEN ===== */
+    .dashboard {
+      background: var(--bg-app);
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 72px;
+    }
+
+    /* Top stat bar */
+    .stat-bar {
+      display: flex;
+      gap: 8px;
+      padding: 14px 16px 10px;
+      justify-content: flex-end;
+    }
+    .stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border-radius: var(--r-pill);
+      font-size: 13px;
+      font-weight: 700;
+      background: var(--credit-pill);
+      color: var(--heading-deep);
+      border: 1px solid rgba(26,111,232,0.18);
+      min-height: 44px;
+    }
+    .stat-pill .icon { font-size: 14px; }
+
+    /* Banner greeting */
+    .greeting-banner {
+      margin: 8px 16px 12px;
+      background: linear-gradient(135deg, #1E3A8A 0%, #2D7DF6 100%);
+      border-radius: 18px;
+      padding: 20px 18px 16px;
+      position: relative;
+      overflow: hidden;
+      min-height: 110px;
+    }
+    .greeting-banner::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      left: -20px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+    }
+    .greeting-banner::after {
+      content: '';
+      position: absolute;
+      bottom: -30px;
+      left: 30px;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+    .greeting-text h2 {
+      color: #fff;
+      font-size: 19px;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+    .greeting-text p {
+      color: rgba(255,255,255,0.8);
+      font-size: 13px;
+      font-weight: 400;
+    }
+    .mascot-banner {
+      position: absolute;
+      bottom: 6px;
+      left: 16px;
+      animation: mascotFloat 3s ease-in-out infinite;
+      filter: drop-shadow(0 4px 12px rgba(6, 182, 212, 0.45));
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .mascot-banner, .mascot-lesson, .streak-flame, .shake { animation: none !important; }
+    }
+    @keyframes mascotFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* CTA button */
+    .cta-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 0 16px 14px;
+      padding: 14px 20px;
+      background: var(--primary-grad);
+      background-image: var(--primary-grad);
+      border: none;
+      border-radius: var(--r-pill);
+      color: #fff;
+      font-family: var(--font);
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: var(--shadow-cta);
+      transition: transform 0.12s, box-shadow 0.12s;
+      width: calc(100% - 32px);
+      outline: none;
+    }
+    .cta-btn:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
+    .cta-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(26,111,232,0.35);
+    }
+    .cta-btn:active { transform: scale(0.97); }
+
+    /* Section header */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 16px 8px;
+    }
+    .section-header h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .section-header a {
+      font-size: 12px;
+      color: var(--primary-text);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* Streak card */
+    .streak-card {
+      margin: 0 16px 14px;
+      background: linear-gradient(135deg, #FFF7ED 0%, #FFFBF0 100%);
+      border: 1.5px solid #FED7AA;
+      border-radius: var(--r-card);
+      padding: 14px 16px;
+    }
+    .streak-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .streak-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #92400E;
+    }
+    .streak-flame {
+      font-size: 18px;
+      display: inline-block;
+      animation: flamePulse 1.4s ease-in-out infinite;
+    }
+    @keyframes flamePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+    .streak-count {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent-strong);
+      background: #FEF3C7;
+      border-radius: var(--r-pill);
+      padding: 3px 10px;
+    }
+    .streak-days {
+      display: flex;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+    .day-dot {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .day-dot span {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+    .day-circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      background: #fff;
+      transition: all 0.15s;
+    }
+    .day-circle.filled {
+      background: var(--accent-strong);
+      border-color: var(--accent-strong);
+      box-shadow: 0 2px 8px rgba(255,159,28,0.4);
+    }
+    .day-circle.today {
+      background: #fff;
+      border-color: var(--accent);
+      border-width: 2.5px;
+    }
+
+    /* Course cards */
+    .courses-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 0 16px;
+      margin-bottom: 14px;
+    }
+    .course-card {
+      background: var(--bg-app);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-card);
+      padding: 14px 16px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      cursor: pointer;
+    }
+    .course-card:hover {
+      border-color: #BFDBFE;
+      box-shadow: 0 2px 12px rgba(26,111,232,0.08);
+    }
+    .course-card:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 2px;
+    }
+    .course-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .course-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .course-icon.safety { background: #FEF3C7; }
+    .course-icon.first-aid { background: #FEE2E2; }
+    .course-meta { flex: 1; }
+    .course-meta h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+      line-height: 1.3;
+    }
+    .course-pct {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary-text);
+    }
+    .progress-bar-wrap {
+      background: #F3F4F6;
+      border-radius: var(--r-pill);
+      height: 7px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: var(--r-pill);
+      background: var(--primary-grad);
+      background-image: var(--primary-grad);
+      transition: width 0.4s ease;
+    }
+
+    /* Daily goal card */
+    .goal-card {
+      margin: 0 16px 14px;
+      background: var(--bg-subtle);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-card);
+      padding: 14px 16px;
+    }
+    .goal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .goal-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .goal-sub {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    .goal-count {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--primary-text);
+    }
+
+    /* Bottom nav */
+    .bottom-nav {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 68px;
+      background: var(--nav-glass);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: stretch;
+      z-index: 50;
+    }
+    .nav-tab {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      cursor: pointer;
+      padding: 8px 4px;
+      border: none;
+      background: none;
+      color: #9CA3AF;
+      font-family: var(--font);
+      font-size: 10px;
+      font-weight: 600;
+      transition: color 0.15s;
+      outline: none;
+      min-height: 44px;
+    }
+    .nav-tab:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
+      border-radius: 8px;
+    }
+    .nav-tab.active { color: #60A5FA; }
+    .nav-tab svg { flex-shrink: 0; }
+
+    /* ===== LESSON SCREEN ===== */
+    .lesson-screen {
+      background: var(--bg-lesson);
+      background-image: var(--bg-lesson);
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 72px;
+    }
+
+    /* Lesson header */
+    .lesson-header {
+      padding: 12px 16px 10px;
+    }
+    .lesson-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .btn-back {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      background: rgba(26,111,232,0.1);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      color: var(--primary);
+      font-size: 16px;
+      outline: none;
+      min-width: 44px;
+      min-height: 44px;
+    }
+    .btn-back:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 2px;
+    }
+    .lesson-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--heading-deep);
+      text-align: center;
+      flex: 1;
+      padding: 0 8px;
+    }
+    .lesson-xp-streak {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .xp-chip {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent-strong);
+      background: #FEF3C7;
+      border-radius: var(--r-pill);
+      padding: 3px 8px;
+      border: 1px solid #FDE68A;
+    }
+    .streak-chip {
+      font-size: 12px;
+      font-weight: 700;
+      color: #EA580C;
+      background: #FFF7ED;
+      border-radius: var(--r-pill);
+      padding: 3px 8px;
+      border: 1px solid #FED7AA;
+    }
+
+    /* Progress dots */
+    .progress-dots {
+      display: flex;
+      gap: 5px;
+      justify-content: flex-end;
+      flex-direction: row;
+      align-items: center;
+    }
+    .pdot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: background 0.2s, transform 0.2s;
+    }
+    .pdot.done {
+      background: var(--primary);
+      box-shadow: 0 0 0 2px rgba(26,111,232,0.2);
+    }
+    .pdot.current {
+      background: var(--accent-strong);
+      transform: scale(1.25);
+    }
+
+    /* AI Notice */
+    .ai-notice {
+      margin: 0 16px 12px;
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 12px;
+      color: #1D4ED8;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Question */
+    .question-area {
+      padding: 0 16px 12px;
+    }
+    .question-h2 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--heading-deep);
+      line-height: 1.45;
+    }
+    .question-h2 strong {
+      color: var(--accent-strong);
+      font-weight: 800;
+    }
+
+    /* Answer cards */
+    .answers-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      padding: 0 16px 10px;
+    }
+    .answer-card {
+      border: 2px solid var(--border);
+      border-radius: var(--r-answer);
+      padding: 13px 14px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1.45;
+      text-align: right;
+      transition: border-color 0.1s, background 0.1s, transform 0.08s;
+      outline: none;
+      min-height: 44px;
+      width: 100%;
+      font-family: var(--font);
+      display: block;
+    }
+    .answer-card:focus-visible {
+      outline: 3px solid var(--primary);
+      outline-offset: 2px;
+    }
+    .answer-card:active { transform: scale(0.985); }
+    .answer-card.selected {
+      border-color: var(--accent);
+      background: rgba(255,178,61,0.05);
+    }
+    .answer-card.correct {
+      border-color: var(--success-border);
+      background: var(--success-bg);
+      color: #166534;
+      font-weight: 700;
+    }
+    .answer-card.wrong {
+      border-color: var(--error-border);
+      background: var(--error-bg);
+      color: #991B1B;
+      font-weight: 700;
+    }
+
+    /* Source chip */
+    .source-chip {
+      margin: 2px 16px 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--primary-text);
+      background: var(--credit-pill);
+      border: 1px solid rgba(26,111,232,0.2);
+      border-radius: var(--r-pill);
+      padding: 5px 12px;
+      cursor: default;
+    }
+
+    /* Check button */
+    .check-btn {
+      margin: 0 16px 10px;
+      width: calc(100% - 32px);
+      padding: 14px 20px;
+      background: var(--primary-grad);
+      background-image: var(--primary-grad);
+      border: none;
+      border-radius: var(--r-pill);
+      color: #fff;
+      font-family: var(--font);
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: var(--shadow-cta);
+      transition: transform 0.12s, opacity 0.15s, box-shadow 0.12s;
+      outline: none;
+    }
+    .check-btn:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
+    .check-btn:disabled {
+      background: #A0C3FF;
+      background-image: none;
+      opacity: 0.7;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    .check-btn:not(:disabled):hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(26,111,232,0.35);
+    }
+    .check-btn:not(:disabled):active { transform: scale(0.97); }
+
+    /* Mascot lesson */
+    .mascot-lesson-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 4px 0 8px;
+    }
+    .mascot-lesson {
+      animation: mascotFloat 3.2s ease-in-out infinite;
+      filter: drop-shadow(0 4px 10px rgba(6,182,212,0.3));
+      transition: filter 0.3s;
+    }
+    .mascot-lesson.success-glow {
+      filter: drop-shadow(0 0 18px rgba(6,182,212,0.85));
+      animation: mascotFloat 1.5s ease-in-out infinite;
+    }
+    .mascot-lesson.error-glow {
+      filter: drop-shadow(0 0 14px rgba(239,68,68,0.6));
+    }
+
+    /* Feedback drawer */
+    .feedback-drawer {
+      margin: 6px 16px 0;
+      border-radius: 16px 16px 12px 12px;
+      padding: 14px 16px 16px;
+      display: none;
+      animation: slideUp 0.28s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    .feedback-drawer.visible { display: block; }
+    .feedback-drawer.correct-drawer {
+      background: var(--success-bg);
+      border: 1.5px solid var(--success-border);
+    }
+    .feedback-drawer.wrong-drawer {
+      background: var(--error-bg);
+      border: 1.5px solid var(--error-border);
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .feedback-title {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .feedback-drawer.correct-drawer .feedback-title { color: #166534; }
+    .feedback-drawer.wrong-drawer .feedback-title { color: #991B1B; }
+    .feedback-explanation {
+      font-size: 13px;
+      color: var(--text-primary);
+      line-height: 1.5;
+      background: var(--explanation-bg);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-top: 6px;
+    }
+
+    /* XP float */
+    .xp-float {
+      position: fixed;
+      top: 50%;
+      right: 50%;
+      transform: translate(50%, -50%);
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--accent-strong);
+      background: #FEF3C7;
+      border: 2px solid #FDE68A;
+      border-radius: var(--r-pill);
+      padding: 8px 18px;
+      display: none;
+      z-index: 999;
+      animation: xpPop 0.9s cubic-bezier(0.34,1.56,0.64,1) both;
+      pointer-events: none;
+    }
+    .xp-float.show { display: block; }
+    @keyframes xpPop {
+      0%   { opacity: 0; transform: translate(50%, -60%) scale(0.6); }
+      50%  { opacity: 1; transform: translate(50%, -75%) scale(1.1); }
+      80%  { opacity: 1; transform: translate(50%, -80%) scale(1); }
+      100% { opacity: 0; transform: translate(50%, -90%) scale(0.9); }
+    }
+
+    /* Screen shake */
+    @keyframes screenShake {
+      0%, 100% { transform: translateX(0); }
+      15%       { transform: translateX(-8px); }
+      30%       { transform: translateX(8px); }
+      45%       { transform: translateX(-5px); }
+      60%       { transform: translateX(5px); }
+      75%       { transform: translateX(-2px); }
+      90%       { transform: translateX(2px); }
+    }
+    .shake { animation: screenShake 0.35s ease both; }
+
+    /* Confetti canvas */
+    #confetti-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .phones-row { flex-direction: column; align-items: center; }
+    }
+    @media (max-width: 430px) {
+      .phone-frame { width: 100%; border-radius: 0; height: auto; min-height: 720px; }
+      .phones-section { padding: 16px 0 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas" aria-hidden="true"></canvas>
+<div class="xp-float" id="xpFloat" aria-live="polite">+10 XP ⚡</div>
+
+<!-- ===== DIRECTION BAND ===== -->
+<header class="direction-band">
+  <h1>כיוון A — StudiesGo-Faithful · משחקי-תוסס</h1>
+  <p class="tagline">הכי-קרוב-ל-StudiesGo, הכי-כיף, הכי-ממכר — גיימיפיקציה בקדמת-הבמה</p>
+  <div class="energy-badge" aria-label="רמת אנרגיה: גבוהה מאוד">רמת-אנרגיה: גבוהה-מאוד 🔋🔋🔋🔋🔋</div>
+  <div class="palette-row" role="list" aria-label="פלטת הצבעים של כיוון A">
+    <div class="swatch" role="listitem">
+      <div class="swatch-block" style="background:#FFFFFF;border:2px solid rgba(255,255,255,0.5);"></div>
+      <span class="swatch-label">#FFFFFF</span>
+    </div>
+    <div class="swatch" role="listitem">
+      <div class="swatch-block" style="background:#2D7DF6;"></div>
+      <span class="swatch-label">#2D7DF6</span>
+    </div>
+    <div class="swatch" role="listitem">
+      <div class="swatch-block" style="background:#1E3A8A;"></div>
+      <span class="swatch-label">#1E3A8A</span>
+    </div>
+    <div class="swatch" role="listitem">
+      <div class="swatch-block" style="background:#FFB23D;"></div>
+      <span class="swatch-label">#FFB23D</span>
+    </div>
+    <div class="swatch" role="listitem">
+      <div class="swatch-block" style="background:#FF9F1C;"></div>
+      <span class="swatch-label">#FF9F1C</span>
+    </div>
+    <div class="swatch" role="listitem">
+      <div class="swatch-block" style="background:#06B6D4;"></div>
+      <span class="swatch-label">#06B6D4</span>
+    </div>
+  </div>
+</header>
+
+<!-- ===== HINT BAR ===== -->
+<div class="hint-bar" role="note">
+  לחצו על תשובה ואז על "בדוק תשובה" כדי לראות את מצבי-המשוב
+</div>
+
+<!-- ===== PHONES ===== -->
+<section class="phones-section" aria-label="תצוגת מסכי האפליקציה">
+  <div class="phones-row">
+
+    <!-- PHONE 1: DASHBOARD -->
+    <div class="phone-column">
+      <span class="phone-label">דשבורד</span>
+      <div class="phone-frame" role="img" aria-label="מסך דשבורד של StudiBuilder">
+        <div class="phone-notch" aria-hidden="true"></div>
+        <div class="phone-inner">
+          <div class="dashboard">
+
+            <!-- Stat pills -->
+            <div class="stat-bar" role="list" aria-label="סטטיסטיקות משתמש">
+              <div class="stat-pill" role="listitem">
+                <span class="icon" aria-hidden="true">🎓</span>
+                <span>12 קרדיטים</span>
+              </div>
+              <div class="stat-pill" role="listitem">
+                <span class="icon" aria-hidden="true">⚡</span>
+                <span>1,240 XP</span>
+              </div>
+              <div class="stat-pill" role="listitem">
+                <span class="icon" aria-hidden="true">🔥</span>
+                <span>5 רצף</span>
+              </div>
+            </div>
+
+            <!-- Greeting banner -->
+            <div class="greeting-banner" role="region" aria-label="ברכה אישית">
+              <div class="greeting-text">
+                <h2>בוקר טוב, מוטי 👋</h2>
+                <p>בוא נמשיך ללמוד היום</p>
+              </div>
+              <div class="mascot-banner" aria-label="רוני, קמע הבטיחות">
+                <svg viewBox="0 0 120 130" width="72" height="78" role="img" aria-label="רוני, קמע הבטיחות">
+                  <!-- Body glow -->
+                  <ellipse cx="60" cy="105" rx="26" ry="8" fill="rgba(6,182,212,0.18)"/>
+                  <!-- Face -->
+                  <ellipse cx="60" cy="86" rx="30" ry="30" fill="#FFE3C2"/>
+                  <!-- Eyes -->
+                  <circle cx="50" cy="83" r="4.5" fill="#1F2937"/>
+                  <circle cx="70" cy="83" r="4.5" fill="#1F2937"/>
+                  <!-- Eye shine -->
+                  <circle cx="52" cy="81" r="1.5" fill="#fff"/>
+                  <circle cx="72" cy="81" r="1.5" fill="#fff"/>
+                  <!-- Smile -->
+                  <path d="M50 97 q10 9 20 0" stroke="#1F2937" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                  <!-- Helmet dome -->
+                  <path d="M28 64 a32 30 0 0 1 64 0 z" fill="#F97316"/>
+                  <!-- Helmet brim -->
+                  <rect x="22" y="62" width="76" height="10" rx="5" fill="#EA580C"/>
+                  <!-- Helmet vent -->
+                  <rect x="56" y="40" width="8" height="15" rx="3.5" fill="#F97316"/>
+                  <!-- Chin strap -->
+                  <path d="M32 90 q4 18 28 18 q24 0 28 -18" stroke="#EA580C" stroke-width="2" fill="none" stroke-dasharray="3,3" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- CTA -->
+            <button class="cta-btn" aria-label="הוסף קורס חדש">
+              <span aria-hidden="true">＋</span>
+              <span>קורס חדש</span>
+            </button>
+
+            <!-- Streak card -->
+            <div class="section-header">
+              <h3>רצף שבועי</h3>
+            </div>
+            <div class="streak-card" role="region" aria-label="כרטיס רצף שבועי">
+              <div class="streak-header">
+                <div class="streak-title">
+                  <span class="streak-flame" aria-hidden="true">🔥</span>
+                  <span>5 ימים ברצף!</span>
+                </div>
+                <div class="streak-count" aria-label="5 ימי רצף">5 ימים</div>
+              </div>
+              <!-- RTL: days right→left = ש ו ה ד ג ב א -->
+              <div class="streak-days" role="list" aria-label="ימי הלמידה השבועיים">
+                <div class="day-dot" role="listitem">
+                  <div class="day-circle filled" aria-label="ראשון, הושלם"></div>
+                  <span aria-hidden="true">א</span>
+                </div>
+                <div class="day-dot" role="listitem">
+                  <div class="day-circle filled" aria-label="שני, הושלם"></div>
+                  <span aria-hidden="true">ב</span>
+                </div>
+                <div class="day-dot" role="listitem">
+                  <div class="day-circle filled" aria-label="שלישי, הושלם"></div>
+                  <span aria-hidden="true">ג</span>
+                </div>
+                <div class="day-dot" role="listitem">
+                  <div class="day-circle filled" aria-label="רביעי, הושלם"></div>
+                  <span aria-hidden="true">ד</span>
+                </div>
+                <div class="day-dot" role="listitem">
+                  <div class="day-circle filled" aria-label="חמישי, הושלם"></div>
+                  <span aria-hidden="true">ה</span>
+                </div>
+                <div class="day-dot" role="listitem">
+                  <div class="day-circle today" aria-label="שישי, היום"></div>
+                  <span aria-hidden="true">ו</span>
+                </div>
+                <div class="day-dot" role="listitem">
+                  <div class="day-circle" aria-label="שבת, טרם הושלם"></div>
+                  <span aria-hidden="true">ש</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Course cards -->
+            <div class="section-header">
+              <h3>הקורסים שלי</h3>
+              <a href="#" tabindex="-1" aria-label="ראה את כל הקורסים">ראה הכל →</a>
+            </div>
+            <div class="courses-list" role="list" aria-label="קורסים בהתקדמות">
+              <div class="course-card" role="button" tabindex="0" aria-label="ממונה בטיחות בעבודה — 64% הושלם" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+                <div class="course-card-header">
+                  <div class="course-icon safety" aria-hidden="true">⛑️</div>
+                  <div class="course-meta">
+                    <h4>ממונה בטיחות בעבודה</h4>
+                    <span class="course-pct">64% הושלם</span>
+                  </div>
+                </div>
+                <div class="progress-bar-wrap" role="progressbar" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100" aria-label="התקדמות: 64%">
+                  <div class="progress-bar-fill" style="width:64%"></div>
+                </div>
+              </div>
+              <div class="course-card" role="button" tabindex="0" aria-label="עזרה ראשונה במקום העבודה — 20% הושלם" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+                <div class="course-card-header">
+                  <div class="course-icon first-aid" aria-hidden="true">🩺</div>
+                  <div class="course-meta">
+                    <h4>עזרה ראשונה במקום העבודה</h4>
+                    <span class="course-pct">20% הושלם</span>
+                  </div>
+                </div>
+                <div class="progress-bar-wrap" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" aria-label="התקדמות: 20%">
+                  <div class="progress-bar-fill" style="width:20%"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Daily goal -->
+            <div class="section-header">
+              <h3>יעד יומי</h3>
+            </div>
+            <div class="goal-card" role="region" aria-label="יעד יומי">
+              <div class="goal-header">
+                <div class="goal-title">
+                  <span aria-hidden="true">🎯</span>
+                  <span>שיעורים היום</span>
+                </div>
+                <span class="goal-count" aria-label="3 מתוך 5 שיעורים הושלמו">3 / 5</span>
+              </div>
+              <div class="progress-bar-wrap" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" aria-label="יעד יומי: 3 מתוך 5 שיעורים">
+                <div class="progress-bar-fill" style="width:60%"></div>
+              </div>
+              <div class="goal-sub" style="margin-top:6px;">עוד 2 שיעורים להשלמת היעד</div>
+            </div>
+
+          </div><!-- /dashboard -->
+        </div><!-- /phone-inner -->
+
+        <!-- Bottom Nav -->
+        <nav class="bottom-nav" aria-label="ניווט ראשי">
+          <button class="nav-tab active" aria-label="בית" aria-current="page">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M3 12L12 4l9 8v8a1 1 0 01-1 1h-5v-5H9v5H4a1 1 0 01-1-1z" fill="#60A5FA"/>
+            </svg>
+            בית
+          </button>
+          <button class="nav-tab" aria-label="קורסים">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="3" stroke="#9CA3AF" stroke-width="2"/>
+              <path d="M3 9h18" stroke="#9CA3AF" stroke-width="2"/>
+              <path d="M9 21V9" stroke="#9CA3AF" stroke-width="2"/>
+            </svg>
+            קורסים
+          </button>
+          <button class="nav-tab" aria-label="נתונים וסטטיסטיקות">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M18 20V10M12 20V4M6 20v-6" stroke="#9CA3AF" stroke-width="2.2" stroke-linecap="round"/>
+            </svg>
+            נתונים
+          </button>
+          <button class="nav-tab" aria-label="הגדרות">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="3" stroke="#9CA3AF" stroke-width="2"/>
+              <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            הגדרות
+          </button>
+        </nav>
+
+      </div><!-- /phone-frame -->
+    </div><!-- /phone-column dashboard -->
+
+    <!-- PHONE 2: LESSON PLAYER -->
+    <div class="phone-column">
+      <span class="phone-label">נגן-שיעור</span>
+      <div class="phone-frame" id="lessonFrame" role="img" aria-label="מסך נגן שיעור של StudiBuilder">
+        <div class="phone-notch" aria-hidden="true"></div>
+        <div class="phone-inner" id="lessonInner">
+          <div class="lesson-screen" id="lessonScreen">
+
+            <!-- Header -->
+            <div class="lesson-header">
+              <div class="lesson-title-row">
+                <button class="btn-back" aria-label="חזור אחורה">→</button>
+                <div class="lesson-title">ממונה בטיחות בעבודה</div>
+                <div class="lesson-xp-streak">
+                  <span class="xp-chip" aria-label="1,240 נקודות XP">1,240 ⚡</span>
+                  <span class="streak-chip" aria-label="5 ימי רצף">5 🔥</span>
+                </div>
+              </div>
+              <!-- Progress dots RTL: filled from right -->
+              <div class="progress-dots" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="8" aria-label="התקדמות: שאלה 4 מתוך 8">
+                <div class="pdot done" aria-hidden="true"></div>
+                <div class="pdot done" aria-hidden="true"></div>
+                <div class="pdot done" aria-hidden="true"></div>
+                <div class="pdot current" aria-hidden="true"></div>
+                <div class="pdot" aria-hidden="true"></div>
+                <div class="pdot" aria-hidden="true"></div>
+                <div class="pdot" aria-hidden="true"></div>
+                <div class="pdot" aria-hidden="true"></div>
+              </div>
+            </div>
+
+            <!-- AI Notice -->
+            <div class="ai-notice" role="note" aria-label="הערת בינה מלאכותית">
+              <span aria-hidden="true">ℹ️</span>
+              המידע נוצר על-ידי AI ועלול להכיל שגיאות
+            </div>
+
+            <!-- Question -->
+            <div class="question-area">
+              <h2 class="question-h2">מהו <strong>תפקידו המרכזי</strong> של ממונה הבטיחות במקום העבודה?</h2>
+            </div>
+
+            <!-- Answers -->
+            <div class="answers-list" role="group" aria-labelledby="question-label" id="answersGroup">
+              <button class="answer-card" id="ans0" onclick="selectAnswer(0)" aria-pressed="false">
+                לייעץ למחזיק במקום העבודה בכל הנוגע לחוקי הבטיחות ולקדם את התודעה לבטיחות
+              </button>
+              <button class="answer-card" id="ans1" onclick="selectAnswer(1)" aria-pressed="false">
+                לפקח על נוכחות העובדים ולנהל את שעות העבודה במפעל
+              </button>
+              <button class="answer-card" id="ans2" onclick="selectAnswer(2)" aria-pressed="false">
+                לייצג את העובדים מול ההנהלה במשא ומתן על שכר
+              </button>
+              <button class="answer-card" id="ans3" onclick="selectAnswer(3)" aria-pressed="false">
+                לאשר תשלומי שכר ולנהל את מחלקת הכספים
+              </button>
+            </div>
+
+            <!-- Source chip -->
+            <div class="source-chip" role="note" aria-label="מקור חוקי">
+              <span aria-hidden="true">📄</span>
+              <span>תקנות ארגון הפיקוח על העבודה (ממונים על הבטיחות), התשנ"ו-1996 · תק' 2</span>
+            </div>
+
+            <!-- Check button -->
+            <button class="check-btn" id="checkBtn" disabled aria-disabled="true" onclick="checkAnswer()" aria-label="בדוק תשובה">
+              בדוק תשובה
+            </button>
+
+            <!-- Mascot -->
+            <div class="mascot-lesson-wrap">
+              <div class="mascot-lesson" id="mascotLesson" aria-label="רוני, קמע הבטיחות">
+                <svg viewBox="0 0 120 130" width="68" height="74" role="img" aria-label="רוני, קמע הבטיחות">
+                  <ellipse cx="60" cy="107" rx="24" ry="7" fill="rgba(6,182,212,0.15)"/>
+                  <ellipse cx="60" cy="86" rx="30" ry="30" fill="#FFE3C2"/>
+                  <circle cx="50" cy="83" r="4.5" fill="#1F2937"/>
+                  <circle cx="70" cy="83" r="4.5" fill="#1F2937"/>
+                  <circle cx="52" cy="81" r="1.5" fill="#fff"/>
+                  <circle cx="72" cy="81" r="1.5" fill="#fff"/>
+                  <path id="mascotMouth" d="M50 97 q10 9 20 0" stroke="#1F2937" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                  <path d="M28 64 a32 30 0 0 1 64 0 z" fill="#F97316"/>
+                  <rect x="22" y="62" width="76" height="10" rx="5" fill="#EA580C"/>
+                  <rect x="56" y="40" width="8" height="15" rx="3.5" fill="#F97316"/>
+                  <path d="M32 90 q4 18 28 18 q24 0 28 -18" stroke="#EA580C" stroke-width="2" fill="none" stroke-dasharray="3,3" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Feedback drawer -->
+            <div class="feedback-drawer" id="feedbackDrawer" role="region" aria-live="polite" aria-label="משוב לתשובה">
+              <div class="feedback-title" id="feedbackTitle"></div>
+              <div class="feedback-explanation" id="feedbackExplanation"></div>
+            </div>
+
+          </div><!-- /lesson-screen -->
+        </div><!-- /phone-inner -->
+
+        <!-- Bottom Nav -->
+        <nav class="bottom-nav" aria-label="ניווט ראשי">
+          <button class="nav-tab" aria-label="בית">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M3 12L12 4l9 8v8a1 1 0 01-1 1h-5v-5H9v5H4a1 1 0 01-1-1z" stroke="#9CA3AF" stroke-width="2" fill="none"/>
+            </svg>
+            בית
+          </button>
+          <button class="nav-tab active" aria-label="קורסים" aria-current="page">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="3" fill="#60A5FA"/>
+              <path d="M3 9h18" stroke="#fff" stroke-width="2"/>
+              <path d="M9 21V9" stroke="#fff" stroke-width="2"/>
+            </svg>
+            קורסים
+          </button>
+          <button class="nav-tab" aria-label="נתונים">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M18 20V10M12 20V4M6 20v-6" stroke="#9CA3AF" stroke-width="2.2" stroke-linecap="round"/>
+            </svg>
+            נתונים
+          </button>
+          <button class="nav-tab" aria-label="הגדרות">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="3" stroke="#9CA3AF" stroke-width="2"/>
+              <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            הגדרות
+          </button>
+        </nav>
+
+      </div><!-- /phone-frame lesson -->
+    </div><!-- /phone-column lesson -->
+
+  </div><!-- /phones-row -->
+</section>
+
+<!-- ===== JS ===== -->
+<script>
+(function() {
+  'use strict';
+
+  var CORRECT_INDEX = 0;
+  var selectedIndex = -1;
+  var answered = false;
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- Answer selection ---------- */
+  window.selectAnswer = function(idx) {
+    if (answered) return;
+    selectedIndex = idx;
+
+    for (var i = 0; i < 4; i++) {
+      var card = document.getElementById('ans' + i);
+      if (i === idx) {
+        card.classList.add('selected');
+        card.setAttribute('aria-pressed', 'true');
+      } else {
+        card.classList.remove('selected');
+        card.setAttribute('aria-pressed', 'false');
+      }
+    }
+
+    var btn = document.getElementById('checkBtn');
+    btn.disabled = false;
+    btn.removeAttribute('aria-disabled');
+
+    /* Subtle pop on button enable */
+    if (!reducedMotion) {
+      btn.style.transform = 'scale(1.04)';
+      setTimeout(function() { btn.style.transform = ''; }, 160);
+    }
+  };
+
+  /* ---------- Check answer ---------- */
+  window.checkAnswer = function() {
+    if (answered || selectedIndex === -1) return;
+    answered = true;
+
+    var btn = document.getElementById('checkBtn');
+    btn.disabled = true;
+    btn.setAttribute('aria-disabled', 'true');
+
+    var isCorrect = (selectedIndex === CORRECT_INDEX);
+    var drawer = document.getElementById('feedbackDrawer');
+    var title = document.getElementById('feedbackTitle');
+    var explanation = document.getElementById('feedbackExplanation');
+    var mascot = document.getElementById('mascotLesson');
+
+    /* Mark cards */
+    for (var i = 0; i < 4; i++) {
+      var card = document.getElementById('ans' + i);
+      card.classList.remove('selected');
+      if (i === CORRECT_INDEX) {
+        card.classList.add('correct');
+      } else if (i === selectedIndex && !isCorrect) {
+        card.classList.add('wrong');
+      }
+    }
+
+    if (isCorrect) {
+      title.textContent = 'כל הכבוד! תשובה נכונה';
+      explanation.textContent = 'ממונה הבטיחות הוא הגורם המקצועי המייעץ למחזיק במקום העבודה בכל הנוגע לחוקי הבטיחות, ופועל לקידום התרבות הבטיחותית בארגון.';
+      drawer.className = 'feedback-drawer visible correct-drawer';
+      mascot.classList.add('success-glow');
+
+      if (!reducedMotion) {
+        showXpFloat();
+        triggerConfetti();
+      }
+    } else {
+      title.textContent = 'לא נכון — אבל בסדר גמור';
+      explanation.textContent = 'ממונה הבטיחות הוא הגורם המקצועי המייעץ למחזיק במקום העבודה בכל הנוגע לחוקי הבטיחות, ופועל לקידום התרבות הבטיחותית בארגון.';
+      drawer.className = 'feedback-drawer visible wrong-drawer';
+      mascot.classList.add('error-glow');
+
+      if (!reducedMotion) {
+        var screen = document.getElementById('lessonScreen');
+        screen.classList.add('shake');
+        setTimeout(function() { screen.classList.remove('shake'); }, 400);
+      }
+    }
+
+    /* Scroll drawer into view */
+    setTimeout(function() {
+      drawer.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'nearest' });
+    }, 180);
+  };
+
+  /* ---------- XP Float ---------- */
+  function showXpFloat() {
+    var el = document.getElementById('xpFloat');
+    el.classList.remove('show');
+    void el.offsetWidth; /* force reflow */
+    el.classList.add('show');
+    setTimeout(function() { el.classList.remove('show'); }, 920);
+  }
+
+  /* ---------- Confetti ---------- */
+  function triggerConfetti() {
+    var canvas = document.getElementById('confetti-canvas');
+    var ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    var COLORS = ['#10B981', '#FBBF24', '#FFFFFF', '#2D7DF6', '#FFB23D'];
+    var particles = [];
+    var count = 80;
+
+    for (var i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: canvas.height * 0.6 + Math.random() * canvas.height * 0.2,
+        vx: (Math.random() - 0.5) * 6,
+        vy: -(Math.random() * 8 + 4),
+        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        size: Math.random() * 7 + 4,
+        rotation: Math.random() * 360,
+        rotationSpeed: (Math.random() - 0.5) * 8,
+        gravity: 0.22,
+        decay: 0.97,
+        opacity: 1
+      });
+    }
+
+    var startTime = null;
+    var duration = 1400;
+
+    function draw(ts) {
+      if (!startTime) startTime = ts;
+      var elapsed = ts - startTime;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      var allDone = true;
+      for (var j = 0; j < particles.length; j++) {
+        var p = particles[j];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += p.gravity;
+        p.vx *= p.decay;
+        p.rotation += p.rotationSpeed;
+        p.opacity = Math.max(0, 1 - elapsed / duration);
+
+        if (p.opacity > 0) {
+          allDone = false;
+          ctx.save();
+          ctx.globalAlpha = p.opacity;
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rotation * Math.PI / 180);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
+          ctx.restore();
+        }
+      }
+
+      if (!allDone && elapsed < duration + 200) {
+        requestAnimationFrame(draw);
+      } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+})();
+</script>
+
+</body>
+</html>
