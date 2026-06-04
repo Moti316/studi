@@ -35,6 +35,10 @@
 - **deep-explanation מאומת חי** (`scripts/verify-deep-explanation.ts`): 156 chunks מוטמעים · embed→pgvector-retrieval→Flash **עבדו** → הסבר **מעוגן+מצוטט** ("תקנות מפעיל דוד-קיטור תש"ס-2000, תקנה 7" + scope 2.10/2.1). **תיקון:** generation עבר ל-Flash (gemini-2.5-pro חסום free-tier limit-0).
 - ✅ B1 חי על האפליקציה · 14 שאלות-אמת · קורס-דשבורד · "הסבר לעומק" מעוגן-חקיקה — **כל ה-"גז" עובד end-to-end.**
 
+### 🚩 פתוח-לאימות-מוטי (צעד-0 בסשן הבא — לפני הכל!)
+
+מוטי ביצע ב-UI (סוף 2026-06-04, לפני שיצא): החלפת `DATABASE_URL` ב-Vercel ל-**Transaction Pooler (6543)** + (אולי) הוספת `GEMINI_API_KEY` + **Redeploy**. **חובה לוודא איתו שזה עובד בפועל:** studibuilder.vercel.app → היכנס לשיעור → אם 14 השאלות נטענות = DATABASE_URL תוקן ✅ · אם "הסבר לעומק" מחזיר טקסט = GEMINI_API_KEY מוגדר ✅. אם עדיין נכשל — Vercel Logs (level:error) + ACCESS-MAP צ'קליסט.
+
 ### הצעד הבא (follow-ups — סשן הבא)
 
 1. **השלמת-embedding** (42/42 · כרגע ~18 · rate-limit free-tier — resume-runs / batch / billing).
