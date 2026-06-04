@@ -177,14 +177,15 @@ describe('LessonPlayer', () => {
     expect(screen.getByTestId('left-card-0')).toBeInTheDocument();
   });
 
-  it('type לא-נתמך → fallback פשוט (prompt בלבד)', () => {
+  it('type explanation → ExplanationCard (prompt + "הבנתי, המשך")', () => {
     render(<LessonPlayer questions={[MCQ_LONG({ type: 'explanation' as Question['type'] })]} />);
-    expect(screen.getByTestId('question-fallback')).toBeInTheDocument();
+    expect(screen.getByTestId('explanation-card')).toBeInTheDocument();
+    expect(screen.getByTestId('explanation-continue')).toBeInTheDocument();
   });
 
-  it('matching עם options פגום → fallback', () => {
+  it('matching עם options פגום → ExplanationCard (read-card)', () => {
     render(<LessonPlayer questions={[MATCHING({ options: ['not', 'pairs'] })]} />);
-    expect(screen.getByTestId('question-fallback')).toBeInTheDocument();
+    expect(screen.getByTestId('explanation-card')).toBeInTheDocument();
   });
 
   // ── Correct feedback + scoring ──

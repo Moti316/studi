@@ -40,6 +40,8 @@ import { LessonHeader } from './components/LessonHeader';
 import { MCQLong } from './components/MCQLong';
 import { MCQShort } from './components/MCQShort';
 import { MatchingPairs } from './components/MatchingPairs';
+import { ExplanationCard } from './components/ExplanationCard';
+import { DeepExplanationButton } from './components/DeepExplanationButton';
 import type { QuestionResult } from './components/types';
 import { isMatchingPairs, isMcqCorrectAnswer, isStringOptions } from './components/types';
 
@@ -351,6 +353,11 @@ export function LessonPlayer({ questions, onFinish }: LessonPlayerProps) {
                 </motion.li>
               </motion.ul>
 
+              {/* הסבר-לעומק מעוגן-חקיקה (RAG · on-demand) */}
+              <div className="mb-3">
+                <DeepExplanationButton questionId={current.id} />
+              </div>
+
               <button
                 type="button"
                 data-testid="continue-button"
@@ -397,7 +404,7 @@ function QuestionRenderer({ question, onResult, disabled }: QuestionRendererProp
       return <MCQShort question={question} onResult={guardedResult} />;
     case 'matching': {
       if (!isMatchingPairs(question.options)) {
-        return <UnsupportedQuestion question={question} />;
+        return <ExplanationCard question={question} onResult={guardedResult} disabled={disabled} />;
       }
       return (
         <MatchingPairs
@@ -407,35 +414,9 @@ function QuestionRenderer({ question, onResult, disabled }: QuestionRendererProp
       );
     }
     default:
-      return <UnsupportedQuestion question={question} />;
+      // explanation / scenario_walkthrough / malformed → read-card עם "הסבר לעומק" + "המשך".
+      return <ExplanationCard question={question} onResult={guardedResult} disabled={disabled} />;
   }
-}
-
-/**
- * Fallback for question types without a dedicated player yet (explanation,
- * scenario_walkthrough, or a malformed payload). Shows the prompt read-only and
- * lets the learner move on — scored as correct so a missing player never blocks
- * the lesson. Keeps the lesson loop resilient to new/partial content.
- */
-function UnsupportedQuestion({ question }: { question: Question }) {
-  return (
-    <div
-      dir="rtl"
-      data-testid="question-fallback"
-      role="group"
-      aria-label="שאלה ללא תצוגה ייעודית"
-      className="flex flex-col gap-3 font-hebrew"
-    >
-      <p className="text-start text-lg font-bold leading-relaxed text-quiz-text-primary">
-        {question.prompt}
-      </p>
-      {question.explanation && (
-        <p className="rounded-card bg-quiz-explanation px-3 py-2 text-start text-sm leading-relaxed text-quiz-text-secondary">
-          {question.explanation}
-        </p>
-      )}
-    </div>
-  );
 }
 
 // ─── Summary screen ───────────────────────────────────────────────────────────

@@ -22,9 +22,17 @@
 - **ייבוא-T1: 14 שאלות-אמת נכנסו** (שו"ת-כללי + ציוד-מגן-אישי · 2 DOCX), כולן `in_scope`, status `מוסקנא`, רובן scope **2.3** (PPE). spend ~$0.01. 3 PDFים הניבו 0 (פורמט לא-MCQ → פרסור-עשיר=follow-up). סוג=`explanation` (שו"ת פתוח). `scripts/verify-questions.ts` לאימות.
 - דשבורד: קורס **"ממונה בטיחות בעבודה"** (64%) → `/lesson/practice` (CourseCard `href`). typecheck נקי · 503 טסטים.
 
+### פאזה 3 — RAG הסבר-לעומק מעוגן-חקיקה ✅ (קוד · 505 טסטים) · 🟡 קורפוס-חלקי
+
+- **מימד:** `gemini-embedding-001` @ outputDimensionality **1024** → תואם `vector(1024)` (**ללא מיגרציית-סכמה**). probe ✅.
+- **ingest** (`scripts/ingest-legislation.ts`): 42 נוסחים → 1781 chunks. ⚠️ **rate-limit (429) של gemini-embedding-001 free-tier** → הוטמעו ~18 נוסחים בלבד (אידמפוטנטי · resume · throttle 1.2s + backoff-429). **השלמת-הקורפוס = follow-up** (resume-runs / batch / tier-בתשלום).
+- **RAG:** `src/lib/rag/embed.ts` (קנוני 1024 · normalized) · `retrieval.ts` (pgvector cosine top-K) · `ai/prompts/deep-explanation.ts` (system: "מבוסס-מקורות-בלבד · ציטוט-תקנה").
+- **server-action** `features/lesson-player/deep-explanation.action.ts`: שאלה → embed → retrieve → Gemini מחבר הסבר + ציטוט.
+- **UI:** `DeepExplanationButton` (dynamic-import · on-demand) + `ExplanationCard`. **תיקון-באג:** שאלות-`explanation` היו תקועות (UnsupportedQuestion ללא "המשך") → read-card עם "הבנתי, המשך" + "הסבר לעומק". חיווט ב-LessonPlayer.
+
 ### הצעד הבא
 
-פאזה 3 (RAG הסבר-לעומק מעוגן-חקיקה): probe-dim → ingest-חקיקה → retrieval → deep-explanation server-action → UI "הסבר לעומק" → פאזה 4 (הרצה+אימות end-to-end). פרסור-MCQ עשיר ל-PDFים + a11y-sweep רכיבי-דשבורד = follow-up.
+פאזה 4: `pnpm dev` → אימות end-to-end (מוטי מתחבר → דשבורד-B1 → /lesson/practice → "הסבר לעומק" מעוגן). **follow-up:** השלמת-embedding (כל 42 · rate-limit) · ייבוא-מורחב (כל בנקי-השו"ת · M5) · פרסור-PDF עשיר · אימות-content-verifier · a11y-sweep דשבורד.
 
 ---
 
