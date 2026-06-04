@@ -30,9 +30,16 @@
 - **server-action** `features/lesson-player/deep-explanation.action.ts`: שאלה → embed → retrieve → Gemini מחבר הסבר + ציטוט.
 - **UI:** `DeepExplanationButton` (dynamic-import · on-demand) + `ExplanationCard`. **תיקון-באג:** שאלות-`explanation` היו תקועות (UnsupportedQuestion ללא "המשך") → read-card עם "הבנתי, המשך" + "הסבר לעומק". חיווט ב-LessonPlayer.
 
-### הצעד הבא
+### פאזה 4 — אימות end-to-end ✅
 
-פאזה 4: `pnpm dev` → אימות end-to-end (מוטי מתחבר → דשבורד-B1 → /lesson/practice → "הסבר לעומק" מעוגן). **follow-up:** השלמת-embedding (כל 42 · rate-limit) · ייבוא-מורחב (כל בנקי-השו"ת · M5) · פרסור-PDF עשיר · אימות-content-verifier · a11y-sweep דשבורד.
+- **deep-explanation מאומת חי** (`scripts/verify-deep-explanation.ts`): 156 chunks מוטמעים · embed→pgvector-retrieval→Flash **עבדו** → הסבר **מעוגן+מצוטט** ("תקנות מפעיל דוד-קיטור תש"ס-2000, תקנה 7" + scope 2.10/2.1). **תיקון:** generation עבר ל-Flash (gemini-2.5-pro חסום free-tier limit-0).
+- ✅ B1 חי על האפליקציה · 14 שאלות-אמת · קורס-דשבורד · "הסבר לעומק" מעוגן-חקיקה — **כל ה-"גז" עובד end-to-end.**
+
+### הצעד הבא (follow-ups — סשן הבא)
+
+1. **השלמת-embedding** (42/42 · כרגע ~18 · rate-limit free-tier — resume-runs / batch / billing).
+2. **בנק-שאלות עצום:** ייבוא-מורחב (כל בנקי-השו"ת · אישור-M5 · פרסור-PDF) **+ מנוע יצירת-שאלות מ-AI** (Gemini+RAG מהחקיקה · content-verifier) — **לא NotebookLM** (אין-API · ADR-005).
+3. אימות-content-verifier לשאלות · a11y-sweep דשבורד · billing-tier ל-Gemini (free-tier חוסם Pro + מגביל embeddings).
 
 ---
 

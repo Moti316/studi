@@ -43,10 +43,10 @@ export async function generateDeepExplanation(questionId: string): Promise<DeepE
     correctAnswer,
     chunks,
   });
+  // ברירת-מחדל Flash (GEMINI_MODEL_CLASSIFICATION) — gemini-2.5-pro חסום ב-free-tier (limit 0).
   const explanation = await geminiGenerateText({
     system: DEEP_EXPLANATION_SYSTEM,
     prompt,
-    model: process.env.GEMINI_MODEL_GENERATION,
   });
 
   // קיבוץ-מקורות לפי כותרת (ציטוט נקי) + scope-ids.
