@@ -1,19 +1,19 @@
 # ACCESS-MAP — מפת מפתחות, שירותים וחשבונות
 
-> ⚠️ **לא סודות כאן** — רק המפה (איזה מפתח, איפה הוא חי, מה הסטטוס). הערכים עצמם ב-`.env.local` (gitignored) וב-Vercel. מעודכן: 2026-05-31.
+> ⚠️ **לא סודות כאן** — רק המפה (איזה מפתח, איפה הוא חי, מה הסטטוס). הערכים עצמם ב-`.env.local` (gitignored) וב-Vercel. מעודכן: 2026-06-04.
 
 ## שירותים חיצוניים
 
-| שירות                         | זיהוי / חשבון                                                                                              | סטטוס מפתחות                                  | איפה                                        |
-| ----------------------------- | ---------------------------------------------------------------------------------------------------------- | --------------------------------------------- | ------------------------------------------- |
-| **Supabase**                  | project ref `nsinpdzkvvbsdthkobxu` · `studibuilder.supabase.co` · org Moti316 (Free) · region eu-central-1 | ✅ URL/anon/service_role/DATABASE_URL מוגדרים | `.env.local` + Vercel                       |
-| **Google Drive**              | GCP project `studibuilder-drive` · OAuth client "StudiBuilder Drive Import" (Desktop)                      | ✅ client_id/secret/refresh_token עובדים      | `.env.local` (+ להוסיף refresh ל-Vercel)    |
-| **Google login**              | OAuth (Phase 1, login-only scope)                                                                          | ✅ פרודקשן                                    | Supabase Auth                               |
-| **Google Gemini**             | 2.5 Pro (gen) + 2.5 Flash (classify) + `gemini-embedding-001`                                              | ✅ `GEMINI_API_KEY` מוגדר+מאומת ב-.env.local  | ה-AI היחיד: יצירה+סיווג+RAG (ADR-001 amend) |
-| **ElevenLabs**                | 4 קולות (Yoav/Tali/Michal/Ori)                                                                             | ❌ טרם (Phase 7)                              | —                                           |
-| **Inngest / Resend / Sentry** | async / mail / observability                                                                               | ❌ טרם                                        | —                                           |
-| **Vercel**                    | project `studibuilder` · `studibuilder.vercel.app` · **Deployment-Protection פעיל**                        | ✅ פרודקשן                                    | —                                           |
-| **NotebookLM**                | 36 מחברות (מאסטר `8692cad1`)                                                                               | ✅ דרך מגן/MCP                                | פרויקט מגן                                  |
+| שירות                         | זיהוי / חשבון                                                                                              | סטטוס מפתחות                                                           | איפה                                        |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------- |
+| **Supabase**                  | project ref `nsinpdzkvvbsdthkobxu` · `studibuilder.supabase.co` · org Moti316 (Free) · region eu-central-1 | ✅ ב-`.env.local` · ב-Vercel: anon/URL ✅ · **`DATABASE_URL` 🔴 לאמת** | `.env.local` · Vercel (ראה צ'קליסט)         |
+| **Google Drive**              | GCP project `studibuilder-drive` · OAuth client "StudiBuilder Drive Import" (Desktop)                      | ✅ client_id/secret/refresh_token עובדים                               | `.env.local` (+ להוסיף refresh ל-Vercel)    |
+| **Google login**              | OAuth (Phase 1, login-only scope)                                                                          | ✅ פרודקשן                                                             | Supabase Auth                               |
+| **Google Gemini**             | 2.5 Pro (gen) + 2.5 Flash (classify) + `gemini-embedding-001`                                              | ✅ `GEMINI_API_KEY` מוגדר+מאומת ב-.env.local                           | ה-AI היחיד: יצירה+סיווג+RAG (ADR-001 amend) |
+| **ElevenLabs**                | 4 קולות (Yoav/Tali/Michal/Ori)                                                                             | ❌ טרם (Phase 7)                                                       | —                                           |
+| **Inngest / Resend / Sentry** | async / mail / observability                                                                               | ❌ טרם                                                                 | —                                           |
+| **Vercel**                    | project `studibuilder` · `studibuilder.vercel.app` · **Deployment-Protection פעיל**                        | ✅ פרודקשן                                                             | —                                           |
+| **NotebookLM**                | 36 מחברות (מאסטר `8692cad1`)                                                                               | ✅ דרך מגן/MCP                                                         | פרויקט מגן                                  |
 
 ## תיקיות Drive (folder IDs)
 
@@ -34,7 +34,26 @@
 - `npx tsx scripts/test-drive.ts` → מאמת Drive. `npx tsx scripts/test-db.ts` → מאמת DB.
 - ל-`pnpm drive:auth` (loopback) — ראה `BUGS.md` (OOB חסום).
 
+## ✅ צ'קליסט Vercel — env לפרודקשן (Settings → Environment Variables → Production)
+
+> ⚠️ שינוי-env **לא** נכנס לפריסה קיימת → חובה **Redeploy** אחרי הוספה. הערכים מועתקים מ-`.env.local`.
+> 🔎 **בדיקה אמפירית באתר-החי:** דשבורד נטען = Supabase-keys ✓ · שיעור טוען שאלות = `DATABASE_URL` ✓ · "הסבר לעומק" מחזיר טקסט = `GEMINI_API_KEY` ✓.
+
+| משתנה                                                        | נדרש ל                            | סטטוס Vercel                                                                                                                                                                            |
+| ------------------------------------------------------------ | --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL` · `NEXT_PUBLIC_SUPABASE_ANON_KEY` | התחברות (Auth)                    | ✅ (התחברות עובדת בפרודקשן)                                                                                                                                                             |
+| `SUPABASE_SERVICE_ROLE_KEY`                                  | פעולות-שרת (creator-gate/admin)   | ⚠️ לאמת                                                                                                                                                                                 |
+| **`DATABASE_URL`**                                           | **טעינת-שיעור (שאלות/chunks)**    | 🔴 **חסר/לא-אפקטיבי** — שגיאת "טעינת השיעור נכשלה" (2026-06-04) הוכיחה. **להוסיף + Redeploy.** ל-serverless: עדיף **Transaction Pooler (6543)** של Supabase (הקוד כבר `prepare:false`). |
+| **`GEMINI_API_KEY`** + `GEMINI_MODEL_CLASSIFICATION`         | **"הסבר לעומק" (RAG · Flash)**    | 🔴 להוסיף (פיצ'ר-חדש 2026-06-04). gemini-2.5-pro חסום free-tier → Flash.                                                                                                                |
+| `GEMINI_MODEL_GENERATION` · `GEMINI_EMBEDDING_MODEL`         | אופציונלי (יש defaults)           | —                                                                                                                                                                                       |
+| `GOOGLE_CLIENT_ID/SECRET/REFRESH_TOKEN`                      | ייבוא-Drive (creator · רץ מקומית) | לא-נדרש לזמן-ריצה-web                                                                                                                                                                   |
+| `NEXT_PUBLIC_APP_URL` = `https://studibuilder.vercel.app`    | קישורים/redirect                  | ⚠️ לאמת                                                                                                                                                                                 |
+| ElevenLabs / Inngest / Resend / Sentry                       | פיצ'רים-עתידיים                   | ❌ טרם                                                                                                                                                                                  |
+
+> **Supabase Auth redirect** (אם Google-login נשבר בפרודקשן): Supabase → Authentication → URL Configuration → הוסף `https://studibuilder.vercel.app/auth/callback`.
+
 ## TODO גישות
 
-- להוסיף `GOOGLE_REFRESH_TOKEN` ל-Vercel.
-- ✅ `GEMINI_API_KEY` מוגדר ומאומת ב-`.env.local`. נותר: להוסיף ל-Vercel (לפרודקשן).
+- 🔴 **DATABASE_URL + GEMINI_API_KEY ל-Vercel + Redeploy** — חוסם טעינת-שיעור + הסבר-לעומק בפרודקשן (ראה צ'קליסט למעלה · אומת ע"י שגיאת-שיעור 2026-06-04).
+- להוסיף `GOOGLE_REFRESH_TOKEN` ל-Vercel (לייבוא מ-Vercel — לא-קריטי, רץ מקומית).
+- billing-tier ל-Gemini (free-tier חוסם Pro + מגביל embeddings).
