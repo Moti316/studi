@@ -46,11 +46,14 @@ function tidyPunct(s: string): string {
     .trim();
 }
 
-/** ניקוי קטע-טקסט: טאבים→רווח, צמצום-רווחים, השמטת שורות-ריקות/רעש, trim. */
+/** רעש-chrome של המצגת להסרה גם כמחרוזת-משולבת (כותרת/כותרת-תחתית בתוך שורה). */
+const CHROME_SUBSTR = /מבדק\s*סיכום|דן כהן|©.*|כל הזכויות שמורות/g;
+
+/** ניקוי קטע-טקסט: טאבים→רווח, scrub-chrome, צמצום-רווחים, השמטת שורות-ריקות/רעש, trim. */
 function cleanText(s: string): string {
   return s
     .split(/\r?\n/)
-    .map((l) => l.replace(/\t/g, ' ').replace(/ {2,}/g, ' ').trim())
+    .map((l) => l.replace(/\t/g, ' ').replace(CHROME_SUBSTR, ' ').replace(/ {2,}/g, ' ').trim())
     .filter((l) => l.length > 0 && !NOISE_LINE.test(l))
     .join('\n')
     .trim();
