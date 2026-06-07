@@ -17,7 +17,7 @@
 
 ### 🚩 פתוח / צעד-הבא (מוטי חזר?)
 
-1. **precompute מלא** של 540+ ההסברים — מורץ offline (חסום-חלקית ע"י סערת-Gemini · resumable).
+1. **precompute מלא** של 540+ ההסברים — **חסום: מכסת-Gemini-היומית מוצתה** (probe ישיר → `429 "You exceeded your current quota"`, לא 503-זמני). מתאושש רק ב-reset-יומי (~24ש') **או עם billing**. resumable: `pnpm precompute:explanations`. (ההסבר-לעומק לא יופיע באתר עד-אז; השאלות+התשובות עובדות במלואן.)
 2. **GEMINI_API_KEY ב-Vercel** — לא-חוסם יותר את ההסבר (מוטמע-מראש), אך נדרש ל-precompute אם ירוץ ב-runtime.
 3. **שניהם (בחירת-מוטי):** RAG-מורחב לחומרי-Drive (T2/T3/T4→pgvector · חסום-embedding) + **NotebookLM אח"כ** (כתוספת · נדחה ע"י מוטי · דורש Python-אמיתי + הזדהות-Google).
 4. ייבוא בנקי-אייל (MCQ-אמיתי · `parse-pdf-mcq`) — שאלות-אמריקאיות אמיתיות.
