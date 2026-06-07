@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { and, eq, sql } from 'drizzle-orm';
 import { requireAuth } from '@/lib/auth/server';
 import { db } from '@/lib/db';
@@ -85,6 +86,7 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
           <p className="mx-auto max-w-sm text-sm text-quiz-text-secondary">
             לא הצלחנו לטעון את השאלות כרגע. ודאו שחיבור-ה-DB מוגדר ונסו לרענן.
           </p>
+          <BackToDashboard />
         </div>
       </main>
     );
@@ -92,7 +94,25 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
 
   return (
     <main dir="rtl" className="mx-auto w-full max-w-2xl p-4 pb-8">
+      <div className="mb-4">
+        <BackToDashboard />
+      </div>
       <LessonPlayer questions={lessonQuestions} />
     </main>
+  );
+}
+
+/** קישור-מילוט מהשיעור חזרה לדשבורד הראשי (RTL: חץ → = חזרה). */
+function BackToDashboard() {
+  return (
+    <Link
+      href="/dashboard"
+      data-testid="back-to-dashboard"
+      aria-label="חזרה לדשבורד הראשי"
+      className="inline-flex items-center gap-1.5 rounded-pill border border-quiz-border bg-quiz-bg px-4 py-2 text-sm font-bold text-quiz-text-secondary transition-colors hover:text-quiz-primary-active focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active"
+    >
+      <span aria-hidden="true">→</span>
+      חזרה לדשבורד
+    </Link>
   );
 }
