@@ -28,6 +28,8 @@ import type { ParsedQuestion, ParseResult } from './types.js';
 const SLIDE_SEP = /-- \d+ of \d+ --/g;
 /** מרקר-שאלה: "שאלה <מס'> :" (טאבים/רווחים בין הרכיבים). */
 const Q_MARKER = /שאלה\s*(\d+)\s*:/;
+/** מפריד שאלה↔תשובה (כותרת-השקופית "מבדק סיכום"). */
+const QA_DELIM = /מבדק\s*סיכום/;
 /**
  * שורות-רעש להשמטה: כותרת-השקופית "מבדק סיכום" (אינה מפריד אמין — מיקומה בזרם-הטקסט
  * משתנה לפי ייצוא-ה-PPT, לעיתים אחרי-התשובה) + פתיח-המצגת + שורות-זכויות.
@@ -59,10 +61,25 @@ function hasHebrew(s: string): boolean {
   return /[֐-׿]/.test(s);
 }
 
+/** איחוד-שורות + תיקון-פיסוק (לטקסט-תשובה רב-שורתי). */
+function tidyMultiline(s: string): string {
+  return s
+    .split(/\n/)
+    .map((l) => tidyPunct(l))
+    .filter(Boolean)
+    .join('\n')
+    .trim();
+}
+
 /**
  * parsePdfQaFromText — לוגיקת-ה-parsing הטהורה (ללא I/O · בר-בדיקה ביחידה).
- * מפצל לשקופיות, ובכל שקופית עם מרקר-"שאלה": חוצה שאלה↔תשובה לפי "מבדק סיכום"
- * (ובהיעדרו — לפי ה-"?" הראשון). מדלג על שקופית ללא-שאלה או ללא-תשובה.
+ *
+ * ⚠️ ייצוא-PowerPoint **מערבב את סדר-הטקסט** בשקופית: התשובה עשויה להופיע *לפני*
+ * מרקר-"שאלה" וגם/או *אחרי* "מבדק סיכום". לכן:
+ *   - שאלה = מ-"שאלה N:" עד ה-"?" הראשון או "מבדק סיכום" (המוקדם מביניהם).
+ *   - תשובה = (מה שלפני המרקר) + (מה שאחרי גבול-השאלה, ללא כותרת "מבדק סיכום").
+ * כך משתחזרות גם תשובות-מעורבבות וגם שאלות-ציווי (ללא "?"). מדלג על שקופית
+ * ללא-שאלה (כותרת/פתיח) או ללא-תשובה.
  */
 export function parsePdfQaFromText(text: string, sourceBase: string): ParseResult {
   const blocks = text.split(SLIDE_SEP);
@@ -73,21 +90,27 @@ export function parsePdfQaFromText(text: string, sourceBase: string): ParseResul
     if (!m) continue; // שקופית-כותרת/פתיח — אין שאלה.
     const num = m[1] ?? String(questions.length + 1);
 
-    // גוף-השקופית אחרי מרקר-השאלה, מנוקה מרעש (כולל כותרת "מבדק סיכום").
-    const body = cleanText(block.slice(m.index + m[0].length));
+    const beforeMarker = block.slice(0, m.index);
+    const afterMarker = block.slice(m.index + m[0].length);
 
-    // חצייה שאלה↔תשובה לפי ה-"?" הראשון — אמין יותר מכותרת-השקופית (שמיקומה משתנה).
-    const qEnd = body.indexOf('?');
-    if (qEnd === -1) continue; // אין סימן-שאלה → גבול לא-ברור, דלג.
-    // שאלה = שורה-אחת (איחוד שבירות-שורה אמצע-משפט); תשובה = שמירת מבנה-שורות.
-    const question = tidyPunct(body.slice(0, qEnd + 1).replace(/\n+/g, ' '));
-    const answer = body
-      .slice(qEnd + 1)
-      .split(/\n/)
-      .map((l) => tidyPunct(l))
-      .filter(Boolean)
-      .join('\n')
-      .trim();
+    // גבול-השאלה: המוקדם מבין ה-"?" (כולל) לבין "מבדק סיכום".
+    const qMark = afterMarker.indexOf('?');
+    const delim = QA_DELIM.exec(afterMarker);
+    const delimIdx = delim ? delim.index : -1;
+    let qEnd: number;
+    if (qMark !== -1 && (delimIdx === -1 || qMark < delimIdx)) {
+      qEnd = qMark + 1; // השאלה כוללת את ה-"?".
+    } else if (delimIdx !== -1) {
+      qEnd = delimIdx; // שאלת-ציווי ללא "?" — נחתכת בכותרת.
+    } else {
+      continue; // אין גבול שאלה↔תשובה — דלג.
+    }
+
+    const question = tidyPunct(cleanText(afterMarker.slice(0, qEnd)).replace(/\n+/g, ' '));
+    // תשובה = לפני-המרקר + אחרי-גבול-השאלה (cleanText משמיט את כותרת "מבדק סיכום").
+    const answer = tidyMultiline(
+      [cleanText(beforeMarker), cleanText(afterMarker.slice(qEnd))].filter(Boolean).join('\n'),
+    );
     if (!question || !answer || !hasHebrew(question)) continue;
 
     questions.push({

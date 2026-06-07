@@ -48,7 +48,8 @@ async function main(): Promise<void> {
   console.log(
     `[precompute] mode=${mode} · pending(explanation=NULL)=${all.length} · this-run=${rows.length} · est ≤ $${estUsd.toFixed(3)}`,
   );
-  if (rows.length > MAX_QUESTIONS) throw new Error(`refusing: ${rows.length} > cap ${MAX_QUESTIONS}`);
+  if (rows.length > MAX_QUESTIONS)
+    throw new Error(`refusing: ${rows.length} > cap ${MAX_QUESTIONS}`);
   if (mode === 'dry-run') {
     console.log('[precompute] dry-run: no Gemini calls, no DB writes.');
     return;
@@ -59,9 +60,16 @@ async function main(): Promise<void> {
   let done = 0;
   let failed = 0;
   for (const q of rows) {
-    const ca = q.correct_answer;
+    const ca: unknown = q.correct_answer;
     const correctAnswer =
-      typeof ca === 'string' ? ca : ca && typeof ca === 'object' && typeof ca.text === 'string' ? ca.text : null;
+      typeof ca === 'string'
+        ? ca
+        : ca &&
+            typeof ca === 'object' &&
+            'text' in ca &&
+            typeof (ca as { text?: unknown }).text === 'string'
+          ? (ca as { text: string }).text
+          : null;
     try {
       const { explanation, sources } = await buildDeepExplanation(
         { prompt: String(q.prompt), correctAnswer },
