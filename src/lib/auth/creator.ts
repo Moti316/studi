@@ -45,3 +45,15 @@ export async function requireCreator(nextPath?: string): Promise<User> {
 
   return user;
 }
+
+/**
+ * בדיקה **לא-מנתבת**: האם המשתמש-המחובר הוא היוצר?
+ *
+ * ל-conditional-UI בלבד (למשל הסתרת CTA-יצירת-קורס מלומדים בדשבורד) — לא תחליף
+ * ל-`requireCreator` כשער-אבטחה. הפרדת פלטפורמה↔קורס: כלי-היצירה (פלטפורמה) הם של
+ * היוצר; הלומד בקורס-המשוּוָק לא רואה אותם. אינו זורק (מחזיר false על לא-מחובר).
+ */
+export async function isCreator(): Promise<boolean> {
+  const user = await getUser();
+  return user?.email?.trim().toLowerCase() === CREATOR_EMAIL;
+}

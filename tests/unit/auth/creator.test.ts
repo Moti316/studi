@@ -30,7 +30,7 @@ vi.mock('next/navigation', () => ({
   },
 }));
 
-import { requireCreator, CREATOR_EMAIL } from '@/lib/auth/creator';
+import { requireCreator, isCreator, CREATOR_EMAIL } from '@/lib/auth/creator';
 
 /** בונה משתמש-מוק מינימלי עם אימייל נתון. */
 function userWith(email: string | undefined): User {
@@ -87,5 +87,24 @@ describe('requireCreator (creator gate)', () => {
       name: 'RedirectError',
       target: '/beta-access?next=%2Fadmin%2Fcourses',
     });
+  });
+});
+
+describe('isCreator (בדיקה לא-מנתבת ל-conditional-UI)', () => {
+  it('true ליוצר (case-insensitive) · false ללומד/ללא-אימייל/לא-מחובר', async () => {
+    getUserMock.mockResolvedValue(userWith(CREATOR_EMAIL));
+    await expect(isCreator()).resolves.toBe(true);
+
+    getUserMock.mockResolvedValue(userWith(CREATOR_EMAIL.toUpperCase()));
+    await expect(isCreator()).resolves.toBe(true);
+
+    getUserMock.mockResolvedValue(userWith('beta-user@example.com'));
+    await expect(isCreator()).resolves.toBe(false);
+
+    getUserMock.mockResolvedValue(userWith(undefined));
+    await expect(isCreator()).resolves.toBe(false);
+
+    getUserMock.mockResolvedValue(null);
+    await expect(isCreator()).resolves.toBe(false);
   });
 });
