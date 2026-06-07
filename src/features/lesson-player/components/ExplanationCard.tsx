@@ -12,15 +12,16 @@ import { DeepExplanationButton } from './DeepExplanationButton';
  * "המשך" מדווח correct=true כדי שלולאת-השיעור תתקדם (read-card אינו "נכשל").
  */
 
-/** מחלץ טקסט-תשובת-מודל: correct_answer:{text} (בנק-שו"ת) או explanation (rationale). */
+/**
+ * מחלץ טקסט-תשובת-מודל מ-correct_answer:{text} (בנק-שו"ת).
+ * הערה: `question.explanation` שמור ל**הסבר-לעומק** המוטמע-מראש (מוצג בנפרד דרך
+ * DeepExplanationButton), ולכן אינו משמש כאן כ-fallback — כדי למנוע הצגה-כפולה.
+ */
 function modelAnswer(question: Question): string | null {
   const ca: unknown = question.correctAnswer;
   if (ca && typeof ca === 'object' && 'text' in ca) {
     const t = (ca as { text?: unknown }).text;
     if (typeof t === 'string' && t.trim().length > 0) return t;
-  }
-  if (typeof question.explanation === 'string' && question.explanation.trim().length > 0) {
-    return question.explanation;
   }
   return null;
 }
@@ -66,7 +67,7 @@ export function ExplanationCard({
           </button>
         ))}
 
-      <DeepExplanationButton questionId={question.id} />
+      <DeepExplanationButton explanation={question.explanation} />
 
       <button
         type="button"

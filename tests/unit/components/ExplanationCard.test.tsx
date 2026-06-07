@@ -29,16 +29,16 @@ describe('ExplanationCard — active-recall reveal', () => {
     expect(screen.getByTestId('model-answer')).toHaveTextContent('ממונה בטיחות');
   });
 
-  it('נופל-חזרה ל-explanation כשאין correct_answer:{text}', () => {
+  it('explanation אינו משמש כתשובת-מודל (שמור להסבר-לעומק הנפרד)', () => {
     render(
       <ExplanationCard
-        question={q({ correctAnswer: null, explanation: 'הסבר-מודל' })}
+        question={q({ correctAnswer: null, explanation: 'הסבר-לעומק מוטמע' })}
         onResult={vi.fn()}
         disabled={false}
       />,
     );
-    fireEvent.click(screen.getByTestId('reveal-answer'));
-    expect(screen.getByTestId('model-answer')).toHaveTextContent('הסבר-מודל');
+    // אין correct_answer:{text} → אין כפתור "הצג תשובה" (ה-explanation מוצג בנפרד).
+    expect(screen.queryByTestId('reveal-answer')).not.toBeInTheDocument();
   });
 
   it('ללא תשובה כלל → אין כפתור-חשיפה (רק "הבנתי, המשך")', () => {

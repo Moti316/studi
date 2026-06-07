@@ -27,6 +27,8 @@
     "gen:dry": "tsx scripts/generate-questions.ts --dry-run",
     "qa:import": "tsx scripts/import-qa-bank.ts --execute",
     "qa:import:dry": "tsx scripts/import-qa-bank.ts --dry-run",
+    "precompute:explanations": "tsx scripts/precompute-explanations.ts --execute",
+    "precompute:explanations:dry": "tsx scripts/precompute-explanations.ts --dry-run",
     "rag:ingest": "tsx scripts/ingest-legislation.ts --execute",
     "legislation:fetch": "tsx scripts/fetch-legislation.ts --execute",
     "legislation:fetch:dry": "tsx scripts/fetch-legislation.ts --dry-run",

@@ -4,31 +4,15 @@
  * src/features/lesson-player/deep-explanation.action.ts — Server Action ל-"הסבר לעומק"
  * מעוגן-חקיקה (RAG). קולוקציה עם הנגן (LessonPlayer) שצורך אותה.
  *
- * זרימה: טען שאלה → הטמע שאילתה (gemini-embedding-001@1024) → אחזר top-K chunks
- * מקורפוס-החקיקה (pgvector cosine) → Gemini מחבר הסבר מעוגן + ציטוט-מקור.
- * SERVER-ONLY · קורא ל-Gemini ⇒ עולה כסף (on-demand, רק בלחיצת-המשתמש).
+ * טוען את השאלה מה-DB ומאציל ל-buildDeepExplanation (ליבת-ה-RAG המשותפת). ⚠️ קורא
+ * ל-Gemini ⇒ עולה כסף. הערה: ה-UI עבר להציג הסבר **מוטמע-מראש** (questions.explanation)
+ * שנוצר offline — לכן הנתיב הזה נשאר כ-fallback/תאימות, לא כמסלול-הראשי בזמן-ריצה.
  */
 import { sql } from 'drizzle-orm';
 import { db } from '@/lib/db';
-import { embedRagQuery } from '@/lib/rag/embed';
-import { retrieveRelevantChunks } from '@/lib/rag/retrieval';
-import { geminiGenerateText } from '@/lib/ai/client';
-import { withGeminiRetry } from '@/lib/ai/retry';
-import {
-  DEEP_EXPLANATION_SYSTEM,
-  buildDeepExplanationPrompt,
-} from '@/lib/ai/prompts/deep-explanation';
+import { buildDeepExplanation, type DeepExplanationResult } from '@/lib/rag/deep-explanation-core';
 
-export interface DeepExplanationResult {
-  explanation: string;
-  sources: Array<{ title: string; scopeIds: string[] }>;
-}
-
-/**
- * מדיניות-retry לנתיב-אינטראקטיבי: backoff קצר (≤~5s סה"כ) כדי לרכוב על 503/429/רשת
- * זמניים מבלי להשאיר את המשתמש תקוע. שגיאות-קבע (מפתח-חסר) זורקות מיד.
- */
-const INTERACTIVE_RETRY = { maxRetries: 3, baseMs: 700, capMs: 4_000 } as const;
+export type { DeepExplanationResult };
 
 export async function generateDeepExplanation(questionId: string): Promise<DeepExplanationResult> {
   const rows = await db.execute(
@@ -41,33 +25,8 @@ export async function generateDeepExplanation(questionId: string): Promise<DeepE
   const correctAnswer =
     deriveAnswerText(q.correct_answer) ??
     (typeof q.explanation === 'string' ? q.explanation : undefined);
-  const queryText = [q.prompt, correctAnswer].filter(Boolean).join('\n');
 
-  // עטוף ב-retry: Gemini מחזיר 503 ("high demand") / 429 / נפילות-רשת זמניות לעיתים
-  // קרובות תחת-עומס; בלי-retry המשתמש רואה "לא ניתן להפיק הסבר". backoff קצר (אינטראקטיבי).
-  const queryEmbedding = await withGeminiRetry(() => embedRagQuery(queryText), INTERACTIVE_RETRY);
-  const chunks = await retrieveRelevantChunks(queryEmbedding, 5);
-  const prompt = buildDeepExplanationPrompt({
-    question: String(q.prompt),
-    correctAnswer,
-    chunks,
-  });
-  // ברירת-מחדל Flash (GEMINI_MODEL_CLASSIFICATION) — gemini-2.5-pro חסום ב-free-tier (limit 0).
-  const explanation = await withGeminiRetry(
-    () => geminiGenerateText({ system: DEEP_EXPLANATION_SYSTEM, prompt }),
-    INTERACTIVE_RETRY,
-  );
-
-  // קיבוץ-מקורות לפי כותרת (ציטוט נקי) + scope-ids.
-  const byTitle = new Map<string, Set<string>>();
-  for (const c of chunks) {
-    const set = byTitle.get(c.sourceTitle) ?? new Set<string>();
-    for (const r of c.scopeRefs) if (r?.id) set.add(r.id);
-    byTitle.set(c.sourceTitle, set);
-  }
-  const sources = [...byTitle.entries()].map(([title, ids]) => ({ title, scopeIds: [...ids] }));
-
-  return { explanation, sources };
+  return buildDeepExplanation({ prompt: String(q.prompt), correctAnswer });
 }
 
 /** מחלץ טקסט-תשובה מ-correct_answer (string / {text}). */

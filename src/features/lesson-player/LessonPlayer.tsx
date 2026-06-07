@@ -353,9 +353,9 @@ export function LessonPlayer({ questions, onFinish }: LessonPlayerProps) {
                 </motion.li>
               </motion.ul>
 
-              {/* הסבר-לעומק מעוגן-חקיקה (RAG · on-demand) */}
+              {/* הסבר-לעומק מעוגן-חקיקה — מוטמע-מראש (questions.explanation · אפס Gemini ב-runtime) */}
               <div className="mb-3">
-                <DeepExplanationButton questionId={current.id} />
+                <DeepExplanationButton explanation={current.explanation} />
               </div>
 
               <button
