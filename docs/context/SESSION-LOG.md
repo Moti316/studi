@@ -39,6 +39,14 @@
 
 מוטי ביצע ב-UI (סוף 2026-06-04, לפני שיצא): החלפת `DATABASE_URL` ב-Vercel ל-**Transaction Pooler (6543)** + (אולי) הוספת `GEMINI_API_KEY` + **Redeploy**. **חובה לוודא איתו שזה עובד בפועל:** studibuilder.vercel.app → היכנס לשיעור → אם 14 השאלות נטענות = DATABASE_URL תוקן ✅ · אם "הסבר לעומק" מחזיר טקסט = GEMINI_API_KEY מוגדר ✅. אם עדיין נכשל — Vercel Logs (level:error) + ACCESS-MAP צ'קליסט.
 
+### 🟢 מנוע יצירת-שאלות-MCQ — קוד מוכן (2026-06-04 המשך · טרם-הורץ)
+
+מדוע: 14 השאלות הן `explanation` (אין מסיחים → "יש שאלה אין תשובות"). נבנה מנוע MCQ מעוגן-חקיקה:
+
+- `src/lib/import/generated-mcq.ts` (טהור · אנטי-הזיה: sourceQuote חייב verbatim בנוסח · status מוסקנא) · `src/lib/ai/prompts/generate-question.ts` · `scripts/generate-questions.ts` (Flash · BUDGET · throttle+429 · `--dry-run`/`--execute`/`--limit`/`--per`/`--scope`) · 8 טסטים.
+- פקודות: `pnpm gen:dry` (אומדן) · `pnpm gen -- --limit 10 --per 4` (פיילוט ~40 MCQ · בתשלום).
+- ⏭️ **לא הורץ** (נשמר הקשר). **צעד-הבא בסשן הבא: `pnpm gen:dry` → `pnpm gen --limit 10 --per 4` → `tsx scripts/verify-questions.ts` → /lesson/practice (MCQ אמיתי) → commit.** ⚠️ Gemini-Flash (לא Pro · חסום free-tier) · עלול rate-limit (resume).
+
 ### הצעד הבא (follow-ups — סשן הבא)
 
 1. **השלמת-embedding** (42/42 · כרגע ~18 · rate-limit free-tier — resume-runs / batch / billing).
