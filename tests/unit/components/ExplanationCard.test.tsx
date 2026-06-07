@@ -3,8 +3,6 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { ExplanationCard } from '@/features/lesson-player/components/ExplanationCard';
 import type { Question } from '../../../drizzle/schema';
 
-// ה-DeepExplanationButton טוען db/Gemini ב-dynamic-import בלחיצה — לא בעת-render,
-// אך נמקמק אותו כדי שהטסט יישאר טהור-UI.
 vi.mock('@/features/lesson-player/components/DeepExplanationButton', () => ({
   DeepExplanationButton: () => null,
 }));
@@ -13,50 +11,67 @@ function q(over: Partial<Question> = {}): Question {
   return {
     id: 'q1',
     type: 'explanation',
-    prompt: 'על מי חלה האחריות?',
-    correctAnswer: { text: 'ממונה בטיחות\nמפקח עבודה' },
+    prompt: 'מי אחראי לבירור תאונות עבודה?',
+    correctAnswer: { text: 'מפקח עבודה, ממונה בטיחות וועדת בטיחות' },
     explanation: null,
-    // שאר-השדות אינם נדרשים ע"י הרכיב.
     ...over,
   } as Question;
 }
 
-describe('ExplanationCard — active-recall reveal', () => {
-  it('מסתיר את התשובה עד "הצג תשובה", ואז חושף את תשובת-המודל', () => {
+describe('ExplanationCard — זרימת שו"ת (כתיבה→בדיקה→חשיפה→המשך)', () => {
+  it('מתחיל בשדה-כתיבה ו-"בדוק תשובה" (אין "המשך" עד חשיפה)', () => {
     render(<ExplanationCard question={q()} onResult={vi.fn()} disabled={false} />);
+    expect(screen.getByTestId('open-answer-input')).toBeInTheDocument();
+    expect(screen.getByTestId('check-answer')).toBeInTheDocument();
+    expect(screen.queryByTestId('explanation-continue')).not.toBeInTheDocument();
     expect(screen.queryByTestId('model-answer')).not.toBeInTheDocument();
-    fireEvent.click(screen.getByTestId('reveal-answer'));
-    expect(screen.getByTestId('model-answer')).toHaveTextContent('ממונה בטיחות');
   });
 
-  it('explanation אינו משמש כתשובת-מודל (שמור להסבר-לעומק הנפרד)', () => {
-    render(
-      <ExplanationCard
-        question={q({ correctAnswer: null, explanation: 'הסבר-לעומק מוטמע' })}
-        onResult={vi.fn()}
-        disabled={false}
-      />,
-    );
-    // אין correct_answer:{text} → אין כפתור "הצג תשובה" (ה-explanation מוצג בנפרד).
-    expect(screen.queryByTestId('reveal-answer')).not.toBeInTheDocument();
-  });
-
-  it('ללא תשובה כלל → אין כפתור-חשיפה (רק "הבנתי, המשך")', () => {
-    render(
-      <ExplanationCard
-        question={q({ correctAnswer: null, explanation: null })}
-        onResult={vi.fn()}
-        disabled={false}
-      />,
-    );
-    expect(screen.queryByTestId('reveal-answer')).not.toBeInTheDocument();
+  it('"בדוק תשובה" חושף ציון-עצמי + תשובת-מודל + "המשך"', () => {
+    render(<ExplanationCard question={q()} onResult={vi.fn()} disabled={false} />);
+    fireEvent.change(screen.getByTestId('open-answer-input'), {
+      target: { value: 'מפקח עבודה, ממונה בטיחות, וועדת בטיחות' },
+    });
+    fireEvent.click(screen.getByTestId('check-answer'));
+    expect(screen.getByTestId('open-grade')).toHaveTextContent('נכונה');
+    expect(screen.getByTestId('model-answer')).toHaveTextContent('מפקח עבודה');
     expect(screen.getByTestId('explanation-continue')).toBeInTheDocument();
   });
 
-  it('"הבנתי, המשך" מדווח correct=true', () => {
+  it('תשובה לא-קשורה → ציון "לא-נכונה" (אך עדיין חושף את המודל)', () => {
+    render(<ExplanationCard question={q()} onResult={vi.fn()} disabled={false} />);
+    fireEvent.change(screen.getByTestId('open-answer-input'), {
+      target: { value: 'צבע כחול' },
+    });
+    fireEvent.click(screen.getByTestId('check-answer'));
+    expect(screen.getByTestId('open-grade')).toHaveTextContent('לחזור');
+    expect(screen.getByTestId('model-answer')).toBeInTheDocument();
+  });
+
+  it('"המשך" מדווח openGrade (בלי משוב-MCQ)', () => {
     const onResult = vi.fn();
     render(<ExplanationCard question={q()} onResult={onResult} disabled={false} />);
+    fireEvent.change(screen.getByTestId('open-answer-input'), {
+      target: { value: 'מפקח עבודה ממונה בטיחות וועדת בטיחות' },
+    });
+    fireEvent.click(screen.getByTestId('check-answer'));
     fireEvent.click(screen.getByTestId('explanation-continue'));
-    expect(onResult).toHaveBeenCalledWith({ correct: true });
+    expect(onResult).toHaveBeenCalledWith(
+      expect.objectContaining({ openGrade: 'correct', correct: true }),
+    );
+  });
+
+  it('ללא תשובת-מודל → כרטיס-קריאה: "המשך" מיידי (ללא שדה-כתיבה)', () => {
+    const onResult = vi.fn();
+    render(
+      <ExplanationCard
+        question={q({ correctAnswer: null })}
+        onResult={onResult}
+        disabled={false}
+      />,
+    );
+    expect(screen.queryByTestId('open-answer-input')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByTestId('explanation-continue'));
+    expect(onResult).toHaveBeenCalledWith(expect.objectContaining({ openGrade: 'partial' }));
   });
 });

@@ -44,6 +44,7 @@ import { ExplanationCard } from './components/ExplanationCard';
 import { DeepExplanationButton } from './components/DeepExplanationButton';
 import type { QuestionResult } from './components/types';
 import { isMatchingPairs, isMcqCorrectAnswer, isStringOptions } from './components/types';
+import type { OpenGrade } from '@/lib/grading/keyword-match';
 
 // ─── Tunables ───────────────────────────────────────────────────────────────
 
@@ -85,7 +86,13 @@ type State = {
   floaterKey: number;
 };
 
-type Action = { type: 'ANSWER'; result: QuestionResult } | { type: 'CONTINUE'; total: number };
+type Action =
+  | { type: 'ANSWER'; result: QuestionResult }
+  | { type: 'ANSWER_OPEN'; grade: OpenGrade; total: number }
+  | { type: 'CONTINUE'; total: number };
+
+/** XP חלקי לשו"ת חלקי (חצי מתשובה-נכונה). */
+const XP_PER_PARTIAL = Math.round(XP_PER_CORRECT / 2);
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
@@ -102,6 +109,28 @@ function reducer(state: State, action: Action): State {
         streak: correct ? state.streak + 1 : 0,
         floaterKey: correct ? state.floaterKey + 1 : state.floaterKey,
       };
+    }
+    case 'ANSWER_OPEN': {
+      // שו"ת-פתוח: כבר חשף ציון-עצמי + תשובת-מודל בכרטיס — מתקדם **ישירות** בלי
+      // משוב-MCQ. XP לפי הציון (נכונה=מלא · חלקית=חצי · לא-נכונה=0). אינו פוגע ב-streak.
+      if (state.phase !== 'answering') return state;
+      const correct = action.grade === 'correct';
+      const xpGain =
+        action.grade === 'correct'
+          ? XP_PER_CORRECT
+          : action.grade === 'partial'
+            ? XP_PER_PARTIAL
+            : 0;
+      const advanced = {
+        ...state,
+        xp: state.xp + xpGain,
+        correctCount: correct ? state.correctCount + 1 : state.correctCount,
+        streak: correct ? state.streak + 1 : 0,
+        lastResult: null,
+      };
+      const nextIndex = state.index + 1;
+      if (nextIndex >= action.total) return { ...advanced, phase: 'summary' };
+      return { ...advanced, index: nextIndex, phase: 'answering' };
     }
     case 'CONTINUE': {
       if (state.phase !== 'feedback-correct' && state.phase !== 'feedback-wrong') return state;
@@ -162,9 +191,14 @@ export function LessonPlayer({ questions, onFinish }: LessonPlayerProps) {
     onFinishRef.current = onFinish;
   }, [onFinish]);
 
-  const handleResult = useCallback((result: QuestionResult) => {
-    dispatch({ type: 'ANSWER', result });
-  }, []);
+  const handleResult = useCallback(
+    (result: QuestionResult) => {
+      // שו"ת-פתוח (openGrade נוכח) → התקדמות-ישירה בלי משוב-MCQ; אחרת משוב-נכון/שגוי.
+      if (result.openGrade) dispatch({ type: 'ANSWER_OPEN', grade: result.openGrade, total });
+      else dispatch({ type: 'ANSWER', result });
+    },
+    [total],
+  );
 
   const handleContinue = useCallback(() => {
     dispatch({ type: 'CONTINUE', total });

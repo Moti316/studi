@@ -12,12 +12,18 @@
  */
 
 import type { Question } from '../../../../drizzle/schema';
+import type { OpenGrade } from '@/lib/grading/keyword-match';
 
 /** Uniform outcome reported by every question component. */
 export type QuestionResult = {
   correct: boolean;
   /** Index of the option the learner chose (MCQ). Omitted for non-index types. */
   selectedIndex?: number;
+  /**
+   * ציון-עצמי לשו"ת-פתוח (התאמת-מילות-מפתח). כשנוכח — האורקסטרטור מתקדם **בלי**
+   * משוב-ה-MCQ (נכון/שגוי + XP-overlay): שו"ת אינו "נכשל", רק מקבל חיווי-עצמי.
+   */
+  openGrade?: OpenGrade;
 };
 
 /** Uniform props for every question component. */

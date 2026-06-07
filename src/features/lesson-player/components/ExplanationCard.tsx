@@ -3,20 +3,21 @@
 import { useState } from 'react';
 import type { Question } from '../../../../drizzle/schema';
 import type { QuestionResult } from './types';
+import { gradeOpenAnswer, type OpenGrade } from '@/lib/grading/keyword-match';
 import { DeepExplanationButton } from './DeepExplanationButton';
 
 /**
- * <ExplanationCard> — נגן לשאלת `explanation` (שו"ת פתוח) ולכל סוג ללא-נגן-ייעודי.
- * זרימת active-recall: מציג את השאלה → "הצג תשובה" → חושף את תשובת-המודל
- * (correct_answer:{text} שמגיע מבנק-השו"ת, או explanation) → "הסבר לעומק" (RAG) → "המשך".
- * "המשך" מדווח correct=true כדי שלולאת-השיעור תתקדם (read-card אינו "נכשל").
+ * <ExplanationCard> — נגן לשאלת `explanation` (שו"ת-פתוח · בחינת-ועדה אוֹרָלית).
+ *
+ * זרימת active-recall (העדכון: מוטי 2026-06-07):
+ *   1. הלומד **כותב** את תשובתו בשדה-טקסט.
+ *   2. "בדוק תשובה" → המערכת מזהה מילות-מפתח ונותנת **ציון-עצמי** (נכונה/חלקית/לא-נכונה),
+ *      חושפת את תשובת-המודל + "הסבר לעומק" המוטמע.
+ *   3. "המשך" → מתקדם לשאלה הבאה **בלי משוב-MCQ** (שו"ת אינו "נכשל" ואין +XP-overlay
+ *      של "תשובה נכונה"; זה שמור לשאלות-אמריקאיות).
  */
 
-/**
- * מחלץ טקסט-תשובת-מודל מ-correct_answer:{text} (בנק-שו"ת).
- * הערה: `question.explanation` שמור ל**הסבר-לעומק** המוטמע-מראש (מוצג בנפרד דרך
- * DeepExplanationButton), ולכן אינו משמש כאן כ-fallback — כדי למנוע הצגה-כפולה.
- */
+/** מחלץ טקסט-תשובת-מודל מ-correct_answer:{text}. */
 function modelAnswer(question: Question): string | null {
   const ca: unknown = question.correctAnswer;
   if (ca && typeof ca === 'object' && 'text' in ca) {
@@ -25,6 +26,24 @@ function modelAnswer(question: Question): string | null {
   }
   return null;
 }
+
+const GRADE_UI: Record<OpenGrade, { label: string; cls: string; icon: string }> = {
+  correct: {
+    label: 'תשובה נכונה',
+    cls: 'border-quiz-success-border bg-quiz-success-bg text-success',
+    icon: '✓',
+  },
+  partial: {
+    label: 'תשובה חלקית',
+    cls: 'border-accent-300 bg-accent-50 text-accent-700',
+    icon: '◐',
+  },
+  incorrect: {
+    label: 'כדאי לחזור על החומר',
+    cls: 'border-quiz-border bg-quiz-bg text-quiz-text-secondary',
+    icon: '✗',
+  },
+};
 
 export function ExplanationCard({
   question,
@@ -36,7 +55,17 @@ export function ExplanationCard({
   disabled: boolean;
 }) {
   const answer = modelAnswer(question);
-  const [revealed, setRevealed] = useState(false);
+  const [draft, setDraft] = useState('');
+  const [grade, setGrade] = useState<OpenGrade | null>(null);
+  const revealed = grade !== null;
+
+  function handleCheck() {
+    setGrade(answer ? gradeOpenAnswer(draft, answer).grade : 'partial');
+  }
+
+  function handleContinue() {
+    onResult({ correct: grade === 'correct', openGrade: grade ?? 'partial' });
+  }
 
   return (
     <div dir="rtl" data-testid="explanation-card" className="flex flex-col gap-3 font-hebrew">
@@ -44,40 +73,68 @@ export function ExplanationCard({
         {question.prompt}
       </p>
 
-      {/* תשובת-המודל — מוסתרת עד "הצג תשובה" (active-recall) */}
-      {answer &&
-        (revealed ? (
-          <div
-            data-testid="model-answer"
-            className="rounded-card border border-quiz-success-border bg-quiz-success-bg px-3 py-2 text-start"
-          >
-            <p className="mb-1 text-xs font-bold text-success">✓ תשובת-מודל</p>
-            <p className="whitespace-pre-line text-sm leading-relaxed text-quiz-text-primary">
-              {answer}
-            </p>
-          </div>
-        ) : (
+      {/* שלב-כתיבה (active-recall) — רק כשיש תשובת-מודל להשוואה */}
+      {answer && !revealed && (
+        <>
+          <textarea
+            data-testid="open-answer-input"
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            disabled={disabled}
+            rows={3}
+            placeholder="כתוב את תשובתך כאן…"
+            aria-label="כתוב את תשובתך"
+            className="w-full resize-y rounded-card border border-quiz-border bg-white px-3 py-2 text-start text-sm leading-relaxed text-quiz-text-primary focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-quiz-primary-active"
+          />
           <button
             type="button"
-            data-testid="reveal-answer"
-            onClick={() => setRevealed(true)}
-            className="self-start rounded-pill border border-quiz-border bg-quiz-bg px-4 py-2 text-sm font-bold text-quiz-primary-active focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active"
+            data-testid="check-answer"
+            disabled={disabled}
+            onClick={handleCheck}
+            className="self-start rounded-pill bg-quiz-primary-active px-5 py-2 text-sm font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active disabled:opacity-60"
           >
-            הצג תשובה
+            בדוק תשובה
           </button>
-        ))}
+        </>
+      )}
 
-      <DeepExplanationButton explanation={question.explanation} />
+      {/* שלב-חשיפה: ציון-עצמי + תשובת-מודל */}
+      {revealed && grade && (
+        <>
+          <p
+            data-testid="open-grade"
+            className={`flex items-center gap-2 rounded-card border px-3 py-2 text-sm font-bold ${GRADE_UI[grade].cls}`}
+          >
+            <span aria-hidden="true">{GRADE_UI[grade].icon}</span>
+            {GRADE_UI[grade].label}
+          </p>
+          {answer && (
+            <div
+              data-testid="model-answer"
+              className="rounded-card border border-quiz-success-border bg-quiz-success-bg px-3 py-2 text-start"
+            >
+              <p className="mb-1 text-xs font-bold text-success">תשובת-מודל</p>
+              <p className="whitespace-pre-line text-sm leading-relaxed text-quiz-text-primary">
+                {answer}
+              </p>
+            </div>
+          )}
+          <DeepExplanationButton explanation={question.explanation} />
+        </>
+      )}
 
-      <button
-        type="button"
-        data-testid="explanation-continue"
-        disabled={disabled}
-        onClick={() => onResult({ correct: true })}
-        className="w-full select-none rounded-pill bg-quiz-primary-active py-4 text-lg font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active disabled:opacity-60"
-      >
-        הבנתי, המשך
-      </button>
+      {/* "המשך" — זמין מיד כשאין מה לכתוב (אין תשובת-מודל), אחרת רק אחרי חשיפה */}
+      {(revealed || !answer) && (
+        <button
+          type="button"
+          data-testid="explanation-continue"
+          disabled={disabled}
+          onClick={handleContinue}
+          className="w-full select-none rounded-pill bg-quiz-primary-active py-4 text-lg font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active disabled:opacity-60"
+        >
+          המשך
+        </button>
+      )}
     </div>
   );
 }
