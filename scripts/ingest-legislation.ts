@@ -23,6 +23,7 @@ import { eq } from 'drizzle-orm';
 import { chunkText } from '../src/lib/rag/chunker';
 import { embedChunks, type EmbedFn } from '../src/lib/rag/embedder';
 import { getGeminiClient, GeminiClientError } from '../src/lib/ai/client';
+import { isTransientGeminiError, backoffMs } from '../src/lib/ai/retry';
 
 const LEGI_DIR = join(process.cwd(), 'courses', 'safety-officer', 'sources', 'legislation');
 const EMBED_MODEL = process.env.GEMINI_MODEL_EMBEDDING_RAG ?? 'gemini-embedding-001';
@@ -89,16 +90,8 @@ function l2normalize(v: number[]): number[] {
 const MIN_INTERVAL_MS = 1200; // מרווח-מינימום בין קריאות (הגנת-RPM)
 let lastCallMs = 0;
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
-function is429(err: unknown): boolean {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const e = err as any;
-  const status = e?.status ?? e?.code ?? e?.cause?.status;
-  return (
-    status === 429 || /\b429\b|RESOURCE_EXHAUSTED|quota|rate limit/i.test(String(e?.message ?? ''))
-  );
-}
 
-/** EmbedFn מבוסס-Gemini ב-1024 מימדים · throttle + retry-on-429 (backoff). עולה כסף. */
+/** EmbedFn מבוסס-Gemini ב-1024 מימדים · throttle + retry על 429/5xx (backoff). עולה כסף. */
 function createEmbed1024(taskType: 'RETRIEVAL_DOCUMENT' | 'RETRIEVAL_QUERY'): EmbedFn {
   return async (texts: string[]): Promise<number[][]> => {
     if (texts.length === 0) return [];
@@ -123,10 +116,10 @@ function createEmbed1024(taskType: 'RETRIEVAL_DOCUMENT' | 'RETRIEVAL_QUERY'): Em
         }
         return vecs;
       } catch (err) {
-        if (is429(err) && attempt < maxRetries) {
-          const backoff = Math.min(60_000, 4_000 * 2 ** attempt);
+        if (isTransientGeminiError(err) && attempt < maxRetries) {
+          const backoff = backoffMs(attempt);
           console.log(
-            `  …429 rate-limit — backoff ${Math.round(backoff / 1000)}s (attempt ${attempt + 1}/${maxRetries})`,
+            `  …זמני (429/5xx) — backoff ${Math.round(backoff / 1000)}s (attempt ${attempt + 1}/${maxRetries})`,
           );
           await sleep(backoff);
           continue;

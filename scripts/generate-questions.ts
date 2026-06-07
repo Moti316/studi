@@ -15,6 +15,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 import { createHash } from 'node:crypto';
 import { geminiGenerateJSON, GeminiClientError } from '../src/lib/ai/client';
+import { isTransientGeminiError, backoffMs } from '../src/lib/ai/retry';
 import {
   GENERATED_MCQ_SCHEMA,
   buildQuestionRow,
@@ -37,14 +38,6 @@ const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 function arg(name: string): string | undefined {
   const i = process.argv.indexOf(name);
   return i !== -1 ? process.argv[i + 1] : undefined;
-}
-function is429(err: unknown): boolean {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const e = err as any;
-  const status = e?.status ?? e?.code ?? e?.cause?.status;
-  return (
-    status === 429 || /\b429\b|RESOURCE_EXHAUSTED|quota|rate limit/i.test(String(e?.message ?? ''))
-  );
 }
 
 function parseFrontmatter(raw: string): { fm: Record<string, string>; body: string } {
@@ -92,9 +85,11 @@ async function generateForStatute(statute: StatuteSource, n: number): Promise<Ge
       });
       return Array.isArray(res?.questions) ? res.questions : [];
     } catch (err) {
-      if (is429(err) && attempt < 6) {
-        const backoff = Math.min(60_000, 4_000 * 2 ** attempt);
-        console.log(`  …429 — backoff ${Math.round(backoff / 1000)}s (${attempt + 1}/6)`);
+      if (isTransientGeminiError(err) && attempt < 6) {
+        const backoff = backoffMs(attempt);
+        console.log(
+          `  …זמני (429/5xx) — backoff ${Math.round(backoff / 1000)}s (${attempt + 1}/6)`,
+        );
         await sleep(backoff);
         continue;
       }
@@ -134,29 +129,50 @@ async function main(): Promise<void> {
     return;
   }
 
-  const rows: NewQuestion[] = [];
-  let dropped = 0;
+  // upsert פר-נוסח (לא צבירה-לסוף): קריסה באמצע אינה מאבדת התקדמות/כסף, וכל נוסח
+  // נשמר אידמפוטנטית מיד. נוסח שנכשל-קשות (אחרי מיצוי-retry) מדולג, לא-קטלני לכלל-הריצה.
+  const { upsertQuestions } = await import('../src/lib/import/upsert-questions');
+  let totalValid = 0;
+  let totalDropped = 0;
+  let totalInserted = 0;
+  let totalSkipped = 0;
+  let failedStatutes = 0;
   for (const s of statutes) {
-    const mcqs = await generateForStatute(s, per);
-    let kept = 0;
+    let mcqs: GeneratedMCQ[];
+    try {
+      mcqs = await generateForStatute(s, per);
+    } catch (err) {
+      failedStatutes++;
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error(`  ✗ ${s.scopeId.padEnd(7)} generation נכשל (מדולג): ${msg}`);
+      continue;
+    }
+    const rows: NewQuestion[] = [];
     for (const mcq of mcqs) {
       const sourceRef = `gen:${s.scopeId}:${createHash('sha256').update(mcq.prompt).digest('hex').slice(0, 16)}`;
       const row = buildQuestionRow(mcq, s, sourceRef);
-      if (row) {
-        rows.push(row);
-        kept++;
-      } else {
-        dropped++;
-      }
+      if (row) rows.push(row);
+      else totalDropped++;
     }
-    console.log(`  ✓ ${s.scopeId.padEnd(7)} ${kept}/${mcqs.length} MCQ (ציטוט-מאומת)`);
+    totalValid += rows.length;
+    let inserted = 0;
+    let skipped = 0;
+    if (rows.length > 0) ({ inserted, skipped } = await upsertQuestions(rows));
+    totalInserted += inserted;
+    totalSkipped += skipped;
+    console.log(
+      `  ✓ ${s.scopeId.padEnd(7)} ${rows.length}/${mcqs.length} MCQ (ציטוט-מאומת) → +${inserted} (${skipped} כבר-קיים)`,
+    );
   }
 
-  const { upsertQuestions } = await import('../src/lib/import/upsert-questions');
-  const { inserted, skipped } = await upsertQuestions(rows);
   console.log(
-    `[generate] done: ${rows.length} valid · ${dropped} dropped (הזיה/פסול) · inserted ${inserted} · skipped ${skipped} (idempotent).`,
+    `[generate] done: valid ${totalValid} · dropped ${totalDropped} (הזיה/פסול) · inserted ${totalInserted} · skipped ${totalSkipped} (idempotent) · נוסחים-שנכשלו ${failedStatutes}/${statutes.length}.`,
   );
+  // יציאה-כושלת רק אם כל-הריצה הייתה אובדן-מוחלט (0 הוכנסו ולפחות-נוסח-אחד נכשל); אחרת
+  // הצלחה-חלקית = הצלחה (resume: הרצה-חוזרת ממשיכה למלא נוסחים-שנכשלו).
+  if (totalInserted === 0 && failedStatutes > 0) {
+    throw new Error(`all ${failedStatutes} statute(s) failed — no questions inserted`);
+  }
 }
 
 main()

@@ -17,7 +17,7 @@
 | 5 | [docs/context/STATUS.md](../../docs/context/STATUS.md) | איפה אנחנו — phase · עובד · חסום | 2026-06-02 |
 | 6 | [docs/context/EXECUTION-PLAN.md](../../docs/context/EXECUTION-PLAN.md) | התוכנית end-to-end | 2026-06-04 |
 | 7 | [TODO.md](../../TODO.md) | מקור-אמת למשימות (A–I + ממשל-v2) | 2026-06-04 |
-| 8 | [docs/context/SESSION-LOG.md](../../docs/context/SESSION-LOG.md) | handoff אחרון + הצעד-הבא | 2026-06-04 |
+| 8 | [docs/context/SESSION-LOG.md](../../docs/context/SESSION-LOG.md) | handoff אחרון + הצעד-הבא | 2026-06-07 |
 | 9 | [docs/context/MOTI-INBOX.md](../../docs/context/MOTI-INBOX.md) | הערות-מוטי אליי — לקרוא בצעד-0 | 2026-06-04 |
 | 10 | [docs/context/DECISIONS.md](../../docs/context/DECISIONS.md) | לוג-החלטות-מפתח | 2026-05-31 |
 | 11 | [docs/context/PROJECTS.md](../../docs/context/PROJECTS.md) | StudiBuilder מול מגן — לא להתבלבל | 2026-06-02 |
@@ -64,7 +64,7 @@
 | [PLANNING-STATE.md](../../docs/context/PLANNING-STATE.md) | ⚠️ לסשן הבא: אנחנו במצב-תכנון רב-נושאי סביב מבנה-הקורס וחומרי-הלימוד — לא לקפוץ ל-build (M5) בלי לסגור את התכ… | docs context | 2026-06-01 |
 | [PROJECT-MAP.md](../../docs/context/PROJECT-MAP.md) | קרא אותי ראשון בכל סשן. אני האינדקס שמכוון לכל שאר קבצי-ההקשר. | docs context | 2026-06-04 |
 | [PROJECTS.md](../../docs/context/PROJECTS.md) | 2 פרויקטים קשורים שמתערבבים. מסמך זה מונע בלבול (גם Claude התבלבל ביניהם). מעודכן: 2026-05-31. | docs context | 2026-06-02 |
-| [SESSION-LOG.md](../../docs/context/SESSION-LOG.md) | בכל סוף-סשן: "מה נעשה / מה הצעד הבא". חדש למעלה. | docs context | 2026-06-04 |
+| [SESSION-LOG.md](../../docs/context/SESSION-LOG.md) | בכל סוף-סשן: "מה נעשה / מה הצעד הבא". חדש למעלה. | docs context | 2026-06-07 |
 | [STATUS.md](../../docs/context/STATUS.md) | מקור-האמת ל"איפה אנחנו". טבלאות ה-Phases ב-CLAUDE.md/README.md/MEMORY.md מפנות לכאן. | docs context | 2026-06-02 |
 | [TASKS.md](../../docs/context/TASKS.md) | ⚠️ קובץ זה הוחלף (2026-06-02). ה-backlog-השטוח-לפי-אזור פוצל למבנה דו-שכבתי לפי סדר-הביצוע: | docs context | 2026-06-02 |
 

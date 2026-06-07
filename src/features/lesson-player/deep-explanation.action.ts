@@ -13,6 +13,7 @@ import { db } from '@/lib/db';
 import { embedRagQuery } from '@/lib/rag/embed';
 import { retrieveRelevantChunks } from '@/lib/rag/retrieval';
 import { geminiGenerateText } from '@/lib/ai/client';
+import { withGeminiRetry } from '@/lib/ai/retry';
 import {
   DEEP_EXPLANATION_SYSTEM,
   buildDeepExplanationPrompt,
@@ -22,6 +23,12 @@ export interface DeepExplanationResult {
   explanation: string;
   sources: Array<{ title: string; scopeIds: string[] }>;
 }
+
+/**
+ * מדיניות-retry לנתיב-אינטראקטיבי: backoff קצר (≤~5s סה"כ) כדי לרכוב על 503/429/רשת
+ * זמניים מבלי להשאיר את המשתמש תקוע. שגיאות-קבע (מפתח-חסר) זורקות מיד.
+ */
+const INTERACTIVE_RETRY = { maxRetries: 3, baseMs: 700, capMs: 4_000 } as const;
 
 export async function generateDeepExplanation(questionId: string): Promise<DeepExplanationResult> {
   const rows = await db.execute(
@@ -36,7 +43,9 @@ export async function generateDeepExplanation(questionId: string): Promise<DeepE
     (typeof q.explanation === 'string' ? q.explanation : undefined);
   const queryText = [q.prompt, correctAnswer].filter(Boolean).join('\n');
 
-  const queryEmbedding = await embedRagQuery(queryText);
+  // עטוף ב-retry: Gemini מחזיר 503 ("high demand") / 429 / נפילות-רשת זמניות לעיתים
+  // קרובות תחת-עומס; בלי-retry המשתמש רואה "לא ניתן להפיק הסבר". backoff קצר (אינטראקטיבי).
+  const queryEmbedding = await withGeminiRetry(() => embedRagQuery(queryText), INTERACTIVE_RETRY);
   const chunks = await retrieveRelevantChunks(queryEmbedding, 5);
   const prompt = buildDeepExplanationPrompt({
     question: String(q.prompt),
@@ -44,10 +53,10 @@ export async function generateDeepExplanation(questionId: string): Promise<DeepE
     chunks,
   });
   // ברירת-מחדל Flash (GEMINI_MODEL_CLASSIFICATION) — gemini-2.5-pro חסום ב-free-tier (limit 0).
-  const explanation = await geminiGenerateText({
-    system: DEEP_EXPLANATION_SYSTEM,
-    prompt,
-  });
+  const explanation = await withGeminiRetry(
+    () => geminiGenerateText({ system: DEEP_EXPLANATION_SYSTEM, prompt }),
+    INTERACTIVE_RETRY,
+  );
 
   // קיבוץ-מקורות לפי כותרת (ציטוט נקי) + scope-ids.
   const byTitle = new Map<string, Set<string>>();
