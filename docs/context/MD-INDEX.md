@@ -59,7 +59,7 @@
 | [DECISIONS.md](../../docs/context/DECISIONS.md) | החלטות-מפתח שורה-בשורה (מעבר ל-ADRs הפורמליים). חדש למעלה. מעודכן: 2026-05-31. | docs context | 2026-05-31 |
 | [EXECUTION-PLAN.md](../../docs/context/EXECUTION-PLAN.md) | התוכנית האחת והאוטוריטטיבית. מאחדת את build-roadmap (10 phases), ADR-006 (Course-as-Product Factory), | docs context | 2026-06-04 |
 | [GOVERNANCE-V2.md](../../docs/context/GOVERNANCE-V2.md) | גיבוי-בריפו של תוכנית-ממשל-v2 (המקור היה מקומי ב-/.claude/plans/, per-machine). | docs context | 2026-06-04 |
-| [MD-INDEX.md](../../docs/context/MD-INDEX.md) | ⚠️ קובץ מחולל — אל תערוך ידנית. מקור: .claude/scripts/gen-md-index.mjs · רענון: pnpm index:md | docs context | 2026-06-04 |
+| [MD-INDEX.md](../../docs/context/MD-INDEX.md) | ⚠️ קובץ מחולל — אל תערוך ידנית. מקור: .claude/scripts/gen-md-index.mjs · רענון: pnpm index:md | docs context | 2026-06-07 |
 | [MOTI-INBOX.md](../../docs/context/MOTI-INBOX.md) | ערוץ-תקשורת א-סינכרוני. מוטי כותב כאן הערות/הנחיות מכל מחשב (push ל-main); | docs context | 2026-06-04 |
 | [PLANNING-STATE.md](../../docs/context/PLANNING-STATE.md) | ⚠️ לסשן הבא: אנחנו במצב-תכנון רב-נושאי סביב מבנה-הקורס וחומרי-הלימוד — לא לקפוץ ל-build (M5) בלי לסגור את התכ… | docs context | 2026-06-01 |
 | [PROJECT-MAP.md](../../docs/context/PROJECT-MAP.md) | קרא אותי ראשון בכל סשן. אני האינדקס שמכוון לכל שאר קבצי-ההקשר. | docs context | 2026-06-04 |
