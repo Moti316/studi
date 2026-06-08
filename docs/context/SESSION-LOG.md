@@ -5,6 +5,19 @@
 
 ---
 
+## 2026-06-08 — מנוע-תרחישים (חיווט) + מכסת-Gemini-התאפסה + precompute
+
+- **מכסת-Gemini התאפסה** → `precompute:explanations` רץ (free-tier ~100-150/יום · resumable · billing=הכל-בבת-אחת).
+- **`4c91360` מנוע-תרחישים (תרחישי-וועדה · HYBRID native — לא קישור-מגן):** `ScenarioWalkthrough` (היה קיים, לא-מחווט) **חובר ללולאת-השיעור**: `page.tsx loadScenarios` (join scenario_id→ScenarioInput) + LessonPlayer ניתוב `scenario_walkthrough`→ScenarioWalkthrough + ציון-מחוון→openGrade→ANSWER_OPEN (בלי משוב-MCQ) + fallback. 3 טסטי-חיווט.
+
+### 🚩 צעד-הבא: ייבוא-תרחישים + הרחבת-תשובות (סשן-הבא · דורש Gemini)
+
+- **קבצי-מקור (Drive · בחירת-מוטי: השראה+שימוש, firewall cleared ע"י מוטי):** "תרחישי הכנה לוועדת הסמכה לממוני בטיחות.pdf" (`1tOcSBGrCq0uibTgy7YC33XKIT3EdxsC4` · ~20 תרחישים · מבנה 3-חלקים פעולה-מיידית/גיבוי-חוקי/הנדסה-וניהול · "מנטור: איתן מגן") **+ 2 קבצים נוספים שמוטי העלה 2026-06-08** (לאתר ב-Drive).
+- **משימה:** importer (parse → `scenarios` table: title/background/data/task/solution/rubric + question type=scenario_walkthrough+scenario_id) **+ הרחבת-התשובות** (מוטי: "התשובות לא מספיק מורחבות") — להעשיר כל solution דרך RAG-חקיקה/Gemini (מעוגן · ציטוט · אנטי-הזיה).
+- **פרויקט-גמר (מיני-קורס #2):** capstone לפי `courses/safety-officer/FINAL-PROJECT.md` (JSA · 6-חלקים · מטריצת 4×4) — אחרי התרחישים.
+
+---
+
 ## 2026-06-07 (המשך · אינטראקטיבי+אוטונומי) — תיקון-מיפוי-Q&A · הסבר-מוטמע · creator-gate · זרימת-שו"ת
 
 > מוטי סקר חי וביקש תיקונים; בהמשך יצא ("תסיים לעלות הכל · הכן את האתר עם מה שיש · NotebookLM אח"כ"). עבודה אוטונומית: push+SESSION-LOG+TODO אחרי כל תת-משימה.
