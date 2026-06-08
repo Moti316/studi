@@ -35,6 +35,21 @@ export interface ScopeRef {
  * @returns NewScenario מוכן ל-upsertScenarios.
  * @throws אם sourceRef ריק או rubric פסול.
  */
+/**
+ * מנקה טקסט-פתרון מ-artifacts של NotebookLM לפני הצגה ללומד:
+ * 1. סמני-מקור inline (`[1]`, `[1-3]`, `[5, 6]`) שדלפו לטקסט (לא הוסרו ע"י המודל).
+ * 2. רצף-רווחים (artifact של גלישת-שורות ב-JSON) → רווח-יחיד.
+ * 3. רווח לפני פיסוק (נוצר אחרי הסרת-סמן · "מכנית [4]." → "מכנית.").
+ * טהור · דטרמיניסטי. הציטוט-המילולי (legalCitation.quote) אינו עובר כאן — G3 נשמר.
+ */
+export function cleanSolutionText(text: string): string {
+  return text
+    .replace(/\[\d+(?:\s*[-,]\s*\d+)*\]/g, '')
+    .replace(/ {2,}/g, ' ')
+    .replace(/ +([,.;:)])/g, '$1')
+    .trim();
+}
+
 export function mapScenario(
   parsed: ParsedScenarioExpansion['items'][number],
   sourceRef: string,
@@ -56,10 +71,10 @@ export function mapScenario(
   // ── משטח solution → Markdown (4 כותרות מודגשות) ──
   const { immediateAction, controlsHierarchy, legalBackup, managerialAction } = parsed.solution;
   const solutionMarkdown =
-    `**פעולה מיידית בשטח:**\n${immediateAction.text}\n\n` +
-    `**שימוש במדרג-הבקרות:**\n${controlsHierarchy.text}\n\n` +
-    `**גיבוי-חוקי מובהק:**\n${legalBackup.text}\n\n` +
-    `**פעולה ניהולית-מתקנת לטווח-הארוך:**\n${managerialAction.text}`;
+    `**פעולה מיידית בשטח:**\n${cleanSolutionText(immediateAction.text)}\n\n` +
+    `**שימוש במדרג-הבקרות:**\n${cleanSolutionText(controlsHierarchy.text)}\n\n` +
+    `**גיבוי-חוקי מובהק:**\n${cleanSolutionText(legalBackup.text)}\n\n` +
+    `**פעולה ניהולית-מתקנת לטווח-הארוך:**\n${cleanSolutionText(managerialAction.text)}`;
 
   return {
     title: parsed.title,

@@ -13,10 +13,26 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { mapScenario } from '@/lib/notebooklm/map-scenario';
+import { mapScenario, cleanSolutionText } from '@/lib/notebooklm/map-scenario';
 import type { ParsedScenarioExpansion } from '@/lib/notebooklm/parse-output';
 
 type ParsedItem = ParsedScenarioExpansion['items'][number];
+
+describe('cleanSolutionText', () => {
+  it('מסיר סמני-מקור inline ([1], [1-3], [5, 6])', () => {
+    expect(cleanSolutionText('עצור את המכונה [1] ונעל [2, 3] את המפסק [4-6].')).toBe(
+      'עצור את המכונה ונעל את המפסק.',
+    );
+  });
+  it('מצמצם רצף-רווחים לרווח-יחיד', () => {
+    expect(cleanSolutionText('אזור הסכנה   וביצוע   נעילה')).toBe('אזור הסכנה וביצוע נעילה');
+  });
+  it('לא נוגע בטקסט נקי', () => {
+    expect(cleanSolutionText('הנדסי: התקנת מעקה. צמ״א: קסדה — אחרון.')).toBe(
+      'הנדסי: התקנת מעקה. צמ״א: קסדה — אחרון.',
+    );
+  });
+});
 
 const VALID_RUBRIC = [
   { criterion: 'זיהוי הסיכון', points: 1 },
