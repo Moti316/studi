@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, BookOpen, BarChart3, Settings } from 'lucide-react';
+import { Home, BookOpen, Scale, BarChart3, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface NavItem {
@@ -15,6 +15,7 @@ interface NavItem {
 const ITEMS: NavItem[] = [
   { href: '/dashboard', label: 'בית', Icon: Home },
   { href: '/courses', label: 'קורסים', Icon: BookOpen, matchPrefix: '/courses' },
+  { href: '/legislation', label: 'חקיקה', Icon: Scale, matchPrefix: '/legislation' },
   { href: '/stats', label: 'סטטיסטיקות', Icon: BarChart3 },
   { href: '/settings', label: 'הגדרות', Icon: Settings },
 ];

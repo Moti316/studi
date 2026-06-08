@@ -36,13 +36,20 @@ describe('isActive', () => {
 });
 
 describe('BottomNav', () => {
-  it('מציג 4 טאבים בעברית', () => {
+  it('מציג 5 טאבים בעברית (כולל חקיקה)', () => {
     usePathname.mockReturnValue('/dashboard');
     render(<BottomNav />);
     expect(screen.getByRole('link', { name: /בית/ })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /קורסים/ })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /חקיקה/ })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /סטטיסטיקות/ })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /הגדרות/ })).toBeInTheDocument();
+  });
+
+  it('מסמן חקיקה כפעיל ב-/legislation', () => {
+    usePathname.mockReturnValue('/legislation');
+    render(<BottomNav />);
+    expect(screen.getByRole('link', { name: /חקיקה/ })).toHaveAttribute('aria-current', 'page');
   });
 
   it('מסמן aria-current על הטאב הנוכחי', () => {
