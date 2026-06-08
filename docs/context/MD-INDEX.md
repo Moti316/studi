@@ -2,7 +2,7 @@
 
 > ⚠️ **קובץ מחולל — אל תערוך ידנית.** מקור: `.claude/scripts/gen-md-index.mjs` · רענון: `pnpm index:md`
 > (מתרענן גם אוטומטית ב-pre-commit). דלת-הכניסה לשליפה-מהירה של כל מסמך בריפו.
-> **סה״כ 344 קבצי-MD בריפו** · עמודת "עודכן" = מתי הקובץ עודכן לאחרונה ב-git (לאיתור מסמכים שהתיישנו).
+> **סה״כ 345 קבצי-MD בריפו** · עמודת "עודכן" = מתי הקובץ עודכן לאחרונה ב-git (לאיתור מסמכים שהתיישנו).
 
 ## 📌 קבצי-חובה — קרא/עבור עליהם בכל סשן (נעוץ)
 
@@ -59,7 +59,7 @@
 | [DECISIONS.md](../../docs/context/DECISIONS.md) | החלטות-מפתח שורה-בשורה (מעבר ל-ADRs הפורמליים). חדש למעלה. מעודכן: 2026-05-31. | docs context | 2026-05-31 |
 | [EXECUTION-PLAN.md](../../docs/context/EXECUTION-PLAN.md) | התוכנית האחת והאוטוריטטיבית. מאחדת את build-roadmap (10 phases), ADR-006 (Course-as-Product Factory), | docs context | 2026-06-04 |
 | [GOVERNANCE-V2.md](../../docs/context/GOVERNANCE-V2.md) | גיבוי-בריפו של תוכנית-ממשל-v2 (המקור היה מקומי ב-/.claude/plans/, per-machine). | docs context | 2026-06-04 |
-| [MD-INDEX.md](../../docs/context/MD-INDEX.md) | ⚠️ קובץ מחולל — אל תערוך ידנית. מקור: .claude/scripts/gen-md-index.mjs · רענון: pnpm index:md | docs context | 2026-06-07 |
+| [MD-INDEX.md](../../docs/context/MD-INDEX.md) | ⚠️ קובץ מחולל — אל תערוך ידנית. מקור: .claude/scripts/gen-md-index.mjs · רענון: pnpm index:md | docs context | 2026-06-08 |
 | [MOTI-INBOX.md](../../docs/context/MOTI-INBOX.md) | ערוץ-תקשורת א-סינכרוני. מוטי כותב כאן הערות/הנחיות מכל מחשב (push ל-main); | docs context | 2026-06-04 |
 | [PLANNING-STATE.md](../../docs/context/PLANNING-STATE.md) | ⚠️ לסשן הבא: אנחנו במצב-תכנון רב-נושאי סביב מבנה-הקורס וחומרי-הלימוד — לא לקפוץ ל-build (M5) בלי לסגור את התכ… | docs context | 2026-06-01 |
 | [PROJECT-MAP.md](../../docs/context/PROJECT-MAP.md) | קרא אותי ראשון בכל סשן. אני האינדקס שמכוון לכל שאר קבצי-ההקשר. | docs context | 2026-06-04 |
@@ -83,7 +83,7 @@
 | [I-compliance-launch.md](../../docs/todo/I-compliance-launch.md) | שלב I ב-TODO.md · לפי EXECUTION-PLAN.md. | docs todo | 2026-06-03 |
 | [README.md](../../docs/todo/README.md) | היררכיית-TODO דו-שכבתית. שכבה-1 = TODO.md בשורש (master — סקירת A–I מול תוכנית-הביצוע | docs todo | 2026-06-03 |
 
-### 🏛️ ארכיטקטורה — ADR (docs/architecture)  ·  15
+### 🏛️ ארכיטקטורה — ADR (docs/architecture)  ·  16
 
 | קובץ | תכלית | תגיות | עודכן |
 | --- | --- | --- | --- |
@@ -101,6 +101,7 @@
 | [ADR-011-drive-import-pipeline.md](../../docs/architecture/ADR-011-drive-import-pipeline.md) | Status: Proposed | docs architecture | 2026-06-02 |
 | [ADR-012-dev-workflow-practices.md](../../docs/architecture/ADR-012-dev-workflow-practices.md) | Status: Proposed | docs architecture | 2026-06-01 |
 | [ADR-013-course-template.md](../../docs/architecture/ADR-013-course-template.md) | Status: Proposed | docs architecture | 2026-06-03 |
+| [ADR-014-scenario-engine.md](../../docs/architecture/ADR-014-scenario-engine.md) | סטטוס: Accepted · 2026-06-08 · מיני-קורס #1 מתוך 2 (תרחישים + פרויקט-גמר). | docs architecture | — |
 | [README.md](../../docs/architecture/README.md) | תיעוד כל ההחלטות-הארכיטקטוניות המשמעותיות לפרויקט. כל החלטה מקבלת ADR לפני implementation. | docs architecture | 2026-06-01 |
 
 ### 🖼️ עיצוב ומסכים — screens-spec · design · screens  ·  29

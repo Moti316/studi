@@ -57,7 +57,7 @@
 
 **ארכיטקטורה (לפי-צורך, מקור לכל בחירה גדולה):**
 
-12. `docs/architecture/ADR-*.md` — 14 ADRs (000-template + 001-013). בעיקר **001** (stack) · **009** (מגן) · **010** (DB schema) · **011** (import pipeline) · **012** (נוהלי-פיתוח, single-branch main) · **013** (תבנית-קורס + capstone).
+12. `docs/architecture/ADR-*.md` — 15 ADRs (000-template + 001-014). בעיקר **001** (stack) · **009** (מגן) · **010** (DB schema) · **011** (import pipeline) · **012** (נוהלי-פיתוח, single-branch main) · **013** (תבנית-קורס + capstone) · **014** (מנוע-תרחישים · scenario_walkthrough).
 
 **עיצוב (`docs/design/`):**
 
