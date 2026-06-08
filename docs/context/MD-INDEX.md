@@ -10,7 +10,7 @@
 
 | # | קובץ-חובה | למה חשוב | עודכן |
 | --- | --- | --- | --- |
-| 1 | [CLAUDE.md](../../CLAUDE.md) | אילוצים-קשיחים · stack · עקרונות · reading-list | 2026-06-04 |
+| 1 | [CLAUDE.md](../../CLAUDE.md) | אילוצים-קשיחים · stack · עקרונות · reading-list | 2026-06-08 |
 | 2 | [AGENTS.md](../../AGENTS.md) | חוקי-על קנוניים חוצי-כלים | 2026-06-03 |
 | 3 | [USER.md](../../USER.md) | פרופיל motilev8 + העדפות-עבודה | 2026-05-29 |
 | 4 | [docs/context/PROJECT-MAP.md](../../docs/context/PROJECT-MAP.md) | דלת-כניסה אוצרת לכל ההקשר | 2026-06-08 |
@@ -44,7 +44,7 @@
 | קובץ | תכלית | תגיות | עודכן |
 | --- | --- | --- | --- |
 | [AGENTS.md](../../AGENTS.md) | קובץ-ההקשר הקנוני של ה-workspace. תקן חוצה-כלים (Claude Code / Cursor / Codex). |  | 2026-06-03 |
-| [CLAUDE.md](../../CLAUDE.md) | 🗂️ אינדקס-הכל (קרא ראשון!): docs/context/MD-INDEX.md — אינדקס-MD חכם ומחולל-אוטומטית של כל מסמכי-הפרויקט (ני… |  | 2026-06-04 |
+| [CLAUDE.md](../../CLAUDE.md) | 🗂️ אינדקס-הכל (קרא ראשון!): docs/context/MD-INDEX.md — אינדקס-MD חכם ומחולל-אוטומטית של כל מסמכי-הפרויקט (ני… |  | 2026-06-08 |
 | [MEMORY.md](../../MEMORY.md) | 📍 הקשר מלא ועדכני: docs/context/PROJECT-MAP.md (9 קבצי מקור-אמת). |  | 2026-06-03 |
 | [README.md](../../README.md) | פלטפורמת AI בעברית להכנת קורסי-לימוד גיימיפיקטיביים מתוך מסמכי-מקור |  | 2026-06-02 |
 | [TODO.md](../../TODO.md) | מקור-אמת יחיד למשימות. מסונכרן ב-git (כל מחשב), נטען אוטומטית בכל סשן (SessionStart hook), |  | 2026-06-08 |
@@ -64,7 +64,7 @@
 | [PLANNING-STATE.md](../../docs/context/PLANNING-STATE.md) | ⚠️ לסשן הבא: אנחנו במצב-תכנון רב-נושאי סביב מבנה-הקורס וחומרי-הלימוד — לא לקפוץ ל-build (M5) בלי לסגור את התכ… | docs context | 2026-06-01 |
 | [PROJECT-MAP.md](../../docs/context/PROJECT-MAP.md) | קרא אותי ראשון בכל סשן. אני האינדקס שמכוון לכל שאר קבצי-ההקשר. | docs context | 2026-06-08 |
 | [PROJECTS.md](../../docs/context/PROJECTS.md) | 2 פרויקטים קשורים שמתערבבים. מסמך זה מונע בלבול (גם Claude התבלבל ביניהם). מעודכן: 2026-05-31. | docs context | 2026-06-02 |
-| [PROTOCOL-INDEX.md](../../docs/context/PROTOCOL-INDEX.md) | תכלית: דלת-כניסה אחת לכל פרוטוקולי-הממשל של מערכת-הסוכנים (Agent-OS). עונה ל-4 שאלות: | docs context | — |
+| [PROTOCOL-INDEX.md](../../docs/context/PROTOCOL-INDEX.md) | תכלית: דלת-כניסה אחת לכל פרוטוקולי-הממשל של מערכת-הסוכנים (Agent-OS). עונה ל-4 שאלות: | docs context | 2026-06-08 |
 | [SESSION-LOG.md](../../docs/context/SESSION-LOG.md) | בכל סוף-סשן: "מה נעשה / מה הצעד הבא". חדש למעלה. | docs context | 2026-06-08 |
 | [STATUS.md](../../docs/context/STATUS.md) | מקור-האמת ל"איפה אנחנו". טבלאות ה-Phases ב-CLAUDE.md/README.md/MEMORY.md מפנות לכאן. | docs context | 2026-06-02 |
 | [TASKS.md](../../docs/context/TASKS.md) | ⚠️ קובץ זה הוחלף (2026-06-02). ה-backlog-השטוח-לפי-אזור פוצל למבנה דו-שכבתי לפי סדר-הביצוע: | docs context | 2026-06-02 |
@@ -335,7 +335,7 @@
 | [aggregate-report.md](../../teams/mediator/aggregate-report.md) | דו"ח מתגלגל ויחיד: קונסולידציה של 4 דו"חות-הבקרה (control-report.md של כל צוות) → | teams mediator | 2026-05-31 |
 | [identity.md](../../teams/mediator/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי, ממרשם-התפקידים). | teams mediator | 2026-05-31 |
 | [memory.md](../../teams/mediator/memory.md) | המתווך של Agent-OS — השכבה היחידה שבין 4 ראשי-הצוות למועצה (מוטי). תפקידי: לרכז את דו"חות 4 ראשי-הצוות (strat… | teams mediator | 2026-05-31 |
-| [ORG.md](../../teams/ORG.md) | מסמך-העוגן של היררכיית-הסוכנים והממשל. כל סוכן קורא אותו אחרי | teams | 2026-06-03 |
+| [ORG.md](../../teams/ORG.md) | מסמך-העוגן של היררכיית-הסוכנים והממשל. כל סוכן קורא אותו אחרי | teams | 2026-06-08 |
 | [PROJECT-CONTEXT.md](../../teams/PROJECT-CONTEXT.md) | הקובץ הראשון שכל סוכן קורא בתחילת כל משימה, לפני identity.md ו-memory.md. | teams | 2026-06-08 |
 | [activity-log.md](../../teams/quality/appsec/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams quality appsec | 2026-06-01 |
 | [identity.md](../../teams/quality/appsec/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי, ממרשם-התפקידים). | teams quality appsec | 2026-05-31 |

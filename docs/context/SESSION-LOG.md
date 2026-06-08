@@ -33,9 +33,13 @@
 - **מחברת-חקיקה מאוחדת `c3f2d80a`** ("ממונה בטיחות — חקיקה מלאה") — **42 נוסחי-`.md` הועלו ומאוינדקסים** (`ready`).
 - **🎉 הפקה הוכחה end-to-end:** פרומפט-קצר (~800 תווים) → NotebookLM החזיר **JSON מעוגן** (`immediateAction`/`legalBackup`/`legalCitation:{scopeId,quote,section}`/`engineeringMgmt` + ציטוטי-מקור [N]). **חסם שנפתר:** chat-RPC יש **מגבלת-אורך-קלט** (~800✓ · 7.7KB→ריק) — ראה `BUGS.md#notebooklm-bridge` (5 ממצאי-ריצה).
 
-**צעד-הבא (פלמבינג · מוגדר-היטב):** לבנות מצב **per-scenario** — (1) `build-request --per-scenario` (פרומפט-קצר פר-תרחיש · flat) · (2) לולאת-`generate` (ask פר-תרחיש · `'y'|--new` · throttle) · (3) **adapter flat→batch** (מיזוג background/task/rubric מ-committee-scenarios.json + 3-החלקים+citation מ-NotebookLM) → `scenarios:import:dry` (G1–G5) → `import`. מדליק ADR-014.
+**✅ הצינור-המלא נבנה והורץ end-to-end:** `src/lib/notebooklm/{compact-prompt,adapt-flat}.ts` + `scripts/notebooklm/generate-scenarios.ts` (`pnpm scenarios:generate` · `bfc1af7`). **הופקו 20/20 תרחישים** (NotebookLM · מחברת c3f2d80a) → G1–G5 → **15 נקיים נכתבו ל-DB** (15 scenarios + 15 companion `scenario_walkthrough` · status='מוסקנא') → **חי במנוע-ADR-014 באתר** (נתון · ללא-deploy). **5 מוחזקים** (G3 ✗ — quote לא-verbatim בנוסח · #7,8,15,17,19): scope+section נכונים אך הציטוט פורפרז → לרענן-פרומפט/לאמת מול PDF-מחייב.
 
-**follow-up (BUGS.md):** C2 (סינון status בהגשה · Phase-5) · מינוריים (MIN_QUOTE_CHARS≥20 · MAX_LENGTH · scopeHint cross-check).
+### 🚩 הכרעת-עדיפות-מוטי (2026-06-08): **קודם להשלים את הקורס-המלא · רק אחרי-כן הפלטפורמה-הראשית.**
+
+**צעד-הבא — "גז" להשלמת-הקורס (לא הפלטפורמה!):** (1) לתקן 5 המוחזקים (פרומפט מחמיר-ל-quote-verbatim / fallback ל-PDF). (2) **explanations**: 554 ההסברים דרך NotebookLM (אותו protocol · מחליף Gemini-החסום). (3) **MCQ**: בנקי-שאלות דרך NotebookLM. (4) **D · מנוע-Quiz:** routes (practice/exam+טיימר) · API ציון-תרחיש · SM-2+stats. (5) **E2** חומרי-חזרה. (6) capstone (FINAL-PROJECT). (7) content-verifier: מוסקנא→מאומת. ← _רק אחרי שהקורס שלם → F/G/H/I (פלטפורמה)._
+
+**follow-up (BUGS.md):** C2 (סינון status בהגשה · Phase-5) · מינוריים (MIN_QUOTE_CHARS≥20 · MAX_LENGTH).
 
 ---
 
