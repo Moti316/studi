@@ -43,6 +43,7 @@
 
 - `curriculum-atgar` (spine 11 פרקים) · `LEGISLATION-SOURCES` (37 חוקים+URLs · **A2: 39 נוסחים הורדו כ-`.md`**) · `LEGISLATION-COVERAGE` (48/7/2) · `MOLSA-PROGRAM` (תכנית-משרד) · `LEARNING-MATERIALS` · `UNREAD-MEDIA` · `ATTRIBUTION` · `COURSE-DESIGN` · `FINAL-PROJECT` (capstone) · `REGULATORY-WATCH` (⏰10/2026) · `ISO-31010/31000-DRAFT` (טיוטות).
 - **`sources/legislation/`** — קורפוס-החקיקה: 42 נוסחי-נבו verbatim `.md` + **`INDEX.md`** (מפת-הקשרים מחוללת: scope↔PDF-Drive↔נבו↔עומק) + `README.md`. אומת 42/42 + מול תכנית-905018. PDF-מחייב ב-Drive "חוקים ותקנות"; 12 `source_complete:false` (תוכן-תמונה).
+- **`NOTEBOOKLM-ASSETS.md`** — מפת 39 מחברות-NotebookLM של מוטי (סווגו 2026-06-08): ~24 legislation (G3-grounding) · ~13 עשירות (lecturer-T2/committee-review → explanations/tutor/MCQ · name-clean) · 3 off-topic. כולל כיסוי-מול-57-scope, סדר-עיבוד, ודגלי-firewall ל"איתן". מזין את מנוע-התוכן (ADR-015).
 - `docs/PROJECT-STRUCTURE.md` — מבנה פלטפורמה↔קורס.
 
 **צינור-ייבוא + כלי-חקיקה (`scripts/` + `src/lib/import/`):**

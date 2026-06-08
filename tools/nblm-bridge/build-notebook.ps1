@@ -29,7 +29,11 @@ $title = if ($args.Count -ge 1) { $args[0] } else { 'ממונה בטיחות —
 Write-Host "[notebook] יוצר מחברת: $title"
 $nbJson = & $venvPy -m notebooklm create $title --json | Out-String
 $nb = $nbJson | ConvertFrom-Json
-$nbId = if ($nb.id) { $nb.id } elseif ($nb.notebook_id) { $nb.notebook_id } else { $nb.notebookId }
+# notebooklm create --json מחזיר { "notebook": { "id": ... } } (מקונן)
+$nbId = if ($nb.notebook -and $nb.notebook.id) { $nb.notebook.id }
+        elseif ($nb.id) { $nb.id }
+        elseif ($nb.notebook_id) { $nb.notebook_id }
+        else { $nb.notebookId }
 if (-not $nbId) { throw "לא הצלחתי לחלץ notebook-id מהפלט: $nbJson" }
 Write-Host "[notebook] ID: $nbId"
 

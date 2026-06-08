@@ -47,6 +47,8 @@
 
 > כל pipeline שמכניס תלות-פרודקשן ב-NotebookLM = הפרת-context, דגל מיידי למתווך.
 
+> **מפת-נכסי-NotebookLM (creator-side):** `courses/safety-officer/NOTEBOOKLM-ASSETS.md` — 39 מחברות-מוטי סווגו (2026-06-08): ~24 legislation (G3-grounding · אסמכתא-ללומד תמיד מ-PDF, לא מ-NotebookLM) · ~13 עשירות (מרצים/חזרה → explanations/tutor · **name-clean חובה**) · 3 off-topic. מחברת-חקיקה-מאוחדת `c3f2d80a` (42 .md · מנוע-ADR-015). firewall ל"איתן"-banks (PARITY בלבד).
+
 > **🔒 כלל-מגן (firewall) — השראה-בלבד:** ריפו-מגן (`github.com/Moti316/megen` · איתן+שגיא) = **השראה/reference בלבד** למבנה/תכנון (תרחישים פר-ענף · `study_plan_90days` · committee_bank · 4-עקרונות-הוועדה). **אסור להעתיק/לקחת** קוד · תוכן · prompts. **לעולם לא מתערבב** עם ריפו-StudiBuilder (קריאה → תיקייה נפרדת בלבד). נדרשת פרסונה? **HYBRID** — מחלצים את המבנה-המוכח כ-spec, כותבים **native** (name-clean·RAG·cache·ציטוט), מאמתים **parity** מול committee_bank. **ללא copy/coupling.** ספק → מוטי. (גובר על ADR-009 Phase B — העתקה-verbatim מבוטלת.)
 
 ---

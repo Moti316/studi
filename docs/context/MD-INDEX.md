@@ -2,7 +2,7 @@
 
 > ⚠️ **קובץ מחולל — אל תערוך ידנית.** מקור: `.claude/scripts/gen-md-index.mjs` · רענון: `pnpm index:md`
 > (מתרענן גם אוטומטית ב-pre-commit). דלת-הכניסה לשליפה-מהירה של כל מסמך בריפו.
-> **סה״כ 347 קבצי-MD בריפו** · ⚠️ 19 יתומים-מקומיים (ראה תחתית) · עמודת "עודכן" = מתי הקובץ עודכן לאחרונה ב-git (לאיתור מסמכים שהתיישנו).
+> **סה״כ 348 קבצי-MD בריפו** · ⚠️ 19 יתומים-מקומיים (ראה תחתית) · עמודת "עודכן" = מתי הקובץ עודכן לאחרונה ב-git (לאיתור מסמכים שהתיישנו).
 
 ## 📌 קבצי-חובה — קרא/עבור עליהם בכל סשן (נעוץ)
 
@@ -185,7 +185,7 @@
 | [content-scope.md](../../docs/content-scope.md) | Source-of-truth: PDF "חקיקה ותקינה לממונה בטיחות" + PDF "מערכת שעות קורס 1211762 אוגוסט 2025" | docs | 2026-06-01 |
 | [curriculum-coverage.md](../../docs/curriculum-coverage.md) | ⚠️ קובץ זה אוחד אל CONTENT-INDEX.md (2026-05-31) — מטריצת קורס 1211762 × 57 scope-IDs × Drive, סטטיסטיקת-הכיס… | docs | 2026-05-31 |
 | [features.md](../../docs/features.md) | רשימת כל הפיצ'רים שזוהו בסרטונים, ממויינים לקטגוריות. מהווה בסיס ל-MVP scoping | docs | 2026-05-29 |
-| [IDEAS.md](../../docs/IDEAS.md) | Backlog חי לרעיונות / פיצ'רים-עתידיים / פידבקים. לא מחייב ביצוע. כל אחד (מוטי או סוכן) מוזמן להוסיף. | docs | 2026-06-04 |
+| [IDEAS.md](../../docs/IDEAS.md) | Backlog חי לרעיונות / פיצ'רים-עתידיים / פידבקים. לא מחייב ביצוע. כל אחד (מוטי או סוכן) מוזמן להוסיף. | docs | 2026-06-08 |
 | [implementation-gaps.md](../../docs/implementation-gaps.md) | תאריך: 2026-05-30 · נכתב על-בסיס סריקת-קוד ישירה (לא הסתמכות על התיעוד) | docs | 2026-05-31 |
 | [M5-discovery-curation.md](../../docs/M5-discovery-curation.md) | סטטוס: ⏳ ממתין לאישור-מוטי. נוצר 2026-06-02 (ריצת-לילה, instance #5). | docs | 2026-06-02 |
 | [mvp-plan-2026-07-15.md](../../docs/mvp-plan-2026-07-15.md) | מצב: Draft של Product Owner. מצפה לאישור מוטי לפני exit ל-execute. | docs 2026 | 2026-05-30 |
@@ -250,7 +250,7 @@
 | [INDEX.md](../../courses/safety-officer/sources/legislation/INDEX.md) | מחולל אוטומטית מ-scripts/legislation-manifest.ts (pnpm legislation:index) — אל תערוך ידנית. | safety-officer sources legislation | 2026-06-03 |
 | [README.md](../../courses/safety-officer/sources/legislation/README.md) | טקסטי-חוק/תקנות — נחלת-הכלל, מקור-אמת לאימות שאלות (ADR-005). מפת-הקשרים מלאה: INDEX.md. קטלוג + סטטוס: ../..… | safety-officer sources legislation | 2026-06-03 |
 
-### 🎓 קורס safety-officer  ·  14
+### 🎓 קורס safety-officer  ·  15
 
 | קובץ | תכלית | תגיות | עודכן |
 | --- | --- | --- | --- |
@@ -264,6 +264,7 @@
 | [LEGISLATION-COVERAGE.md](../../courses/safety-officer/LEGISLATION-COVERAGE.md) | מקור: workflow קריאה-מלאה (2026-06-01). name-clean — ללא שמות-מרצים (ראה ../../docs/compliance/COMPLIANCE.md)… | courses safety-officer | 2026-06-01 |
 | [LEGISLATION-SOURCES.md](../../courses/safety-officer/LEGISLATION-SOURCES.md) | הבסיס-החוקי שמאמת כל שאלה/הסבר. PDF = source-of-truth (ADR-005/ADR-011): תשובה | courses safety-officer | 2026-06-03 |
 | [MOLSA-PROGRAM.md](../../courses/safety-officer/MOLSA-PROGRAM.md) | מיפוי התכנית הרשמית להכשרת "ממונה בטיחות בעבודה" (מינהל הבטיחות והבריאות | courses safety-officer | 2026-06-01 |
+| [NOTEBOOKLM-ASSETS.md](../../courses/safety-officer/NOTEBOOKLM-ASSETS.md) | תכלית: אינדקס-עבודה של מחברות-ה-NotebookLM של מוטי הרלוונטיות לקורס ממונה-בטיחות. | courses safety-officer | — |
 | [README.md](../../courses/safety-officer/README.md) | תיקיית-הקורס. המבנה = תבנית-הפלטפורמה (כל קורס עתידי באותו מבנה): פרק=מיני-קורס · 3 מצבים (שו"ת · תרחישים · מ… | courses safety-officer | 2026-06-01 |
 | [REGULATORY-WATCH.md](../../courses/safety-officer/REGULATORY-WATCH.md) | מעקב-רגולטורי בלבד — ⚠️ לא תוכן-קורס מחייב. קובץ זה מתעד רפורמות-חקיקה שפורסמו/נחתמו | courses safety-officer | 2026-06-01 |
 | [README.md](../../courses/safety-officer/sources/final-project/README.md) | גיבוי-reference פרטי (הריפו פרטי). אין לשכפל PII לתוכן-משתמש. מעודכן: 2026-06-01. | safety-officer sources final-project | 2026-06-01 |
