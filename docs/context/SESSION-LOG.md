@@ -20,12 +20,16 @@
 
 **שיטה:** Workflow #1 (ריקון · 9 סוכנים) → הכרעת-גשר. Workflow #2 (מועצה · 5 מומחים-במקביל → אינטגרציה → **ענף-בקרה עצמאי**). הבקרה מצאה 2 קריטיים → **תוקנו ואומתו:** C1 (G4 על legalBackup-בלבד) · C3 (seam unwrap) · C4 (activity-logs) · typecheck. **636/636 vitest ✓ · typecheck נקי · dry-run smoke מול golden+קורפוס-אמיתי (1 נקי / 1 מומצא-נדחה).**
 
-### 🚩 צעד-הבא (סשן-טרי): bootstrap-הגשר + הרחבת-20 אמיתית
+### ✅ הגשר הותקן במכונה-זו (המשך-סשן · `eaf182b`+) — נותר רק login-מוטי
 
-1. **bootstrap-מוטי (חד-פעמי · חוסם את ההפקה-האמיתית):** Python≥3.10 + `cd tools/nblm-bridge` + `pip install -r requirements.txt` + `notebooklm login --browser-cookies chrome` (מנוי · לא-API) + smoke `--dry-run`. ראה `tools/nblm-bridge/README.md`. ⚠️ Python **לא** מותקן במכונה הזו.
-2. **תנאי-מוקדם:** מחברת-NotebookLM מעוגנת בחומרי-המקור (~36 · ADR-005) — לאמת/ליצור.
-3. **הפקה:** `pnpm notebooklm:request` (Doc-הרחבה מ-committee-scenarios.json) → `python run_generation.py` (גשר) → `pnpm scenarios:import:dry` (דו"ח-G1–G5) → `pnpm scenarios:import` (`--execute` · אחרי apply-0003). ה-20 ייכנסו כתרחישים-מורחבים-מצוטטים-עם-סעיף → מדליק מנוע-ADR-014.
-4. **follow-up מתועד (BUGS.md):** C2 (סינון status בהגשה · Phase-5) · מינוריים (MIN_QUOTE_CHARS≥20 · MAX_LENGTH · scopeHint cross-check).
+- **מיגרציה 0003 הוחלה ל-DB** (אישור-מוטי) — `idx_scenarios_source_ref` קיים · `scenarios:import --execute` מוכן.
+- **Python 3.12 + notebooklm-py 0.7.1 + chromium מותקנים per-user** ב-`tools/nblm-bridge/.venv` (אפס-admin). **חסם-ארגוני שעקפנו:** TLS-inspection-proxy → `uv` עם `UV_SYSTEM_CERTS=1` (cert-store של Windows · לגיטימי). **חילוץ-cookies מ-Chrome נחסם ע"י App-Bound Encryption** (דורש admin) → login אינטראקטיבי.
+- **ערכת-סקריפטים חוצת-מחשבים** (`tools/nblm-bridge/`): `setup.ps1` (bootstrap · אידמפוטנטי · UTF-8+BOM) · `login.ps1` · `build-notebook.ps1` (מחברת-אחת + כל ~43 הנוסחים) · `mindmap.ps1` · `generate.ps1` (`ask --prompt-file`→מעטפת) · `run_generation.py` (CLI-subprocess · תוקן — ה-Python-API שהסוכן כתב לא-אומת). README מיושר-למציאות. prompt-הבקשה נוצר.
+- **הכרעות-מוטי:** מחברת-**אחת** מאוחדת לכל החקיקה (תרחישים חוצי-תחומים · עיגון מאותם `.md` של G3) + **מפת-חשיבה** (`generate mind-map`).
+
+**צעד-הבא (חוסם · רק-מוטי):** `powershell -File tools\nblm-bridge\login.ps1` (login-Google חד-פעמי · GUI · סיסמה/2FA · לא-ניתן-לאוטומציה). ואז **אני** רץ: `build-notebook.ps1` → `generate.ps1 <id>` → `pnpm scenarios:import:dry` → `pnpm scenarios:import`. 20 תרחישים מורחבים-מצוטטים-עם-סעיף → מדליק ADR-014.
+
+**follow-up (BUGS.md):** C2 (סינון status בהגשה · Phase-5) · מינוריים (MIN_QUOTE_CHARS≥20 · MAX_LENGTH · scopeHint cross-check).
 
 ---
 

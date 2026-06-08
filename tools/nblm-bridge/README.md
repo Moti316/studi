@@ -1,130 +1,105 @@
 # nblm-bridge — גשר NotebookLM אוטומטי
 
-כלי Python מבודד שמאפשר **אפס-קליקים** בהפקת תוכן מ-NotebookLM לאחר bootstrap חד-פעמי.
+כלי Python מבודד שמאפשר **אפס-קליקים** בהפקת תוכן מ-NotebookLM לאחר login חד-פעמי.
+מבודד מ-pnpm-tree (אין imports עם `src/`); כותב **רק** ל-`.cache/notebooklm/`.
 
-> תיקייה זו מבודדת לחלוטין מ-pnpm-tree של הפרויקט.
-> אין imports הדדיים עם `src/`.
+> **המודל בקצרה:** מתחברים **פעם-אחת** (login בדפדפן) → ה-session נשמר ל-`storage_state.json` →
+> מכאן הגשר טוען את ה-session ומדבר עם NotebookLM ישירות (בלי דפדפן, בלי קליקים). זה **לא** MCP-חי
+> (שרת-תמיד-פעיל); זו **הזדהות-שמורה שסקריפט-מקומי משתמש בה לפי-דרישה** (offline · batch).
+> ה-session מתיישן מדי פעם → מתחברים שוב (login).
 
 ---
 
-## הגדרה חד-פעמית (מוטי בלבד)
-
-### 1. התקנת Python
-
-דרוש Python **3.10 ומעלה** (בדיקה: `python --version`).
-הורדה: https://www.python.org/downloads/
-
-### 2. יצירת virtualenv והתקנת תלויות
+## 🚀 התקנה חוצת-מחשבים (3 פקודות)
 
 ```powershell
-# מתוך שורש-הפרויקט
-cd tools\nblm-bridge
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-# Playwright מתקין את Chromium אוטומטית עם notebooklm-py[browser]
+# 1) bootstrap per-user (ללא admin · uv→Python→venv→deps→chromium · עוקף TLS ארגוני)
+powershell -ExecutionPolicy Bypass -File tools\nblm-bridge\setup.ps1
+
+# 2) login חד-פעמי (ההזדהות שלך · נפתח דפדפן → התחבר ל-Google של מנוי-NotebookLM)
+powershell -ExecutionPolicy Bypass -File tools\nblm-bridge\login.ps1
+
+# 3) בניית מחברת-החקיקה (יוצר מחברת-אחת + מעלה את כל ~43 הנוסחים אוטומטית)
+powershell -ExecutionPolicy Bypass -File tools\nblm-bridge\build-notebook.ps1
 ```
 
-### 3. הגדרת PYTHONUTF8 (Windows — חובה לעברית)
+ואז (אופציונלי) מפת-חשיבה + הפקת-התרחישים:
 
 ```powershell
-$env:PYTHONUTF8 = "1"
-# להפיכה לקבועה: הוסף ל-profile.ps1 שלך
-```
-
-### 4. login — שמירת session
-
-```powershell
-# פועל עם Chromium שכבר מחובר לחשבון Google שלך
-notebooklm login --browser-cookies chrome
-# ייצר storage_state.json בתיקייה זו (git-ignored)
-```
-
-**חשוב:** ה-session תקף כ-15–20 דקות של חוסר-פעילות. ראה §שביריות.
-
-### 5. smoke test
-
-```powershell
-python run_generation.py \
-  --notebook-id <notebook-id-from-notebooklm-url> \
-  --request smoke_test \
-  --dry-run
+powershell -File tools\nblm-bridge\mindmap.ps1  <notebook-id>   # מפת-חשיבה של הקורפוס
+powershell -File tools\nblm-bridge\generate.ps1 <notebook-id>   # מפיק 20 תרחישים → .cache
+pnpm scenarios:import:dry                                       # דו"ח-אימות G1–G5 (ללא DB)
+pnpm scenarios:import                                           # כתיבה ל-DB
 ```
 
 ---
 
-## אפס-קליקים לאחר bootstrap
+## למה מחברת-אחת לכל החקיקה
 
-לאחר ה-bootstrap, כל הפקה:
+תרחישי-בטיחות חוצי-תחומים (גובה + חשמל + צמ"א בתרחיש אחד) → **מחברת-אחת עם מלוא-הקורפוס**
+נותנת ל-NotebookLM לצטט את התקנה-הנכונה פר-תרחיש. בנוסף — עיגון באותם קבצי-`.md` שעליהם
+שער-G3 בודק verbatim → **שיעור-מעבר-ציטוט גבוה יותר**. ~43 מקורות < מגבלת-50 של NotebookLM.
 
-```powershell
-$env:NBLM_NOTEBOOK_ID = "<id>"  # פעם אחת לסשן
-python run_generation.py --request scenarios_ch01 --ref ch01_batch1
-```
+---
 
-הפלט נכתב ל-`.cache/notebooklm/scenarios/ch01_batch1.json` — הפורמט שה-importer של StudiBuilder צורך.
+## למה login אינטראקטיבי (ולא חילוץ-cookies)
 
-### הוספת prompt חדש
+`--browser-cookies chrome` נחסם ע"י **App-Bound Encryption של Chrome** (מ-Chrome 127+):
+פענוח-cookies דורש הרשאות-מערכת (`RtlAdjustPrivilege`) שאין בלי admin. לכן login אינטראקטיבי
+(Playwright פותח חלון → אתה מתחבר → session נשמר ישירות). זה הצעד היחיד שאינו ניתן-לאוטומציה
+(ה-Google-auth שלך · סיסמה/2FA).
 
-1. כתוב את הפרומפט ל-`.cache/notebooklm/requests/<name>.txt` (UTF-8 BOM-free).
-2. הרץ `python run_generation.py --request <name>`.
-3. הפלט מחכה ב-`.cache/notebooklm/scenarios/<name>.json`.
+---
+
+## עקיפת TLS-inspection ארגוני (חשוב במחשבי-ארגון)
+
+חומת-אש ארגונית לעתים מפענחת SSL עם root-CA ארגוני, ש-uv לא מכיר → `invalid peer certificate`.
+הפתרון (ב-`setup.ps1`): **`UV_SYSTEM_CERTS=1`** — uv סומך על ה-cert-store של Windows (שמכיל את
+ה-CA הארגוני). לגיטימי לחלוטין, לא עקיפת-אבטחה. אם הורדה אחרת נכשלת על TLS — בדוק את אותו עיקרון.
 
 ---
 
 ## חוזה-הקבצים
 
-| פעולה        | נתיב                                     | הערה                         |
-| ------------ | ---------------------------------------- | ---------------------------- |
-| קריאת prompt | `.cache/notebooklm/requests/<name>.txt`  | כתוב ידנית / ייוצר ע"י agent |
-| כתיבת פלט    | `.cache/notebooklm/scenarios/<ref>.json` | נצרך ע"י importer            |
-| session auth | `tools/nblm-bridge/storage_state.json`   | git-ignored — אישי לחלוטין   |
+| פעולה        | נתיב                                     | הערה                                             |
+| ------------ | ---------------------------------------- | ------------------------------------------------ |
+| קריאת prompt | `.cache/notebooklm/requests/<name>.txt`  | נוצר ע"י `pnpm notebooklm:request`               |
+| כתיבת פלט    | `.cache/notebooklm/scenarios/<ref>.json` | `{ref,generated_at,content}` · נצרך ע"י importer |
+| מפת-חשיבה    | `.cache/notebooklm/mindmaps/<ref>.json`  | עץ-מושגים (אופציונלי)                            |
+| session auth | `tools/nblm-bridge/storage_state.json`   | git-ignored — אישי לחלוטין                       |
+| venv         | `tools/nblm-bridge/.venv/`               | git-ignored                                      |
 
-**הסקריפט כותב רק ל-`.cache/notebooklm/`** — אין כתיבה ל-`src/` / `courses/` / `drizzle/`.
-
----
-
-## שביריות ומגבלות (קרא לפני שימוש)
-
-### RPC לא-מתועד
-
-notebooklm-py מבוסס על RPC פנימי של Google NotebookLM שאינו API רשמי.
-**כל עדכון של Google עלול לשבור את הספרייה ללא התראה.**
-
-סדר-עדיפויות לתגובה:
-
-1. `pip install --upgrade notebooklm-py` — פתרון ב-90% מהמקרים.
-2. אם לא עוזר: בדוק issues ב-repo של notebooklm-py.
-3. fallback: הדבקה-ידנית ל-`.cache/notebooklm/scenarios/<ref>.json` בפורמט:
-   `{"ref":"<ref>","generated_at":"<ISO>","content":"<text>"}`
-
-### session-expiry
-
-Session תקף ~15–20 דקות. לאחר מכן:
-
-```powershell
-notebooklm login --browser-cookies chrome  # refresh
-```
-
-### ToS / חשבון
-
-כלי זה פועל עם **חשבון Google של מוטי בלבד** ולצרכי הפקה פנימית.
-אין להפיץ `storage_state.json` לאחרים.
-שימוש בכלי זה כפוף לתנאי-השימוש של Google NotebookLM.
-
-### קצב (throttle)
-
-NotebookLM אינו מיועד לקריאות API מהירות.
-הסקריפט ממתין 30s+ על שגיאת-429 (backoff מעריכי עד 3 ניסיונות).
-להפקת batches גדולים — הוסף השהייה בין קריאות (\`--timeout 120\`).
+ה-importer (`scripts/import-scenarios.ts`) מחלץ את `content` מהמעטפת ומריץ שערי-G1–G5 מול
+קורפוס-החקיקה לפני כתיבה ל-DB (status='מוסקנא'). **הפלט-הגולמי אף-פעם לא נכתב ישירות.**
 
 ---
 
-## החלפה אפשרית (ללא שינוי-קוד-אפליקציה)
+## הסקריפטים
 
-אם notebooklm-py יישבר לצמיתות, ניתן להחליף ב:
+| סקריפט               | תפקיד                                                           |
+| -------------------- | --------------------------------------------------------------- |
+| `setup.ps1`          | bootstrap per-user (uv→Python 3.12→venv→notebooklm-py→chromium) |
+| `login.ps1`          | login חד-פעמי + doctor + list (קבל `msedge`/`chrome` כ-arg)     |
+| `build-notebook.ps1` | יצירת מחברת-אחת + העלאת כל נוסחי-החקיקה                         |
+| `mindmap.ps1`        | מפת-חשיבה (`generate mind-map`) של הקורפוס                      |
+| `generate.ps1`       | `ask --prompt-file` → מעטפת-JSON ב-`.cache`                     |
+| `run_generation.py`  | חלופת-Python ל-generate.ps1 (עוטף את אותו CLI · חוצה-פלטפורמה)  |
 
-- **gemini-webapi** — ממשק דומה לגמיני (RPC לא-רשמי גם הוא)
-- **הדבקה-ידנית** — כתוב ידנית לקובץ JSON בפורמט חוזה-הקבצים למעלה
+---
 
-**קוד-האפליקציה (importer) לא ישתנה** — הוא צורך רק את קובצי-ה-JSON.
+## שביריות ומגבלות
+
+- **RPC לא-מתועד:** notebooklm-py נשען על RPC פנימי של Google. עדכון-Google עלול לשבור →
+  `uv pip install --upgrade --python tools\nblm-bridge\.venv\Scripts\python.exe notebooklm-py`.
+- **session-expiry:** ~15–20 דק' חוסר-פעילות → הרץ שוב `login.ps1`.
+- **ToS / חשבון:** פועל עם **חשבון-Google שלך בלבד**, להפקה פנימית. אל תפיץ `storage_state.json`.
+  שים-לב במחשב-ארגוני: זה מנוי-אישי שלך, והמכונה ארגונית.
+- **throttle:** הסקריפטים ממתינים בין-קריאות; backoff על 429.
+
+---
+
+## fallback (ללא שינוי-קוד-אפליקציה)
+
+אם הגשר יישבר לצמיתות — אפשר **הדבקה-ידנית**: כתוב את פלט-NotebookLM ל-
+`.cache/notebooklm/scenarios/<ref>.json` בפורמט `{"ref":"...","generated_at":"...","content":"<JSON-של-המודל>"}`
+(או batch-ישיר `{batch,contentType,items}`). ה-importer מזהה את שניהם. קוד-האפליקציה לא משתנה.

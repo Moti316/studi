@@ -2,7 +2,7 @@
 
 > ⚠️ **קובץ מחולל — אל תערוך ידנית.** מקור: `.claude/scripts/gen-md-index.mjs` · רענון: `pnpm index:md`
 > (מתרענן גם אוטומטית ב-pre-commit). דלת-הכניסה לשליפה-מהירה של כל מסמך בריפו.
-> **סה״כ 347 קבצי-MD בריפו** · עמודת "עודכן" = מתי הקובץ עודכן לאחרונה ב-git (לאיתור מסמכים שהתיישנו).
+> **סה״כ 347 קבצי-MD בריפו** · ⚠️ 19 יתומים-מקומיים (ראה תחתית) · עמודת "עודכן" = מתי הקובץ עודכן לאחרונה ב-git (לאיתור מסמכים שהתיישנו).
 
 ## 📌 קבצי-חובה — קרא/עבור עליהם בכל סשן (נעוץ)
 
@@ -16,7 +16,7 @@
 | 4 | [docs/context/PROJECT-MAP.md](../../docs/context/PROJECT-MAP.md) | דלת-כניסה אוצרת לכל ההקשר | 2026-06-08 |
 | 5 | [docs/context/STATUS.md](../../docs/context/STATUS.md) | איפה אנחנו — phase · עובד · חסום | 2026-06-02 |
 | 6 | [docs/context/EXECUTION-PLAN.md](../../docs/context/EXECUTION-PLAN.md) | התוכנית end-to-end | 2026-06-04 |
-| 7 | [TODO.md](../../TODO.md) | מקור-אמת למשימות (A–I + ממשל-v2) | 2026-06-04 |
+| 7 | [TODO.md](../../TODO.md) | מקור-אמת למשימות (A–I + ממשל-v2) | 2026-06-08 |
 | 8 | [docs/context/SESSION-LOG.md](../../docs/context/SESSION-LOG.md) | handoff אחרון + הצעד-הבא | 2026-06-08 |
 | 9 | [docs/context/MOTI-INBOX.md](../../docs/context/MOTI-INBOX.md) | הערות-מוטי אליי — לקרוא בצעד-0 | 2026-06-04 |
 | 10 | [docs/context/DECISIONS.md](../../docs/context/DECISIONS.md) | לוג-החלטות-מפתח | 2026-05-31 |
@@ -47,7 +47,7 @@
 | [CLAUDE.md](../../CLAUDE.md) | 🗂️ אינדקס-הכל (קרא ראשון!): docs/context/MD-INDEX.md — אינדקס-MD חכם ומחולל-אוטומטית של כל מסמכי-הפרויקט (ני… |  | 2026-06-04 |
 | [MEMORY.md](../../MEMORY.md) | 📍 הקשר מלא ועדכני: docs/context/PROJECT-MAP.md (9 קבצי מקור-אמת). |  | 2026-06-03 |
 | [README.md](../../README.md) | פלטפורמת AI בעברית להכנת קורסי-לימוד גיימיפיקטיביים מתוך מסמכי-מקור |  | 2026-06-02 |
-| [TODO.md](../../TODO.md) | מקור-אמת יחיד למשימות. מסונכרן ב-git (כל מחשב), נטען אוטומטית בכל סשן (SessionStart hook), |  | 2026-06-04 |
+| [TODO.md](../../TODO.md) | מקור-אמת יחיד למשימות. מסונכרן ב-git (כל מחשב), נטען אוטומטית בכל סשן (SessionStart hook), |  | 2026-06-08 |
 | [USER.md](../../USER.md) | - שפת תקשורת: עברית, מותר לערב אנגלית-טכנית (RAG, prompt, LSP) |  | 2026-05-29 |
 
 ### 🧭 הקשר-חי — docs/context  ·  13
@@ -55,7 +55,7 @@
 | קובץ | תכלית | תגיות | עודכן |
 | --- | --- | --- | --- |
 | [ACCESS-MAP.md](../../docs/context/ACCESS-MAP.md) | ⚠️ לא סודות כאן — רק המפה (איזה מפתח, איפה הוא חי, מה הסטטוס). הערכים עצמם ב-.env.local (gitignored) וב-Verce… | docs context | 2026-06-04 |
-| [BUGS.md](../../docs/context/BUGS.md) | זיכרון-מוסדי: בעיות שנפתרו + הפתרון. קרא לפני שאתה נתקל באותו דבר. מעודכן: 2026-05-31. | docs context | 2026-05-31 |
+| [BUGS.md](../../docs/context/BUGS.md) | זיכרון-מוסדי: בעיות שנפתרו + הפתרון. קרא לפני שאתה נתקל באותו דבר. מעודכן: 2026-05-31. | docs context | 2026-06-08 |
 | [DECISIONS.md](../../docs/context/DECISIONS.md) | החלטות-מפתח שורה-בשורה (מעבר ל-ADRs הפורמליים). חדש למעלה. מעודכן: 2026-05-31. | docs context | 2026-05-31 |
 | [EXECUTION-PLAN.md](../../docs/context/EXECUTION-PLAN.md) | התוכנית האחת והאוטוריטטיבית. מאחדת את build-roadmap (10 phases), ADR-006 (Course-as-Product Factory), | docs context | 2026-06-04 |
 | [GOVERNANCE-V2.md](../../docs/context/GOVERNANCE-V2.md) | גיבוי-בריפו של תוכנית-ממשל-v2 (המקור היה מקומי ב-/.claude/plans/, per-machine). | docs context | 2026-06-04 |
@@ -102,7 +102,7 @@
 | [ADR-012-dev-workflow-practices.md](../../docs/architecture/ADR-012-dev-workflow-practices.md) | Status: Proposed | docs architecture | 2026-06-01 |
 | [ADR-013-course-template.md](../../docs/architecture/ADR-013-course-template.md) | Status: Proposed | docs architecture | 2026-06-03 |
 | [ADR-014-scenario-engine.md](../../docs/architecture/ADR-014-scenario-engine.md) | סטטוס: Accepted · 2026-06-08 · מיני-קורס #1 מתוך 2 (תרחישים + פרויקט-גמר). | docs architecture | 2026-06-08 |
-| [ADR-015-notebooklm-content-engine.md](../../docs/architecture/ADR-015-notebooklm-content-engine.md) | סטטוס: Accepted · 2026-06-08 · בעלים: tech-lead (איתן) · ml-engineer · motilev8 | docs architecture | — |
+| [ADR-015-notebooklm-content-engine.md](../../docs/architecture/ADR-015-notebooklm-content-engine.md) | סטטוס: Accepted · 2026-06-08 · בעלים: tech-lead (איתן) · ml-engineer · motilev8 | docs architecture | 2026-06-08 |
 | [README.md](../../docs/architecture/README.md) | תיעוד כל ההחלטות-הארכיטקטוניות המשמעותיות לפרויקט. כל החלטה מקבלת ADR לפני implementation. | docs architecture | 2026-06-01 |
 
 ### 🖼️ עיצוב ומסכים — screens-spec · design · screens  ·  29
@@ -277,7 +277,7 @@
 | [activity-log.md](../../teams/builder/accessibility-i18n/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams builder accessibility-i18n | 2026-05-31 |
 | [identity.md](../../teams/builder/accessibility-i18n/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי, ממרשם-התפקידים). | teams builder accessibility-i18n | 2026-05-31 |
 | [memory.md](../../teams/builder/accessibility-i18n/memory.md) | Accessibility & i18n Engineer. מבטיח שהמוצר נגיש (WCAG 2.2 AA) ומלוקלז במלואו. | teams builder accessibility-i18n | 2026-05-31 |
-| [activity-log.md](../../teams/builder/backend-engineer/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams builder backend-engineer | 2026-06-01 |
+| [activity-log.md](../../teams/builder/backend-engineer/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams builder backend-engineer | 2026-06-08 |
 | [identity.md](../../teams/builder/backend-engineer/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי, ממרשם-התפקידים). | teams builder backend-engineer | 2026-05-31 |
 | [memory.md](../../teams/builder/backend-engineer/memory.md) | Backend Engineer (Next.js/Supabase). בונה את ה-API, לוגיקת-העסק והאינטגרציות | teams builder backend-engineer | 2026-06-01 |
 | [bugs-and-fixes.md](../../teams/builder/bugs-and-fixes.md) | יומן-באגים-ותיקונים צוותי. כל סוכן רושם כאן באג שאיתר ואת תיקונו, כדי שהצוות | teams builder | 2026-05-31 |
@@ -288,7 +288,7 @@
 | [identity.md](../../teams/builder/content-writer/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי, ממרשם-התפקידים). | teams builder content-writer | 2026-05-31 |
 | [memory.md](../../teams/builder/content-writer/memory.md) | UX Writer / Content Designer. כותבת microcopy ותוכן-ממשק. הצלחה = טקסט ברור, | teams builder content-writer | 2026-05-31 |
 | [control-report.md](../../teams/builder/control-report.md) | דו"ח-בקרה מתגלגל מראש-הצוות (יונתן, builder-lead) → מתווך (אמיר, mediator). | teams builder | 2026-05-31 |
-| [activity-log.md](../../teams/builder/data-engineer/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams builder data-engineer | 2026-06-01 |
+| [activity-log.md](../../teams/builder/data-engineer/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams builder data-engineer | 2026-06-08 |
 | [identity.md](../../teams/builder/data-engineer/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי, ממרשם-התפקידים). | teams builder data-engineer | 2026-05-31 |
 | [memory.md](../../teams/builder/data-engineer/memory.md) | Data Engineer (סכמה/ETL/Drive). הבעלים של מודל-הנתונים, המיגרציות ודפוסי-השאילתה. | teams builder data-engineer | 2026-05-31 |
 | [activity-log.md](../../teams/builder/design-system/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams builder design-system | 2026-05-31 |
@@ -390,7 +390,7 @@
 | [activity-log.md](../../teams/oversight/curriculum-auditor-lead/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams oversight curriculum-auditor-lead | 2026-06-03 |
 | [identity.md](../../teams/oversight/curriculum-auditor-lead/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי, ממרשם-התפקידים). | teams oversight curriculum-auditor-lead | 2026-06-03 |
 | [memory.md](../../teams/oversight/curriculum-auditor-lead/memory.md) | ראש זרוע מבקר-תכנית-הלימודים (ב-ענף-הבקרה). מוודא שה-קורס-הפעיל כמכלול נאמן לתכנית-הרגולטור | teams oversight curriculum-auditor-lead | 2026-06-03 |
-| [activity-log.md](../../teams/oversight/oversight-lead/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams oversight oversight-lead | 2026-06-03 |
+| [activity-log.md](../../teams/oversight/oversight-lead/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams oversight oversight-lead | 2026-06-08 |
 | [identity.md](../../teams/oversight/oversight-lead/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי, ממרשם-התפקידים). | teams oversight oversight-lead | 2026-06-03 |
 | [memory.md](../../teams/oversight/oversight-lead/memory.md) | ראש ענף-הבקרה העצמאי. מרכז את שני תת-הצוותים (בקרה-חיצונית + מבקר-תכנית) ל-oversight-report.md | teams oversight oversight-lead | 2026-06-03 |
 | [oversight-report.md](../../teams/oversight/oversight-report.md) | דו"ח-בקרה מתגלגל מ-oversight-lead (נדב) ישירות למועצה (מוטי) — לא דרך המתווך. | teams oversight | 2026-06-03 |
@@ -469,11 +469,33 @@
 | קובץ | תכלית | תגיות | עודכן |
 | --- | --- | --- | --- |
 | [SCHEMA.md](../../memory/SCHEMA.md) | הזיכרון ההיברידי של ה-workspace בנוי משתי שכבות: | memory | 2026-05-29 |
-| [README.md](../../tools/nblm-bridge/README.md) | כלי Python מבודד שמאפשר אפס-קליקים בהפקת תוכן מ-NotebookLM לאחר bootstrap חד-פעמי. | tools nblm-bridge | — |
+| [README.md](../../tools/nblm-bridge/README.md) | כלי Python מבודד שמאפשר אפס-קליקים בהפקת תוכן מ-NotebookLM לאחר login חד-פעמי. | tools nblm-bridge | 2026-06-08 |
 
 ---
 
 ## ⚠️ יתומים מקומיים — קבצים על הדיסק שאינם בריפו
 
-> ✅ אין קבצי-MD יתומים — כל מסמך מקומי נמצא ב-git.
+> קיימים מקומית אך **אינם ב-git** (untracked / .gitignore). מיושן → מחק; רלוונטי → הוסף לריפו. בדוק מול מצב-הפרויקט.
+
+| קובץ | תאריך-דיסק | סטטוס |
+| --- | --- | --- |
+| tools/nblm-bridge/.venv/Lib/site-packages/httpcore-1.0.9.dist-info/licenses/LICENSE.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/httpx-0.28.1.dist-info/licenses/LICENSE.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/idna-3.18.dist-info/licenses/LICENSE.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/notebooklm/data/CODEX.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/notebooklm/data/SKILL.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/element-attributes.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/playwright-tests.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/request-mocking.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/running-code.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/session-management.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/spec-driven-testing.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/storage-state.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/test-generation.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/tracing.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/video-recording.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/SKILL.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/trace/SKILL.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/README.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/README.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
 
