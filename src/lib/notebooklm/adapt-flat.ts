@@ -62,6 +62,67 @@ export function sanitizeControlChars(s: string): string {
   return out;
 }
 
+/** האם התו הוא whitespace (ללא regex בלולאה החמה). */
+function isWs(ch: string | undefined): boolean {
+  return ch === ' ' || ch === '\t' || ch === '\n' || ch === '\r';
+}
+
+/**
+ * repairJsonQuotes — מבריח מרכאות-תוכן לא-escaped בתוך ערכי-מחרוזת.
+ *
+ * מודלים מחזירים לעתים `"...בעל רישיון "חשמלאי" מוסמך..."` — המרכאות הפנימיות
+ * סוגרות את המחרוזת מוקדם ושוברות JSON.parse (השורש ל-3 כשלי-ההפקה 2026-06-08).
+ * הפונקציה מודעת-הקשר: מחרוזת-מפתח נסגרת על `"` שאחריו `:`, מחרוזת-ערך נסגרת על
+ * `"` שאחריו `, } ]` (או סוף). מרכאה לא-מבנית בתוך ערך → מוברחת ל-\". היוריסטי
+ * (מטפל במקרה-העברי הנפוץ ב-schema-השטוח) · מנוסה **רק כ-fallback** אחרי כשל-parse,
+ * כך שהמסלול-המצליח אינו מושפע. ראה adapt-flat.test.ts.
+ */
+export function repairJsonQuotes(s: string): string {
+  let out = '';
+  let inStr = false;
+  let isKey = false; // האם המחרוזת הנוכחית היא מפתח (נסגרת ב-`:`)
+  let expectKey = true; // ההקשר הבא (אחרי { , ) הוא מפתח
+  for (let i = 0; i < s.length; i++) {
+    const ch = s[i];
+    if (inStr) {
+      if (ch === '\\') {
+        out += ch + (s[i + 1] ?? '');
+        i++;
+        continue;
+      }
+      if (ch === '"') {
+        let j = i + 1;
+        while (j < s.length && isWs(s[j])) j++;
+        const next = s[j];
+        const structural = isKey
+          ? next === ':'
+          : next === ',' || next === '}' || next === ']' || next === undefined;
+        if (structural) {
+          inStr = false;
+          out += ch;
+        } else {
+          out += '\\"';
+        }
+        continue;
+      }
+      out += ch;
+      continue;
+    }
+    // מחוץ למחרוזת
+    if (ch === '"') {
+      inStr = true;
+      isKey = expectKey;
+      out += ch;
+      continue;
+    }
+    if (ch === ':') expectKey = false;
+    else if (ch === ',' || ch === '{') expectKey = true;
+    else if (ch === '[') expectKey = false;
+    out += ch;
+  }
+  return out;
+}
+
 /**
  * מחלץ את ה-JSON הflat מ-stdout של ה-CLI.
  *
@@ -89,10 +150,17 @@ export function extractFlatJson(stdout: string): FlatScenario {
   let parsed: unknown;
   try {
     parsed = JSON.parse(cleaned);
-  } catch (err) {
-    throw new Error(
-      `adapt-flat: JSON.parse נכשל — ${err instanceof Error ? err.message : String(err)}. קטע: ${cleaned.slice(0, 200)}`,
-    );
+  } catch (firstErr) {
+    // fallback: מודלים מחזירים לעתים מרכאות-לא-escaped בתוך ערך-מחרוזת (נפוץ
+    // בעברית-משפטית: רישיון "חשמלאי", תש"ל). repairJsonQuotes מבריח מרכאות-תוכן
+    // ומשאיר את המבניות. מנוסה רק כ-fallback → המסלול-המצליח לא מושפע.
+    try {
+      parsed = JSON.parse(repairJsonQuotes(cleaned));
+    } catch {
+      throw new Error(
+        `adapt-flat: JSON.parse נכשל (גם אחרי repair) — ${firstErr instanceof Error ? firstErr.message : String(firstErr)}. קטע: ${cleaned.slice(0, 200)}`,
+      );
+    }
   }
 
   return validateFlatScenario(parsed);

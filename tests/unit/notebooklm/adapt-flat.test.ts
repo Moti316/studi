@@ -19,6 +19,7 @@ import {
   extractFlatJson,
   adaptFlatToItem,
   buildBatch,
+  repairJsonQuotes,
   type FlatScenario,
   type ScenarioSource,
 } from '@/lib/notebooklm/adapt-flat';
@@ -249,5 +250,42 @@ describe('buildBatch', () => {
   it('batch ריק מותר (פלט-חלקי)', () => {
     const batch = buildBatch([]);
     expect(batch.items).toHaveLength(0);
+  });
+});
+
+// ── repairJsonQuotes + fallback ────────────────────────────────────────────
+
+describe('repairJsonQuotes', () => {
+  it('מבריח מרכאות-תוכן לא-escaped בתוך ערך → JSON תקין', () => {
+    const broken = '{"a":"בעל רישיון "חשמלאי מוסמך" לאתר","b":"רגיל"}';
+    const repaired = repairJsonQuotes(broken);
+    const parsed = JSON.parse(repaired) as Record<string, string>;
+    expect(parsed.a).toBe('בעל רישיון "חשמלאי מוסמך" לאתר');
+    expect(parsed.b).toBe('רגיל');
+  });
+
+  it('לא נוגע ב-JSON תקין (מפתחות+ערכים)', () => {
+    const ok = '{"title":"שלום","n":"ערך עם פסיק, באמצע"}';
+    expect(JSON.parse(repairJsonQuotes(ok))).toEqual(JSON.parse(ok));
+  });
+
+  it('שומר על escapes קיימים', () => {
+    const ok = '{"a":"שורה\\"מצוטטת\\" כבר"}';
+    expect(JSON.parse(repairJsonQuotes(ok)).a).toBe('שורה"מצוטטת" כבר');
+  });
+});
+
+describe('extractFlatJson — fallback repair על מרכאות-לא-escaped', () => {
+  it('משחזר flat-scenario כשערך מכיל מרכאות-תוכן (שורש 3 כשלי-ההפקה)', () => {
+    const broken =
+      '{"title":"קצר בדרך","immediateAction":"הזעקת חשמלאי בעל רישיון "חשמלאי מוסמך" לאתר",' +
+      '"controlsHierarchy":"ניתוק→בידוד→צמ״א","legalBackup":"תקנות החשמל","legalCitation":' +
+      '{"scopeId":"2.4","quote":"ציטוט מילולי רצוף מהנוסח","section":"תקנה 5"},' +
+      '"managerialAction":"עדכון נוהל"}';
+    const result = extractFlatJson(makeStdout(broken));
+    expect(result.title).toBe('קצר בדרך');
+    expect(result.immediateAction).toContain('חשמלאי מוסמך');
+    expect(result.legalCitation.scopeId).toBe('2.4');
+    expect(result.legalCitation.section).toBe('תקנה 5');
   });
 });
