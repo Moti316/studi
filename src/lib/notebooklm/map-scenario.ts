@@ -5,8 +5,9 @@
  * דטרמיניסטי: אותו קלט + sourceRef + scopeRefs → אותו פלט.
  *
  * תפקיד:
- * 1. משטח solution{immediateAction, legalBackup, engineeringMgmt} → שדה-`solution`
- *    יחיד (Markdown · 3 כותרות מודגשות) כדי לתאום ל-ScenarioInput.solution.
+ * 1. משטח solution{immediateAction, controlsHierarchy, legalBackup, managerialAction}
+ *    → שדה-`solution` יחיד (Markdown · 4 כותרות מודגשות) כדי לתאום ל-ScenarioInput.solution.
+ *    פורמט: **פעולה מיידית בשטח:**\n\n**שימוש במדרג-הבקרות:**\n\n**גיבוי-חוקי מובהק:**\n\n**פעולה ניהולית-מתקנת לטווח-הארוך:**
  * 2. מעביר title/background/data/task בלי שינוי.
  * 3. מאמת rubric ב-isRubric (זורק אם פסול).
  * 4. מאמת sourceRef לא-ריק (זורק אם ריק).
@@ -52,12 +53,13 @@ export function mapScenario(
     );
   }
 
-  // ── משטח solution → Markdown (3 כותרות מודגשות) ──
-  const { immediateAction, legalBackup, engineeringMgmt } = parsed.solution;
+  // ── משטח solution → Markdown (4 כותרות מודגשות) ──
+  const { immediateAction, controlsHierarchy, legalBackup, managerialAction } = parsed.solution;
   const solutionMarkdown =
-    `**פעולה מיידית:** ${immediateAction.text}\n\n` +
-    `**גיבוי חוקי:** ${legalBackup.text}\n\n` +
-    `**הנדסה וניהול:** ${engineeringMgmt.text}`;
+    `**פעולה מיידית בשטח:**\n${immediateAction.text}\n\n` +
+    `**שימוש במדרג-הבקרות:**\n${controlsHierarchy.text}\n\n` +
+    `**גיבוי-חוקי מובהק:**\n${legalBackup.text}\n\n` +
+    `**פעולה ניהולית-מתקנת לטווח-הארוך:**\n${managerialAction.text}`;
 
   return {
     title: parsed.title,

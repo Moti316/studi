@@ -71,11 +71,12 @@ describe('buildScenarioExpansionRequest — תרחיש-בודד', () => {
     expect(prompt).not.toMatch(/\bלסכם\b/);
   });
 
-  it('מכיל את שלושת שמות-החלקים', () => {
+  it('מכיל את ארבעת שמות-החלקים', () => {
     const prompt = buildSingle();
     expect(prompt).toContain('immediateAction');
+    expect(prompt).toContain('controlsHierarchy');
     expect(prompt).toContain('legalBackup');
-    expect(prompt).toContain('engineeringMgmt');
+    expect(prompt).toContain('managerialAction');
   });
 
   it('מכיל מחרוזת-JSON-דוגמה (כולל batch ו-contentType)', () => {

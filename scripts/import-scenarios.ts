@@ -90,16 +90,18 @@ function unwrapBridgeEnvelope(rawJson: string): string {
   return rawJson;
 }
 
-/** אוסף את כל הציטוטים מ-3 חלקי-solution לרשימה שטוחה (לדו"ח + scope_refs). */
+/** אוסף את כל הציטוטים מ-4 חלקי-solution לרשימה שטוחה (לדו"ח + scope_refs). */
 function collectCitations(solution: {
   immediateAction: { citations: CitationInput[] };
+  controlsHierarchy: { citations: CitationInput[] };
   legalBackup: { citations: CitationInput[] };
-  engineeringMgmt: { citations: CitationInput[] };
+  managerialAction: { citations: CitationInput[] };
 }): Citation[] {
   return [
     ...solution.immediateAction.citations.map(toCitation),
+    ...solution.controlsHierarchy.citations.map(toCitation),
     ...solution.legalBackup.citations.map(toCitation),
-    ...solution.engineeringMgmt.citations.map(toCitation),
+    ...solution.managerialAction.citations.map(toCitation),
   ];
 }
 

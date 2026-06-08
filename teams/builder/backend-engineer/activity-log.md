@@ -2,6 +2,26 @@
 
 > פורמט רשומה: `## [תאריך שעה] משימה` ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS|CONCERNS|FAIL) · Self-check (בהקשר? סטייה? red-lines?) · Bugs/Fixes.
 
+## [2026-06-08] ריסטרוקטורציה פתרון-מומחה: 3 חלקים → 4 חלקים (Track A)
+
+**Outcome:** הרחבת מבנה-הפתרון ל-4 פסקאות נפרדות בכל ה-pipeline: immediateAction · controlsHierarchy · legalBackup · managerialAction. typecheck נקי + 222 טסטים ירוקים. G1–G5 (legalCitation→legalBackup.citations) נשמרו ללא שבירה.
+
+**What changed:**
+
+- `src/lib/notebooklm/compact-prompt.ts` — prompt מבקש 4 שדות (immediateAction, controlsHierarchy, legalBackup+legalCitation, managerialAction) · <1000 תווים.
+- `src/lib/notebooklm/adapt-flat.ts` — FlatScenario: הוספת controlsHierarchy + managerialAction; validateFlatScenario + adaptFlatToItem עודכנו ל-4 חלקים.
+- `src/lib/notebooklm/parse-output.ts` — ParsedScenarioItem.solution: 4 חלקים (controlsHierarchy + managerialAction נוספו); parseScenarioItem מנתח 4 חלקים.
+- `src/lib/notebooklm/map-scenario.ts` — solutionMarkdown: 4 כותרות מודגשות (**פעולה מיידית בשטח** · **שימוש במדרג-הבקרות** · **גיבוי-חוקי מובהק** · **פעולה ניהולית-מתקנת לטווח-הארוך**).
+- `src/lib/notebooklm/request.ts` — WORKED_EXAMPLE_JSON + SCHEMA_PROSE + SCENARIO_EXPANSION_SYSTEM עודכנו ל-4 חלקים.
+- `scripts/import-scenarios.ts` — collectCitations כולל 4 חלקים.
+- `tests/unit/notebooklm/{compact-prompt,adapt-flat,parse-output,map-scenario,request}.test.ts` — עודכנו לחוזה-4-חלקים.
+
+**Verification:** `pnpm typecheck` נקי · `npx vitest run tests/unit/notebooklm tests/unit/import` → 222/222 ✓.
+
+**Verdict:** PASS.
+
+**Self-check:** G1–G5 נשמרו (legalCitation→legalBackup.citations זורם דרך adaptFlatToItem ו-collectCitations). minimize-ripple — עודכנו רק הנוגעים. red-lines — אין (לא-שבירה, typecheck נקי). engineeringMgmt הוסר ומוחלף: controlsHierarchy (ב) + managerialAction (ד).
+
 ## [2026-06-08] מנוע-תוכן NotebookLM — שערי-עיגון + importer + בונה-בקשה
 
 **Outcome:** ליבת-ה-importer + האנטי-הזיה למנוע-התוכן (ADR-015): NotebookLM מייצר → אני מאמת+מייבא. PASS אחרי תיקון 3 ממצאי-בקרה. אומת end-to-end ב-dry-run מול קורפוס-נבו האמיתי (golden: 1 נקי / 1 מוחזק).

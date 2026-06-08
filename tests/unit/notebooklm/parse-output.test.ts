@@ -50,12 +50,16 @@ function makeItem(over: Partial<Record<string, unknown>> = {}): Record<string, u
         text: 'הפסקת עבודה מיידית.',
         citations: [],
       },
+      controlsHierarchy: {
+        text: 'ביטול הסיכון → הגנה קולקטיבית → ציוד-מגן-אישי.',
+        citations: [],
+      },
       legalBackup: {
         text: 'הפרת תקנה 6 לתקנות הבטיחות בעבודה.',
         citations: [VALID_CITATION],
       },
-      engineeringMgmt: {
-        text: 'התקנת מעקה תקני.',
+      managerialAction: {
+        text: 'עדכון נוהל עבודה בגובה + הכשרת ממונה-בטיחות.',
         citations: [],
       },
     },
@@ -129,13 +133,14 @@ describe('parseNotebookLmOutput — JSON תקין עובר', () => {
     expect(item.sourceRef).toBe('scn:abc123:0');
   });
 
-  it('מנתח solution עם 3 חלקים', () => {
+  it('מנתח solution עם 4 חלקים', () => {
     const result = parseNotebookLmOutput(toJson(makeBatch()));
     const { solution } = result.items[0]!;
 
     expect(solution.immediateAction.text).toContain('הפסקת עבודה');
+    expect(solution.controlsHierarchy.text).toContain('ביטול הסיכון');
     expect(solution.legalBackup.text).toContain('הפרת תקנה');
-    expect(solution.engineeringMgmt.text).toContain('התקנת מעקה');
+    expect(solution.managerialAction.text).toContain('עדכון נוהל');
   });
 
   it('מנתח ציטוט עם section אופציונלי', () => {
@@ -152,11 +157,12 @@ describe('parseNotebookLmOutput — JSON תקין עובר', () => {
     const itemWithoutSection = makeItem({
       solution: {
         immediateAction: { text: 'פעולה מיידית', citations: [] },
+        controlsHierarchy: { text: 'מדרג-הבקרות', citations: [] },
         legalBackup: {
           text: 'גיבוי חוקי',
           citations: [VALID_CITATION_NO_SECTION],
         },
-        engineeringMgmt: { text: 'הנדסה וניהול', citations: [] },
+        managerialAction: { text: 'פעולה ניהולית', citations: [] },
       },
     });
     const result = parseNotebookLmOutput(toJson(makeBatch([itemWithoutSection])));
@@ -269,8 +275,9 @@ describe('parseNotebookLmOutput — שגיאות-מבנה זורקות', () => {
     const badItem = makeItem({
       solution: {
         immediateAction: { text: 'טקסט', citations: [] },
+        controlsHierarchy: { text: 'טקסט', citations: [] },
         // legalBackup חסר
-        engineeringMgmt: { text: 'טקסט', citations: [] },
+        managerialAction: { text: 'טקסט', citations: [] },
       },
     });
     expect(() => parseNotebookLmOutput(toJson(makeBatch([badItem])))).toThrow(/legalBackup/);
@@ -280,22 +287,36 @@ describe('parseNotebookLmOutput — שגיאות-מבנה זורקות', () => {
     const badItem = makeItem({
       solution: {
         // immediateAction חסר
+        controlsHierarchy: { text: 'טקסט', citations: [] },
         legalBackup: { text: 'טקסט', citations: [VALID_CITATION] },
-        engineeringMgmt: { text: 'טקסט', citations: [] },
+        managerialAction: { text: 'טקסט', citations: [] },
       },
     });
     expect(() => parseNotebookLmOutput(toJson(makeBatch([badItem])))).toThrow(/immediateAction/);
   });
 
-  it('item ללא solution.engineeringMgmt זורק', () => {
+  it('item ללא solution.controlsHierarchy זורק', () => {
     const badItem = makeItem({
       solution: {
         immediateAction: { text: 'טקסט', citations: [] },
+        // controlsHierarchy חסר
         legalBackup: { text: 'טקסט', citations: [VALID_CITATION] },
-        // engineeringMgmt חסר
+        managerialAction: { text: 'טקסט', citations: [] },
       },
     });
-    expect(() => parseNotebookLmOutput(toJson(makeBatch([badItem])))).toThrow(/engineeringMgmt/);
+    expect(() => parseNotebookLmOutput(toJson(makeBatch([badItem])))).toThrow(/controlsHierarchy/);
+  });
+
+  it('item ללא solution.managerialAction זורק', () => {
+    const badItem = makeItem({
+      solution: {
+        immediateAction: { text: 'טקסט', citations: [] },
+        controlsHierarchy: { text: 'טקסט', citations: [] },
+        legalBackup: { text: 'טקסט', citations: [VALID_CITATION] },
+        // managerialAction חסר
+      },
+    });
+    expect(() => parseNotebookLmOutput(toJson(makeBatch([badItem])))).toThrow(/managerialAction/);
   });
 
   it('rubric=[] (מערך-ריק) זורק', () => {
@@ -323,8 +344,9 @@ describe('parseNotebookLmOutput — שגיאות-מבנה זורקות', () => {
     const bad = makeItem({
       solution: {
         immediateAction: { text: 'טקסט', citations: [] },
+        controlsHierarchy: { text: 'טקסט', citations: [] },
         legalBackup: { text: 'טקסט', citations: [badCitation] },
-        engineeringMgmt: { text: 'טקסט', citations: [] },
+        managerialAction: { text: 'טקסט', citations: [] },
       },
     });
     expect(() => parseNotebookLmOutput(toJson(makeBatch([bad])))).toThrow(/scopeId/);
@@ -335,8 +357,9 @@ describe('parseNotebookLmOutput — שגיאות-מבנה זורקות', () => {
     const bad = makeItem({
       solution: {
         immediateAction: { text: 'טקסט', citations: [] },
+        controlsHierarchy: { text: 'טקסט', citations: [] },
         legalBackup: { text: 'טקסט', citations: [badCitation] },
-        engineeringMgmt: { text: 'טקסט', citations: [] },
+        managerialAction: { text: 'טקסט', citations: [] },
       },
     });
     expect(() => parseNotebookLmOutput(toJson(makeBatch([bad])))).toThrow(/quote/);

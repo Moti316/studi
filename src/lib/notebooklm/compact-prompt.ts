@@ -3,8 +3,14 @@
  *
  * נועד לעבוד בגבול-האורך של NotebookLM (~800 תווים תקינים).
  * ה-prompt לא מטמיע סכמה מלאה — המקורות מעוגנים-במחברת.
- * הפלט הצפוי: JSON flat (ללא fences):
- *   { title, immediateAction, legalBackup, legalCitation:{scopeId,quote,section}, engineeringMgmt }
+ * הפלט הצפוי: JSON flat (ללא fences) — 4 שדות-תוכן:
+ *   { title, immediateAction, controlsHierarchy, legalBackup,
+ *     legalCitation:{scopeId,quote,section}, managerialAction }
+ *
+ * (א) פעולה מיידית בשטח      → immediateAction
+ * (ב) שימוש במדרג-הבקרות     → controlsHierarchy
+ * (ג) גיבוי-חוקי מובהק       → legalBackup + legalCitation
+ * (ד) פעולה ניהולית-מתקנת     → managerialAction
  *
  * טהור לחלוטין — ללא IO, ללא DB.
  */
@@ -17,18 +23,20 @@ export interface CompactScenarioInput {
 }
 
 /**
- * בונה prompt עברי קצר (~600-900 תווים) לתרחיש-בודד.
- * מורה ל-NotebookLM להחזיר JSON flat ללא code fences.
+ * בונה prompt עברי קצר (<1000 תווים) לתרחיש-בודד.
+ * מורה ל-NotebookLM להחזיר JSON flat ללא code fences — 4 שדות-תוכן.
  *
  * @param s תרחיש-בודד (title, background, task).
  * @returns מחרוזת-prompt מוכנה לכתיבה לקובץ-זמני ושליחה ל-CLI.
  */
 export function buildCompactScenarioPrompt(s: CompactScenarioInput): string {
   const lines: string[] = [
-    'בהתבסס אך-ורק על מסמכי-המחברת, הרחב את התרחיש לפתרון 3-חלקים.',
+    'בהתבסס אך-ורק על מסמכי-המחברת, הרחב את התרחיש לפתרון 4-חלקים.',
     'ענה ב-JSON בלבד (ללא fences) בפורמט:',
-    '{title, immediateAction, legalBackup, legalCitation:{scopeId,quote,section}, engineeringMgmt}',
-    'ה-legalBackup חייב ציטוט-מילולי מהנוסח + תקנה/סעיף.',
+    '{title, immediateAction, controlsHierarchy, legalBackup, legalCitation:{scopeId,quote,section}, managerialAction}',
+    'immediateAction=פעולה מיידית בשטח.',
+    'controlsHierarchy=מדרג-הבקרות לפי-סדר: סילוק/החלפה→הנדסי→מנהלי, וצמ"א תמיד **אחרון** (מוצא-אחרון · קולקטיבי לפני אישי). חריג: בעבודה-בגובה מערכת-מניעת-נפילה/רתמה נדרשת-בחוק (לא נדחית).',
+    'legalBackup=גיבוי חוקי עם ציטוט-מילולי+תקנה/סעיף. managerialAction=פעולה ניהולית לטווח-ארוך.',
     'אל תמציא תקנות שאינן במסמכי-המחברת.',
     '',
     `תרחיש: ${s.title}`,

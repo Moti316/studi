@@ -4,7 +4,7 @@
  * בדיקות ל-buildCompactScenarioPrompt:
  * - אורך < 1000 תווים (מתחת למגבלת-NotebookLM)
  * - מכיל "JSON" (הוראה לפורמט)
- * - מכיל שמות-השדות הנדרשים
+ * - מכיל שמות-4-השדות הנדרשים (immediateAction, controlsHierarchy, legalBackup, managerialAction)
  * - title/background/task מוטמעים בפלט
  */
 
@@ -33,12 +33,17 @@ describe('buildCompactScenarioPrompt', () => {
     expect(result).toContain('JSON');
   });
 
-  it('מכיל שם-שדה immediateAction', () => {
+  it('מכיל שם-שדה immediateAction — (א) פעולה מיידית', () => {
     const result = buildCompactScenarioPrompt(BASE_INPUT);
     expect(result).toContain('immediateAction');
   });
 
-  it('מכיל שם-שדה legalBackup', () => {
+  it('מכיל שם-שדה controlsHierarchy — (ב) מדרג-הבקרות', () => {
+    const result = buildCompactScenarioPrompt(BASE_INPUT);
+    expect(result).toContain('controlsHierarchy');
+  });
+
+  it('מכיל שם-שדה legalBackup — (ג) גיבוי-חוקי', () => {
     const result = buildCompactScenarioPrompt(BASE_INPUT);
     expect(result).toContain('legalBackup');
   });
@@ -48,9 +53,9 @@ describe('buildCompactScenarioPrompt', () => {
     expect(result).toContain('legalCitation');
   });
 
-  it('מכיל שם-שדה engineeringMgmt', () => {
+  it('מכיל שם-שדה managerialAction — (ד) פעולה ניהולית', () => {
     const result = buildCompactScenarioPrompt(BASE_INPUT);
-    expect(result).toContain('engineeringMgmt');
+    expect(result).toContain('managerialAction');
   });
 
   it('מטמיע את ה-title', () => {

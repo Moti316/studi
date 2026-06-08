@@ -7,10 +7,10 @@
  * - extractFlatJson: חילוץ נכון בין Answer: ל-Resumed conversation:
  * - extractFlatJson: עובד גם ללא "Resumed conversation:" (עד סוף)
  * - extractFlatJson: שגיאה על JSON שבור
- * - extractFlatJson: שגיאה על שדות-חובה חסרים
+ * - extractFlatJson: שגיאה על שדות-חובה חסרים (כולל controlsHierarchy, managerialAction)
  * - adaptFlatToItem: מיזוג background/task/data/rubric מ-source
  * - adaptFlatToItem: legalCitation → legalBackup.citations[0]
- * - adaptFlatToItem: immediateAction/engineeringMgmt → citations=[]
+ * - adaptFlatToItem: immediateAction/controlsHierarchy/managerialAction → citations=[]
  * - buildBatch: contentType='scenario_expansion' + batch-name
  */
 
@@ -28,13 +28,14 @@ import {
 const VALID_FLAT: FlatScenario = {
   title: 'הגלגלים המעופפים',
   immediateAction: 'עצור את הפיגום מיד.',
+  controlsHierarchy: 'ביטול הסיכון → הגנה קולקטיבית (מעקה) → ציוד-מגן-אישי.',
   legalBackup: 'תקנות הבטיחות בעבודה (עבודה בגובה), תקנה 24.',
   legalCitation: {
     scopeId: '2.1',
     quote: 'לא יועמד אדם לעבוד על משטח עבודה גבוה אלא אם',
     section: 'תקנה 24',
   },
-  engineeringMgmt: 'התקנת מעקות קבועים + הדרכה.',
+  managerialAction: 'עדכון נוהל עבודה בגובה + הדרכה שנתית.',
 };
 
 const VALID_SOURCE: ScenarioSource = {
@@ -92,15 +93,44 @@ describe('extractFlatJson', () => {
   it('זורק שגיאה על שדה immediateAction חסר', () => {
     const broken = {
       title: 'ת',
+      controlsHierarchy: 'ב',
       legalBackup: 'ג',
       legalCitation: { scopeId: '2.1', quote: 'q' },
-      engineeringMgmt: 'ה',
+      managerialAction: 'ד',
     };
     expect(() => extractFlatJson(makeStdout(JSON.stringify(broken)))).toThrow(/immediateAction/);
   });
 
+  it('זורק שגיאה על שדה controlsHierarchy חסר', () => {
+    const broken = {
+      title: 'ת',
+      immediateAction: 'א',
+      legalBackup: 'ג',
+      legalCitation: { scopeId: '2.1', quote: 'q' },
+      managerialAction: 'ד',
+    };
+    expect(() => extractFlatJson(makeStdout(JSON.stringify(broken)))).toThrow(/controlsHierarchy/);
+  });
+
+  it('זורק שגיאה על שדה managerialAction חסר', () => {
+    const broken = {
+      title: 'ת',
+      immediateAction: 'א',
+      controlsHierarchy: 'ב',
+      legalBackup: 'ג',
+      legalCitation: { scopeId: '2.1', quote: 'q' },
+    };
+    expect(() => extractFlatJson(makeStdout(JSON.stringify(broken)))).toThrow(/managerialAction/);
+  });
+
   it('זורק שגיאה על legalCitation חסר', () => {
-    const broken = { title: 'ת', immediateAction: 'פ', legalBackup: 'ג', engineeringMgmt: 'ה' };
+    const broken = {
+      title: 'ת',
+      immediateAction: 'פ',
+      controlsHierarchy: 'ב',
+      legalBackup: 'ג',
+      managerialAction: 'ד',
+    };
     expect(() => extractFlatJson(makeStdout(JSON.stringify(broken)))).toThrow(/legalCitation/);
   });
 
@@ -147,6 +177,16 @@ describe('adaptFlatToItem', () => {
     expect(item.solution.immediateAction.citations).toHaveLength(0);
   });
 
+  it('controlsHierarchy.text מגיע מ-flat — (ב) מדרג-הבקרות', () => {
+    const item = adaptFlatToItem(VALID_FLAT, VALID_SOURCE);
+    expect(item.solution.controlsHierarchy.text).toBe(VALID_FLAT.controlsHierarchy);
+  });
+
+  it('controlsHierarchy.citations ריק', () => {
+    const item = adaptFlatToItem(VALID_FLAT, VALID_SOURCE);
+    expect(item.solution.controlsHierarchy.citations).toHaveLength(0);
+  });
+
   it('legalBackup.text מגיע מ-flat', () => {
     const item = adaptFlatToItem(VALID_FLAT, VALID_SOURCE);
     expect(item.solution.legalBackup.text).toBe(VALID_FLAT.legalBackup);
@@ -161,14 +201,14 @@ describe('adaptFlatToItem', () => {
     expect(cits[0]?.section).toBe('תקנה 24');
   });
 
-  it('engineeringMgmt.text מגיע מ-flat', () => {
+  it('managerialAction.text מגיע מ-flat — (ד) פעולה ניהולית', () => {
     const item = adaptFlatToItem(VALID_FLAT, VALID_SOURCE);
-    expect(item.solution.engineeringMgmt.text).toBe(VALID_FLAT.engineeringMgmt);
+    expect(item.solution.managerialAction.text).toBe(VALID_FLAT.managerialAction);
   });
 
-  it('engineeringMgmt.citations ריק', () => {
+  it('managerialAction.citations ריק', () => {
     const item = adaptFlatToItem(VALID_FLAT, VALID_SOURCE);
-    expect(item.solution.engineeringMgmt.citations).toHaveLength(0);
+    expect(item.solution.managerialAction.citations).toHaveLength(0);
   });
 
   it('legalCitation ללא section — section לא קיים ב-citations[0]', () => {

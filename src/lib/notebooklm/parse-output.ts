@@ -9,8 +9,14 @@
  *
  * כל item (ParsedScenarioExpansion):
  *   { sourceRef?, title, background, data?, task,
- *     solution: { immediateAction, legalBackup, engineeringMgmt },
+ *     solution: { immediateAction, controlsHierarchy, legalBackup, managerialAction },
  *     rubric: { criterion, points }[] }
+ *
+ * 4 חלקי-פתרון:
+ *   (א) immediateAction     — פעולה מיידית בשטח
+ *   (ב) controlsHierarchy  — שימוש במדרג-הבקרות
+ *   (ג) legalBackup         — גיבוי-חוקי מובהק (עם citations)
+ *   (ד) managerialAction    — פעולה ניהולית-מתקנת לטווח-הארוך
  *
  * כל חלק-solution (ScenarioSolutionPart):
  *   { text: string, citations: CitationInput[] }
@@ -44,6 +50,12 @@ export interface ScenarioSolutionPart {
 /**
  * פריט-תרחיש-מורחב בודד כפי שמגיע מהגשר (לפני map-scenario).
  * (alias ל-map-scenario.ts שמשתמש ב-ParsedScenarioExpansion['items'][number])
+ *
+ * solution מכיל 4 חלקים:
+ *   (א) immediateAction    — פעולה מיידית בשטח
+ *   (ב) controlsHierarchy — שימוש במדרג-הבקרות
+ *   (ג) legalBackup        — גיבוי-חוקי מובהק (עם citations)
+ *   (ד) managerialAction   — פעולה ניהולית-מתקנת לטווח-הארוך
  */
 export interface ParsedScenarioItem {
   /** מזהה-מקור (scn:<fileId>:<index>) — אופציונלי: ה-importer ישלים אם חסר. */
@@ -54,9 +66,14 @@ export interface ParsedScenarioItem {
   data?: string | null;
   task: string;
   solution: {
+    /** (א) פעולה מיידית בשטח */
     immediateAction: ScenarioSolutionPart;
+    /** (ב) שימוש במדרג-הבקרות */
+    controlsHierarchy: ScenarioSolutionPart;
+    /** (ג) גיבוי-חוקי מובהק (citations חובה ב-legalBackup) */
     legalBackup: ScenarioSolutionPart;
-    engineeringMgmt: ScenarioSolutionPart;
+    /** (ד) פעולה ניהולית-מתקנת לטווח-הארוך */
+    managerialAction: ScenarioSolutionPart;
   };
   /** מערך לא-ריק של קריטריוני-ניקוד. */
   rubric: Array<{ criterion: string; points: number }>;
@@ -163,17 +180,21 @@ function parseScenarioItem(raw: unknown, index: number): ParsedScenarioItem {
     data = obj['data'] === null ? null : assertString(obj['data'], `${base}.data`);
   }
 
-  // solution — 3 חלקים חובה
+  // solution — 4 חלקים חובה
   const solutionRaw = assertObject(obj['solution'], `${base}.solution`);
   const solution = {
     immediateAction: parseSolutionPart(
       solutionRaw['immediateAction'],
       `${base}.solution.immediateAction`,
     ),
+    controlsHierarchy: parseSolutionPart(
+      solutionRaw['controlsHierarchy'],
+      `${base}.solution.controlsHierarchy`,
+    ),
     legalBackup: parseSolutionPart(solutionRaw['legalBackup'], `${base}.solution.legalBackup`),
-    engineeringMgmt: parseSolutionPart(
-      solutionRaw['engineeringMgmt'],
-      `${base}.solution.engineeringMgmt`,
+    managerialAction: parseSolutionPart(
+      solutionRaw['managerialAction'],
+      `${base}.solution.managerialAction`,
     ),
   };
 

@@ -1,8 +1,14 @@
 /**
  * src/lib/notebooklm/adapt-flat.ts — חילוץ והתאמה של פלט-flat מ-NotebookLM.
  *
- * NotebookLM מחזיר פורמט flat (ללא מבנה-batch מלא):
- *   { title, immediateAction, legalBackup, legalCitation:{scopeId,quote,section}, engineeringMgmt }
+ * NotebookLM מחזיר פורמט flat (ללא מבנה-batch מלא) — 4 שדות-תוכן:
+ *   { title, immediateAction, controlsHierarchy, legalBackup,
+ *     legalCitation:{scopeId,quote,section}, managerialAction }
+ *
+ * (א) immediateAction    — פעולה מיידית בשטח
+ * (ב) controlsHierarchy — שימוש במדרג-הבקרות
+ * (ג) legalBackup        — גיבוי-חוקי מובהק + legalCitation
+ * (ד) managerialAction   — פעולה ניהולית-מתקנת לטווח-הארוך
  *
  * מודול זה:
  *   1. extractFlatJson  — מחלץ את ה-JSON מ-stdout של ה-CLI.
@@ -19,17 +25,22 @@ import type { ParsedScenarioItem, NotebookLmBatch } from '@/lib/notebooklm/parse
 // טיפוס FlatScenario — פלט-המחברת הגולמי (flat)
 // ---------------------------------------------------------------------------
 
-/** פלט-flat כפי שמחזיר NotebookLM (ללא מעטפת batch). */
+/** פלט-flat כפי שמחזיר NotebookLM (ללא מעטפת batch) — 4 שדות-תוכן. */
 export interface FlatScenario {
   title: string;
+  /** (א) פעולה מיידית בשטח */
   immediateAction: string;
+  /** (ב) שימוש במדרג-הבקרות */
+  controlsHierarchy: string;
+  /** (ג) גיבוי-חוקי מובהק */
   legalBackup: string;
   legalCitation: {
     scopeId: string;
     quote: string;
     section?: string;
   };
-  engineeringMgmt: string;
+  /** (ד) פעולה ניהולית-מתקנת לטווח-הארוך */
+  managerialAction: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -120,8 +131,9 @@ function validateFlatScenario(raw: unknown): FlatScenario {
 
   const title = requireString(obj, 'title');
   const immediateAction = requireString(obj, 'immediateAction');
+  const controlsHierarchy = requireString(obj, 'controlsHierarchy');
   const legalBackup = requireString(obj, 'legalBackup');
-  const engineeringMgmt = requireString(obj, 'engineeringMgmt');
+  const managerialAction = requireString(obj, 'managerialAction');
 
   // legalCitation
   if (
@@ -141,7 +153,14 @@ function validateFlatScenario(raw: unknown): FlatScenario {
     legalCitation.section = requireString(lc, 'section', 'legalCitation.section');
   }
 
-  return { title, immediateAction, legalBackup, legalCitation, engineeringMgmt };
+  return {
+    title,
+    immediateAction,
+    controlsHierarchy,
+    legalBackup,
+    legalCitation,
+    managerialAction,
+  };
 }
 
 function requireString(obj: Record<string, unknown>, key: string, label?: string): string {
@@ -173,11 +192,10 @@ export interface ScenarioSource {
 
 /**
  * ממזג פלט-flat מ-NotebookLM עם נתוני-מקור (background/task/data/rubric)
- * לכדי ParsedScenarioItem מלא.
+ * לכדי ParsedScenarioItem מלא — 4 חלקי-solution.
  *
  * legalBackup.citations = [legalCitation] (הציטוט מהמחברת).
- * immediateAction.citations = [] (אין ציטוט-חקיקה ישיר).
- * engineeringMgmt.citations = [] (אין ציטוט-חקיקה ישיר).
+ * immediateAction/controlsHierarchy/managerialAction.citations = [] (ללא ציטוט-חקיקה ישיר).
  *
  * title, background, task, data, rubric — נלקחים מ-source (source of truth).
  */
@@ -192,6 +210,10 @@ export function adaptFlatToItem(flat: FlatScenario, source: ScenarioSource): Par
         text: flat.immediateAction,
         citations: [],
       },
+      controlsHierarchy: {
+        text: flat.controlsHierarchy,
+        citations: [],
+      },
       legalBackup: {
         text: flat.legalBackup,
         citations: [
@@ -204,8 +226,8 @@ export function adaptFlatToItem(flat: FlatScenario, source: ScenarioSource): Par
           },
         ],
       },
-      engineeringMgmt: {
-        text: flat.engineeringMgmt,
+      managerialAction: {
+        text: flat.managerialAction,
         citations: [],
       },
     },

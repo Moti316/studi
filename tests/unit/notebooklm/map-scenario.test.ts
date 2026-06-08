@@ -4,8 +4,10 @@
  * Unit tests for mapScenario (pure mapping — no DB, no AI, no I/O).
  *
  * Asserts:
- * - builds a valid NewScenario with the correct Markdown solution (3 bold headers),
- *   status='מוסקנא', scopeRefs from parameter, and sourceRef passed through.
+ * - builds a valid NewScenario with the correct Markdown solution (4 bold headers):
+ *   (א) פעולה מיידית בשטח  (ב) שימוש במדרג-הבקרות
+ *   (ג) גיבוי-חוקי מובהק   (ד) פעולה ניהולית-מתקנת לטווח-הארוך
+ * - status='מוסקנא', scopeRefs from parameter, sourceRef passed through.
  * - throws on an invalid rubric (wrong shape / empty).
  * - throws on an empty sourceRef.
  */
@@ -33,12 +35,16 @@ function makeItem(over: Partial<ParsedItem> = {}): ParsedItem {
         text: 'הפסקת עבודה מיידית והרחקת העובד מאזור הסיכון.',
         citations: [],
       },
+      controlsHierarchy: {
+        text: 'ביטול הסיכון (מעקה קבוע) → הגנה קולקטיבית (רשת) → ציוד-מגן-אישי (רתמה).',
+        citations: [],
+      },
       legalBackup: {
         text: 'הפרת תקנה 6 לתקנות הבטיחות בעבודה (עבודות בנייה).',
         citations: [{ scopeId: '2.1', quote: 'לא תבוצע עבודה בגובה ללא מעקה', section: 'תקנה 6' }],
       },
-      engineeringMgmt: {
-        text: 'התקנת מעקה תקני לאורך קצה הפיגום לפני חידוש העבודה.',
+      managerialAction: {
+        text: 'עדכון נוהל עבודה בגובה + הכשרה שנתית לכלל הצוות.',
         citations: [],
       },
     },
@@ -51,15 +57,17 @@ const SCOPE_REFS = [{ id: '2.1', confidence: 1 }];
 const SOURCE_REF = 'scn:abc123:0';
 
 describe('mapScenario — NewScenario תקין', () => {
-  it('בונה NewScenario עם שלוש הכותרות המודגשות ב-solution', () => {
+  it('בונה NewScenario עם ארבע הכותרות המודגשות ב-solution', () => {
     const row = mapScenario(makeItem(), SOURCE_REF, SCOPE_REFS);
 
-    expect(row.solution).toContain('**פעולה מיידית:**');
-    expect(row.solution).toContain('**גיבוי חוקי:**');
-    expect(row.solution).toContain('**הנדסה וניהול:**');
+    expect(row.solution).toContain('**פעולה מיידית בשטח:**');
+    expect(row.solution).toContain('**שימוש במדרג-הבקרות:**');
+    expect(row.solution).toContain('**גיבוי-חוקי מובהק:**');
+    expect(row.solution).toContain('**פעולה ניהולית-מתקנת לטווח-הארוך:**');
     expect(row.solution).toContain('הפסקת עבודה מיידית');
+    expect(row.solution).toContain('ביטול הסיכון');
     expect(row.solution).toContain('הפרת תקנה 6');
-    expect(row.solution).toContain('התקנת מעקה תקני');
+    expect(row.solution).toContain('עדכון נוהל');
   });
 
   it('מחזיר status=מוסקנא תמיד', () => {
@@ -107,11 +115,14 @@ describe('mapScenario — NewScenario תקין', () => {
     expect(row.rubric).toEqual(VALID_RUBRIC);
   });
 
-  it('פורמט solution מלא עם הפרדות-שורה כפולות', () => {
+  it('פורמט solution מלא עם הפרדות-שורה כפולות בין 4 חלקים', () => {
     const row = mapScenario(makeItem(), SOURCE_REF, SCOPE_REFS);
     // שתי שורות ריקות בין כל חלק
-    expect(row.solution).toMatch(/\*\*פעולה מיידית:\*\*.*\n\n\*\*גיבוי חוקי:\*\*/s);
-    expect(row.solution).toMatch(/\*\*גיבוי חוקי:\*\*.*\n\n\*\*הנדסה וניהול:\*\*/s);
+    expect(row.solution).toMatch(/\*\*פעולה מיידית בשטח:\*\*.*\n\n\*\*שימוש במדרג-הבקרות:\*\*/s);
+    expect(row.solution).toMatch(/\*\*שימוש במדרג-הבקרות:\*\*.*\n\n\*\*גיבוי-חוקי מובהק:\*\*/s);
+    expect(row.solution).toMatch(
+      /\*\*גיבוי-חוקי מובהק:\*\*.*\n\n\*\*פעולה ניהולית-מתקנת לטווח-הארוך:\*\*/s,
+    );
   });
 });
 
