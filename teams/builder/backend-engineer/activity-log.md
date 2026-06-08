@@ -2,6 +2,27 @@
 
 > פורמט רשומה: `## [תאריך שעה] משימה` ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS|CONCERNS|FAIL) · Self-check (בהקשר? סטייה? red-lines?) · Bugs/Fixes.
 
+## [2026-06-08] מנוע-תוכן NotebookLM — שערי-עיגון + importer + בונה-בקשה
+
+**Outcome:** ליבת-ה-importer + האנטי-הזיה למנוע-התוכן (ADR-015): NotebookLM מייצר → אני מאמת+מייבא. PASS אחרי תיקון 3 ממצאי-בקרה. אומת end-to-end ב-dry-run מול קורפוס-נבו האמיתי (golden: 1 נקי / 1 מוחזק).
+
+**What changed:**
+
+- `src/lib/import/verify-grounding.ts` — שערי G1–G5 (טהור · resolver מוזרק): `verifyCitation` · `verifyScenarioCitations` · **`hasValidLegalBackup`** (G4 מחמיר — מעוגן-מילולית **וגם** סעיף · דרישת-מוטי) · `parseLegislationIndex` · `stripFrontmatter`.
+- `src/lib/import/legislation-resolver.ts` — `createDefaultBodyResolver` (scopeId→נוסח-`.md` מ-INDEX.md · cache).
+- `src/lib/notebooklm/parse-output.ts` — `parseNotebookLmOutput` (parse-not-validate · stripJsonFences).
+- `src/lib/notebooklm/request.ts` + `scripts/notebooklm/build-request.ts` — `buildScenarioExpansionRequest` (להרחיב-לא-לסכם · עיגון-חוקי+סעיף כעדיפות-עליונה · חוזה-JSON inline · רמזי-scope).
+- `scripts/import-scenarios.ts` — אינטגרטור CLI (parse→unwrap→G1–G5→mapScenario→upsertScenarios→companion scenario_walkthrough · dry-run/execute).
+- `tests/unit/import/verify-grounding.test.ts` (15) + `tests/unit/notebooklm/{parse-output(35),request(16)}`.
+
+**Bugs/Fixes (ממצאי-בקרה · ראה BUGS.md#notebooklm-engine):** C1 (G4 על legalBackup-בלבד · פיצול allReport/legalReport) · C3 (seam — `unwrapBridgeEnvelope` למעטפת-הגשר) · typecheck verify-grounding:75 (`mdLink?.[1]`) · הקשחת-section (חובה).
+
+**Verification:** typecheck נקי · 636/636 vitest ✓ · dry-run smoke מול golden (G3 verbatim עובד מול 2.1 האמיתי · 9.9-מומצא נדחה ב-G1).
+
+**Verdict:** PASS.
+
+**Self-check:** בהקשר — כן (שימוש-חוזר ב-quoteAppearsInBody הקנוני · firewall native · עברית · status='מוסקנא' · PDF=source). red-lines — אין. הגשר עצמו לא-נבדק-בריצה (Python חסר · bootstrap-מוטי).
+
 ## [2026-05-31 23:57] שער-יוצר (creator gate) — requireCreator()
 
 - **Outcome:** נוצר שער-יוצר server-side שמגן על `/admin/**`: רק האימייל
@@ -34,8 +55,8 @@
 ## [2026-06-01 00:35] צינור-ייבוא T1 (config · map-question · upsert · orchestrator)
 
 - **Outcome:** נבנה צינור-הייבוא ל-T1 (שאלות→`questions`): קונפיג + מיפוי-טהור
-  + upsert-אידמפוטנטי + אורקסטרטור tsx עם dry-run/execute. typecheck נקי,
-  299/299 בדיקות עוברות (24 חדשות), eslint+prettier נקיים. PASS.
+  - upsert-אידמפוטנטי + אורקסטרטור tsx עם dry-run/execute. typecheck נקי,
+    299/299 בדיקות עוברות (24 חדשות), eslint+prettier נקיים. PASS.
 - **What changed:**
   - `scripts/import-content.config.ts` — T1_FILE_IDS (5 מ-CONTENT-INDEX §7,
     רק IDs מלאים — לא קטועים), ROOT_FOLDER_IDS (re-export מ-`drive/client`

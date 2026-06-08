@@ -13,6 +13,17 @@
 - **פתרון שעובד (מקומי):** `git config --unset core.hooksPath` → commit/push רגיל (אף hook לא מנסה לרוץ) → אופציונלית להחזיר `git config core.hooksPath .husky/_`. האיכות נשמרת ע"י הרצה **ידנית** של `npx tsc --noEmit` + `npx prettier --check` (עובדים ב-PowerShell) ו/או ע"י CI ב-GitHub Actions בכל push.
 - **פתרונות-שורש (להחלטת מוטי):** (א) לתקן git-bash (רה-התקנת Git for Windows / `rebaseall` / החרגת אנטי-וירוס); (ב) commit דרך GitHub web.
 
+## 🟢 מנוע-תוכן NotebookLM — ממצאי-בקרה (2026-06-08) {#notebooklm-engine}
+
+> נמצאו ע"י ענף-הבקרה (content-verifier + plan-compliance-auditor → oversight-lead) על מנוע-התוכן (ADR-015) **לפני merge**. C1–C3 תוקנו ואומתו; C4 נסגר; מינוריים = follow-up מתועד.
+
+- **✅ C1 (קריטי) — G4 בדק את 3 חלקי-solution יחד במקום legalBackup בלבד.** `scripts/import-scenarios.ts` שיטח את כל הציטוטים (immediate+legal+engineering) והעביר ל-`verifyScenarioCitations` → תרחיש עם ציטוט-מעוגן ב-immediateAction אבל `legalBackup.citations=[]` היה עובר G4 ונכתב עם גיבוי-חוקי לא-מעוגן (בניגוד לחוזה). **פתרון:** פיצול ל-2 מעברים — `allReport` (לדו"ח + scope_refs) ו-`legalReport` (`legalBackupCitations()` · שער-G4 בלבד); `held = !legalReport.hasGroundedBackup`. + טסט-רגרסיה ב-`verify-grounding.test.ts`.
+- **✅ C3 (major) — אי-התאמת seam גשר↔importer.** הגשר (`run_generation.py`) כותב מעטפת `{ref,generated_at,content:<raw>}` אבל `parseNotebookLmOutput` מצפה ל-`{batch,contentType,items}` וזרק Error. **פתרון:** `unwrapBridgeEnvelope()` ב-import-scenarios — מחלץ `.content` אם זו מעטפת, אחרת מעביר כפי-שהוא (golden/הדבקה-ידנית). seam רובסטי לשני הפורמטים.
+- **✅ C4 (major · פרוטוקול) — חוסר רשומות activity-log לתוצר.** הסוכנים החזירו `activityLogLine` אך לא כתבו (מניעת-race ב-workflow). **פתרון:** רישום-מרכזי ב-`teams/*/activity-log.md` בסיום-הסשן.
+- **✅ typecheck — `verify-grounding.ts:75` TS2532** (`mdLink[1]` possibly-undefined תחת noUncheckedIndexedAccess). **פתרון:** `const rel = mdLink?.[1]; if (!rel) continue;`.
+- **🟡 C2 (דרישת-תכנון · לא-באג) — אין סינון `status='מאומת'` בהגשה ללומד.** **לא-תוקן בכוונה:** המודל-הקיים מגיש תוכן 'מוסקנא' (כל 554 השאלות) ו-content-verifier מקדם→'מאומת' אח"כ; סינון כאן יסתיר את כל התוכן הקיים. **Follow-up Phase-5:** להחליט אם/איך לגדר 'מוסקנא' בהגשה.
+- **🟡 מינוריים (follow-up · לא-חוסם):** `MIN_QUOTE_CHARS=12` נמוך לעברית (שקול ≥20 + uniqueness) · אין `MAX_LENGTH` ב-parse-output · אין cross-check scopeHint↔scopeId שחוזר · `parseLegislationIndex` ללא ולידציית-isValidScopeId על המפתח · אין integration-test מלא ל-import-scenarios (יש smoke dry-run ידני).
+
 ## ✅ OOB-blocked — pnpm drive:auth נכשל
 
 - **תסמין:** OAuth `urn:ietf:wg:oauth:2.0:oob` חסום (Google חסמה OOB ללקוחות שנוצרו אחרי 2022).

@@ -115,26 +115,38 @@ export const chunks = pgTable(
 );
 
 // ─── scenarios ─────────────────────────────────────────────────────────
-export const scenarios = pgTable('scenarios', {
-  id: uuid('id')
-    .primaryKey()
-    .default(sql`uuid_generate_v4()`),
-  title: text('title').notNull(),
-  background: text('background').notNull(),
-  data: text('data'),
-  task: text('task').notNull(),
-  solution: text('solution').notNull(),
-  rubric: jsonb('rubric')
-    .notNull()
-    .default(sql`'[]'::jsonb`),
-  scopeRefs: jsonb('scope_refs')
-    .notNull()
-    .default(sql`'[]'::jsonb`),
-  sourceRef: text('source_ref'),
-  status: contentStatus('status').notNull().default('מאומת'),
-  difficulty: smallint('difficulty'),
-  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-});
+export const scenarios = pgTable(
+  'scenarios',
+  {
+    id: uuid('id')
+      .primaryKey()
+      .default(sql`uuid_generate_v4()`),
+    title: text('title').notNull(),
+    background: text('background').notNull(),
+    data: text('data'),
+    task: text('task').notNull(),
+    solution: text('solution').notNull(),
+    rubric: jsonb('rubric')
+      .notNull()
+      .default(sql`'[]'::jsonb`),
+    scopeRefs: jsonb('scope_refs')
+      .notNull()
+      .default(sql`'[]'::jsonb`),
+    // Stable provenance key for the NotebookLM scenario-import pipeline — lets
+    // `onConflict(source_ref)` make re-imports idempotent (migration 0003).
+    // Nullable: hand-authored scenarios (NULL ref) skip de-dup (NULLs distinct).
+    sourceRef: text('source_ref'),
+    status: contentStatus('status').notNull().default('מאומת'),
+    difficulty: smallint('difficulty'),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => ({
+    statusIdx: index('idx_scenarios_status').on(t.status),
+    // Unique on source_ref enables ON CONFLICT (source_ref) idempotent imports
+    // (mirrors idx_questions_source_ref). Postgres treats NULLs as distinct.
+    sourceRefIdx: uniqueIndex('idx_scenarios_source_ref').on(t.sourceRef),
+  }),
+);
 
 // ─── questions ─────────────────────────────────────────────────────────
 export const questions = pgTable(

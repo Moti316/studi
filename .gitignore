@@ -68,3 +68,7 @@ storybook-static/
 
 # Drizzle
 drizzle/meta/
+
+# nblm-bridge (Python bridge — isolated from pnpm tree)
+tools/nblm-bridge/.venv/
+tools/nblm-bridge/storage_state.json

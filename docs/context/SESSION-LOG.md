@@ -5,6 +5,30 @@
 
 ---
 
+## 2026-06-08 (המשך) — מנוע-תוכן NotebookLM (Stage 1) · צד-StudiBuilder נבנה end-to-end (ADR-015)
+
+> **הכרעות-מוטי בסשן:** (1) "שניהם ברצף" — תשתית-דטרמיניסטית + סקאפולד-גשר מוכן-ל-login. (2) "להמתין לגרסה-מורחבת-מהגשר" — לא מייבאים את 20 הקצרים; ה-importer מוכח מול fixtures, וה-20 ייובאו כשהגשר יפיק גרסה-מורחבת. (3) **"היצמדות-להיבט-החוקי + ציון-סעיף — חשוב מההרחבה"** → סעיף נאכף כ**שער-קשה** (`hasValidLegalBackup`). (4) שיחה תמיד בעברית · WORKFLOWS · פרוטוקול-מועצה.
+
+**מה נבנה (כל צד-ה-StudiBuilder · אפס תלות-runtime · אפס-Gemini):**
+
+- **DB:** `0003_add_scenarios_source_ref_index.sql` (unique-index · סוגר פער-אידמפוטנטיות) + `drizzle/schema.ts` + `scripts/apply-migration-0003.ts`. ⏳ **DB-apply ממתין-לאישור-מוטי** (auto-mode חסם מיגרציה-פרודקשן) — `tsx scripts/apply-migration-0003.ts`.
+- **אנטי-הזיה (ליבה):** `src/lib/import/verify-grounding.ts` — G1 (scopeId∈57) · G2 (scopeId→`.md`) · G3 (`quoteAppearsInBody` מילולי מול קורפוס-נבו) · **G4 מחמיר** (`hasValidLegalBackup` — מעוגן **וגם סעיף**) · G5 (סעיף-בגוף · report). + `legislation-resolver.ts` (INDEX.md→נוסח).
+- **importer:** `src/lib/notebooklm/{parse-output,map-scenario,request}.ts` + `scripts/import-scenarios.ts` (CLI · parse→unwrap→G1–G5→upsertScenarios→companion `scenario_walkthrough` · dry-run/execute) + `upsert-scenarios.ts`.
+- **בונה-בקשה:** `scripts/notebooklm/build-request.ts` + `request.ts` (להרחיב-לא-לסכם · **עיגון-חוקי+סעיף כעדיפות-עליונה** · חוזה-JSON inline · רמזי-scope).
+- **גשר (סקאפולד · git-ignored):** `tools/nblm-bridge/{run_generation.py,requirements.txt,README.md}` — notebooklm-py · cookie-auth מנוי (לא-API) · `README` = bootstrap-חד-פעמי-מוטי.
+- **ADR-015** + `BUGS.md#notebooklm-engine` + activity-logs (data/backend/oversight).
+
+**שיטה:** Workflow #1 (ריקון · 9 סוכנים) → הכרעת-גשר. Workflow #2 (מועצה · 5 מומחים-במקביל → אינטגרציה → **ענף-בקרה עצמאי**). הבקרה מצאה 2 קריטיים → **תוקנו ואומתו:** C1 (G4 על legalBackup-בלבד) · C3 (seam unwrap) · C4 (activity-logs) · typecheck. **636/636 vitest ✓ · typecheck נקי · dry-run smoke מול golden+קורפוס-אמיתי (1 נקי / 1 מומצא-נדחה).**
+
+### 🚩 צעד-הבא (סשן-טרי): bootstrap-הגשר + הרחבת-20 אמיתית
+
+1. **bootstrap-מוטי (חד-פעמי · חוסם את ההפקה-האמיתית):** Python≥3.10 + `cd tools/nblm-bridge` + `pip install -r requirements.txt` + `notebooklm login --browser-cookies chrome` (מנוי · לא-API) + smoke `--dry-run`. ראה `tools/nblm-bridge/README.md`. ⚠️ Python **לא** מותקן במכונה הזו.
+2. **תנאי-מוקדם:** מחברת-NotebookLM מעוגנת בחומרי-המקור (~36 · ADR-005) — לאמת/ליצור.
+3. **הפקה:** `pnpm notebooklm:request` (Doc-הרחבה מ-committee-scenarios.json) → `python run_generation.py` (גשר) → `pnpm scenarios:import:dry` (דו"ח-G1–G5) → `pnpm scenarios:import` (`--execute` · אחרי apply-0003). ה-20 ייכנסו כתרחישים-מורחבים-מצוטטים-עם-סעיף → מדליק מנוע-ADR-014.
+4. **follow-up מתועד (BUGS.md):** C2 (סינון status בהגשה · Phase-5) · מינוריים (MIN_QUOTE_CHARS≥20 · MAX_LENGTH · scopeHint cross-check).
+
+---
+
 ## 2026-06-08 — מנוע-תרחישים (חיווט) + מכסת-Gemini-התאפסה + precompute
 
 - **מכסת-Gemini התאפסה** → `precompute:explanations` רץ (free-tier ~100-150/יום · resumable · billing=הכל-בבת-אחת).

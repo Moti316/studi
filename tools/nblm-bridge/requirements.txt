@@ -1,0 +1,10 @@
+# notebooklm-py — ספריית-גשר ל-NotebookLM (RPC לא-מתועד, מבוסס-Playwright)
+# [browser] = extras שמתקין playwright + chromium
+# אזהרה: הספרייה משתמשת ב-RPC פנימי לא-מתועד של Google NotebookLM.
+# API יכול להישבר בכל עדכון-Google ללא התראה.
+# מומלץ: pip install --upgrade notebooklm-py לפני כל סדרת-הפקה.
+notebooklm-py[browser]
+
+# אין pin-גרסה מכוון: הספרייה עוקבת אחרי RPC שמשתנה תכוף.
+# אם גרסה ספציפית עבדה, תעד כאן:
+# notebooklm-py[browser]==<version>  # נבדק בתאריך YYYY-MM-DD

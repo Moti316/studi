@@ -1,0 +1,29 @@
+-- StudiBuilder DB Schema — Migration 0003
+-- Add UNIQUE index on scenarios.source_ref (idempotent scenario imports)
+-- Date: 2026-06-08
+-- Author: data-engineer (דנה) · מנוע-תוכן NotebookLM (Stage 1)
+--
+-- WHY: the `scenarios` table already carries a `source_ref` column (created in
+--      0001) but — unlike `questions` (0002) — it was never indexed. The
+--      NotebookLM scenario-import pipeline needs `INSERT ... ON CONFLICT
+--      (source_ref) DO NOTHING` to be idempotent (re-running an import must not
+--      duplicate scenarios). This mirrors `idx_questions_source_ref` exactly.
+--      NULLs are distinct in Postgres, so hand-authored scenarios (NULL ref) are
+--      unaffected by the unique constraint.
+--
+-- Generated incrementally (single-pass diff against 0001/0002), hand-applied per
+-- drizzle.config.ts convention (Supabase SQL Editor) OR via the companion script
+-- `scripts/apply-migration-0003.ts` (idempotent, IF NOT EXISTS).
+--
+-- HOW TO RUN:
+-- 1. Open Supabase Dashboard → SQL Editor
+-- 2. New Query → paste this file → RUN (must run AFTER 0001 + 0002)
+--    (or: `tsx scripts/apply-migration-0003.ts`)
+-- 3. Verify:
+--    SELECT indexname FROM pg_indexes
+--      WHERE tablename='scenarios' AND indexname='idx_scenarios_source_ref'; -- 1 row
+--
+-- ROLLBACK:
+-- DROP INDEX IF EXISTS idx_scenarios_source_ref;
+
+CREATE UNIQUE INDEX IF NOT EXISTS "idx_scenarios_source_ref" ON "scenarios" USING btree ("source_ref");
