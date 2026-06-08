@@ -10,12 +10,16 @@
 - **מכסת-Gemini התאפסה** → `precompute:explanations` רץ (free-tier ~100-150/יום · resumable · billing=הכל-בבת-אחת).
 - **`4c91360` מנוע-תרחישים (תרחישי-וועדה · HYBRID native — לא קישור-מגן):** `ScenarioWalkthrough` (היה קיים, לא-מחווט) **חובר ללולאת-השיעור**: `page.tsx loadScenarios` (join scenario_id→ScenarioInput) + LessonPlayer ניתוב `scenario_walkthrough`→ScenarioWalkthrough + ציון-מחוון→openGrade→ANSWER_OPEN (בלי משוב-MCQ) + fallback. 3 טסטי-חיווט.
 
-### 🚩 צעד-הבא: ייבוא-תרחישים + הרחבת-תשובות (סשן-הבא · דורש Gemini)
+### 🚩 צעד-הבא (סשן-טרי): מנוע-תוכן מבוסס-NotebookLM (אוטומציה-מלאה) · [תוכנית מפורטת: `~/.claude/plans/sorted-snuggling-gem.md` (מקומי)]
 
-- **קבצי-מקור (Drive · תיקיית "ממונה בטיחות 2025" · בחירת-מוטי: השראה+שימוש, firewall cleared ע"י מוטי):** "תרחישי הכנה לוועדת הסמכה לממוני בטיחות.pdf" (`1tOcSBGrCq0uibTgy7YC33XKIT3EdxsC4` · 20 תרחישים · מבנה 3-חלקים פעולה-מיידית/גיבוי-חוקי/הנדסה-וניהול · "מנטור: איתן מגן") **+ 2 קבצי-תרחישים נוספים שמוטי העלה 2026-06-08** (כולם בתיקיית "ממונה בטיחות 2025").
-- **חולצו 20 תרחישים** (נקי-שם · solutions verbatim מלאים) לקובץ-עבודה מקומי `scripts/data/committee-scenarios.json` (לא-מקוממט · firewall — נרחיב ל-native, לא נשמור verbatim). כותרות: LOTO · עבודה-בגובה · חומ"ס · בטיחות-אש · עגורן · גיהות · אסבסט · חקירת-תאונות · חלל-מוקף · חשמל-רטוב · חפירות · מלגזות · אש-גלויה · סולמות · כימיקלים · מסועים · ארגונומיה · גז-דחוס · עובד-יחיד · סילו.
-- **⚠️ משימת-הליבה (סשן-חדש · דורש Gemini): להרחיב — לא לסכם!** מוטי: "התשובות לא מספיק מורחבות · צריך להרחיב, לא להקטין". כל solution להעשיר משמעותית (מעוגן-חקיקה/RAG · ציטוט-תקנה · אנטי-הזיה) → importer → `scenarios` table + question (type=scenario_walkthrough+scenario_id). המנוע (`4c91360`) כבר מחווט וממתין לתוכן. (חילוץ-מחדש מה-PDF: `1tOcSBGrCq0uibTgy7YC33XKIT3EdxsC4`.)
-- **פרויקט-גמר (מיני-קורס #2):** capstone לפי `courses/safety-officer/FINAL-PROJECT.md` (JSA · 6-חלקים · מטריצת 4×4) — אחרי התרחישים.
+> **הכרעת-מוטי 2026-06-08:** ליצור הסברים/מבחנים/דיוק-מידע דרך **מנוי-Gemini (NotebookLM)** — לא Gemini-API-בתשלום (מיצוי-מכסה). **שלב-1:** מנוע-תוכן (offline → מאוחסן-מראש). **שלב-2:** מורה-AI חי native (`chatSessions` בסכמה · נדחה). 🧠 זיכרון: `content-gen-full-automation`.
+>
+> **⚠️ אוטומציה-מלאה — מוטי לא מתווך-ידני** ("אני לא יכול להיות המתווך"). Claude Code מריץ אוטומציית-דפדפן (notebooklm-py/Playwright או browser-MCP) מול המנוי-המחובר-של-מוטי · אפס-קליקים-שלו. (פתוח: מנגנון-האוטומציה + login.)
+
+- **ארכיטקטורה:** NotebookLM (מעוגן · מנוי · חינם) **מייצר** → Claude Code **מייבא+מאמת** → StudiBuilder **מגיש מאוחסן-מראש**. צד-ה-StudiBuilder (פרוטוקול-JSON · importer · שערי-אנטי-הזיה G1–G5 · חיבור scenarios↔questions) מפורט בקובץ-התוכנית, רותם את `generated-mcq.ts`(`quoteAppearsInBody`) · `upsert-questions.ts` · `scope-tagger.ts`. **פער שזוהה:** אין עדיין importer ל-`scenarios` + חסר unique-index על `scenarios.source_ref` (מיגרציה).
+- **יישום-ראשון:** הרחבת **20 התרחישים** (להרחיב, לא לסכם! · מעוגן-חקיקה · 3-חלקים) → מדליק את מנוע-ADR-014. מקור: `1tOcSBGrCq0uibTgy7YC33XKIT3EdxsC4` + 2 קבצים נוספים (תיקיית "ממונה בטיחות 2025"). base מקומי: `scripts/data/committee-scenarios.json` (20 · נקי-שם · לא-מקוממט · firewall · solutions verbatim-קצרים → להרחיב).
+- **תנאי-מוקדם:** מחברת-NotebookLM מעוגנת בחומרי-המקור שלנו (למוטי ~36 · ADR-005).
+- **מיני-קורס #2 (אחרי):** פרויקט-גמר (capstone · `courses/safety-officer/FINAL-PROJECT.md` · JSA · מטריצת 4×4).
 
 ---
 

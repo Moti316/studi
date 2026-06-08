@@ -13,7 +13,7 @@
 | 1 | [CLAUDE.md](../../CLAUDE.md) | אילוצים-קשיחים · stack · עקרונות · reading-list | 2026-06-04 |
 | 2 | [AGENTS.md](../../AGENTS.md) | חוקי-על קנוניים חוצי-כלים | 2026-06-03 |
 | 3 | [USER.md](../../USER.md) | פרופיל motilev8 + העדפות-עבודה | 2026-05-29 |
-| 4 | [docs/context/PROJECT-MAP.md](../../docs/context/PROJECT-MAP.md) | דלת-כניסה אוצרת לכל ההקשר | 2026-06-04 |
+| 4 | [docs/context/PROJECT-MAP.md](../../docs/context/PROJECT-MAP.md) | דלת-כניסה אוצרת לכל ההקשר | 2026-06-08 |
 | 5 | [docs/context/STATUS.md](../../docs/context/STATUS.md) | איפה אנחנו — phase · עובד · חסום | 2026-06-02 |
 | 6 | [docs/context/EXECUTION-PLAN.md](../../docs/context/EXECUTION-PLAN.md) | התוכנית end-to-end | 2026-06-04 |
 | 7 | [TODO.md](../../TODO.md) | מקור-אמת למשימות (A–I + ממשל-v2) | 2026-06-04 |
@@ -62,7 +62,7 @@
 | [MD-INDEX.md](../../docs/context/MD-INDEX.md) | ⚠️ קובץ מחולל — אל תערוך ידנית. מקור: .claude/scripts/gen-md-index.mjs · רענון: pnpm index:md | docs context | 2026-06-08 |
 | [MOTI-INBOX.md](../../docs/context/MOTI-INBOX.md) | ערוץ-תקשורת א-סינכרוני. מוטי כותב כאן הערות/הנחיות מכל מחשב (push ל-main); | docs context | 2026-06-04 |
 | [PLANNING-STATE.md](../../docs/context/PLANNING-STATE.md) | ⚠️ לסשן הבא: אנחנו במצב-תכנון רב-נושאי סביב מבנה-הקורס וחומרי-הלימוד — לא לקפוץ ל-build (M5) בלי לסגור את התכ… | docs context | 2026-06-01 |
-| [PROJECT-MAP.md](../../docs/context/PROJECT-MAP.md) | קרא אותי ראשון בכל סשן. אני האינדקס שמכוון לכל שאר קבצי-ההקשר. | docs context | 2026-06-04 |
+| [PROJECT-MAP.md](../../docs/context/PROJECT-MAP.md) | קרא אותי ראשון בכל סשן. אני האינדקס שמכוון לכל שאר קבצי-ההקשר. | docs context | 2026-06-08 |
 | [PROJECTS.md](../../docs/context/PROJECTS.md) | 2 פרויקטים קשורים שמתערבבים. מסמך זה מונע בלבול (גם Claude התבלבל ביניהם). מעודכן: 2026-05-31. | docs context | 2026-06-02 |
 | [SESSION-LOG.md](../../docs/context/SESSION-LOG.md) | בכל סוף-סשן: "מה נעשה / מה הצעד הבא". חדש למעלה. | docs context | 2026-06-08 |
 | [STATUS.md](../../docs/context/STATUS.md) | מקור-האמת ל"איפה אנחנו". טבלאות ה-Phases ב-CLAUDE.md/README.md/MEMORY.md מפנות לכאן. | docs context | 2026-06-02 |
@@ -101,7 +101,7 @@
 | [ADR-011-drive-import-pipeline.md](../../docs/architecture/ADR-011-drive-import-pipeline.md) | Status: Proposed | docs architecture | 2026-06-02 |
 | [ADR-012-dev-workflow-practices.md](../../docs/architecture/ADR-012-dev-workflow-practices.md) | Status: Proposed | docs architecture | 2026-06-01 |
 | [ADR-013-course-template.md](../../docs/architecture/ADR-013-course-template.md) | Status: Proposed | docs architecture | 2026-06-03 |
-| [ADR-014-scenario-engine.md](../../docs/architecture/ADR-014-scenario-engine.md) | סטטוס: Accepted · 2026-06-08 · מיני-קורס #1 מתוך 2 (תרחישים + פרויקט-גמר). | docs architecture | — |
+| [ADR-014-scenario-engine.md](../../docs/architecture/ADR-014-scenario-engine.md) | סטטוס: Accepted · 2026-06-08 · מיני-קורס #1 מתוך 2 (תרחישים + פרויקט-גמר). | docs architecture | 2026-06-08 |
 | [README.md](../../docs/architecture/README.md) | תיעוד כל ההחלטות-הארכיטקטוניות המשמעותיות לפרויקט. כל החלטה מקבלת ADR לפני implementation. | docs architecture | 2026-06-01 |
 
 ### 🖼️ עיצוב ומסכים — screens-spec · design · screens  ·  29
