@@ -29,6 +29,14 @@ export const MOCK_COURSES: MockCourse[] = [
     lastAccessedIso: '2026-06-04T08:00:00.000Z',
     href: '/lesson/practice', // נגן-שיעור עם שאלות-אמת שיובאו (T1)
   },
+  {
+    id: 'course-committee-scenarios',
+    title: 'תרחישי וועדת הסמכה',
+    totalLessons: 15, // 15 תרחישים-מעוגנים שהופקו (NotebookLM · G1–G5)
+    completedLessons: 0,
+    lastAccessedIso: '2026-06-08T12:00:00.000Z',
+    href: '/lesson/scenarios', // מיני-קורס נפרד — תרחישי scenario_walkthrough בלבד
+  },
 ];
 
 /** percent — אחוז שלם של התקדמות בקורס. */

@@ -3,10 +3,12 @@ import { MOCK_COURSES, MOCK_LESSONS, coursePercent } from '@/lib/mock/courses';
 
 describe('MOCK_COURSES', () => {
   it('קורס "ממונה בטיחות בעבודה" קיים עם 11 פרקים + נקודת-כניסה ללימוד', () => {
-    expect(MOCK_COURSES).toHaveLength(1);
+    expect(MOCK_COURSES).toHaveLength(2);
     expect(MOCK_COURSES[0]?.title).toBe('ממונה בטיחות בעבודה');
     expect(MOCK_COURSES[0]?.totalLessons).toBe(11);
     expect(MOCK_COURSES[0]?.href).toBe('/lesson/practice');
+    expect(MOCK_COURSES[1]?.title).toBe('תרחישי וועדת הסמכה');
+    expect(MOCK_COURSES[1]?.href).toBe('/lesson/scenarios');
   });
 
   it('7/11 פרקים הושלמו (מוק); MOCK_LESSONS עם 5 מושלמים', () => {
