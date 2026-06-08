@@ -64,12 +64,27 @@ export function normalizeForMatch(s: string): string {
 /** מינימום-אורך לציטוט תקף (מונע "התאמה" טריוויאלית של מילה בודדת). */
 export const MIN_QUOTE_CHARS = 12;
 
-/** שער-אנטי-הזיה: האם ה-sourceQuote מופיע מילולית בנוסח (אחרי נרמול). */
+/** אֵליפסיס: ".." / "..." / "…" (עם רווחים מסביב) — מפריד קטעי-ציטוט תפורים. */
+const ELLIPSIS_RE = /\s*(?:\.{2,}|…)\s*/g;
+
+/**
+ * שער-אנטי-הזיה: האם ה-sourceQuote מעוגן מילולית בנוסח (אחרי נרמול).
+ *
+ * תומך ב**ציטוט-מקוטע** (אֵליפסיס): מודלים (וגם משפטנים) מצטטים לעתים סעיפי-מפתח
+ * מהנוסח ומדלגים על הביניים עם "..." → המחרוזת-המלאה אינה מופיעה ברצף בגוף.
+ * הגֵייט מפצל על אֵליפסיס ודורש ש**כל** קטע-משמעותי (≥MIN_QUOTE_CHARS אחרי נרמול)
+ * יופיע מילולית בנוסח. חיזוק-נאמן: כל מילה-מוצגת ללומד אכן מהמקור (לא-הזיה),
+ * רק לא-רצופה. ציטוט ללא-אֵליפסיס = התנהגות-קודמת (includes יחיד · קטע אחד).
+ */
 export function quoteAppearsInBody(quote: string, body: string): boolean {
   if (typeof quote !== 'string' || typeof body !== 'string') return false;
-  const q = normalizeForMatch(quote);
-  if (q.length < MIN_QUOTE_CHARS) return false;
-  return normalizeForMatch(body).includes(q);
+  const nb = normalizeForMatch(body);
+  const fragments = quote
+    .split(ELLIPSIS_RE)
+    .map((f) => normalizeForMatch(f))
+    .filter((f) => f.length >= MIN_QUOTE_CHARS);
+  if (fragments.length === 0) return false;
+  return fragments.every((f) => nb.includes(f));
 }
 
 /** depth → difficulty (1 core · 2 framework · 3 sectoral). */

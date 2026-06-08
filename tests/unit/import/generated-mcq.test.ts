@@ -39,6 +39,24 @@ describe('quoteAppearsInBody (שער-אנטי-הזיה)', () => {
   it('דוחה ציטוט קצר-מדי', () => {
     expect(quoteAppearsInBody('יספק', STATUTE.body)).toBe(false);
   });
+  it('מקבל ציטוט-מקוטע (אֵליפסיס) כששני הקטעים מילוליים', () => {
+    expect(quoteAppearsInBody('מחזיק במקום עבודה יספק ... ויתחזק אותו כראוי', STATUTE.body)).toBe(
+      true,
+    );
+    // גם עם תו-אֵליפסיס יוניקוד "…"
+    expect(quoteAppearsInBody('יספק לעובד ציוד מגן אישי … ויתחזק אותו כראוי', STATUTE.body)).toBe(
+      true,
+    );
+  });
+  it('דוחה ציטוט-מקוטע אם קטע אחד מומצא', () => {
+    expect(
+      quoteAppearsInBody('מחזיק במקום עבודה יספק ... העובד רשאי לסרב לכל ציוד', STATUTE.body),
+    ).toBe(false);
+  });
+  it('מתעלם מקטע-קצר (<MIN) ומאמת את הקטע-המשמעותי בלבד', () => {
+    // "מתאים" קצר-מדי → מסונן; "מחזיק במקום עבודה יספק לעובד" מאומת
+    expect(quoteAppearsInBody('מחזיק במקום עבודה יספק לעובד ... מתאים', STATUTE.body)).toBe(true);
+  });
 });
 
 describe('depthToDifficulty', () => {
