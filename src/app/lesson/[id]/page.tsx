@@ -18,6 +18,8 @@ export const dynamic = 'force-dynamic';
 
 /** מספר השאלות המרבי בשיעור בודד. */
 const MAX_QUESTIONS = 20;
+/** מכסה-מובטחת לתרחישי-`scenario_walkthrough` בתרגול — אחרת הם נבלעים בבריכת-השאלות. */
+const SCENARIO_QUOTA = 5;
 
 /**
  * טוען עד MAX_QUESTIONS שאלות `in_scope = true`.
@@ -30,12 +32,21 @@ async function loadQuestions(rawId: string): Promise<Question[]> {
   const inScope = eq(questions.inScope, true);
 
   if (rawId === 'practice') {
-    return db
+    // ייצוג-מובטח לתרחישים: דגימה-אקראית פשוטה בולעת את 15 התרחישים בבריכת-554.
+    // טוען עד SCENARIO_QUOTA תרחישים + שאר-הבריכה (לא-תרחישים), ומערבב.
+    const scen = await db
       .select()
       .from(questions)
-      .where(inScope)
+      .where(and(inScope, eq(questions.type, 'scenario_walkthrough')))
       .orderBy(sql`random()`)
-      .limit(MAX_QUESTIONS);
+      .limit(SCENARIO_QUOTA);
+    const rest = await db
+      .select()
+      .from(questions)
+      .where(and(inScope, sql`${questions.type} <> 'scenario_walkthrough'`))
+      .orderBy(sql`random()`)
+      .limit(MAX_QUESTIONS - scen.length);
+    return [...scen, ...rest].sort(() => Math.random() - 0.5);
   }
 
   // scope-ref path: ID חייב להיות מוכר מתוך 57 פריטי-הוועדה (default-deny).
