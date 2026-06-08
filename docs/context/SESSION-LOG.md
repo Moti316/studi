@@ -9,7 +9,7 @@
 
 > סשן אוטונומי-ארוך (WORKFLOWS-mindset · push+doc-Drive אחרי כל תת-משימה). מוטי נכח לסירוגין; ביצע login-מחדש ל-NotebookLM ואז יצא לאוטונומיה מלאה.
 
-**8 commits ל-main · typecheck + 701 vitest ירוקים · firewall נשמר:**
+**11 commits ל-main · typecheck + 717 vitest ירוקים · firewall נשמר:**
 
 - **`737afe2`** מחוון-תרחישים 3→4 קריטריונים (תואם פתרון-4-חלקים · צמ״א-אחרון) + `ask --new --yes` פר-תרחיש (פותר context-bloat).
 - **`984c52e`** 🔑 **SSL-fix runtime** — חסם TLS-inspection ארגוני (httpx/certifi · `CERTIFICATE_VERIFY_FAILED`). פתרון: `build-cabundle.ps1` (certifi+Windows-store) + `bridgeEnv()` ב-generate-scenarios מגדיר `SSL_CERT_FILE` אוטומטית. תועד `BUGS.md#notebooklm-runtime-ssl`. (נלווה: session פג → login-מחדש חד-פעמי · ה-storage_state נשמר → הרצות-הבאות לא דורשות login.)
@@ -18,14 +18,24 @@
 - **`377453d`** סקריפט-מחיקה בטוח לרה-ייבוא (`delete-old-scenarios.ts` · FK-aware · dry-run default).
 - **`f43e228`** 🆕 **ספריית-חקיקה** — מסך `/legislation` + טאב-חמישי ב-BottomNav (חקיקה). 42 נוסחים · 4 פרקים (חוק›תקנותיו) · תגי-עומק · קישורי נבו+PDF · חיפוש client-side · `catalog.ts` נגזר מ-legislation-manifest (אפס-שכפול). 13 טסטים.
 - **`debdf8a`** שיפורי-הפקה: `repairJsonQuotes()` (fallback למרכאות-לא-escaped · שורש 3 כשלי-הפקה) + פרומפט-ציטוט-verbatim.
+- **`86cfa8f`** `cleanSolutionText()` ב-map-scenario — מסיר סמני-מקור inline (`[1]`,`[1-3]`) שדלפו ל-5 תרחישים + מצמצם רווחים (G3 לא-מושפע · הציטוט לא עובר ניקוי).
 
-**מצב-תרחישים:** הפקה (17/20) → import:dry (12 נקיים/5 מוחזקים אחרי תיקון-אֵליפסיס) → **מחקתי 15 ישנים (3-חלקים) + ייבאתי 12 חדשים (4-חלקים)** → **חי ב-/lesson/scenarios** (אומת DB: 12×4-part · rubric-4 · status='מוסקנא' · +12 שאלות-ליווי).
+**מצב-תרחישים (סופי · 14 מאומתים חיים):** רגנרציה-v2 → **20/20 הופקו · 20/20 G1–G5 נקיים** (repairJsonQuotes שחזר את 3 כשלי-JSON · verbatim-prompt אפס-מוחזקים). **Workflow אימות-סמנטי** (27 סוכנים · oversight-lead+content-verifier · 1.66M tokens) → **14 עברו · 6 נדגלו** (אושר אדוורסרית). **מחקתי 12 + ייבאתי 14 מאומתים** (marker-stripped) → **חי ב-/lesson/scenarios** (אומת DB: 14×4-part · rubric-4 · 0-סמנים · status='מוסקנא' · +14 שאלות-ליווי). ה-20 המלאים ב-`.cache/.../scenarios-expand-v2.json`.
+
+**6 מוחזקים — תיקוני-המאמת המדויקים (לסשן-הבא · ציטוט-פר-בקרה שגוי שה-G1–G5 לא תופס):**
+
+1. **"האנרגיה הבלתי-נראית" (LOTO)** — ציטט 2.8 (מכונות **חקלאיות**!) למכונה תעשייתית → **2.0 §37(4)/§39** (שקול 2.4.1 ל-LOTO-פניאומטי-חשמלי).
+2. **"שלולית מסתורית" (שפך חומ"ס)** — ציטט 3.1 (היגיינה/פסולת) לשפך-סביבתי → **4.4 חוק החומ"ס** ("אירוע חומרים מסוכנים" §1).
+3. **"התהום שמתחת לעגורן"** — typo `"שלוט אזהרה"` → `"שילוט אזהרה"` (ציטוט תקין · רק תיקון-טקסט).
+4. **"קצר בדרך" (חשמל)** — סמני-מקור (כעת מנוקים ע"י `cleanSolutionText` → רה-ייבוא יפתור). ציטוט 2.2 §165(ב) verified · שקול 2.4 §2(ג)/5/6 למפעל-כללי.
+5. **"הפגישה העיוורת" (מלגזות)** — ציטט §202 (חובת-עובד גנרית) במקום חובת-תופס-המפעל (אזור §12/§37 · אמצעי-גישה/מעברים בטוחים) · גם fourPart לא-עקבי.
+6. **"פצצה מתקתקת" (גלילי גז)** — ציטט 3.6 (מעבדות!) לבית-מלאכת-ריתוך + סתירה-פנימית (סעיף לגז לא-דליק בעוד הגזים אצטילן/חמצן) → **2.0 §95–100 (סימן ט')** + רישוי-עסקים לאחסון חמצן/אצטילן.
 
 ### 🚩 צעד-הבא
 
-1. **רגנרציה-v2 רצה ברקע** (כל-20 · עם repairJsonQuotes+verbatim-prompt · פלט `scenarios-expand-v2`). כשתסתיים: `scenarios:import:dry --file scenarios-expand-v2`; אם ≥12 נקיים → מחק-12 + ייבא את הסט-המשופר (יעד ~17). ה-12 החיים מוגנים (cache גובה ל-`scenarios-expand.backup-12clean.json`).
-2. **5 מוחזקים** (פרפרזה/פיסוק אמיתיים) — אם v2 לא פתר, רענון-פרומפט/אימות-PDF.
-3. המשך השלמת-הקורס: explanations (554 · NotebookLM) · MCQ-banks · מנוע-Quiz (D) · capstone.
+1. **6 המוחזקים** — לתקן citation-per-control (לפי הרשימה למעלה): או עריכה-ידנית של `committee-scenarios.json`+regenerate, או הוספת רמז-ציטוט-פר-תרחיש ל-`compact-prompt`. idx-4/9 = תיקון-קל (typo/רה-ייבוא). אז delete+import להגעה ל-~20.
+2. **שדרוג מנוע-האימות לקבוע:** ה-Workflow הסמנטי (citation-per-control · PPE-last · עברית) הוכיח-ערך — לשלב כשלב-קבוע אחרי כל הפקת-תוכן (גם explanations/MCQ).
+3. המשך השלמת-הקורס: explanations (554 · NotebookLM · אותו protocol) · MCQ-banks · מנוע-Quiz (D · routes practice/exam) · capstone · content-verifier (מוסקנא→מאומת).
 
 ---
 
