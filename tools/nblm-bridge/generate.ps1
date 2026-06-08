@@ -33,7 +33,9 @@ if (-not (Test-Path $reqFile)) { throw "קובץ-בקשה חסר: $reqFile  (ה�
 New-Item -ItemType Directory -Force -Path $outDir | Out-Null
 
 Write-Host "[generate] שולח בקשה (notebook=$nbId · request=$request)..."
-$raw = & $venvPy -m notebooklm ask --prompt-file $reqFile -n $nbId --new --json | Out-String
+# 'y' מוזן ל-stdin כדי לאשר אוטומטית את "delete conversation? [y/N]" ש--new מבקש
+# (אחרת תלוי ב-non-interactive). --new מבטיח שיחה-נקייה פר-batch (ללא דליפת-הקשר).
+$raw = 'y' | & $venvPy -m notebooklm ask --prompt-file $reqFile -n $nbId --new --json | Out-String
 $res = $raw | ConvertFrom-Json
 
 # חילוץ הטקסט-תשובה (פלט-המודל = ה-JSON שלנו) — שמות-שדה אפשריים לפי גרסה.

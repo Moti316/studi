@@ -24,6 +24,17 @@
 - **🟡 C2 (דרישת-תכנון · לא-באג) — אין סינון `status='מאומת'` בהגשה ללומד.** **לא-תוקן בכוונה:** המודל-הקיים מגיש תוכן 'מוסקנא' (כל 554 השאלות) ו-content-verifier מקדם→'מאומת' אח"כ; סינון כאן יסתיר את כל התוכן הקיים. **Follow-up Phase-5:** להחליט אם/איך לגדר 'מוסקנא' בהגשה.
 - **🟡 מינוריים (follow-up · לא-חוסם):** `MIN_QUOTE_CHARS=12` נמוך לעברית (שקול ≥20 + uniqueness) · אין `MAX_LENGTH` ב-parse-output · אין cross-check scopeHint↔scopeId שחוזר · `parseLegislationIndex` ללא ולידציית-isValidScopeId על המפתח · אין integration-test מלא ל-import-scenarios (יש smoke dry-run ידני).
 
+## 🟢 גשר-NotebookLM — ממצאי-ריצה (2026-06-08) {#notebooklm-bridge}
+
+> הגשר הותקן ורץ במכונה-הזו. הצטברו 5 ממצאים מעשיים (תיעוד למחשבים-הבאים + פתרון-בעיות).
+
+- **✅ חסם-ארגוני TLS-inspection** — `uv` נכשל בהורדות (`invalid peer certificate: UnknownIssuer`) כי ה-proxy הארגוני מפענח-SSL עם root-CA שלא ב-store של uv. **פתרון:** `UV_SYSTEM_CERTS=1` (uv סומך על cert-store של Windows · ב-`setup.ps1`). לגיטימי, לא עקיפת-אבטחה.
+- **✅ Chrome App-Bound Encryption חוסם cookie-extract** — `notebooklm login --browser-cookies chrome` נכשל (`RtlAdjustPrivilege`) כי Chrome 127+ מצפין cookies במפתח-מערכת (דורש admin). **פתרון:** login **אינטראקטיבי** (`--browser chrome` · GUI · פעם-אחת). הפרופיל-הפרסיסטנטי שומר session.
+- **✅ קידוד .ps1** — Windows-PowerShell 5.1 קורא `.ps1` ללא-BOM כ-ANSI → עברית מתעוותת ושוברת מחרוזות. **פתרון:** לשמור `.ps1` כ-UTF-8 **עם BOM** (re-encode אחרי כל Edit).
+- **✅ `notebooklm create --json`** — ה-ID **מקונן** תחת `.notebook.id` (לא `.id`). תוקן ב-`build-notebook.ps1`.
+- **✅ `notebooklm ask --new`** — מבקש אישור `delete conversation? [y/N]` → **תלוי ב-non-interactive**. **פתרון:** להזין `'y'` ל-stdin (`'y' | notebooklm ask ... --new`).
+- **🔑 `ask` מגבלת-אורך-קלט (הממצא-המרכזי)** — פרומפט ~793 תווים ✓ מחזיר JSON-מעוגן-מושלם; פרומפט ~7.7KB → `No parseable chunks in streaming chat response... empty` (NotebookLM-chat דוחה קלט-ארוך). **פתרון:** **פרומפט-קצר פר-תרחיש** (לולאה · המקורות מעוגנים-במחברת → א"צ להטמיע סכמה+דוגמה ענקיות). **פלט-עובד:** flat `{title,immediateAction,legalBackup,legalCitation:{scopeId,quote,section},engineeringMgmt}` + ציטוטי-מקור [N] → adapter ל-batch-format של ה-importer. ⏭️ **נותר לבנות:** מצב per-scenario ב-build-request + לולאת-generate + adapter flat→batch → ואז G1–G5.
+
 ## ✅ OOB-blocked — pnpm drive:auth נכשל
 
 - **תסמין:** OAuth `urn:ietf:wg:oauth:2.0:oob` חסום (Google חסמה OOB ללקוחות שנוצרו אחרי 2022).

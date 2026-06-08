@@ -27,7 +27,13 @@
 - **ערכת-סקריפטים חוצת-מחשבים** (`tools/nblm-bridge/`): `setup.ps1` (bootstrap · אידמפוטנטי · UTF-8+BOM) · `login.ps1` · `build-notebook.ps1` (מחברת-אחת + כל ~43 הנוסחים) · `mindmap.ps1` · `generate.ps1` (`ask --prompt-file`→מעטפת) · `run_generation.py` (CLI-subprocess · תוקן — ה-Python-API שהסוכן כתב לא-אומת). README מיושר-למציאות. prompt-הבקשה נוצר.
 - **הכרעות-מוטי:** מחברת-**אחת** מאוחדת לכל החקיקה (תרחישים חוצי-תחומים · עיגון מאותם `.md` של G3) + **מפת-חשיבה** (`generate mind-map`).
 
-**צעד-הבא (חוסם · רק-מוטי):** `powershell -File tools\nblm-bridge\login.ps1` (login-Google חד-פעמי · GUI · סיסמה/2FA · לא-ניתן-לאוטומציה). ואז **אני** רץ: `build-notebook.ps1` → `generate.ps1 <id>` → `pnpm scenarios:import:dry` → `pnpm scenarios:import`. 20 תרחישים מורחבים-מצוטטים-עם-סעיף → מדליק ADR-014.
+**✅ login בוצע · מחברת-חקיקה נבנתה · הפקה הוכחה (המשך-סשן):**
+
+- **login** (Auth ✓ · motilev8@gmail.com · 29 cookies). **39 מחברות-מוטי סווגו** → `NOTEBOOKLM-ASSETS.md` (`59b86bd`).
+- **מחברת-חקיקה מאוחדת `c3f2d80a`** ("ממונה בטיחות — חקיקה מלאה") — **42 נוסחי-`.md` הועלו ומאוינדקסים** (`ready`).
+- **🎉 הפקה הוכחה end-to-end:** פרומפט-קצר (~800 תווים) → NotebookLM החזיר **JSON מעוגן** (`immediateAction`/`legalBackup`/`legalCitation:{scopeId,quote,section}`/`engineeringMgmt` + ציטוטי-מקור [N]). **חסם שנפתר:** chat-RPC יש **מגבלת-אורך-קלט** (~800✓ · 7.7KB→ריק) — ראה `BUGS.md#notebooklm-bridge` (5 ממצאי-ריצה).
+
+**צעד-הבא (פלמבינג · מוגדר-היטב):** לבנות מצב **per-scenario** — (1) `build-request --per-scenario` (פרומפט-קצר פר-תרחיש · flat) · (2) לולאת-`generate` (ask פר-תרחיש · `'y'|--new` · throttle) · (3) **adapter flat→batch** (מיזוג background/task/rubric מ-committee-scenarios.json + 3-החלקים+citation מ-NotebookLM) → `scenarios:import:dry` (G1–G5) → `import`. מדליק ADR-014.
 
 **follow-up (BUGS.md):** C2 (סינון status בהגשה · Phase-5) · מינוריים (MIN_QUOTE_CHARS≥20 · MAX_LENGTH · scopeHint cross-check).
 

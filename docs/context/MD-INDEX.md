@@ -264,7 +264,7 @@
 | [LEGISLATION-COVERAGE.md](../../courses/safety-officer/LEGISLATION-COVERAGE.md) | מקור: workflow קריאה-מלאה (2026-06-01). name-clean — ללא שמות-מרצים (ראה ../../docs/compliance/COMPLIANCE.md)… | courses safety-officer | 2026-06-01 |
 | [LEGISLATION-SOURCES.md](../../courses/safety-officer/LEGISLATION-SOURCES.md) | הבסיס-החוקי שמאמת כל שאלה/הסבר. PDF = source-of-truth (ADR-005/ADR-011): תשובה | courses safety-officer | 2026-06-03 |
 | [MOLSA-PROGRAM.md](../../courses/safety-officer/MOLSA-PROGRAM.md) | מיפוי התכנית הרשמית להכשרת "ממונה בטיחות בעבודה" (מינהל הבטיחות והבריאות | courses safety-officer | 2026-06-01 |
-| [NOTEBOOKLM-ASSETS.md](../../courses/safety-officer/NOTEBOOKLM-ASSETS.md) | תכלית: אינדקס-עבודה של מחברות-ה-NotebookLM של מוטי הרלוונטיות לקורס ממונה-בטיחות. | courses safety-officer | — |
+| [NOTEBOOKLM-ASSETS.md](../../courses/safety-officer/NOTEBOOKLM-ASSETS.md) | תכלית: אינדקס-עבודה של מחברות-ה-NotebookLM של מוטי הרלוונטיות לקורס ממונה-בטיחות. | courses safety-officer | 2026-06-08 |
 | [README.md](../../courses/safety-officer/README.md) | תיקיית-הקורס. המבנה = תבנית-הפלטפורמה (כל קורס עתידי באותו מבנה): פרק=מיני-קורס · 3 מצבים (שו"ת · תרחישים · מ… | courses safety-officer | 2026-06-01 |
 | [REGULATORY-WATCH.md](../../courses/safety-officer/REGULATORY-WATCH.md) | מעקב-רגולטורי בלבד — ⚠️ לא תוכן-קורס מחייב. קובץ זה מתעד רפורמות-חקיקה שפורסמו/נחתמו | courses safety-officer | 2026-06-01 |
 | [README.md](../../courses/safety-officer/sources/final-project/README.md) | גיבוי-reference פרטי (הריפו פרטי). אין לשכפל PII לתוכן-משתמש. מעודכן: 2026-06-01. | safety-officer sources final-project | 2026-06-01 |
@@ -335,7 +335,7 @@
 | [identity.md](../../teams/mediator/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי, ממרשם-התפקידים). | teams mediator | 2026-05-31 |
 | [memory.md](../../teams/mediator/memory.md) | המתווך של Agent-OS — השכבה היחידה שבין 4 ראשי-הצוות למועצה (מוטי). תפקידי: לרכז את דו"חות 4 ראשי-הצוות (strat… | teams mediator | 2026-05-31 |
 | [ORG.md](../../teams/ORG.md) | מסמך-העוגן של היררכיית-הסוכנים והממשל. כל סוכן קורא אותו אחרי | teams | 2026-06-03 |
-| [PROJECT-CONTEXT.md](../../teams/PROJECT-CONTEXT.md) | הקובץ הראשון שכל סוכן קורא בתחילת כל משימה, לפני identity.md ו-memory.md. | teams | 2026-06-03 |
+| [PROJECT-CONTEXT.md](../../teams/PROJECT-CONTEXT.md) | הקובץ הראשון שכל סוכן קורא בתחילת כל משימה, לפני identity.md ו-memory.md. | teams | 2026-06-08 |
 | [activity-log.md](../../teams/quality/appsec/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams quality appsec | 2026-06-01 |
 | [identity.md](../../teams/quality/appsec/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי, ממרשם-התפקידים). | teams quality appsec | 2026-05-31 |
 | [memory.md](../../teams/quality/appsec/memory.md) | Application Security Engineer בצוות-האיכות. מזהה וממתֵן סיכוני-אבטחה ברמת-האפליקציה. | teams quality appsec | 2026-05-31 |
