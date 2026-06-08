@@ -5,6 +5,30 @@
 
 ---
 
+## 2026-06-08 (המשך-ג · אוטונומי) — תרחישים 4-חלקים חיים · SSL-fix · ספריית-חקיקה
+
+> סשן אוטונומי-ארוך (WORKFLOWS-mindset · push+doc-Drive אחרי כל תת-משימה). מוטי נכח לסירוגין; ביצע login-מחדש ל-NotebookLM ואז יצא לאוטונומיה מלאה.
+
+**8 commits ל-main · typecheck + 701 vitest ירוקים · firewall נשמר:**
+
+- **`737afe2`** מחוון-תרחישים 3→4 קריטריונים (תואם פתרון-4-חלקים · צמ״א-אחרון) + `ask --new --yes` פר-תרחיש (פותר context-bloat).
+- **`984c52e`** 🔑 **SSL-fix runtime** — חסם TLS-inspection ארגוני (httpx/certifi · `CERTIFICATE_VERIFY_FAILED`). פתרון: `build-cabundle.ps1` (certifi+Windows-store) + `bridgeEnv()` ב-generate-scenarios מגדיר `SSL_CERT_FILE` אוטומטית. תועד `BUGS.md#notebooklm-runtime-ssl`. (נלווה: session פג → login-מחדש חד-פעמי · ה-storage_state נשמר → הרצות-הבאות לא דורשות login.)
+- **`46391c4`** תיקון-רינדור Markdown-bold ב-ScenarioWalkthrough (הכוכביות הוצגו כטקסט-גולמי · `renderBold()`).
+- **`ce7976c`** G3 מודע-אֵליפסיס — `quoteAppearsInBody` מפצל על "..." ודורש כל קטע verbatim (שחזור ציטוטים-מקוטעים-נאמנים · אומת אמפירית שהקטעים verbatim בנוסח).
+- **`377453d`** סקריפט-מחיקה בטוח לרה-ייבוא (`delete-old-scenarios.ts` · FK-aware · dry-run default).
+- **`f43e228`** 🆕 **ספריית-חקיקה** — מסך `/legislation` + טאב-חמישי ב-BottomNav (חקיקה). 42 נוסחים · 4 פרקים (חוק›תקנותיו) · תגי-עומק · קישורי נבו+PDF · חיפוש client-side · `catalog.ts` נגזר מ-legislation-manifest (אפס-שכפול). 13 טסטים.
+- **`debdf8a`** שיפורי-הפקה: `repairJsonQuotes()` (fallback למרכאות-לא-escaped · שורש 3 כשלי-הפקה) + פרומפט-ציטוט-verbatim.
+
+**מצב-תרחישים:** הפקה (17/20) → import:dry (12 נקיים/5 מוחזקים אחרי תיקון-אֵליפסיס) → **מחקתי 15 ישנים (3-חלקים) + ייבאתי 12 חדשים (4-חלקים)** → **חי ב-/lesson/scenarios** (אומת DB: 12×4-part · rubric-4 · status='מוסקנא' · +12 שאלות-ליווי).
+
+### 🚩 צעד-הבא
+
+1. **רגנרציה-v2 רצה ברקע** (כל-20 · עם repairJsonQuotes+verbatim-prompt · פלט `scenarios-expand-v2`). כשתסתיים: `scenarios:import:dry --file scenarios-expand-v2`; אם ≥12 נקיים → מחק-12 + ייבא את הסט-המשופר (יעד ~17). ה-12 החיים מוגנים (cache גובה ל-`scenarios-expand.backup-12clean.json`).
+2. **5 מוחזקים** (פרפרזה/פיסוק אמיתיים) — אם v2 לא פתר, רענון-פרומפט/אימות-PDF.
+3. המשך השלמת-הקורס: explanations (554 · NotebookLM) · MCQ-banks · מנוע-Quiz (D) · capstone.
+
+---
+
 ## 2026-06-08 (המשך) — מנוע-תוכן NotebookLM (Stage 1) · צד-StudiBuilder נבנה end-to-end (ADR-015)
 
 > **הכרעות-מוטי בסשן:** (1) "שניהם ברצף" — תשתית-דטרמיניסטית + סקאפולד-גשר מוכן-ל-login. (2) "להמתין לגרסה-מורחבת-מהגשר" — לא מייבאים את 20 הקצרים; ה-importer מוכח מול fixtures, וה-20 ייובאו כשהגשר יפיק גרסה-מורחבת. (3) **"היצמדות-להיבט-החוקי + ציון-סעיף — חשוב מההרחבה"** → סעיף נאכף כ**שער-קשה** (`hasValidLegalBackup`). (4) שיחה תמיד בעברית · WORKFLOWS · פרוטוקול-מועצה.
