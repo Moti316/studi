@@ -22,7 +22,7 @@
  * design-tokens only. Reference: COURSE-DESIGN.md (3 learning modes) · FINAL-PROJECT.md.
  */
 
-import { useId, useReducer } from 'react';
+import { useId, useReducer, useState } from 'react';
 import type { QuestionResult, RubricCriterion, ScenarioInput } from './types';
 import { isRubric } from './types';
 
@@ -82,6 +82,8 @@ export function ScenarioWalkthrough({
 
   const headingId = useId();
   const scratchpadId = useId();
+  // תשובת-הלומד — נשמרת ב-state כך שתישאר גלויה גם אחרי חשיפת-הפתרון (להשוואה).
+  const [answer, setAnswer] = useState('');
 
   const totalPoints = rubric.reduce((sum, c) => sum + c.points, 0);
   const earnedPoints = rubric.reduce((sum, c, i) => (state.checked[i] ? sum + c.points : sum), 0);
@@ -163,12 +165,14 @@ export function ScenarioWalkthrough({
       {state.phase === 'work' && (
         <div className="flex flex-col gap-3">
           <label htmlFor={scratchpadId} className="text-sm font-bold text-quiz-text-secondary">
-            הניתוח שלך (טיוטה — לא נשמר, לתרגול-עצמי):
+            הניתוח שלך (נשאר גלוי להשוואה מול הפתרון):
           </label>
           <textarea
             id={scratchpadId}
             data-testid="scenario-scratchpad"
             rows={6}
+            value={answer}
+            onChange={(e) => setAnswer(e.target.value)}
             placeholder="זהה מפגעים → הערך סיכון (חומרה × סבירות) → המלץ על מדרג-בקרות → הפנה לתקנות…"
             className="w-full resize-y rounded-card border border-quiz-border bg-white px-4 py-3 text-start text-sm leading-relaxed text-quiz-text-primary placeholder:text-quiz-text-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active"
           />
@@ -183,6 +187,17 @@ export function ScenarioWalkthrough({
         </div>
       )}
 
+      {/* ── התשובה שלך — נשארת גלויה אחרי חשיפת-הפתרון (להשוואה · גם לבדיקת-מנחה) ── */}
+      {state.phase !== 'work' && answer.trim().length > 0 && (
+        <div
+          data-testid="scenario-your-answer"
+          className="flex flex-col gap-1 rounded-card border border-quiz-border bg-quiz-bg px-4 py-3 text-start text-sm leading-relaxed"
+        >
+          <span className="font-bold text-quiz-text-secondary">התשובה שלך</span>
+          <p className="whitespace-pre-line text-quiz-text-primary">{answer}</p>
+        </div>
+      )}
+
       {/* ── Phase: review/done — expert solution (revealed) ── */}
       {state.phase !== 'work' && (
         <div
@@ -190,7 +205,7 @@ export function ScenarioWalkthrough({
           className="flex flex-col gap-1 rounded-card border border-quiz-success-border bg-quiz-success-bg px-4 py-3 text-start text-sm leading-relaxed"
         >
           <span className="font-bold text-success">פתרון-מומחה</span>
-          <p className="text-quiz-text-primary">{scenario.solution}</p>
+          <p className="whitespace-pre-line text-quiz-text-primary">{scenario.solution}</p>
         </div>
       )}
 
