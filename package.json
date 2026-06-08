@@ -28,6 +28,7 @@
     "qa:import": "tsx scripts/import-qa-bank.ts --execute",
     "qa:import:dry": "tsx scripts/import-qa-bank.ts --dry-run",
     "notebooklm:request": "tsx scripts/notebooklm/build-request.ts",
+    "scenarios:generate": "tsx scripts/notebooklm/generate-scenarios.ts",
     "scenarios:import": "tsx scripts/import-scenarios.ts --execute",
     "scenarios:import:dry": "tsx scripts/import-scenarios.ts --dry-run",
     "precompute:explanations": "tsx scripts/precompute-explanations.ts --execute",

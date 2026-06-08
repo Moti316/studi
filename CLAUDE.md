@@ -20,7 +20,7 @@
 - **צעד-0 — סנכרון-ריפו (הפעולה-הראשונה, לפני קריאת-המסמכים):** `git fetch` + `git pull` אם מאחור. ה-SessionStart hook מתריע אוטומטית.
 - **בסיס:** `CLAUDE.md` · `AGENTS.md` · `USER.md`
 - **משימות (TODO דו-שכבתי):** `TODO.md` (master A–I מול EXECUTION-PLAN) · `docs/todo/` (קובץ פר-שלב — פירוט תתי-משימות + קריטריוני-קבלה)
-- **הקשר-חי** (`docs/context/`): `PROJECT-MAP.md` · `PROJECTS.md` · `STATUS.md` · `EXECUTION-PLAN.md` · `TASKS.md` (stub → `docs/todo/`) · `BUGS.md` · `DECISIONS.md` · `ACCESS-MAP.md` · `SESSION-LOG.md`
+- **הקשר-חי** (`docs/context/`): `PROJECT-MAP.md` · `PROTOCOL-INDEX.md` (מפת-ממשל מאוצרת — 4 שכבות+בקרה · 12 פרוטוקולים · זרימת-דיווח · צו-עצירה · 7-צעדים · Star-Chamber) · `PROJECTS.md` · `STATUS.md` · `EXECUTION-PLAN.md` · `TASKS.md` (stub → `docs/todo/`) · `BUGS.md` · `DECISIONS.md` · `ACCESS-MAP.md` · `SESSION-LOG.md`
 - **תוכן/scope:** `docs/content-scope.md` · `docs/CONTENT-INDEX.md`
 - **קורס safety-officer** (`courses/safety-officer/`): `curriculum-atgar` · `LEGISLATION-SOURCES` · `LEGISLATION-COVERAGE` · `MOLSA-PROGRAM` · `LEARNING-MATERIALS` · `UNREAD-MEDIA` · `ATTRIBUTION` · `COURSE-DESIGN` · `FINAL-PROJECT` · `REGULATORY-WATCH` · `ISO-31010/31000-DRAFT` · `docs/PROJECT-STRUCTURE.md`
 - **ציות/רעיונות:** `docs/compliance/COMPLIANCE.md` (חובות-ציות + task-force) · `docs/IDEAS.md` (רעיונות/פידבק)
