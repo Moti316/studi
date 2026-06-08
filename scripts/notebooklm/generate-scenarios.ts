@@ -128,9 +128,23 @@ async function main(): Promise<void> {
       writeFileSync(TMP_PROMPT_FILE, prompt, 'utf-8');
 
       // 4c. הפעל CLI
+      // --new --yes: שיחה-טרייה פר-תרחיש (לא-אינטראקטיבי). מבטל context-bloat —
+      // ב-default ה-ask "ממשיך את השיחה האחרונה", כך ש-20 קריאות רצופות מצטברות
+      // ומדרדרות תרחישים-מאוחרים (G3 verbatim נכשל). --new מאפס את ההקשר השרתי
+      // לפני כל שאלה (--yes מדלג על אישור-המחיקה). ראה BUGS.md#notebooklm-bridge.
       const stdout = execFileSync(
         VENV_PYTHON,
-        ['-m', 'notebooklm', 'ask', '--prompt-file', TMP_PROMPT_FILE, '-n', notebookId],
+        [
+          '-m',
+          'notebooklm',
+          'ask',
+          '--new',
+          '--yes',
+          '--prompt-file',
+          TMP_PROMPT_FILE,
+          '-n',
+          notebookId,
+        ],
         {
           encoding: 'utf-8',
           env: { ...process.env, PYTHONUTF8: '1' },
