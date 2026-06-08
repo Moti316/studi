@@ -41,8 +41,9 @@ import { MCQLong } from './components/MCQLong';
 import { MCQShort } from './components/MCQShort';
 import { MatchingPairs } from './components/MatchingPairs';
 import { ExplanationCard } from './components/ExplanationCard';
+import { ScenarioWalkthrough } from './components/ScenarioWalkthrough';
 import { DeepExplanationButton } from './components/DeepExplanationButton';
-import type { QuestionResult } from './components/types';
+import type { QuestionResult, ScenarioInput } from './components/types';
 import { isMatchingPairs, isMcqCorrectAnswer, isStringOptions } from './components/types';
 import type { OpenGrade } from '@/lib/grading/keyword-match';
 
@@ -56,6 +57,12 @@ export const XP_PER_CORRECT = 10;
 export type LessonPlayerProps = {
   /** Ordered list of questions to play. */
   questions: Question[];
+  /**
+   * Scenario data for `scenario_walkthrough` questions, keyed by question id.
+   * Loaded server-side (scenarios joined via scenario_id) and threaded to the
+   * <ScenarioWalkthrough> player. Missing entry → graceful read-card fallback.
+   */
+  scenarios?: Record<string, ScenarioInput>;
   /** Optional callback fired once when the summary screen is reached. */
   onFinish?: (summary: LessonSummary) => void;
 };
@@ -182,7 +189,7 @@ function deriveCorrectAnswerText(question: Question): string | null {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export function LessonPlayer({ questions, onFinish }: LessonPlayerProps) {
+export function LessonPlayer({ questions, scenarios, onFinish }: LessonPlayerProps) {
   const total = questions.length;
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
 
@@ -281,6 +288,7 @@ export function LessonPlayer({ questions, onFinish }: LessonPlayerProps) {
         <QuestionRenderer
           key={state.index}
           question={current}
+          scenario={scenarios?.[current.id]}
           onResult={handleResult}
           disabled={isFeedback}
         />
@@ -412,6 +420,8 @@ export function LessonPlayer({ questions, onFinish }: LessonPlayerProps) {
 
 type QuestionRendererProps = {
   question: Question;
+  /** Scenario data for a `scenario_walkthrough` question (else undefined). */
+  scenario?: ScenarioInput;
   onResult: (result: QuestionResult) => void;
   /** While feedback is showing the active question is locked (no re-answer). */
   disabled: boolean;
@@ -422,7 +432,7 @@ type QuestionRendererProps = {
  * in a feedback phase the renderer swallows further results (`disabled`) so a
  * stray callback can't double-score.
  */
-function QuestionRenderer({ question, onResult, disabled }: QuestionRendererProps) {
+function QuestionRenderer({ question, scenario, onResult, disabled }: QuestionRendererProps) {
   const guardedResult = useCallback(
     (result: QuestionResult) => {
       if (disabled) return;
@@ -436,6 +446,19 @@ function QuestionRenderer({ question, onResult, disabled }: QuestionRendererProp
       return <MCQLong question={question} onResult={guardedResult} />;
     case 'mcq_short':
       return <MCQShort question={question} onResult={guardedResult} />;
+    case 'scenario_walkthrough': {
+      // ScenarioWalkthrough מנהל ציון-עצמי-מחוון משלו → ממיר ל-openGrade כדי
+      // להתקדם **בלי משוב-MCQ** (כמו שו"ת). חוסר-נתוני-תרחיש → read-card fallback.
+      if (!scenario) {
+        return <ExplanationCard question={question} onResult={guardedResult} disabled={disabled} />;
+      }
+      return (
+        <ScenarioWalkthrough
+          scenario={scenario}
+          onResult={(r) => guardedResult({ ...r, openGrade: r.correct ? 'correct' : 'incorrect' })}
+        />
+      );
+    }
     case 'matching': {
       if (!isMatchingPairs(question.options)) {
         return <ExplanationCard question={question} onResult={guardedResult} disabled={disabled} />;

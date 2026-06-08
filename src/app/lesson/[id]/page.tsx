@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { and, eq, sql } from 'drizzle-orm';
+import { and, eq, inArray, sql } from 'drizzle-orm';
 import { requireAuth } from '@/lib/auth/server';
 import { db } from '@/lib/db';
-import { questions, type Question } from '../../../../drizzle/schema';
+import { questions, scenarios, type Question } from '../../../../drizzle/schema';
 import { isValidScopeId } from '@/lib/db/constants/scope-refs';
 import { LessonPlayer } from '@/features/lesson-player/LessonPlayer';
+import type { ScenarioInput, RubricCriterion } from '@/features/lesson-player/components/types';
+import { isRubric } from '@/features/lesson-player/components/types';
 
 export const metadata: Metadata = {
   title: 'שיעור',
@@ -52,6 +54,33 @@ async function loadQuestions(rawId: string): Promise<Question[]> {
 }
 
 /**
+ * טוען את נתוני-התרחיש לשאלות-`scenario_walkthrough` ומחזיר מפה לפי question-id.
+ * שאילתה רק כשיש שאלות-תרחיש (אחרת מחזיר מפה-ריקה ללא פגיעה-ב-DB).
+ */
+async function loadScenarios(qs: Question[]): Promise<Record<string, ScenarioInput>> {
+  const withScenario = qs.filter((q) => q.type === 'scenario_walkthrough' && q.scenarioId);
+  const ids = [...new Set(withScenario.map((q) => q.scenarioId as string))];
+  if (ids.length === 0) return {};
+
+  const rows = await db.select().from(scenarios).where(inArray(scenarios.id, ids));
+  const byId = new Map(rows.map((r) => [r.id, r]));
+  const map: Record<string, ScenarioInput> = {};
+  for (const q of withScenario) {
+    const s = byId.get(q.scenarioId as string);
+    if (!s) continue;
+    map[q.id] = {
+      title: s.title,
+      background: s.background,
+      data: s.data,
+      task: s.task,
+      solution: s.solution,
+      rubric: isRubric(s.rubric) ? (s.rubric as RubricCriterion[]) : [],
+    };
+  }
+  return map;
+}
+
+/**
  * `/lesson/[id]` — מסך השיעור (מחליף את ה-POC `/poc/matching`).
  *
  * Server Component:
@@ -92,12 +121,14 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
     );
   }
 
+  const scenarioMap = await loadScenarios(lessonQuestions);
+
   return (
     <main dir="rtl" className="mx-auto w-full max-w-2xl p-4 pb-8">
       <div className="mb-4">
         <BackToDashboard />
       </div>
-      <LessonPlayer questions={lessonQuestions} />
+      <LessonPlayer questions={lessonQuestions} scenarios={scenarioMap} />
     </main>
   );
 }
