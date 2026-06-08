@@ -72,3 +72,5 @@ drizzle/meta/
 # nblm-bridge (Python bridge — isolated from pnpm tree)
 tools/nblm-bridge/.venv/
 tools/nblm-bridge/storage_state.json
+# runtime CA bundle + exported Windows certs (machine-local · contains corporate root CA)
+tools/nblm-bridge/.cache-*.pem

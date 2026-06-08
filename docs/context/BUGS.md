@@ -35,6 +35,20 @@
 - **✅ `notebooklm ask --new`** — מבקש אישור `delete conversation? [y/N]` → **תלוי ב-non-interactive**. **פתרון:** להזין `'y'` ל-stdin (`'y' | notebooklm ask ... --new`).
 - **🔑 `ask` מגבלת-אורך-קלט (הממצא-המרכזי)** — פרומפט ~793 תווים ✓ מחזיר JSON-מעוגן-מושלם; פרומפט ~7.7KB → `No parseable chunks in streaming chat response... empty` (NotebookLM-chat דוחה קלט-ארוך). **פתרון:** **פרומפט-קצר פר-תרחיש** (לולאה · המקורות מעוגנים-במחברת → א"צ להטמיע סכמה+דוגמה ענקיות). **פלט-עובד:** flat `{title,immediateAction,legalBackup,legalCitation:{scopeId,quote,section},engineeringMgmt}` + ציטוטי-מקור [N] → adapter ל-batch-format של ה-importer. ⏭️ **נותר לבנות:** מצב per-scenario ב-build-request + לולאת-generate + adapter flat→batch → ואז G1–G5.
 
+## 🟢 גשר-NotebookLM — TLS-inspection בזמן-ריצה + פקיעת-session (2026-06-08) {#notebooklm-runtime-ssl}
+
+> נמצא ותוקן בסשן 2026-06-08 (אוטונומי). שונה מ-[#notebooklm-bridge](#notebooklm-bridge) (חסם ה-`uv`-install) — זהו חסם **runtime** של ה-CLI עצמו, שלא נתקלנו בו קודם כי ההפקה המוכחת רצה ברשת **ללא** ה-proxy-המפענח.
+
+- **תסמין:** `notebooklm list/ask` נכשל ב-`[SSL: CERTIFICATE_VERIFY_FAILED] unable to get local issuer certificate`.
+- **שורש:** מחסנית-ה-HTTP של `notebooklm-py` היא **httpx**, שטוען את `certifi.where()` ו**מתעלם** מ-`SSL_CERT_FILE` עבור ה-trust-store שלו. מאחורי proxy-מפענח-SSL ארגוני, השרשרת חתומה-מחדש ע"י root-CA פנימי שאינו ב-certifi → כל קריאת-HTTPS נכשלת. **`UV_SYSTEM_CERTS=1` מתקן רק את ה-`uv`-installer, לא את ה-runtime.**
+- **✅ פתרון (מוטמע · אוטומטי):** `tools/nblm-bridge/build-cabundle.ps1` בונה `tools/nblm-bridge/.cache-cabundle.pem` = **certifi + cert-store של Windows** (שמכיל את ה-root-CA הארגוני). httpx **כן** מכבד `SSL_CERT_FILE` כשהוא מצביע ל-bundle-על שכולל את certifi. `scripts/notebooklm/generate-scenarios.ts` (`bridgeEnv()`) מזהה את ה-bundle אוטומטית ומגדיר `SSL_CERT_FILE`/`REQUESTS_CA_BUNDLE` פר-קריאת-CLI. ה-bundle git-ignored (`tools/nblm-bridge/.cache-*.pem` · מכיל cert ארגוני · machine-local).
+- **🔑 פקיעת-session (נלווה):** אחרי שה-TLS תוקן, הקריאה החזירה `Authentication expired or invalid. Run 'notebooklm login'`. ה-session של NotebookLM/Google פג מעת-לעת. **פתרון:** login-מחדש אינטראקטיבי **פעם-אחת** (דפדפן · ללא קוד) — `notebooklm login --browser chromium` עם `SSL_CERT_FILE` מוגדר. ה-`storage_state` נשמר → הרצות-עוקבות לא דורשות login נוסף (להריץ את הסקריפט שוב מספיק).
+- **interactive one-liner (PowerShell · מאחורי proxy):**
+  ```powershell
+  $env:SSL_CERT_FILE = "<repo>\tools\nblm-bridge\.cache-cabundle.pem"
+  & <repo>\tools\nblm-bridge\.venv\Scripts\python.exe -m notebooklm login --browser chromium
+  ```
+
 ## ✅ OOB-blocked — pnpm drive:auth נכשל
 
 - **תסמין:** OAuth `urn:ietf:wg:oauth:2.0:oob` חסום (Google חסמה OOB ללקוחות שנוצרו אחרי 2022).

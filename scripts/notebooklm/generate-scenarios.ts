@@ -18,7 +18,15 @@
  * ⚠️ אל תריץ — המתאם מריץ אחרי בדיקה ידנית.
  */
 
-import { readFileSync, mkdirSync, writeFileSync, writeSync, openSync, unlinkSync } from 'node:fs';
+import {
+  readFileSync,
+  mkdirSync,
+  writeFileSync,
+  writeSync,
+  openSync,
+  unlinkSync,
+  existsSync,
+} from 'node:fs';
 import { join, resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
@@ -39,6 +47,22 @@ const TMP_PROMPT_FILE = join(REQUESTS_DIR, '_tmp.txt');
 const DEFAULT_NOTEBOOK_ID = 'c3f2d80a-e5f5-4a1c-9c4b-2ae18ebc3dbc';
 const VENV_PYTHON = join(ROOT, 'tools', 'nblm-bridge', '.venv', 'Scripts', 'python.exe');
 const THROTTLE_MS = 2500;
+
+// CA-bundle לעקיפת TLS-inspection ארגוני בזמן-ריצה. httpx (מחסנית-ה-HTTP של
+// notebooklm-py) טוען את certifi.where() ונכשל ב-CERTIFICATE_VERIFY_FAILED מאחורי
+// proxy-מפענח. build-cabundle.ps1 מייצר bundle = certifi + root-CA של Windows.
+// אם הקובץ קיים — מצביעים אליו דרך SSL_CERT_FILE. ראה BUGS.md#notebooklm-runtime-ssl.
+const CA_BUNDLE = join(ROOT, 'tools', 'nblm-bridge', '.cache-cabundle.pem');
+
+/** env לתת-תהליך-ה-CLI: PYTHONUTF8 + (אם קיים) SSL_CERT_FILE לעקיפת proxy-ארגוני. */
+function bridgeEnv(): NodeJS.ProcessEnv {
+  const env: NodeJS.ProcessEnv = { ...process.env, PYTHONUTF8: '1' };
+  if (existsSync(CA_BUNDLE)) {
+    env['SSL_CERT_FILE'] = CA_BUNDLE;
+    env['REQUESTS_CA_BUNDLE'] = CA_BUNDLE;
+  }
+  return env;
+}
 
 // ── arg helper ────────────────────────────────────────────────────────────────
 
@@ -147,7 +171,7 @@ async function main(): Promise<void> {
         ],
         {
           encoding: 'utf-8',
-          env: { ...process.env, PYTHONUTF8: '1' },
+          env: bridgeEnv(),
           // timeout 90s per call
           timeout: 90_000,
         },
