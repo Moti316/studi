@@ -25,6 +25,7 @@
 import { useId, useReducer, useState } from 'react';
 import type { QuestionResult, RubricCriterion, ScenarioInput } from './types';
 import { isRubric } from './types';
+import { renderBold } from './render-bold';
 
 export type ScenarioWalkthroughProps = {
   scenario: ScenarioInput;
@@ -205,7 +206,9 @@ export function ScenarioWalkthrough({
           className="flex flex-col gap-1 rounded-card border border-quiz-success-border bg-quiz-success-bg px-4 py-3 text-start text-sm leading-relaxed"
         >
           <span className="font-bold text-success">פתרון-מומחה</span>
-          <p className="whitespace-pre-line text-quiz-text-primary">{scenario.solution}</p>
+          <p className="whitespace-pre-line text-quiz-text-primary">
+            {renderBold(scenario.solution)}
+          </p>
         </div>
       )}
 
