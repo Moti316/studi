@@ -31,6 +31,7 @@
     "scenarios:generate": "tsx scripts/notebooklm/generate-scenarios.ts",
     "scenarios:import": "tsx scripts/import-scenarios.ts --execute",
     "scenarios:import:dry": "tsx scripts/import-scenarios.ts --dry-run",
+    "scenarios:author": "tsx scripts/author-scenarios-magen.ts",
     "questions:generate": "tsx scripts/notebooklm/generate-questions-nblm.ts",
     "questions:import": "tsx scripts/import-questions-nblm.ts --execute",
     "questions:import:dry": "tsx scripts/import-questions-nblm.ts --dry-run",

@@ -20,22 +20,25 @@ export const MOCK_LESSONS: MockLesson[] = Array.from({ length: 12 }, (_, i) => (
   completed: i < 5,
 }));
 
+// מבנה 2-מיני-קורסים (הכרעת-מוטי 2026-06-09):
+//   (1) "ממונה בטיחות בעבודה" = שו"ת רב-סוגי (NotebookLM · MCQ/matching/open · מקורפוס-החקיקה).
+//   (2) "תרחישי וועדת הסמכה" = בנק-תרחישים מעוגן (NotebookLM-ground + Magen-author · 4-חלקים).
 export const MOCK_COURSES: MockCourse[] = [
   {
     id: 'course-safety-officer',
     title: 'ממונה בטיחות בעבודה',
-    totalLessons: 11, // 11 פרקי תכנית-אתגר
+    totalLessons: 11, // שו"ת רב-סוגי (אמריקאית/התאמה/פתוח) — שאלות-NotebookLM מהחקיקה
     completedLessons: 7,
     lastAccessedIso: '2026-06-04T08:00:00.000Z',
-    href: '/lesson/practice', // נגן-שיעור עם שאלות-אמת שיובאו (T1)
+    href: '/lesson/practice', // מיני-קורס השו"ת
   },
   {
     id: 'course-committee-scenarios',
     title: 'תרחישי וועדת הסמכה',
-    totalLessons: 15, // 15 תרחישים-מעוגנים שהופקו (NotebookLM · G1–G5)
+    totalLessons: 14, // בנק-תרחישים מעוגן (Magen + NotebookLM · 4-חלקים · G1–G5)
     completedLessons: 0,
-    lastAccessedIso: '2026-06-08T12:00:00.000Z',
-    href: '/lesson/scenarios', // מיני-קורס נפרד — תרחישי scenario_walkthrough בלבד
+    lastAccessedIso: '2026-06-09T12:00:00.000Z',
+    href: '/lesson/scenarios', // מיני-קורס נפרד — scenario_walkthrough בלבד
   },
 ];
 
