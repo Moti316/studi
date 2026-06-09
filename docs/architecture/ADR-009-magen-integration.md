@@ -1,8 +1,10 @@
 # ADR-009: Megen Integration — Phased Convergence Strategy
 
-> **Amended 2026-06-02: Phase B = HYBRID (לא verbatim-copy). מגן = השראה/reference; ללא copy/coupling.**
+> **🔧 Amended 2026-06-09: כלל-מגן (firewall) — בוטל (REVERSED) בהכרעת-מוטי.** בבטיחות וחוק "מספיק טוב" לא מספיק; מנוע-מגן מדויק יותר. **מותר עכשיו** לפורט את **פרומפט-המאסטר של מגן לסימולציה/חיבור-תרחישי-וועדה** ל-StudiBuilder, **name-cleaned** (להסיר "מגן"/"שגיא"/Telegram/מזהי-בעלים · לשמור 4-עקרונות · Zero-Harm · common-pitfalls · 3-מצבי-תשובה). **מוטי בעלים-של-שני-הריפו → אפס סוגיית-licensing.** megen נשאר **מבודד** (clone לתיקייה-סמוכה · read-only) — מועתק רק **תוכן-פרומפט**, לעולם לא מנוע-ה-Python. **שימוש (2026-06-09):** מיני-קורס-תרחישים = NotebookLM מעגן חוק/תקנה (verbatim · G3) → פרומפט-מגן מחבר (Gemini-API · offline) → אימות-סמנטי → ייבוא. **גובר על "כלל-מגן (firewall) — השראה-בלבד" שלהלן ועל Phase-B §2 HYBRID.**
 
-> **Status**: Accepted (Amended 2026-06-02)
+> **Amended 2026-06-02: Phase B = HYBRID (לא verbatim-copy). מגן = השראה/reference; ללא copy/coupling.** ⛔ _גובר-עליו תיקון-2026-06-09 (firewall בוטל)._
+
+> **Status**: Accepted (Amended 2026-06-02 · **firewall reversed 2026-06-09**)
 > **Date**: 2026-05-29
 > **Authors**: tech-lead · product-owner · motilev8
 > **Phase**: Phase A — pre-deadline (now → 2026-07-15) · Phase B — Phase 10 (post-deadline)
@@ -29,7 +31,7 @@
 
 ## Decision: **Phased Convergence**
 
-> **🔒 כלל-מגן (firewall) — השראה-בלבד:** ריפו-מגן (`github.com/Moti316/megen` · איתן+שגיא) = **השראה/reference בלבד** למבנה/תכנון (תרחישים פר-ענף · `study_plan_90days` · committee_bank · 4-עקרונות-הוועדה). **אסור להעתיק/לקחת** קוד · תוכן · prompts. **לעולם לא מתערבב** עם ריפו-StudiBuilder (קריאה → תיקייה נפרדת בלבד). נדרשת פרסונה? **HYBRID** — מחלצים את המבנה-המוכח כ-spec, כותבים **native** (name-clean·RAG·cache·ציטוט), מאמתים **parity** מול committee_bank. **ללא copy/coupling.** ספק → מוטי. (גובר על ADR-009 Phase B — העתקה-verbatim מבוטלת.)
+> ⛔ **בוטל 2026-06-09 (ראה תיקון-העליון).** ~~**🔒 כלל-מגן (firewall) — השראה-בלבד:** ריפו-מגן (`github.com/Moti316/megen`) = **השראה/reference בלבד**; **אסור להעתיק** קוד/תוכן/prompts; **HYBRID** בלבד.~~ **כעת:** מותר לפורט את פרומפט-המאסטר (name-cleaned · megen מבודד · מוטי בעל-שני-הריפו → אפס-licensing).
 
 שילוב דו-שלבי, אסטרטגיה תלוית-זמן ביחס ל-deadline של הוועדה:
 

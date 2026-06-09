@@ -77,7 +77,7 @@ StudiBuilder נבנה **מקצה-לקצה** כפלטפורמת-ייצור-קור
 ### שלב 4 — Course-as-Product (Phase 10 / ADR-006)
 
 - landing-page + checkout (ADR-008 payment) + ads לקורס "ממונה בטיחות".
-- אינטגרציית-מגן (ADR-009 Phase B, אם רלוונטי): personas (מגן/שגיא) + committee_bank.
+- אינטגרציית-מגן (ADR-009, תוקן 2026-06-09 — firewall בוטל, **port-מותר**): פורט פרומפט-המאסטר (חיבור-תרחישים/סימולציה) ל-StudiBuilder name-cleaned (להסיר מגן/שגיא/Telegram · לשמור 4-עקרונות · Zero-Harm · 3-מצבי-תשובה) + committee_bank כ-parity. megen נשאר מבודד (clone-סמוך · read-only · תוכן-פרומפט בלבד). ראה ADR-009.
 
 ### שלב 5 — ציות ומוכנות-לאנץ' (Phase 9-10, pre-launch — לא חוסם v1)
 

@@ -144,11 +144,13 @@ NotebookLM הוא **creator-side בלבד** — אם ייפול, הקורס המ
 מראה בדיוק את `idx_questions_source_ref`. NULLs distinct ב-Postgres → תרחישים מ-יד (NULL ref) לא מושפעים.
 hand-applied לפי `drizzle.config.ts` (Supabase SQL Editor) **או** `scripts/apply-migration-0003.ts` (idempotent · IF NOT EXISTS).
 
-### firewall-מגן (native · name-clean)
+### firewall-מגן — **בוטל 2026-06-09 (REVERSED · [ADR-009](ADR-009-magen-integration.md))**
+
+> **🔧 בוטל 2026-06-09:** ~~firewall-מגן (native · name-clean) — אסור copy/coupling לריפו-מגן; firewall (PROJECT-CONTEXT §כלל-מגן) נשמר במלואו.~~ **כעת port-permitted:** מותר לפורט את **פרומפט-המאסטר של מגן** (סימולציה/חיבור-תרחישי-וועדה) ל-StudiBuilder, **name-cleaned** (להסיר מגן/שגיא/Telegram/מזהי-בעלים · לשמור 4-עקרונות · Zero-Harm · common-pitfalls · 3-מצבי-תשובה). מוטי בעל-שני-הריפו → אפס-licensing. megen נשאר מבודד (clone לתיקייה-סמוכה · read-only · רק תוכן-פרומפט · לא מנוע-Python).
 
 מקור-ההשראה (20 התרחישים · `scripts/data/committee-scenarios.json`) הוא base-מקומי **נקי-שם · לא-מקוממט · solutions verbatim-קצרים**.
-המנוע **מרחיב** אותם (דרישת-מוטי "להרחיב, לא לסכם") **native** דרך NotebookLM המעוגן-בחומרי-המקור-שלנו — **לא** copy/coupling לריפו-מגן.
-ה-grounding שלנו הוא הקורפוס-שלנו (נבו · Drive), לא ה-prompts/תוכן של מגן. firewall (PROJECT-CONTEXT §כלל-מגן) נשמר במלואו.
+המנוע **מרחיב** אותם (דרישת-מוטי "להרחיב, לא לסכם") **native** דרך NotebookLM המעוגן-בחומרי-המקור-שלנו (נבו · Drive · G3). **שימוש (2026-06-09):** NotebookLM מעגן חוק/תקנה (verbatim · G3) → פרומפט-מגן name-cleaned מחבר את התרחיש (Gemini-API · offline) → אימות-סמנטי → ייבוא.
+ה-grounding שלנו הוא הקורפוס-שלנו (נבו · Drive). ~~firewall (PROJECT-CONTEXT §כלל-מגן) נשמר במלואו.~~ → §כלל-מגן בוטל 2026-06-09 (ראה [ADR-009](ADR-009-magen-integration.md)).
 
 ---
 
@@ -242,7 +244,7 @@ hand-applied לפי `drizzle.config.ts` (Supabase SQL Editor) **או** `scripts/
 - `src/lib/import/verify-grounding.ts` (G1–G5) · `generated-mcq.ts` (G3 קנוני) · `legislation-resolver.ts`
 - `supabase/migrations/0003_add_scenarios_source_ref_index.sql` · `drizzle/schema.ts` (CHECK `scenario_needs_ref`)
 - `docs/context/SESSION-LOG.md` (2026-06-07/08 — חסם-מכסה · הכרעת-מנוי · אוטומציה-מלאה)
-- זיכרון: `content-gen-full-automation` · `nevo-legislation-corpus` · `magen-inspiration-only-firewall`
+- זיכרון: `content-gen-full-automation` · `nevo-legislation-corpus` · `magen-inspiration-only-firewall` (עודכן 2026-06-09 — ה-firewall בוטל · port-permitted · ראה [ADR-009](ADR-009-magen-integration.md))
 
 ---
 

@@ -56,7 +56,7 @@
 | --- | --- | --- | --- |
 | [ACCESS-MAP.md](../../docs/context/ACCESS-MAP.md) | ⚠️ לא סודות כאן — רק המפה (איזה מפתח, איפה הוא חי, מה הסטטוס). הערכים עצמם ב-.env.local (gitignored) וב-Verce… | docs context | 2026-06-04 |
 | [BUGS.md](../../docs/context/BUGS.md) | זיכרון-מוסדי: בעיות שנפתרו + הפתרון. קרא לפני שאתה נתקל באותו דבר. מעודכן: 2026-05-31. | docs context | 2026-06-08 |
-| [DECISIONS.md](../../docs/context/DECISIONS.md) | החלטות-מפתח שורה-בשורה (מעבר ל-ADRs הפורמליים). חדש למעלה. מעודכן: 2026-05-31. | docs context | 2026-05-31 |
+| [DECISIONS.md](../../docs/context/DECISIONS.md) | החלטות-מפתח שורה-בשורה (מעבר ל-ADRs הפורמליים). חדש למעלה. מעודכן: 2026-06-09. | docs context | 2026-05-31 |
 | [EXECUTION-PLAN.md](../../docs/context/EXECUTION-PLAN.md) | התוכנית האחת והאוטוריטטיבית. מאחדת את build-roadmap (10 phases), ADR-006 (Course-as-Product Factory), | docs context | 2026-06-04 |
 | [GOVERNANCE-V2.md](../../docs/context/GOVERNANCE-V2.md) | גיבוי-בריפו של תוכנית-ממשל-v2 (המקור היה מקומי ב-/.claude/plans/, per-machine). | docs context | 2026-06-04 |
 | [MD-INDEX.md](../../docs/context/MD-INDEX.md) | ⚠️ קובץ מחולל — אל תערוך ידנית. מקור: .claude/scripts/gen-md-index.mjs · רענון: pnpm index:md | docs context | 2026-06-08 |
@@ -97,7 +97,7 @@
 | [ADR-006-course-as-product-factory.md](../../docs/architecture/ADR-006-course-as-product-factory.md) | Status: Accepted (concept) | docs architecture | 2026-05-29 |
 | [ADR-007-brand-identity.md](../../docs/architecture/ADR-007-brand-identity.md) | Status: Accepted | docs architecture | 2026-05-29 |
 | [ADR-008-payment-provider.md](../../docs/architecture/ADR-008-payment-provider.md) | Status: Proposed (להחלטת motilev8) | docs architecture | 2026-05-29 |
-| [ADR-009-magen-integration.md](../../docs/architecture/ADR-009-magen-integration.md) | Amended 2026-06-02: Phase B = HYBRID (לא verbatim-copy). מגן = השראה/reference; ללא copy/coupling. | docs architecture | 2026-06-02 |
+| [ADR-009-magen-integration.md](../../docs/architecture/ADR-009-magen-integration.md) | 🔧 Amended 2026-06-09: כלל-מגן (firewall) — בוטל (REVERSED) בהכרעת-מוטי. בבטיחות וחוק "מספיק טוב" לא מספיק; מ… | docs architecture | 2026-06-02 |
 | [ADR-010-data-schema-mvp.md](../../docs/architecture/ADR-010-data-schema-mvp.md) | Status: Proposed | docs architecture | 2026-06-01 |
 | [ADR-011-drive-import-pipeline.md](../../docs/architecture/ADR-011-drive-import-pipeline.md) | Status: Proposed | docs architecture | 2026-06-02 |
 | [ADR-012-dev-workflow-practices.md](../../docs/architecture/ADR-012-dev-workflow-practices.md) | Status: Proposed | docs architecture | 2026-06-01 |

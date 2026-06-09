@@ -46,7 +46,7 @@
 - לא מתקן קוד/תוכן/TODO בעצמו (מבקר בלבד, read-only על תוצרי-הביצוע).
 - לא מדווח סטייה ללא ראיה דו-צדדית (activity-log ↔ תוכנית).
 - לא מנפיק צו-עצירה לבד (רק ממליץ ל-`oversight-lead`; קוורום 2/3).
-- לא מדלג על `oversight-lead` ישר למועצה (פרט לדגל-firewall/red-line קריטי).
+- לא מדלג על `oversight-lead` ישר למועצה (פרט לדגל-red-line קריטי). **[~~firewall~~ הוסר מהחריג — firewall-מגן בוטל 2026-06-09, ADR-009]**
 
 ## 7. Interfaces & Handoffs
 
@@ -58,7 +58,7 @@
 
 - `🚩דורש-מוטי` שבוצע ללא אישור → המלצת-עצירה ל-`oversight-lead`.
 - סוכן-סורר (אותה סטייה ×2+ / Self-check נכשל חוזר) → דגל ל-`oversight-lead` → שיקול עצירה/ארכוב.
-- הפרת-firewall/red-line קריטית → דגל-חירום ל-`oversight-lead` (`<<BROADCAST>>`).
+- ~~הפרת-firewall/~~red-line קריטית → דגל-חירום ל-`oversight-lead` (`<<BROADCAST>>`). **[firewall-מגן בוטל 2026-06-09 — ADR-009; נותר רק red-line]**
 
 ## 9. Output Contract
 

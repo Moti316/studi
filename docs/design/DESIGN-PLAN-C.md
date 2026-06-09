@@ -5,7 +5,8 @@
 > **גרסה:** 1.0 · **תאריך:** 2026-06-04 · **שפה:** עברית RTL כאזרח-ראשון.
 > **צוות:** interaction-designer · visual-designer · design-system · frontend-engineer · accessibility-i18n.
 >
-> 🔒 **FIREWALL מגן:** StudiesGo = מקור-ההשראה החזותי **היחיד**. אסור בהחלט להעתיק קוד/תוכן/prompts ממערכת "מגן" (`megen`). שאלון-ה-onboarding נכתב **native** — רעיון-המבנה מ-`docs/IDEAS.md` "מתכנן-מסלול-אישי" הוא **השראה-בלבד**. אפס-העתקה.
+> 🎨 **כיוון-חזותי:** StudiesGo = מקור-ההשראה החזותי **היחיד** (נשאר בתוקף). שאלון-ה-onboarding מהשראת-מבנה (`docs/IDEAS.md` "מתכנן-מסלול-אישי").
+> 🔧 **FIREWALL מגן — בוטל 2026-06-09 (REVERSED · [ADR-009](../architecture/ADR-009-magen-integration.md)):** ~~אסור בהחלט להעתיק קוד/תוכן/prompts ממערכת "מגן" (`megen`); native-בלבד · אפס-העתקה.~~ **כעת port-permitted** — מותר לפורט את פרומפט-המאסטר של מגן name-cleaned (מוטי בעל-שני-הריפו → אפס-licensing); megen נשאר מבודד (read-only · תוכן-פרומפט בלבד · לא מנוע-Python).
 >
 > **מקור-אמת:** נגזר מקורפוס-StudiesGo (`docs/screens/*.jpg` · `docs/design/motion-specs.md` · `docs/design/mascot-brief.md` · `gemini-response` ל-02/04) ומ-Design-Brief 1.0.
 
@@ -225,9 +226,9 @@ StudiesGo light = **flat, כמעט-ללא-shadow** (border בלבד). כיוון
 
 ### 3.1 קונספט
 
-בכניסה-ראשונה לקורס "ממונה בטיחות" → **welcome-hero** ואז **5 שאלות** שבונות **מסלול-לימוד-אישי** עד מועד-הוועדה. כל-שאלה = מסך-יחיד, מעבר slide-אופקי (מבוסס `04-onboarding` gemini), מד `1/5..5/5`, כפתורי-בחירה גדולים (pill), מסקוט-`curious` (קסדת-בטיחות) מלווה. נכתב **native** — אפס-העתקה מ"מגן".
+בכניסה-ראשונה לקורס "ממונה בטיחות" → **welcome-hero** ואז **5 שאלות** שבונות **מסלול-לימוד-אישי** עד מועד-הוועדה. כל-שאלה = מסך-יחיד, מעבר slide-אופקי (מבוסס `04-onboarding` gemini), מד `1/5..5/5`, כפתורי-בחירה גדולים (pill), מסקוט-`curious` (קסדת-בטיחות) מלווה. ~~נכתב **native** — אפס-העתקה מ"מגן".~~ — **🔧 firewall-מגן בוטל 2026-06-09 · port-permitted name-cleaned ([ADR-009](../architecture/ADR-009-magen-integration.md)).**
 
-> 🔒 הרעיון מבוסס **השראת-מבנה-בלבד** מ-`docs/IDEAS.md` "מתכנן-מסלול-אישי". הנוסחה, השאלות והניסוח **נכתבו כאן native ל-StudiBuilder**. אין שימוש ב-`study_plan_90days`/`committee_bank`/תוכן-מגן.
+> הרעיון מבוסס **השראת-מבנה** מ-`docs/IDEAS.md` "מתכנן-מסלול-אישי". הנוסחה, השאלות והניסוח נכתבו כאן ל-StudiBuilder. ~~🔒 אין שימוש ב-`study_plan_90days`/`committee_bank`/תוכן-מגן.~~ — **🔧 firewall-מגן בוטל 2026-06-09 · port-permitted name-cleaned ([ADR-009](../architecture/ADR-009-magen-integration.md)).**
 
 ### 3.2 זרימת-מסכים
 
@@ -494,7 +495,7 @@ durations: fast .05 · base .15 · medium .25 · slow .4
 - `c:/Users/USER/OneDrive/שולחן העבודה/Google_Antigravity/studi/docs/screens/{auth_login,dashboard,lesson_mcq,create_topic_confirm}.jpg` (curated-visual — אומתו-בעין)
 - `c:/Users/USER/OneDrive/שולחן העבודה/Google_Antigravity/studi/docs/screens-spec/{auth-modal,dashboard}.md` · `docs/IDEAS.md` (Personalized Study-Path)
 
-**הערת-firewall:** כל התוכן נגזר מקורפוס-StudiesGo + מסמכי-StudiBuilder בלבד. שאלון-ה-onboarding נכתב native; לא נעשה שימוש בקוד/תוכן/prompts ממערכת "מגן".
+**הערת-firewall:** ~~כל התוכן נגזר מקורפוס-StudiesGo + מסמכי-StudiBuilder בלבד; לא נעשה שימוש בקוד/תוכן/prompts ממערכת "מגן".~~ — **🔧 firewall-מגן בוטל 2026-06-09 (REVERSED · port-permitted):** מותר עכשיו לפורט פרומפט-מגן name-cleaned (מוטי בעל-שני-הריפו → אפס-licensing · megen מבודד read-only). הכיוון-החזותי StudiesGo נשאר בתוקף. ראה [ADR-009](../architecture/ADR-009-magen-integration.md).
 
 ```
 

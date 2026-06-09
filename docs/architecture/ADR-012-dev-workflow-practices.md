@@ -4,7 +4,7 @@
 > **Date**: 2026-06-01
 > **Authors**: studio-lead · motilev8
 > **Phase**: 0
-> **Related**: ADR-001 (Stack), ADR-009 (Megen Integration)
+> **Related**: ADR-001 (Stack), ADR-009 (Megen Integration — **firewall בוטל 2026-06-09 · port-permitted**)
 >
 > מטרה: לעגן בכתב את נוהלי-העבודה היומיומיים שכבר מבוצעים בפועל, כדי שכל סוכן/בני-אדם
 > יעבוד אותו-דבר. מקור: החלטות-מוטי החוזרות (commit+push לכל משימה-ירוקה · single-branch

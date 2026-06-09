@@ -91,9 +91,9 @@
 
 ## ⬜ H · Course-as-Product (Phase 10 / ADR-006) · [📋 פירוט](docs/todo/H-course-product.md)
 
-17. **H1** landing · **H2** checkout+payment (ADR-008)+Phase 8 credits · **H3** ads/marketing · **H4** מגן = **השראה-בלבד (firewall)** · פרסונה ב-**HYBRID** (חילוץ-מבנה→native→parity מול committee_bank) · **לא** verbatim-copy · ADR-009 תוקן.
+17. **H1** landing · **H2** checkout+payment (ADR-008)+Phase 8 credits · **H3** ads/marketing · **H4** מגן = **port-permitted** (firewall בוטל 2026-06-09) · פורט פרומפט-המאסטר **name-cleaned** · megen מבודד · ADR-009 (תיקון 06-09).
 
-> **🔒 כלל-מגן (firewall) — השראה-בלבד:** ריפו-מגן (`github.com/Moti316/megen` · איתן+שגיא) = **השראה/reference בלבד** למבנה/תכנון (תרחישים פר-ענף · `study_plan_90days` · committee_bank · 4-עקרונות-הוועדה). **אסור להעתיק/לקחת** קוד · תוכן · prompts. **לעולם לא מתערבב** עם ריפו-StudiBuilder (קריאה → תיקייה נפרדת בלבד). נדרשת פרסונה? **HYBRID** — מחלצים את המבנה-המוכח כ-spec, כותבים **native** (name-clean·RAG·cache·ציטוט), מאמתים **parity** מול committee_bank. **ללא copy/coupling.** ספק → מוטי. (גובר על ADR-009 Phase B — העתקה-verbatim מבוטלת.)
+> **🔓 מגן — port-permitted (עודכן 2026-06-09 · ה-firewall בוטל):** ריפו-מגן (`github.com/Moti316/megen`) — **מותר לפורט את פרומפט-המאסטר** (לחיבור-תרחישי-וועדה / סימולציה), **name-cleaned** (להסיר "מגן"/"שגיא"/Telegram/מזהי-בעלים · לשמור 4-עקרונות · Zero-Harm · common-pitfalls · 3-מצבי-תשובה). מוטי בעל-שני-הריפו → **אפס-licensing**. megen **מבודד** (clone לתיקייה-סמוכה · read-only · רק **תוכן-פרומפט** · לא מנוע-ה-Python). שימוש: NotebookLM מעגן חוק/תקנה → פרומפט-מגן מחבר (Gemini-API · offline). ⛔ ~~כלל-מגן (firewall) — השראה-בלבד · אסור-להעתיק · HYBRID~~ (בוטל). ראה `docs/architecture/ADR-009-magen-integration.md` (תיקון 2026-06-09).
 
 ## ⬜ I · ציות ומוכנות-לאנץ' (Phase 9-10, לא-חוסם v1) · [📋 פירוט](docs/todo/I-compliance-launch.md)
 

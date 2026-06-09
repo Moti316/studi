@@ -1,7 +1,7 @@
 # ADR-014 — מנוע-תרחישים (תרחישי-וועדה · scenario_walkthrough)
 
 > סטטוס: **Accepted** · 2026-06-08 · מיני-קורס #1 מתוך 2 (תרחישים + פרויקט-גמר).
-> קשור: [ADR-013](ADR-013-course-template.md) (תבנית-קורס) · [ADR-009](ADR-009-magen-inspiration.md) (firewall-מגן) · [ADR-011](ADR-011-import-pipeline.md) (צינור-ייבוא).
+> קשור: [ADR-013](ADR-013-course-template.md) (תבנית-קורס) · [ADR-009](ADR-009-magen-integration.md) (firewall-מגן — **בוטל 2026-06-09 · port-permitted**) · [ADR-011](ADR-011-import-pipeline.md) (צינור-ייבוא).
 
 ## הקשר
 
@@ -34,8 +34,7 @@
 ### צינור-התוכן (ייבוא + הרחבה)
 
 1. **מקור:** קבצי-תרחישים ב-Drive (תיקיית "ממונה בטיחות 2025") — מבנה 3-חלקים.
-   firewall: מוטי אישר "השראה+שימוש"; **name-clean** (אין שמות-מנטור) · **native**
-   (לא copy/coupling לריפו-מגן).
+   ~~firewall: מוטי אישר "השראה+שימוש"; **name-clean** (אין שמות-מנטור) · **native** (לא copy/coupling לריפו-מגן).~~ **🔧 בוטל 2026-06-09 (firewall REVERSED · ראה [ADR-009](ADR-009-magen-integration.md)):** מותר עכשיו לפורט את **פרומפט-המאסטר של מגן** (סימולציה/חיבור-תרחישי-וועדה) ל-StudiBuilder, **name-cleaned** (להסיר מגן/שגיא/Telegram/מזהי-בעלים · לשמור 4-עקרונות · Zero-Harm · common-pitfalls · 3-מצבי-תשובה). מוטי בעל-שני-הריפו → אפס-licensing. megen נשאר מבודד (clone לתיקייה-סמוכה · read-only · רק תוכן-פרומפט · לא מנוע-Python).
 2. **ייבוא:** parse → `scenarios` (rubric קבוע = 3 קריטריונים: פעולה-מיידית /
    גיבוי-חוקי / הנדסה-וניהול) + question (`scenario_walkthrough` · `scenario_id`).
 3. **⚠️ הרחבה (דרישת-מוטי — "להרחיב, לא לסכם"):** כל `solution` מועשר משמעותית,
@@ -45,7 +44,7 @@
 
 ## חלופות שנדחו
 
-- **לקשר את ריפו-מגן כמנוע-ריצה** — נדחה (firewall · IP של איתן+שגיא · coupling · stack שונה). במקום: HYBRID — מחלצים מבנה-מוכח, כותבים native, name-clean.
+- **לקשר את ריפו-מגן כמנוע-ריצה** — נדחה (coupling · stack שונה). ~~(firewall · IP של איתן+שגיא · HYBRID — מחלצים מבנה-מוכח, כותבים native, name-clean)~~ — **🔧 בוטל 2026-06-09 (firewall REVERSED · [ADR-009](ADR-009-magen-integration.md)):** מותר עכשיו **לפורט את פרומפט-המגן name-cleaned** (מוטי בעל-שני-הריפו → אפס-licensing/IP). הדחייה שנותרה היא **רק** על coupling/stack — לא על העתקת-פרומפט. megen נשאר מבודד (read-only · תוכן-פרומפט בלבד · לא מנוע-Python).
 - **לטפל בתרחישים כ-שו"ת-פתוח** (ExplanationCard) — נדחה (אובד המבנה 3-החלקים + המחוון).
 - **ציון אוטומטי ב-Gemini בזמן-ריצה** — נדחה לעת-עתה (self-assessment דטרמיניסטי; Gemini-rubric = D4 עתידי, ללא שינוי-חוזה).
 

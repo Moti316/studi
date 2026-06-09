@@ -2,6 +2,8 @@
 
 > פורמט רשומה: `## [תאריך שעה] משימה` ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS|CONCERNS|FAIL) · Self-check (בהקשר? סטייה? read-only נשמר?).
 
+> ↩️ **עודכן 2026-06-09: ה-firewall של מגן בוטל (REVERSED) — בקרת "הפרת-firewall" ברשומות-עבר מתייחסת לכלל-הישן; port מפרומפט-מגן מותר כעת (name-cleaned). ראה ADR-009 (תיקון 2026-06-09).** רשומות-העבר נשמרות כפי-שהן.
+
 ## [2026-06-08] דו"ח-בקרה-מאוחד — מנוע-תוכן NotebookLM (ADR-015)
 
 **Outcome:** ריכזתי בקרה עצמאית (content-verifier + plan-compliance-auditor) על מנוע-התוכן לפני merge. verdict ראשוני **CONCERNS** — 2 קריטיים + 2 major-חוסמים. כולם תוקנו ואומתו מחדש → **PASS לפני push**.

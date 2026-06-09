@@ -2,6 +2,8 @@
 
 > פורמט רשומה: `## [תאריך שעה] משימה` ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS|CONCERNS|FAIL) · Self-check (בהקשר? סטייה? red-lines?) · Bugs/Fixes.
 
+> ↩️ **עודכן 2026-06-09: ה-firewall של מגן בוטל (REVERSED) — אזכורי מגן/megen ברשומות-עבר משקפים את הכלל-הישן; port מפרומפט-מגן מותר כעת (name-cleaned). ראה ADR-009 (תיקון 2026-06-09).** רשומות-העבר נשמרות כפי-שהן.
+
 ## [2026-06-01] ניקוי-תיעוד G — Gemini ספק-יחיד (Claude/Anthropic/Voyage/Haiku → Gemini · 21→57)
 
 **Outcome:** עודכן כל איזכור-ספק מיושן בנתיב-המשתמש/הצינור ל-Gemini, ומונים מיושנים (21→57, 13→12 ADRs, 21→27 סוכנים) ב-7 קבצים. נשמרו במכוון איזכורי-Claude-Code הלגיטימיים (dev-tooling / notebooklm-mcp / megen subagents / amendment-transition).
@@ -37,6 +39,7 @@
 - `AGENTS.md`: שורות 23-24 "21 סוכנים" → "27 סוכנים (22 מומחי-תחום + 4 ראשי-צוות + 1 מתווך)"; הוסף `content-verifier` לרוסטר (היה חסר; תואם ORG.md = 22 מומחי-תחום + 27 סה"כ identity.md).
 
 **Verification:**
+
 - Grep פר-קובץ אחרי כל סדרת-עריכות: אפס Claude-Sonnet/Voyage/voyage-3/Haiku/Anthropic נותרים בנתיב-המשתמש/הצינור (היחיד שנותר = amendment-transition ADR-011 שורה 11, מכוון).
 - מול הסכמה-שבפועל: `drizzle/schema.ts:33-36` + `supabase/migrations/0001_initial_schema.sql:67` שניהם `vector(1024)` → לא שיניתי ממד, רק שם-מודל ל-Gemini + הערה שהממד יותאם (תואם amendment ADR-011 ולא ממציא ממד שלא קיים בקוד).
 - מונה-סוכנים 27 אומת מול 27 קבצי identity.md (Glob) ומול ORG.md (22 מומחים + 4 leads + 1 mediator).
@@ -44,6 +47,7 @@
 - יישור-עמודות דיאגרמת-ASCII ב-ADR-011 שורה 169 נשמר (14 תווים פר-תא).
 
 **Follow-ups (נדחה + סיבה):**
+
 - ADR-010 seed-data: ה-CTE `scope_ids` (שורות 359-364) + `SCOPE_REFS` ב-`src/lib/db/constants/scope-refs.ts` עדיין מונים ~23 IDs (סט-21-הישן), ושורות 20/463/501/569/621 עדיין "21". **נדחה מכוון** — מחוץ ל-scope-המשימה לקובץ זה (המשימה הגבילה את ADR-010 ל"הערת-vector/Voyage + ייחוסי-Claude"); הרחבה ל-57 דורשת את רשימת-57-ה-IDs המלאה (כולל sub-IDs 1.5.1/2.6.1/...) מ-content-scope.md — שינוי-תוכן-מהותי שמצריך החלטת-data-engineer, לא find/replace. דגל ל-`data-engineer` (אלון).
 - ADR-001 Amendment עצמו לא נגעתי (לא ברשימת-המשימה); מומלץ לאמת שה-Amendment כבר מצהיר Gemini כספק-יחיד (ADR-011 שורה 11 מפנה אליו).
 

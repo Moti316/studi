@@ -64,7 +64,9 @@
 > **הערה — מתודולוגיית-ליבה לניהול-סיכונים:** **מודל זה"ב** (זיהוי → הערכה → בקרה) —
 > reference **name-clean** (ראה `./ATTRIBUTION.md`); ללא שם-מחבר בתוצר.
 
-> **🔒 כלל-מגן (firewall) — השראה-בלבד:** ריפו-מגן (`github.com/Moti316/megen` · איתן+שגיא) = **השראה/reference בלבד** למבנה/תכנון (תרחישים פר-ענף · `study_plan_90days` · committee_bank · 4-עקרונות-הוועדה). **אסור להעתיק/לקחת** קוד · תוכן · prompts. **לעולם לא מתערבב** עם ריפו-StudiBuilder (קריאה → תיקייה נפרדת בלבד). נדרשת פרסונה? **HYBRID** — מחלצים את המבנה-המוכח כ-spec, כותבים **native** (name-clean·RAG·cache·ציטוט), מאמתים **parity** מול committee_bank. **ללא copy/coupling.** ספק → מוטי. (גובר על ADR-009 Phase B — העתקה-verbatim מבוטלת.)
+> ⛔ **בוטל 2026-06-09 (firewall reversed — ראה [`../../docs/architecture/ADR-009-magen-integration.md`](../../docs/architecture/ADR-009-magen-integration.md) תיקון-2026-06-09).** ~~**🔒 כלל-מגן (firewall) — השראה-בלבד:** ריפו-מגן (`github.com/Moti316/megen` · איתן+שגיא) = **השראה/reference בלבד** למבנה/תכנון (תרחישים פר-ענף · `study_plan_90days` · committee_bank · 4-עקרונות-הוועדה). **אסור להעתיק/לקחת** קוד · תוכן · prompts. **לעולם לא מתערבב** עם ריפו-StudiBuilder (קריאה → תיקייה נפרדת בלבד). נדרשת פרסונה? **HYBRID** — מחלצים את המבנה-המוכח כ-spec, כותבים **native** (name-clean·RAG·cache·ציטוט), מאמתים **parity** מול committee_bank. **ללא copy/coupling.**~~
+>
+> **כעת (REVERSAL · הכרעת-מוטי 2026-06-09):** **מותר לפורט את פרומפט-המאסטר של מגן** (חיבור-תרחישי-וועדה / סימולציה) ל-StudiBuilder, **name-cleaned** — להסיר מגן/שגיא/Telegram/מזהי-בעלים · לשמור 4-עקרונות-הוועדה · Zero-Harm · common-pitfalls · 3-מצבי-תשובה. מוטי בעל-שני-הריפו → **אפס-licensing**. `megen` נשאר **מבודד** (clone לתיקייה-סמוכה · read-only · רק תוכן-פרומפט · לא מנוע-Python). זרימת-שימוש: NotebookLM מעגן חוק/תקנה (verbatim · G3) → פרומפט-מגן מחבר (Gemini-API · offline) → אימות-סמנטי → ייבוא. ספק → מוטי.
 
 ### מורה-AI / RAG (פעולת-הוועדה: הסבר)
 

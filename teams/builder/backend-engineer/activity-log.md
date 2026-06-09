@@ -2,6 +2,8 @@
 
 > פורמט רשומה: `## [תאריך שעה] משימה` ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS|CONCERNS|FAIL) · Self-check (בהקשר? סטייה? red-lines?) · Bugs/Fixes.
 
+> ↩️ **עודכן 2026-06-09: ה-firewall של מגן בוטל (REVERSED) — אזכורי "firewall native" ברשומות-עבר משקפים את הכלל-הישן; port מפרומפט-מגן מותר כעת. ראה ADR-009 (תיקון 2026-06-09).** רשומות-העבר נשמרות כפי-שהן.
+
 ## [2026-06-08] ריסטרוקטורציה פתרון-מומחה: 3 חלקים → 4 חלקים (Track A)
 
 **Outcome:** הרחבת מבנה-הפתרון ל-4 פסקאות נפרדות בכל ה-pipeline: immediateAction · controlsHierarchy · legalBackup · managerialAction. typecheck נקי + 222 טסטים ירוקים. G1–G5 (legalCitation→legalBackup.citations) נשמרו ללא שבירה.

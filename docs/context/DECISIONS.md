@@ -1,6 +1,10 @@
 # DECISIONS — לוג החלטות
 
-> החלטות-מפתח שורה-בשורה (מעבר ל-ADRs הפורמליים). חדש למעלה. מעודכן: 2026-05-31.
+> החלטות-מפתח שורה-בשורה (מעבר ל-ADRs הפורמליים). חדש למעלה. מעודכן: 2026-06-09.
+
+## 2026-06-09 (ביטול firewall-מגן)
+
+- **כלל-מגן (firewall) — בוטל (REVERSED):** ה-firewall של מגן (השראה-בלבד · אסור-להעתיק · HYBRID-ככלל) **בוטל**. כעת **מותר לפורט את פרומפט-המאסטר של מגן** (חיבור-תרחישי-וועדה / סימולציה) ל-StudiBuilder, **name-cleaned** (הסר מגן/שגיא/Telegram/מזהי-בעלים · שמור 4-עקרונות · Zero-Harm · common-pitfalls · 3-מצבי-תשובה). מוטי בעל-שני-הריפו → **אפס-licensing**. `megen` נשאר **מבודד** (clone לתיקייה-סמוכה · read-only · רק תוכן-פרומפט · לא מנוע-Python). זרימה: NotebookLM מעגן חוק/תקנה (verbatim · G3) → פרומפט-מגן מחבר (Gemini-API · offline) → אימות-סמנטי → ייבוא. מקור: `../architecture/ADR-009-magen-integration.md` (תיקון 2026-06-09). **גובר על** ההגבלה ב-"רקע" שלהלן ("מגן = subset, לא נדרש" / "Phased Convergence").
 
 ## 2026-05-31 (ערב — עדכון אסטרטגי + מעבר-מחשב)
 
@@ -34,5 +38,5 @@
 - AI pipeline = build-from-scratch (לא NotebookLM כ-engine). ADR-002/005.
 - Google login-only (בלי Drive scope ב-public app); Drive scope רק ל-import script. ADR-003/011.
 - Course-as-Product Factory (Phase 10). ADR-006.
-- מגן integration: Phased Convergence (side-by-side עד הוועדה). ADR-009.
+- מגן integration: Phased Convergence (side-by-side עד הוועדה). ADR-009. _(עודכן 2026-06-09: ה-firewall בוטל — port-מותר · ראה הרשומה למעלה + ADR-009.)_
 - Drive = source-of-truth לתוכן (לא megen-repo). ADR-009/011.
