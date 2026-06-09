@@ -59,9 +59,13 @@
 
 **ארכיטקטורה (לפי-צורך, מקור לכל בחירה גדולה):**
 
-12. `docs/architecture/ADR-*.md` — 16 ADRs (000-template + 001-015). בעיקר **001** (stack) · **009** (מגן) · **010** (DB schema) · **011** (import pipeline) · **012** (נוהלי-פיתוח, single-branch main) · **013** (תבנית-קורס + capstone) · **014** (מנוע-תרחישים · scenario_walkthrough) · **015** (מנוע-תוכן NotebookLM · generate-offline→verify-G1–G5→serve-precomputed).
+12. `docs/architecture/ADR-*.md` — 17 ADRs (000-template + 001-016). בעיקר **001** (stack) · **009** (מגן · firewall בוטל) · **010** (DB schema) · **011** (import pipeline) · **012** (נוהלי-פיתוח, single-branch main) · **013** (תבנית-קורס + capstone) · **014** (מנוע-תרחישים · scenario_walkthrough) · **015** (מנוע-תוכן NotebookLM · generate-offline→verify-G1–G5→serve-precomputed) · **016** (סימולציית-וועדה · 3-מפקחים · hybrid פרה-בנוי→חי).
 
 > **מנוע-תוכן NotebookLM (ADR-015 · 2026-06-08):** `src/lib/notebooklm/{parse-output,map-scenario,request}.ts` (חוזה-JSON · mapper · בונה-בקשה) · `src/lib/import/{verify-grounding,legislation-resolver,upsert-scenarios}.ts` (שערי-G1–G5 · resolver · upsert) · `scripts/{notebooklm/build-request,import-scenarios}.ts` (CLI) · `tools/nblm-bridge/` (גשר-Python · git-ignored · `README.md` = bootstrap-מוטי) · `supabase/migrations/0003_*.sql`. צד-StudiBuilder נבדק end-to-end (dry-run · golden) — הגשר ממתין ל-bootstrap (Python+login).
+
+> **מיני-קורס-שו"ת — שאלות NotebookLM רב-סוגיות (2026-06-09):** `src/lib/notebooklm/{extract-json,compact-question-prompt,adapt-flat-questions}.ts` · `src/lib/import/{generated-mcq,map-nblm-question,question-verification-io,semantic-verify-questions}.ts` · `scripts/{notebooklm/generate-questions-nblm,import-questions-nblm,delete-old-qa-bank,lib/load-statutes}.ts` · `scripts/workflows/verify-nblm-questions.mjs` (Workflow אימות-סמנטי · Claude · אפס-Gemini). מחליף את 540 בנק-qa הישן ב-~500 שאלות מעוגנות-חקיקה (mcq/matching/open · status='מוסקנא').
+
+> **סימולציית-וועדה (ADR-016 · 2026-06-09):** `src/features/simulation/types.ts` (מודל-נתונים · 3-מפקחים · 4-שלבים · `SimulationEngine` transport-abstraction) · פרומפט: `src/lib/ai/prompts/committee-sim/{master,modes}.ts` (port name-cleaned ממגן). hybrid: פרה-בנוי-מסועף (Claude+פרומפט-מגן+NotebookLM · OFFLINE · אפס-runtime) → `LiveEngine` (Claude-API · עתיד). מחליף את ה-walkthrough הסטטי (ADR-014). 🧠 `committee-simulation-direction`.
 
 **עיצוב (`docs/design/`):**
 

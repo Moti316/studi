@@ -5,6 +5,24 @@
 
 ---
 
+## 2026-06-09 (המשך-ב) — בנק-שאלות-מלא NotebookLM + פיבוט לסימולציית-וועדה (ADR-016)
+
+> **שתי הכרעות-מוטי בסשן:** (1) **כיוון-תרחישים = סימולציית-וועדה אינטראקטיבית** (3 מפקחים בדיאלוג-חי · לא walkthrough סטטי) · מנוע **HYBRID** (פרה-בנוי-מסועף עכשיו → `LiveEngine` Claude-API עתיד) · חיבור = **Claude+NotebookLM אפס-Gemini** (Gemini חסום-מכסה · אומת ב-quota-probe). (2) **משמעת-תיעוד** — לעגן את כל ההחלטות ב-MD + תיוג + אינדקס. ראה **[ADR-016](../architecture/ADR-016-committee-simulation.md)** + DECISIONS (2026-06-09 · כיוון-תרחישים) + 🧠 `committee-simulation-direction`.
+
+**מה נעשה (נדחף · main · typecheck+745 vitest ירוקים):**
+
+- **`8436f09`** צינור-אימות + ייצור-resumable: `generate-questions-nblm` checkpoint+resume (crash-safe · 126 קריאות) · `question-verification-io` (13 טסטים · groups+exclude) · sidecar `.built.json` + `--exclude` בייבוא · `StatuteSource.path` · **Workflow `verify-nblm-questions.mjs`** (content-verifier→oversight-lead · citation-fit · אפס-Gemini).
+- **`5eb01c7`** תיקון scopeId-כפול: `Map<scope,statute[]>` + tryMatch + קיבוץ-אימות פר-נוסח-מותאם (מציל ~50 שאלות מ-4.3×3 · 2.8×2 · 2.10×2).
+- **ייצור-מלא NotebookLM רץ-ברקע** (42 נוסחים × mcq/matching/open · per=6 → ~500+ · 0 כשלים מהותיים · timeout בודד דולג/resumable).
+- **תיעוד-ממשל:** ADR-016 · DECISIONS · PROJECT-MAP · SESSION-LOG · committee-simulation-direction (memory) · MD-INDEX רוענן.
+- **מודל-נתונים סימולציה:** `src/features/simulation/types.ts` (3-מפקחים · 4-שלבים · `SimulationEngine`).
+
+### ⏭️ הצעד-הבא
+
+1. **שאלות:** סיום-ייצור → `questions:import:dry --file questions-nblm-full` → **Workflow אימות-סמנטי** (`verify-nblm-questions.mjs` · args=groups מ-`.built.json`) → `--exclude <held>` → `import --execute` → smoke `/lesson/practice` → `qa:delete` (540).
+2. **סימולציה:** `PrebakedEngine` + `SimulationPlayer` + authoring-Workflow (פרומפט-מגן+עיגון-v2) → **vertical-slice (תרחיש-1)** → אישור-מוטי → הרחבה → החלפת 14 walkthroughs.
+3. **לו"ז-לימוד-אישי** (פיצ'ר-נלווה · אחרי-slice). **capstone** · **content-verifier** (מוסקנא→מאומת).
+
 ## 2026-06-09 — שינוי-כיוון: מגן+NotebookLM · ביטול-firewall (Phase 0) + מודולי-שו"ת (Phase 1.1)
 
 > **הכרעת-מוטי:** "בבטיחות וחוק 'מספיק טוב' לא מספיק" → מנוע-מגן מדויק יותר. **תוכנית אושרה** (`~/.claude/plans/wiggly-munching-bentley.md`).

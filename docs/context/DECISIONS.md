@@ -2,6 +2,14 @@
 
 > החלטות-מפתח שורה-בשורה (מעבר ל-ADRs הפורמליים). חדש למעלה. מעודכן: 2026-06-09.
 
+## 2026-06-09 (כיוון-תרחישים: סימולציית-וועדה + צינור-שאלות NotebookLM)
+
+- **מיני-קורס-תרחישים → סימולציית-וועדה אינטראקטיבית (החלפת ה-walkthrough הסטטי):** הכיוון הוא **3 מפקחים (טכני/גיהותי/רגולטורי) בדיאלוג-חי עם המועמד** (מתודולוגיית-מגן §12 · 4 שלבים: היכרות-אישית → תרחיש-ענפי → צלילה-לחוק → השאלה-האכזרית · ציון 0-100 + חולשות). **מנוע = HYBRID** (בחירת-מוטי · AskUserQuestion): **פרה-בנוי-מסועף עכשיו** (Claude+פרומפט-מגן+NotebookLM · OFFLINE · אפס-runtime · אפס-עלות · לכל-הלומדים) + **שכבת-transport** (`SimulationEngine`) להחלפה ל-`LiveEngine` (Claude-API · דיאלוג-חופשי) בעתיד. מקור: [`../architecture/ADR-016-committee-simulation.md`](../architecture/ADR-016-committee-simulation.md). **מחליף-מרחיב את ADR-014.**
+- **חיבור-תרחישים = Claude+NotebookLM, אפס-Gemini (תיקון):** מגן מחבר תרחישים כ**סוכן-Claude** המעגן ב-NotebookLM (MCP · Single Source of Truth) — **לא** דרך Gemini-API (חסום-מכסה 20/יום · אומת ב-quota-probe). הסקריפט `author-scenarios-magen.ts` (Gemini) מוחלף ב-Workflow רב-סוכני של Claude.
+- **שלב-פתיחה = דיאלוג-אישי:** שלב-1 בסימולציה (`opening`) הוא **שיח-היכרות עם המפקחים** ("מי אתה? מה הרקע? איזה קורס?"), לא שאלה-טכנית.
+- **לו"ז-לימוד-אישי (פיצ'ר-נלווה · נדחה-לאישור):** אינטייק (מתי הוועדה? כמה זמן ביום? חזק/חלש?) → תוכנית-הכנה מותאמת (תעדוף scopes/שיעורים). שכבת-פרסונליזציה נפרדת מהסימולציה; יוצג לאישור אחרי ה-vertical-slice.
+- **מיני-קורס-שו"ת = שאלות-NotebookLM רב-סוגיות (מחליף 540):** ייצור מקורפוס-החקיקה (42 נוסחים × mcq/matching/open · per=6 · ~500) דרך **NotebookLM בלבד** (אפס-Gemini · G3-מעוגן). תשתית-תמיכה (נדחפה): generation עם checkpoint+resume · תיקון scopeId-כפול (Map<scope,statute[]> · מציל ~50 שאלות) · sidecar `.built.json` + דגל `--exclude` · `question-verification-io` · **Workflow רב-סוכני לאימות-סמנטי** (content-verifier→oversight-lead · citation-fit · **לא-Gemini**). מחיקת 540 הישן רק אחרי import+smoke.
+
 ## 2026-06-09 (ביטול firewall-מגן)
 
 - **כלל-מגן (firewall) — בוטל (REVERSED):** ה-firewall של מגן (השראה-בלבד · אסור-להעתיק · HYBRID-ככלל) **בוטל**. כעת **מותר לפורט את פרומפט-המאסטר של מגן** (חיבור-תרחישי-וועדה / סימולציה) ל-StudiBuilder, **name-cleaned** (הסר מגן/שגיא/Telegram/מזהי-בעלים · שמור 4-עקרונות · Zero-Harm · common-pitfalls · 3-מצבי-תשובה). מוטי בעל-שני-הריפו → **אפס-licensing**. `megen` נשאר **מבודד** (clone לתיקייה-סמוכה · read-only · רק תוכן-פרומפט · לא מנוע-Python). זרימה: NotebookLM מעגן חוק/תקנה (verbatim · G3) → פרומפט-מגן מחבר (Gemini-API · offline) → אימות-סמנטי → ייבוא. מקור: `../architecture/ADR-009-magen-integration.md` (תיקון 2026-06-09). **גובר על** ההגבלה ב-"רקע" שלהלן ("מגן = subset, לא נדרש" / "Phased Convergence").
