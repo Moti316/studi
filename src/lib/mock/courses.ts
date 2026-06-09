@@ -27,10 +27,10 @@ export const MOCK_COURSES: MockCourse[] = [
   {
     id: 'course-safety-officer',
     title: 'ממונה בטיחות בעבודה',
-    totalLessons: 11, // שו"ת רב-סוגי (אמריקאית/התאמה/פתוח) — שאלות-NotebookLM מהחקיקה
-    completedLessons: 7,
+    totalLessons: 8, // 8 יחידות-נושא (mini-within-mini · COURSE_TOPICS)
+    completedLessons: 0, // אין מעקב-התקדמות-אמת עדיין → 0 (לא אחוז-מדומה)
     lastAccessedIso: '2026-06-04T08:00:00.000Z',
-    href: '/lesson/practice', // מיני-קורס השו"ת
+    href: '/courses/safety-officer', // מיני-קורס השו"ת → מסך-נושאים (mini-within-mini)
   },
   {
     id: 'course-committee-scenarios',

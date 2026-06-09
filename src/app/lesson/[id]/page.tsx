@@ -5,6 +5,7 @@ import { requireAuth } from '@/lib/auth/server';
 import { db } from '@/lib/db';
 import { questions, scenarios, type Question } from '../../../../drizzle/schema';
 import { isValidScopeId } from '@/lib/db/constants/scope-refs';
+import { getTopic } from '@/lib/course/topics';
 import { LessonPlayer } from '@/features/lesson-player/LessonPlayer';
 import type { ScenarioInput, RubricCriterion } from '@/features/lesson-player/components/types';
 import { isRubric } from '@/features/lesson-player/components/types';
@@ -45,6 +46,27 @@ async function loadQuestions(rawId: string): Promise<Question[]> {
       .select()
       .from(questions)
       .where(and(inScope, sql`${questions.type} <> 'scenario_walkthrough'`))
+      .orderBy(sql`random()`)
+      .limit(MAX_QUESTIONS);
+  }
+
+  // יחידת-נושא ("מיני-בתוך-מיני"): rawId = topic-id → סינון לכל ה-scopes של הנושא.
+  const topic = getTopic(rawId);
+  if (topic) {
+    const scopeList = sql.join(
+      topic.scopes.map((s) => sql`${s}`),
+      sql`, `,
+    );
+    return db
+      .select()
+      .from(questions)
+      .where(
+        and(
+          inScope,
+          sql`${questions.type} <> 'scenario_walkthrough'`,
+          sql`(${questions.scopeRefs}->0->>'id') IN (${scopeList})`,
+        ),
+      )
       .orderBy(sql`random()`)
       .limit(MAX_QUESTIONS);
   }
