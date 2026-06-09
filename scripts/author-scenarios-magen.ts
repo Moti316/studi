@@ -87,6 +87,9 @@ async function main(): Promise<void> {
   const outName = arg('--out') ?? 'scenarios-expand-magen';
   const limitArg = arg('--limit');
   const limit = limitArg !== undefined ? Math.max(1, Number(limitArg)) : undefined;
+  // Flash בכוונה (Pro חסום ב-free-tier · limit:0). מתעלם מ-GEMINI_MODEL_GENERATION
+  // ב-.env.local (שמצביע ל-Pro). override: --model.
+  const model = arg('--model') ?? 'gemini-2.5-flash';
 
   const inPath = join(CACHE_DIR, `${inName}.json`);
   if (!existsSync(inPath)) {
@@ -130,7 +133,7 @@ async function main(): Promise<void> {
               grounding,
             ),
             schema: FLAT_SCENARIO_SCHEMA,
-            model: process.env['GEMINI_MODEL_GENERATION'] ?? 'gemini-2.5-pro',
+            model,
           }),
         { maxRetries: 5, baseMs: 4_000, capMs: 60_000 },
       );

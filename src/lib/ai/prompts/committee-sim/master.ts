@@ -81,6 +81,7 @@ export function buildScenarioAuthoringPrompt(
     '',
     'החזר JSON בלבד (ללא fences):',
     '{"title","immediateAction","controlsHierarchy","legalBackup","legalCitation":{"scopeId","quote","section"},"managerialAction"}',
-    'legalCitation.quote = העתק מילולי מהעיגון-שסופק. controlsHierarchy = מדרג-הבקרות (צמ"א אחרון).',
+    'legalCitation.quote = העתק מילולי מהעיגון-שסופק. legalCitation.scopeId = מספר-ה-scope בלבד (למשל "2.8") — **בלי** המילה "scope". controlsHierarchy = מדרג-הבקרות (צמ"א אחרון).',
+    '**אל תכלול** את הסימונים (א)/(ב)/(ג)/(ד) או כותרות-מודגשות בתוך שדות-הטקסט — רק התוכן עצמו (המערכת מוסיפה כותרות).',
   ].join('\n');
 }
