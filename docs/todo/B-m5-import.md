@@ -3,6 +3,8 @@
 > שלב B ב-[TODO.md](../../TODO.md) · לפי [EXECUTION-PLAN.md](../context/EXECUTION-PLAN.md).
 > מצב-על: 🟠 חסום (ע"י A + אישור-בנקים) · תלות: חסום ע"י A · פותח תוכן-אמת ל-Quiz Engine (D) · מעודכן: 2026-06-02.
 
+> 🔧 **superseded/legacy (הכרעת-2026-06-09):** מיני-קורס-שו"ת = בנק-NotebookLM רב-סוגי (~500 · mcq/matching/open מקורפוס-החקיקה · status=`מוסקנא`), שמיוצר דרך NotebookLM בלבד (אפס-Gemini · G3-מעוגן · אימות-סמנטי Workflow-Claude) — **מחליף את ~540 בנק-qa הישן** המתואר כאן (כולל תיוג-Gemini-Flash). שלב B כולו מתאר את הצינור-הישן-שמוחלף. ראה [ADR-015](../architecture/ADR-015-notebooklm-content-engine.md). **מחיקת 540-הישן תלויה ב-import+smoke של החדש.**
+
 ## מטרה (Definition of Done)
 
 הרצת `pnpm import:t1 --execute` בפועל מזינה את טבלת `questions` ב-~540 שאלות מבנקי-השאלות המאושרים (~19 קבצי-T1 ב-allow-list), כל שאלה עם `source_ref` ייחודי (ידמפוטנטי), תיוג-scope אוטומטי של Gemini Flash בסטטוס `מוסקנא` (לא `מאומת` — קידום-ידני בלבד), ב-hard-cap של $5; `/admin/questions` ו-`/lesson/practice` מציגים תוכן-אמת. "סיום" = ה-DB מכיל את השאלות, ה-report ב-`logs/` ירוק, וה-allow-list נשען רק על בנקי-שאלות (לא חומרי-לימוד T2/T3).

@@ -2,7 +2,7 @@
 
 > סטטוס: **Accepted** · 2026-06-08 · בעלים: `tech-lead` (איתן) · `ml-engineer` · `motilev8`
 > Phase: 4 (content-pipeline) · יישום-ראשון: הרחבת 20 תרחישי-וועדה (מדליק [ADR-014](ADR-014-scenario-engine.md)).
-> קשור: [ADR-005](ADR-005-notebooklm-hybrid.md) (NotebookLM-hybrid — מכליל ומדייק) · [ADR-014](ADR-014-scenario-engine.md) (מנוע-תרחישים) · [ADR-011](ADR-011-drive-import-pipeline.md) (צינור-ייבוא) · [ADR-001](ADR-001-stack.md) (Gemini=LLM-יחיד).
+> קשור: [ADR-005](ADR-005-notebooklm-hybrid.md) (NotebookLM-hybrid — מכליל ומדייק) · [ADR-014](ADR-014-scenario-engine.md) (מנוע-תרחישים) · [ADR-016](ADR-016-committee-simulation.md) (סימולציית-וועדה — מיני-קורס-התרחישים עבר מ-walkthrough-סטטי לסימולציה אינטראקטיבית) · [ADR-011](ADR-011-drive-import-pipeline.md) (צינור-ייבוא) · [ADR-001](ADR-001-stack.md) (Gemini=LLM-יחיד).
 
 ---
 
@@ -149,7 +149,7 @@ hand-applied לפי `drizzle.config.ts` (Supabase SQL Editor) **או** `scripts/
 > **🔧 בוטל 2026-06-09:** ~~firewall-מגן (native · name-clean) — אסור copy/coupling לריפו-מגן; firewall (PROJECT-CONTEXT §כלל-מגן) נשמר במלואו.~~ **כעת port-permitted:** מותר לפורט את **פרומפט-המאסטר של מגן** (סימולציה/חיבור-תרחישי-וועדה) ל-StudiBuilder, **name-cleaned** (להסיר מגן/שגיא/Telegram/מזהי-בעלים · לשמור 4-עקרונות · Zero-Harm · common-pitfalls · 3-מצבי-תשובה). מוטי בעל-שני-הריפו → אפס-licensing. megen נשאר מבודד (clone לתיקייה-סמוכה · read-only · רק תוכן-פרומפט · לא מנוע-Python).
 
 מקור-ההשראה (20 התרחישים · `scripts/data/committee-scenarios.json`) הוא base-מקומי **נקי-שם · לא-מקוממט · solutions verbatim-קצרים**.
-המנוע **מרחיב** אותם (דרישת-מוטי "להרחיב, לא לסכם") **native** דרך NotebookLM המעוגן-בחומרי-המקור-שלנו (נבו · Drive · G3). **שימוש (2026-06-09):** NotebookLM מעגן חוק/תקנה (verbatim · G3) → פרומפט-מגן name-cleaned מחבר את התרחיש (Gemini-API · offline) → אימות-סמנטי → ייבוא.
+המנוע **מרחיב** אותם (דרישת-מוטי "להרחיב, לא לסכם") **native** דרך NotebookLM המעוגן-בחומרי-המקור-שלנו (נבו · Drive · G3). **שימוש (2026-06-09):** NotebookLM מעגן חוק/תקנה (verbatim · G3) → פרומפט-מגן name-cleaned מחבר כ-Workflow רב-סוכני של Claude (אפס-Gemini · offline) → אימות-סמנטי → ייבוא.
 ה-grounding שלנו הוא הקורפוס-שלנו (נבו · Drive). ~~firewall (PROJECT-CONTEXT §כלל-מגן) נשמר במלואו.~~ → §כלל-מגן בוטל 2026-06-09 (ראה [ADR-009](ADR-009-magen-integration.md)).
 
 ---

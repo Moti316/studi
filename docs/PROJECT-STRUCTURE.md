@@ -78,15 +78,15 @@ courses/<slug>/sources/
 (`scripts/import-content.ts`, ADR-011). הסכמה עצמה ב-[`architecture/ADR-010-data-schema-mvp.md`](architecture/ADR-010-data-schema-mvp.md).
 המיפוי מתיקיית-הקורס לישויות-ה-DB:
 
-| מקור בתיקיית-הקורס                   | tier | טבלה/view ביעד                   | דרך                                                    |
-| ------------------------------------ | ---- | -------------------------------- | ------------------------------------------------------ |
-| `sources/**` (כל קובץ)               | —    | `content_sources`                | שורה-לקובץ; `scope_refs[]` + `in_scope` + `tier`       |
-| בנק-שאלות (Q&A) ב-`sources/`         | T1   | `questions`                      | פירסור-מובנה `שאלה/תשובה/נימוק`; `import_source`       |
-| חומרי-לימוד (מצגות/סיכומים)          | T2   | `chunks` (+ embedding pgvector)  | semantic-chunking → embed (Gemini)                     |
-| נוסחי-חקיקה (`sources/legislation/`) | T3   | `chunks` (+ scope-mapping מדויק) | chunking לפי-סעיפים; scope_id משם-הקובץ (ודאות-גבוהה)  |
-| תרחישי-תיק-מעשי                      | —    | `scenarios`                      | Markdown מובנה (רקע/משימה/פתרון/רובריקה) → שורה        |
-| מדיה (`UNREAD-MEDIA.md`)             | T4   | `chunks` (post-deadline)         | transcription/OCR ואז chunking כ-T2                    |
-| `scope_refs` (`scope-IDs` ב-spine)   | —    | `coverage_tracker` (VIEW)        | חישוב כיסוי פר-scope (question_count / scenario_count) |
+| מקור בתיקיית-הקורס                   | tier | טבלה/view ביעד                   | דרך                                                                                             |
+| ------------------------------------ | ---- | -------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `sources/**` (כל קובץ)               | —    | `content_sources`                | שורה-לקובץ; `scope_refs[]` + `in_scope` + `tier`                                                |
+| בנק-שאלות (Q&A) ב-`sources/`         | T1   | `questions`                      | פירסור-מובנה `שאלה/תשובה/נימוק`; `import_source`                                                |
+| חומרי-לימוד (מצגות/סיכומים)          | T2   | `chunks` (+ embedding pgvector)  | semantic-chunking → embed (Gemini)                                                              |
+| נוסחי-חקיקה (`sources/legislation/`) | T3   | `chunks` (+ scope-mapping מדויק) | chunking לפי-סעיפים; scope_id משם-הקובץ (ודאות-גבוהה)                                           |
+| תרחישי-תיק-מעשי                      | —    | `scenarios`                      | מודל-סימולציה מסועף (4 שלבים · עץ-בחירות · `src/features/simulation/types.ts` · ADR-016) → שורה |
+| מדיה (`UNREAD-MEDIA.md`)             | T4   | `chunks` (post-deadline)         | transcription/OCR ואז chunking כ-T2                                                             |
+| `scope_refs` (`scope-IDs` ב-spine)   | —    | `coverage_tracker` (VIEW)        | חישוב כיסוי פר-scope (question_count / scenario_count)                                          |
 
 נקודות-עיגון של המיפוי:
 

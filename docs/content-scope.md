@@ -18,7 +18,9 @@
 | -------------------------------------- | -------------------------- |
 | Identification (איזה חוק/תקנה רלוונטי) | MCQ-long, MatchingPairs    |
 | Explanation (rationale מאחורי התקנה)   | ExplanationCard, MCQ-short |
-| Application (החלה על תרחיש)            | ScenarioWalkthrough        |
+| Application (החלה על תרחיש)            | סימולציית-וועדה (ADR-016)  |
+
+> **עדכון 2026-06-09**: פעולת-ה-Application מתורגלת כעת ב**סימולציית-וועדה אינטראקטיבית** (ADR-016 · 3 מפקחים · 4 שלבים · ציון 0-100 · hybrid פרה-בנוי→LiveEngine) — המחליפה את ה-`ScenarioWalkthrough` הסטטי (ADR-014). מתודולוגיית 3-החלקים נשמרת כמהות-הניקוד בתוך הסימולציה.
 
 ---
 
@@ -230,7 +232,8 @@ status: '[מאומת]' # | '[מוסקנא]' | '[לא ידוע]'
 ## References
 
 - ADR-005 (NotebookLM Hybrid) — scope filter בשלב Import
-- ADR-009 (Magen Integration) — Drive Discovery יסמן in/out-of-scope
+- ADR-009 (Magen Integration · firewall-בוטל 2026-06-09) — Drive Discovery יסמן in/out-of-scope
+- ADR-016 (סימולציית-וועדה) — מצב-תרגול Application (מחליף את ScenarioWalkthrough הסטטי)
 - ADR-010 (Data Schema MVP) — `scope_refs` jsonb on chunks/questions
 - `docs/content-inventory.md` — Drive scan (125 קבצים)
 - `docs/curriculum-coverage.md` — matrix קורס × scope-IDs × Drive files

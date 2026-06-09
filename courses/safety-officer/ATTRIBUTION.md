@@ -97,7 +97,7 @@
 - כלל-הזכויות המלא: [`../../docs/compliance/COMPLIANCE.md`](../../docs/compliance/COMPLIANCE.md)
 - אינוונטר-חומר פר-פרק + כיסוי 57-scope: [`LEARNING-MATERIALS.md`](LEARNING-MATERIALS.md)
 - קורפוס-החקיקה (נחלת-כלל) + סטטוס-ISO: [`LEGISLATION-SOURCES.md`](LEGISLATION-SOURCES.md)
-- כיסוי 57-scope (49✅/6🟠/2🔴): [`LEGISLATION-COVERAGE.md`](LEGISLATION-COVERAGE.md)
+- כיסוי 57-scope (48✅/7🟠/2🔴): [`LEGISLATION-COVERAGE.md`](LEGISLATION-COVERAGE.md)
 - תקצירי-ISO מקוריים: [`ISO-31010-DRAFT.md`](ISO-31010-DRAFT.md) ·
   [`ISO-31000-DRAFT.md`](ISO-31000-DRAFT.md)
 - מיני-קורס capstone + גיבוי-פרויקט פרטי: [`FINAL-PROJECT.md`](FINAL-PROJECT.md)

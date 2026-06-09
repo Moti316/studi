@@ -21,19 +21,19 @@ StudiBuilder נבנה **מקצה-לקצה** כפלטפורמת-ייצור-קור
 
 ## ה-Roadmap המלא (10 phases) — הכל in-scope
 
-| Phase | תיאור                     | סטטוס         | הערה                                                                               |
-| ----- | ------------------------- | ------------- | ---------------------------------------------------------------------------------- |
-| 0     | Foundation                | ✅            | —                                                                                  |
-| 1     | Auth & Profile            | ✅            | בפרודקשן                                                                           |
-| 2     | Dashboard                 | 🟡 חלקי       | UI+mock → להוסיף persistence                                                       |
-| 3     | Upload UI (creator)       | ⬜ בתוכנית    | כלי-היצירה של מוטי (creator-gated)                                                 |
-| 4     | Course Pipeline           | 🟡 חלקי       | צינור-ייבוא-שאלות T1 ✅; RAG chunker/embedder חסר                                  |
-| 5     | Quiz Engine (5 types)     | 🟡 ~3/5       | MatchingPairs+MCQShort+MCQLong+נגן+`/lesson/[id]` ✅; חסר ScenarioWalkthrough/exam |
-| 6     | Gamification              | ⬜ בתוכנית    | XP/streak/practice-log                                                             |
-| 7     | TTS (קולות עברית)         | ⬜ בתוכנית    | —                                                                                  |
-| 8     | Credits                   | ⬜ בתוכנית    | למוצר המסחרי                                                                       |
-| 9     | Polish & Launch           | ⬜ בתוכנית    | —                                                                                  |
-| 10    | Course-as-Product Factory | ⬜ בתוכנית 🎯 | **מטרה מפורשת** — landing+checkout+ads לקורס                                       |
+| Phase | תיאור                     | סטטוס         | הערה                                                                                     |
+| ----- | ------------------------- | ------------- | ---------------------------------------------------------------------------------------- |
+| 0     | Foundation                | ✅            | —                                                                                        |
+| 1     | Auth & Profile            | ✅            | בפרודקשן                                                                                 |
+| 2     | Dashboard                 | 🟡 חלקי       | UI+mock → להוסיף persistence                                                             |
+| 3     | Upload UI (creator)       | ⬜ בתוכנית    | כלי-היצירה של מוטי (creator-gated)                                                       |
+| 4     | Course Pipeline           | 🟡 חלקי       | צינור-ייבוא-שאלות T1 ✅; RAG chunker/embedder חסר                                        |
+| 5     | Quiz Engine (5 types)     | 🟡 ~3/5       | MatchingPairs+MCQShort+MCQLong+נגן+`/lesson/[id]` ✅; חסר סימולציית-וועדה (ADR-016)/exam |
+| 6     | Gamification              | ⬜ בתוכנית    | XP/streak/practice-log                                                                   |
+| 7     | TTS (קולות עברית)         | ⬜ בתוכנית    | —                                                                                        |
+| 8     | Credits                   | ⬜ בתוכנית    | למוצר המסחרי                                                                             |
+| 9     | Polish & Launch           | ⬜ בתוכנית    | —                                                                                        |
+| 10    | Course-as-Product Factory | ⬜ בתוכנית 🎯 | **מטרה מפורשת** — landing+checkout+ads לקורס                                             |
 
 🎯 = מוקד מיידי לקורס-הוועדה. שאר ה-phases נבנים end-to-end לפי סדר-התלויות — **לא נדחים**.
 
@@ -60,12 +60,13 @@ StudiBuilder נבנה **מקצה-לקצה** כפלטפורמת-ייצור-קור
 
 - 3 כיווני-עיצוב (A/B/C) + COMPARE + **5 דוגמאות-HTML מוחשיות** (`docs/design/mockups/`, A/B/C + B1/B2). 🚩 **בחירת-כיוון מוטי** (נוטה ל-B) → עיגון design-system/tokens (`ADR-007`) → החלה על UI של Quiz Engine, Upload ו-Dashboard. **אינו תלוי בתוכן** — מתבצע במקביל ל-שלב 1. ראה TODO §DM.
 
-### שלב 2 — Quiz Engine (Phase 5) — ליבה בנויה; נותרו type-5 + מצבים
+### שלב 2 — Quiz Engine (Phase 5) — ליבה בנויה; נותרו סימולציית-וועדה + מצבים
 
 - ✅ קיים: `MCQLong`, `MCQShort`, `McqQuestion`, `LessonPlayer`, `LessonHeader`, route `/lesson/[id]`, admin `/admin/questions`.
-- ⬜ חסר: `ExplanationCard`, **`ScenarioWalkthrough`** (type-5, קריטי — הוועדה scenario-based).
+- ⬜ חסר: `ExplanationCard`, **סימולציית-וועדה אינטראקטיבית** (ADR-016 · 3 מפקחים · 4 שלבים opening→branch→law→cruel · ציון 0-100 · מנוע hybrid פרה-בנוי→LiveEngine — מחליפה את ה-`ScenarioWalkthrough` הסטטי של ADR-014; `src/features/simulation/types.ts`).
 - ⬜ routes `/lesson/practice` + `/lesson/exam` (mock-exam 30 שאלות, טיימר).
-- ⬜ API: next-question, attempts, evaluate-scenario (Gemini rubric), deep-explanation (RAG).
+- ⬜ API: next-question, attempts, ציון-סימולציה דטרמיניסטי (פרה-בנוי · אפס-Gemini · authoring דרך Workflow רב-סוכני של Claude), deep-explanation (RAG).
+- מקור-השאלות: בנק-NotebookLM רב-סוגי (~500 · mcq/matching/open מקורפוס-החקיקה · status=מוסקנא · אפס-Gemini) — מחליף את בנק-qa הישן (~540).
 - תבנית-ייחוס: `src/features/lesson-player/components/MatchingPairs.tsx`.
 
 ### שלב 3 — השלמת פלטפורמת-היצירה (creator end-to-end)

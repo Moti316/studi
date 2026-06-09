@@ -18,6 +18,7 @@
 - `docs/content-scope.md` (57 scope-IDs) + `docs/CONTENT-INDEX.md`.
 - RAG מול ה-chunks/citations ב-Supabase (pgvector).
 - Cross-check רב-שלבי (השראת Star Chamber / CP-WBFT מ-`docs/מחקרים`): generate → verify-pass → grade.
+- שלבי ה-verify-pass / grade רצים כיום דרך **Workflow רב-סוכני של Claude לאימות** (`ADR-015`/`ADR-016`), עם עיגון דטרמיניסטי G1–G5 תחילה ו-**אפס-Gemini** — בהתאמה לשדה-12.
 - ADR-005 (scope-filter) · ADR-011 (import) · CLAUDE.md (PDF=source-of-truth).
 
 ## 4. Decision Framework

@@ -6,6 +6,8 @@
 > **Phase**: 4 (pre-implementation)
 > **Supersedes**: חלק מ-ADR-001 (שדחה NotebookLM)
 
+> 🔧 **מורחב-ומדויק 2026-06-08 ע"י [ADR-015](ADR-015-notebooklm-content-engine.md)** (מנוע-תוכן NotebookLM · generate-offline→verify-G1–G5→serve-precomputed) — שלב-ה-generation עבר מ-Gemini-API-בתשלום ל-NotebookLM-מנוי; ה-data-contract עבר מ-`.md` ל-JSON-מובנה.
+
 ---
 
 ## Update — 2026-05-29 ערב

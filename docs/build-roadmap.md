@@ -45,6 +45,8 @@ gantt
 | 9   | Polish & Launch     | 5 ימים  | release-manager     | a11y, Lighthouse, error boundaries, onboarding                                                                                                                                                                                          |
 | 10  | Course-Site Factory | 7 ימים  | tech-lead + backend | Landing-page templates (3), Auto-copywriter (Claude), Vercel REST provisioning, Stripe/Lemon-Squeezy checkout, ad campaigns (manual ב-MVP), admin analytics dashboard. ראה [ADR-006](architecture/ADR-006-course-as-product-factory.md) |
 
+> **עדכון Phase 5 (2026-06-09):** מיני-קורס-התרחישים = **סימולציית-וועדה אינטראקטיבית** ([ADR-016](architecture/ADR-016-committee-simulation.md) · 3 מפקחים · 4 שלבים · ציון 0-100 · hybrid פרה-בנוי→LiveEngine), **המחליפה את ה-ScenarioWalkthrough הסטטי** ([ADR-014](architecture/ADR-014-scenario-engine.md)). מקור-השאלות = **בנק-NotebookLM רב-סוגי** ([ADR-015](architecture/ADR-015-notebooklm-content-engine.md) · ~500 · mcq/matching/open מקורפוס-החקיקה · status=מוסקנא), המחליף את בנק-ה-qa הישן.
+
 ## עקרון כל-שלב
 
 ```

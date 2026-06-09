@@ -1,7 +1,8 @@
 # ADR-014 — מנוע-תרחישים (תרחישי-וועדה · scenario_walkthrough)
 
+> 🔧 מוחלף-מורחב 2026-06-09 ע"י [ADR-016](ADR-016-committee-simulation.md) (סימולציית-וועדה · 3-מפקחים · hybrid פרה-בנוי→חי) — ה-walkthrough הסטטי כבר אינו הצורה-הסופית/היחידה למיני-קורס-התרחישים.
 > סטטוס: **Accepted** · 2026-06-08 · מיני-קורס #1 מתוך 2 (תרחישים + פרויקט-גמר).
-> קשור: [ADR-013](ADR-013-course-template.md) (תבנית-קורס) · [ADR-009](ADR-009-magen-integration.md) (firewall-מגן — **בוטל 2026-06-09 · port-permitted**) · [ADR-011](ADR-011-import-pipeline.md) (צינור-ייבוא).
+> קשור: [ADR-013](ADR-013-course-template.md) (תבנית-קורס) · [ADR-009](ADR-009-magen-integration.md) (firewall-מגן — **בוטל 2026-06-09 · port-permitted**) · [ADR-011](ADR-011-drive-import-pipeline.md) (צינור-ייבוא) · [ADR-016](ADR-016-committee-simulation.md) (סימולציית-וועדה — מחליף-מורחב).
 
 ## הקשר
 

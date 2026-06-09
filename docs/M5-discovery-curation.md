@@ -2,6 +2,7 @@
 
 > **סטטוס:** ⏳ ממתין לאישור-מוטי. נוצר 2026-06-02 (ריצת-לילה, instance #5).
 > 🗂️ **עדכון (ארגון-מחדש Drive 2026-06-02):** בנקי-ה-T1 מרוכזים כעת בתיקייה אחת **"שאלות ותשובות לוועדת הסמכה"** (`1Ecc8Js…`) → discovery יכול לכוון ישירות לתיקייה זו (פחות רעש). **File-IDs יציבים בהעברה — הקוריישן למטה תקף.** +2 בנקים שנראו בתיקייה וטרם ב-טבלה: שאלות-חשמל (`1nv0HAbLzpjESjH7oLDXxLIQIbOn-261v`) · Emailing שאלות-למבחן (`1D-efRZrQoqq2x-8Ojn-W3o1pmIdz4qjq`).
+> ⚠️ **עדכון (פיבוט 2026-06-09):** בנק-ה-qa הישן (~540) **מוחלף** ב-מיני-קורס-שו"ת = בנק-NotebookLM רב-סוגי (~500 · mcq/matching/open מקורפוס-החקיקה · status=מוסקנא · אפס-Gemini · אימות-סמנטי Workflow-Claude). ראה [`docs/architecture/ADR-015-notebooklm-content-engine.md`](architecture/ADR-015-notebooklm-content-engine.md) · `docs/context/DECISIONS.md` (2026-06-09 #2). היעד "~540 שאלות" למטה הוא **legacy**; רשימת-הקוריישן (~19 בנקים) רלוונטית כעת רק כמקור-T2/T3 (RAG) — לא לייבוא-שאלות-T1.
 > **קשור:** [`docs/architecture/ADR-011-drive-import-pipeline.md`](architecture/ADR-011-drive-import-pipeline.md) ·
 > [`scripts/import-content.ts`](../scripts/import-content.ts) · [`scripts/import-content.config.ts`](../scripts/import-content.config.ts) · `TODO.md` (משימה M5).
 

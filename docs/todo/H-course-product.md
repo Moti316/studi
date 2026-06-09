@@ -35,5 +35,5 @@
 
 - **דומיין** — subdomain (`betichut.studibuilder.app`) או route-based (`/c/[slug]`)? ברירת-מחדל ADR-006: Option B (route-based) ל-MVP, מעבר ל-Option A ב-5+ קורסים. (לאמת)
 - **Migration-trigger ל-Stripe** — 5+ קורסים פעילים / ₪10K+ הכנסה-חודשית / 200+ tx-חודשי. דורש עוסק-מורשה + ADR-008.1.
-- **H4 timing** — חל רק אחרי deadline-הוועדה (2026-07-15) ולפי-traction; עד-אז סמן "(לאמת)". שגיא = internal-only (לא public-persona). **inspiration-only:** מגן = השראת-מבנה בלבד (ראה כלל-מגן/firewall ב-H4) — אין העתקת-קוד/תוכן/prompts; כל פרסונה נכתבת native.
+- **H4 timing** — חל רק אחרי deadline-הוועדה (2026-07-15) ולפי-traction; עד-אז סמן "(לאמת)". **port-permitted (firewall בוטל 2026-06-09):** מותר לפורט את פרומפט-המאסטר name-cleaned (ראה H4) — megen מבודד read-only · רק תוכן-פרומפט (לא מנוע-Python); הפרסונות מנוקות-שם.
 - name-clean: חוקים/תקנות = נחלת-כלל; חומרי-מרצה = reference בלבד, ללא שמות.

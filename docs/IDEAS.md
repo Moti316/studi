@@ -22,7 +22,7 @@
 
 ### [2026-05-31] חוויית-לימוד מלאה (post-v1)
 
-5 סוגי-שאלות מלאים (ExplanationCard · ScenarioWalkthrough עם LLM-rubric) · skill-tree (V9-12) · mascot מונפש (V13-15) · confetti · gamification מלא (XP/streak/levels) · TTS עברית (4 קולות). · 💡 Phase 5-7.
+5 סוגי-שאלות מלאים (ExplanationCard · סימולציית-וועדה (ADR-016, hybrid) — מחליפה את ScenarioWalkthrough-עם-LLM-rubric) · skill-tree (V9-12) · mascot מונפש (V13-15) · confetti · gamification מלא (XP/streak/levels) · TTS עברית (4 קולות). · 💡 Phase 5-7.
 
 ### [2026-05-31] Course-as-Product Factory
 
