@@ -44,15 +44,18 @@ const CHAPTERS: LegislationChapter[] = [
 ];
 
 describe('LegislationLibrary', () => {
-  it('מציג את כל הפרקים והפריטים + ספירה', () => {
+  it('מציג את כל המדפים (כותרות) + ספירה; פריטים מקופלים כברירת-מחדל', () => {
     render(<LegislationLibrary chapters={CHAPTERS} total={2} />);
     expect(screen.getByText('חוק ארגון הפיקוח על העבודה ותקנותיו')).toBeInTheDocument();
     expect(screen.getByText('פקודת הבטיחות בעבודה ותקנותיה')).toBeInTheDocument();
-    expect(screen.getByText(/2 נוסחים · 2 פרקים/)).toBeInTheDocument();
+    expect(screen.getByText(/2 נוסחים · 2 מדפים/)).toBeInTheDocument();
+    // מקופל → פריט-הנוסח אינו מרונדר עד פתיחת-המדף.
+    expect(screen.queryByTestId('legislation-item-2.1')).not.toBeInTheDocument();
   });
 
-  it('כל פריט נושא קישור-נבו וקישור-PDF חיצוניים', () => {
+  it('פתיחת-מדף חושפת פריט עם קישור-נבו וקישור-PDF חיצוניים', () => {
     render(<LegislationLibrary chapters={CHAPTERS} total={2} />);
+    fireEvent.click(screen.getByTestId('chapter-2')); // פתיחת מדף-2
     const row = screen.getByTestId('legislation-item-2.1');
     const nevo = within(row).getByRole('link', { name: /נבו/ });
     expect(nevo).toHaveAttribute('href', 'https://www.nevo.co.il/law_html/law00/74164.htm');
