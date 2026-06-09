@@ -7,6 +7,28 @@ vi.mock('@/features/lesson-player/components/DeepExplanationButton', () => ({
   DeepExplanationButton: () => null,
 }));
 
+// ה-action הוא server-action (Claude/fallback) — ממוקה לנתיב-הדטרמיניסטי בטסט.
+vi.mock('@/features/lesson-player/grade-open-answer.action', () => ({
+  gradeOpenAnswerAction: async ({
+    userAnswer,
+    modelAnswer,
+  }: {
+    userAnswer: string;
+    modelAnswer: string;
+  }) => {
+    const { gradeOpenAnswer } = await import('@/lib/grading/keyword-match');
+    const d = gradeOpenAnswer(userAnswer, modelAnswer);
+    return {
+      grade: d.grade,
+      relevant: d.grade !== 'incorrect',
+      feedback: '',
+      matchedWords: d.matchedWords,
+      missedWords: d.missedWords,
+      source: 'deterministic' as const,
+    };
+  },
+}));
+
 function q(over: Partial<Question> = {}): Question {
   return {
     id: 'q1',
@@ -27,35 +49,36 @@ describe('ExplanationCard — זרימת שו"ת (כתיבה→בדיקה→חש
     expect(screen.queryByTestId('model-answer')).not.toBeInTheDocument();
   });
 
-  it('"בדוק תשובה" חושף ציון-עצמי + תשובת-מודל + "המשך"', () => {
+  it('"בדוק תשובה" חושף ציון + תשובת-מודל + התשובה-שלך + "המשך"', async () => {
     render(<ExplanationCard question={q()} onResult={vi.fn()} disabled={false} />);
     fireEvent.change(screen.getByTestId('open-answer-input'), {
       target: { value: 'מפקח עבודה, ממונה בטיחות, וועדת בטיחות' },
     });
     fireEvent.click(screen.getByTestId('check-answer'));
-    expect(screen.getByTestId('open-grade')).toHaveTextContent('נכונה');
+    expect(await screen.findByTestId('open-grade')).toHaveTextContent('נכונה');
     expect(screen.getByTestId('model-answer')).toHaveTextContent('מפקח עבודה');
+    expect(screen.getByTestId('your-answer')).toHaveTextContent('מפקח עבודה'); // התשובה נשמרת
     expect(screen.getByTestId('explanation-continue')).toBeInTheDocument();
   });
 
-  it('תשובה לא-קשורה → ציון "לא-נכונה" (אך עדיין חושף את המודל)', () => {
+  it('תשובה לא-קשורה → ציון "לחזור" (אך עדיין חושף את המודל)', async () => {
     render(<ExplanationCard question={q()} onResult={vi.fn()} disabled={false} />);
     fireEvent.change(screen.getByTestId('open-answer-input'), {
       target: { value: 'צבע כחול' },
     });
     fireEvent.click(screen.getByTestId('check-answer'));
-    expect(screen.getByTestId('open-grade')).toHaveTextContent('לחזור');
+    expect(await screen.findByTestId('open-grade')).toHaveTextContent('לחזור');
     expect(screen.getByTestId('model-answer')).toBeInTheDocument();
   });
 
-  it('"המשך" מדווח openGrade (בלי משוב-MCQ)', () => {
+  it('"המשך" מדווח openGrade (בלי משוב-MCQ)', async () => {
     const onResult = vi.fn();
     render(<ExplanationCard question={q()} onResult={onResult} disabled={false} />);
     fireEvent.change(screen.getByTestId('open-answer-input'), {
       target: { value: 'מפקח עבודה ממונה בטיחות וועדת בטיחות' },
     });
     fireEvent.click(screen.getByTestId('check-answer'));
-    fireEvent.click(screen.getByTestId('explanation-continue'));
+    fireEvent.click(await screen.findByTestId('explanation-continue'));
     expect(onResult).toHaveBeenCalledWith(
       expect.objectContaining({ openGrade: 'correct', correct: true }),
     );

@@ -3,7 +3,9 @@
 import { useState } from 'react';
 import type { Question } from '../../../../drizzle/schema';
 import type { QuestionResult } from './types';
-import { gradeOpenAnswer, type OpenGrade, type OpenGradeResult } from '@/lib/grading/keyword-match';
+import { type OpenGrade } from '@/lib/grading/keyword-match';
+import { gradeOpenAnswerAction } from '../grade-open-answer.action';
+import type { SmartGradeResult } from '@/lib/ai/prompts/evaluate-open-answer';
 import { DeepExplanationButton } from './DeepExplanationButton';
 
 /**
@@ -56,13 +58,24 @@ export function ExplanationCard({
 }) {
   const answer = modelAnswer(question);
   const [draft, setDraft] = useState('');
-  const [result, setResult] = useState<OpenGradeResult | null>(null);
+  const [result, setResult] = useState<SmartGradeResult | null>(null);
+  const [checking, setChecking] = useState(false);
   const revealed = result !== null;
   const grade = result?.grade ?? null;
 
-  function handleCheck() {
-    if (!answer) return;
-    setResult(gradeOpenAnswer(draft, answer));
+  async function handleCheck() {
+    if (!answer || checking) return;
+    setChecking(true);
+    try {
+      const r = await gradeOpenAnswerAction({
+        userAnswer: draft,
+        modelAnswer: answer,
+        prompt: question.prompt,
+      });
+      setResult(r);
+    } finally {
+      setChecking(false);
+    }
   }
 
   function handleContinue() {
@@ -91,11 +104,11 @@ export function ExplanationCard({
           <button
             type="button"
             data-testid="check-answer"
-            disabled={disabled}
+            disabled={disabled || checking}
             onClick={handleCheck}
             className="self-start rounded-pill bg-quiz-primary-active px-5 py-2 text-sm font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active disabled:opacity-60"
           >
-            בדוק תשובה
+            {checking ? 'בודק…' : 'בדוק תשובה'}
           </button>
         </>
       )}
@@ -120,15 +133,27 @@ export function ExplanationCard({
           >
             <span aria-hidden="true">{GRADE_UI[grade].icon}</span>
             {GRADE_UI[grade].label}
-            {result.total > 0 && (
+            {result.matchedWords.length + result.missedWords.length > 0 && (
               <span className="font-normal">
-                · נגעת ב-{result.matched} מתוך {result.total} מושגי-מפתח
+                · נגעת ב-{result.matchedWords.length} מתוך{' '}
+                {result.matchedWords.length + result.missedWords.length} מושגי-מפתח
               </span>
             )}
           </p>
 
-          {/* "ראה את הקשר" — מושגי-מפתח שכוסו/הוחמצו (מנגון-הקשר הדטרמיניסטי) */}
-          {result.total > 0 && (
+          {/* משוב-מנחה (Claude · הערכה-סמנטית) — מוצג רק כשהמנוע-החי פעיל */}
+          {result.feedback && (
+            <p
+              data-testid="ai-feedback"
+              className="rounded-card border border-quiz-primary-active/30 bg-quiz-bg px-3 py-2 text-start text-sm leading-relaxed text-quiz-text-primary"
+            >
+              <span className="font-bold text-quiz-primary-active">משוב הבוחן: </span>
+              {result.feedback}
+            </p>
+          )}
+
+          {/* "ראה את הקשר" — מושגי-מפתח שכוסו/הוחמצו */}
+          {result.matchedWords.length + result.missedWords.length > 0 && (
             <div
               data-testid="key-concepts"
               className="flex flex-col gap-1.5 rounded-card border border-quiz-border bg-white px-3 py-2"

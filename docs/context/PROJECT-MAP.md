@@ -59,7 +59,7 @@
 
 **ארכיטקטורה (לפי-צורך, מקור לכל בחירה גדולה):**
 
-12. `docs/architecture/ADR-*.md` — 17 ADRs (000-template + 001-016). בעיקר **001** (stack) · **009** (מגן · firewall בוטל) · **010** (DB schema) · **011** (import pipeline) · **012** (נוהלי-פיתוח, single-branch main) · **013** (תבנית-קורס + capstone) · **014** (מנוע-תרחישים · scenario_walkthrough) · **015** (מנוע-תוכן NotebookLM · generate-offline→verify-G1–G5→serve-precomputed) · **016** (סימולציית-וועדה · 3-מפקחים · hybrid פרה-בנוי→חי).
+12. `docs/architecture/ADR-*.md` — 18 ADRs (000-template + 001-017 · **017** = LiveEngine הערכת-Claude-חיה לתשובות-חופשיות · fallback דטרמיניסטי). בעיקר **001** (stack) · **009** (מגן · firewall בוטל) · **010** (DB schema) · **011** (import pipeline) · **012** (נוהלי-פיתוח, single-branch main) · **013** (תבנית-קורס + capstone) · **014** (מנוע-תרחישים · scenario_walkthrough) · **015** (מנוע-תוכן NotebookLM · generate-offline→verify-G1–G5→serve-precomputed) · **016** (סימולציית-וועדה · 3-מפקחים · hybrid פרה-בנוי→חי).
 
 > **מנוע-תוכן NotebookLM (ADR-015 · 2026-06-08):** `src/lib/notebooklm/{parse-output,map-scenario,request}.ts` (חוזה-JSON · mapper · בונה-בקשה) · `src/lib/import/{verify-grounding,legislation-resolver,upsert-scenarios}.ts` (שערי-G1–G5 · resolver · upsert) · `scripts/{notebooklm/build-request,import-scenarios}.ts` (CLI) · `tools/nblm-bridge/` (גשר-Python · git-ignored · `README.md` = bootstrap-מוטי) · `supabase/migrations/0003_*.sql`. צד-StudiBuilder נבדק end-to-end (dry-run · golden) — הגשר ממתין ל-bootstrap (Python+login).
 
