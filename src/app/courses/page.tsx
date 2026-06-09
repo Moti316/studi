@@ -28,14 +28,6 @@ export default async function CoursesPage() {
       <main className="mx-auto w-full max-w-2xl flex-1 space-y-4 p-4 pb-8">
         <header className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">הקורסים שלי</h1>
-          {!isEmpty && (
-            <Button asChild variant="primary" size="sm">
-              <Link href="/create">
-                <Plus className="size-4" aria-hidden="true" />
-                <span>קורס חדש</span>
-              </Link>
-            </Button>
-          )}
         </header>
 
         {isEmpty ? (

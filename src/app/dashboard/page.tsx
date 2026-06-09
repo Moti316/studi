@@ -1,11 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { requireAuth } from '@/lib/auth/server';
-import { isCreator } from '@/lib/auth/creator';
 import { BottomNav } from '@/components/dashboard/BottomNav';
 import { GreetingBanner } from '@/components/dashboard/GreetingBanner';
 import { UserHeaderStats } from '@/components/dashboard/UserHeaderStats';
-import { NewCourseCTA } from '@/components/dashboard/NewCourseCTA';
 import { StreakCard } from '@/components/dashboard/StreakCard';
 import { DailyProgressCard } from '@/components/dashboard/DailyProgressCard';
 import { LevelBadge } from '@/components/dashboard/LevelBadge';
@@ -26,9 +24,6 @@ export const dynamic = 'force-dynamic';
  */
 export default async function DashboardPage() {
   await requireAuth('/dashboard');
-  // הפרדת פלטפורמה↔קורס: CTA "קורס חדש" הוא כלי-יצירה (פלטפורמה) ליוצר בלבד —
-  // לומד בקורס-המשוּוָק אינו רואה אותו. (העדכון: מוטי, 2026-06-07.)
-  const creator = await isCreator();
 
   // מוק עד Phase 4. הזמן נלקח מ-Date.now של ה-server (Jerusalem TZ).
   const now = new Date();
@@ -46,8 +41,6 @@ export default async function DashboardPage() {
             streakDays={user.streakDays}
           />
         </header>
-
-        {creator && <NewCourseCTA />}
 
         <StreakCard streakDays={user.streakDays} today={today} />
 
