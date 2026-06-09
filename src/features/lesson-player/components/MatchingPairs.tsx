@@ -1,30 +1,16 @@
 'use client';
 
 /**
- * <MatchingPairs> — Quiz type: match left column to right column.
+ * <MatchingPairs> — שאלת-התאמה: מונח ↔ הגדרה (StudiesGo-style).
  *
- * Spec: docs/sources/studiesgo-videos/02-lesson-flow/gemini-response.md
- * Animations: src/lib/animations/ (V1–V8)
- * RTL-first: padding-start/end, dir="rtl", mirrored layout.
+ * UX: הלומד **מזווג בחופשיות** — בוחר מונח ואז את הגדרתו (או להפך) → הם מתחברים
+ * (מספר-קישור משותף), בלי בדיקת-נכונות מיידית. הבדיקה רק ב"בדוק תשובה": כל זיווג
+ * נצבע ✓ ירוק / ✗ אדום, והזיווגים-הנכונים מוצגים. ניתן לשנות זיווג עד הבדיקה.
+ *
+ * חוזה-נתונים: `pairs[i] = {left: מונח, right: הגדרה}` — ההתאמה-הנכונה היא left[i]↔right[i].
+ * RTL-first · design-tokens · a11y (כותרות-עמודה · aria-pressed · מקלדת).
  */
-
-import React, { useCallback, useReducer } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import {
-  cardTap,
-  cardSelectedVariants,
-  matchedPairVariants,
-  submitButtonVariants,
-  submitButtonTap,
-  bottomSheetVariants,
-  backdropFadeVariants,
-  mascotPopVariants,
-  answerListContainer,
-  answerListItem,
-  respectReducedMotion,
-} from '@/lib/animations';
-
-// ─── Types ────────────────────────────────────────────────────────────────────
+import { useMemo, useReducer } from 'react';
 
 export type MatchingPair = { left: string; right: string };
 
@@ -34,412 +20,260 @@ export type MatchingPairsProps = {
   onDeepExplanation?: () => void;
 };
 
-type CardState = 'unselected' | 'selected' | 'matched' | 'error' | 'correct';
+type Selected = { side: 'term' | 'def'; index: number } | null;
 
-type GameState = {
-  /** index of the selected right-column card, null if none */
-  selectedRight: number | null;
-  /** Set of pair indices that have been matched */
-  matchedPairs: Set<number>;
-  /** phase: idle → checking → result */
-  phase: 'idle' | 'result-correct' | 'result-wrong';
-  /** Which pairs were correct vs. wrong (only valid in result phases) */
-  correctness: boolean[];
+type State = {
+  selected: Selected;
+  /** termIndex → defIndex (זיווגי-הלומד). */
+  pairing: Record<number, number>;
+  phase: 'idle' | 'checked';
 };
 
 type Action =
-  | { type: 'SELECT_RIGHT'; index: number }
-  | { type: 'TRY_MATCH'; leftIndex: number }
-  | { type: 'DESELECT' }
-  | { type: 'SUBMIT' }
-  | { type: 'RESET_TO_WRONG' };
+  | { type: 'PICK_TERM'; index: number }
+  | { type: 'PICK_DEF'; index: number }
+  | { type: 'CHECK' };
 
-// ─── Reducer ──────────────────────────────────────────────────────────────────
+/** משייך מונח↔הגדרה, ומסיר זיווגים-מתנגשים (re-pair). */
+function assign(
+  pairing: Record<number, number>,
+  term: number,
+  def: number,
+): Record<number, number> {
+  const next: Record<number, number> = {};
+  for (const [t, d] of Object.entries(pairing)) {
+    if (Number(t) === term || d === def) continue; // הסר זיווג-קודם של אחד הצדדים
+    next[Number(t)] = d;
+  }
+  next[term] = def;
+  return next;
+}
 
-function reducer(state: GameState, action: Action, totalPairs: number): GameState {
+function reducer(state: State, action: Action): State {
+  if (state.phase === 'checked') return state;
   switch (action.type) {
-    case 'SELECT_RIGHT': {
-      // If same card tapped again → deselect
-      if (state.selectedRight === action.index) {
-        return { ...state, selectedRight: null };
+    case 'PICK_TERM': {
+      const sel = state.selected;
+      if (sel?.side === 'term' && sel.index === action.index) return { ...state, selected: null };
+      if (sel?.side === 'def') {
+        return {
+          ...state,
+          selected: null,
+          pairing: assign(state.pairing, action.index, sel.index),
+        };
       }
-      return { ...state, selectedRight: action.index };
+      return { ...state, selected: { side: 'term', index: action.index } };
     }
-
-    case 'TRY_MATCH': {
-      const { selectedRight } = state;
-      if (selectedRight === null) return state;
-
-      const isCorrect = selectedRight === action.leftIndex;
-      if (isCorrect) {
-        const newMatched = new Set(state.matchedPairs);
-        newMatched.add(selectedRight);
-        return { ...state, selectedRight: null, matchedPairs: newMatched };
+    case 'PICK_DEF': {
+      const sel = state.selected;
+      if (sel?.side === 'def' && sel.index === action.index) return { ...state, selected: null };
+      if (sel?.side === 'term') {
+        return {
+          ...state,
+          selected: null,
+          pairing: assign(state.pairing, sel.index, action.index),
+        };
       }
-      // Wrong match — deselect both
-      return { ...state, selectedRight: null };
+      return { ...state, selected: { side: 'def', index: action.index } };
     }
-
-    case 'DESELECT':
-      return { ...state, selectedRight: null };
-
-    case 'SUBMIT': {
-      if (state.matchedPairs.size < totalPairs) return state;
-      const allCorrect = state.matchedPairs.size === totalPairs;
-      const correctness = Array.from({ length: totalPairs }, (_, i) => state.matchedPairs.has(i));
-      return {
-        ...state,
-        phase: allCorrect ? 'result-correct' : 'result-wrong',
-        correctness,
-      };
-    }
-
-    case 'RESET_TO_WRONG':
-      return { ...state, phase: 'result-wrong' };
-
+    case 'CHECK':
+      return { ...state, selected: null, phase: 'checked' };
     default:
       return state;
   }
 }
 
-// ─── Component ────────────────────────────────────────────────────────────────
+/** ערבוב-יציב (לפי-תוכן) לעמודת-ההגדרות — שהמונח לא יעמוד מול הגדרתו. */
+function shuffledOrder(n: number): number[] {
+  const idx = Array.from({ length: n }, (_, i) => i);
+  const out: number[] = [];
+  const mid = Math.ceil(n / 2);
+  for (let i = 0; i < mid; i++) {
+    out.push(idx[i]!);
+    if (idx[i + mid] !== undefined) out.push(idx[i + mid]!);
+  }
+  return out;
+}
 
 export function MatchingPairs({ pairs, onComplete, onDeepExplanation }: MatchingPairsProps) {
-  const totalPairs = pairs.length;
-
-  const [state, dispatchRaw] = useReducer((s: GameState, a: Action) => reducer(s, a, totalPairs), {
-    selectedRight: null,
-    matchedPairs: new Set<number>(),
+  const total = pairs.length;
+  const [state, dispatch] = useReducer(reducer, {
+    selected: null,
+    pairing: {},
     phase: 'idle',
-    correctness: [],
   });
 
-  const dispatch = dispatchRaw;
+  const defOrder = useMemo(() => shuffledOrder(total), [total]);
+  /** defIndex → termIndex (היפוך, להצגת מספר-הקישור על ההגדרה). */
+  const defToTerm = useMemo(() => {
+    const m: Record<number, number> = {};
+    for (const [t, d] of Object.entries(state.pairing)) m[d] = Number(t);
+    return m;
+  }, [state.pairing]);
 
-  const allMatched = state.matchedPairs.size === totalPairs;
-  const isSubmitEnabled = allMatched;
-
-  // ── Card state helpers ──
-
-  const getRightCardState = useCallback(
-    (index: number): CardState => {
-      if (state.matchedPairs.has(index)) return 'matched';
-      if (state.selectedRight === index) return 'selected';
-      return 'unselected';
-    },
-    [state.matchedPairs, state.selectedRight],
+  const pairedCount = Object.keys(state.pairing).length;
+  const allPaired = pairedCount === total;
+  const checked = state.phase === 'checked';
+  const allCorrect = useMemo(
+    () => Object.entries(state.pairing).every(([t, d]) => Number(t) === d),
+    [state.pairing],
   );
 
-  const getLeftCardState = useCallback(
-    (index: number): CardState => {
-      if (state.matchedPairs.has(index)) return 'matched';
-      return 'unselected';
-    },
-    [state.matchedPairs],
-  );
+  function handleCheck() {
+    if (!allPaired || checked) return;
+    dispatch({ type: 'CHECK' });
+    onComplete(allCorrect);
+  }
 
-  // ── Interaction handlers ──
+  /** סגנון-כרטיס לפי מצב (בחור/מזווג/נבדק-נכון/נבדק-שגוי). */
+  function cardClass(opts: { selected: boolean; paired: boolean; correct?: boolean }): string {
+    const base =
+      'flex min-h-[52px] w-full items-center gap-2 rounded-card border px-3 py-3 text-start text-sm font-medium leading-snug text-quiz-text-primary transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active';
+    if (opts.correct === true) return `${base} border-quiz-success-border bg-quiz-success-bg`;
+    if (opts.correct === false) return `${base} border-error/50 bg-error/10`;
+    if (opts.selected)
+      return `${base} border-quiz-primary-active bg-quiz-bg ring-2 ring-quiz-primary-active`;
+    if (opts.paired) return `${base} border-accent-400 bg-accent-50`;
+    return `${base} border-quiz-border bg-white hover:border-quiz-primary-active hover:bg-quiz-bg`;
+  }
 
-  const handleRightCardClick = (index: number) => {
-    if (state.matchedPairs.has(index) || state.phase !== 'idle') return;
-    dispatch({ type: 'SELECT_RIGHT', index });
-  };
-
-  const handleRightCardKey = (e: React.KeyboardEvent, index: number) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      handleRightCardClick(index);
-    }
-  };
-
-  const handleLeftCardClick = (index: number) => {
-    if (state.matchedPairs.has(index) || state.phase !== 'idle') return;
-    if (state.selectedRight === null) return; // no right card selected yet
-    dispatch({ type: 'TRY_MATCH', leftIndex: index });
-  };
-
-  const handleLeftCardKey = (e: React.KeyboardEvent, index: number) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      handleLeftCardClick(index);
-    }
-  };
-
-  const handleSubmit = () => {
-    if (!isSubmitEnabled || state.phase !== 'idle') return;
-    // In this matching exercise all pairs must be matched to submit,
-    // so when allMatched===true the result is always correct.
-    // The component supports onComplete(true/false) for when partial-matching is introduced.
-    dispatch({ type: 'SUBMIT' });
-    onComplete(true); // all pairs matched = correct
-  };
-
-  const handleSubmitKey = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      handleSubmit();
-    }
-  };
-
-  // ── Reduced-motion variants ──
-
-  const safeCardSelected = respectReducedMotion(cardSelectedVariants);
-  const safeMatched = respectReducedMotion(matchedPairVariants);
-  const safeSubmitButton = respectReducedMotion(submitButtonVariants);
-  const safeBottomSheet = respectReducedMotion(bottomSheetVariants);
-  const safeBackdrop = respectReducedMotion(backdropFadeVariants);
-  const safeMascotPop = respectReducedMotion(mascotPopVariants);
-  const safeAnswerContainer = respectReducedMotion(answerListContainer);
-  const safeAnswerItem = respectReducedMotion(answerListItem);
-
-  // ── Shared card render helper ──
-
-  const renderCard = ({
-    text,
-    cardState,
-    onClick,
-    onKeyDown,
-    ariaLabel,
-    testId,
-  }: {
-    text: string;
-    cardState: CardState;
-    onClick: () => void;
-    onKeyDown: (e: React.KeyboardEvent) => void;
-    ariaLabel: string;
-    testId?: string;
-  }) => {
-    const isMatched = cardState === 'matched';
-    const isSelected = cardState === 'selected';
-
+  /** תג-מספר-קישור (1..n) על כרטיס מזווג. */
+  function LinkBadge({ n }: { n: number }) {
     return (
-      <motion.div
-        role="button"
-        tabIndex={isMatched ? -1 : 0}
-        aria-pressed={isSelected}
-        aria-label={ariaLabel}
-        aria-disabled={isMatched}
-        data-testid={testId}
-        onClick={onClick}
-        onKeyDown={onKeyDown}
-        className="flex min-h-[52px] cursor-pointer select-none items-center rounded-card border px-3 py-3 font-hebrew text-sm font-medium leading-snug text-quiz-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active"
-        {...cardTap}
-        variants={isMatched ? safeMatched : safeCardSelected}
-        initial={isMatched ? undefined : 'unselected'}
-        animate={isMatched ? 'matched' : isSelected ? 'selected' : 'unselected'}
+      <span
+        aria-hidden="true"
+        className="grid size-5 shrink-0 place-items-center rounded-full bg-accent-500 text-[11px] font-bold text-white"
       >
-        <span>{text}</span>
-      </motion.div>
+        {n}
+      </span>
     );
-  };
-
-  // ── Shuffle left column display order (stable per render) ──
-  // We show left cards in original pair order but the right column
-  // is shuffled so the user must match them.
-  // Shuffle is done once at mount via useMemo-like stable seed.
-  // For simplicity in this POC we reverse — a real impl uses Fisher-Yates seeded.
-  const shuffledRightIndices = React.useMemo(() => {
-    const indices: number[] = pairs.map((_, i) => i);
-    // Simple stable shuffle: interleave first-half and second-half
-    const result: number[] = [];
-    const mid = Math.ceil(indices.length / 2);
-    for (let i = 0; i < mid; i++) {
-      const a = indices[i];
-      if (a !== undefined) result.push(a);
-      const b = indices[i + mid];
-      if (b !== undefined) result.push(b);
-    }
-    return result;
-  }, [pairs]);
+  }
 
   return (
-    <div dir="rtl" className="relative flex flex-col gap-4 font-hebrew">
-      {/* ── Grid of cards (hidden during result-wrong phase) ── */}
-      <AnimatePresence>
-        {state.phase !== 'result-wrong' && (
-          <motion.div
-            key="card-grid"
-            className="grid grid-cols-2 gap-3"
-            initial={{ opacity: 1 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0.1 } }}
-          >
-            {/* Right column — terms (starts selected flow) */}
-            <div className="flex flex-col gap-3" role="group" aria-label="עמודת מונחים">
-              {shuffledRightIndices.map((pairIndex) => {
-                const pair = pairs[pairIndex];
-                if (!pair) return null;
-                return (
-                  <React.Fragment key={`right-${pairIndex}`}>
-                    {renderCard({
-                      text: pair.right,
-                      cardState: getRightCardState(pairIndex),
-                      onClick: () => handleRightCardClick(pairIndex),
-                      onKeyDown: (e) => handleRightCardKey(e, pairIndex),
-                      ariaLabel: `מונח: ${pair.right}`,
-                      testId: `right-card-${pairIndex}`,
-                    })}
-                  </React.Fragment>
-                );
-              })}
-            </div>
+    <div dir="rtl" className="flex flex-col gap-3 font-hebrew" data-testid="matching-pairs">
+      {/* ── הסבר ── */}
+      <p className="rounded-card bg-quiz-explanation px-3 py-2 text-start text-sm text-quiz-text-secondary">
+        התאם כל <b className="text-quiz-text-primary">מונח</b> להגדרתו: בחר מונח ואז את ההגדרה
+        המתאימה (או להפך). אפשר לשנות עד הלחיצה על «בדוק תשובה».
+      </p>
 
-            {/* Left column — definitions */}
-            <div className="flex flex-col gap-3" role="group" aria-label="עמודת הגדרות">
-              {pairs.map((pair, index) => (
-                <React.Fragment key={`left-${index}`}>
-                  {renderCard({
-                    text: pair.left,
-                    cardState: getLeftCardState(index),
-                    onClick: () => handleLeftCardClick(index),
-                    onKeyDown: (e) => handleLeftCardKey(e, index),
-                    ariaLabel: `הגדרה: ${pair.left}`,
-                    testId: `left-card-${index}`,
-                  })}
-                </React.Fragment>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* ── כותרות-עמודה ── */}
+      <div className="grid grid-cols-2 gap-3">
+        <h3 className="text-center text-xs font-extrabold text-accent-600">מונחים</h3>
+        <h3 className="text-center text-xs font-extrabold text-accent-600">הגדרות</h3>
+      </div>
 
-      {/* ── Submit button ── */}
-      {state.phase === 'idle' && (
-        <motion.button
+      {/* ── כרטיסים ── */}
+      <div className="grid grid-cols-2 gap-3">
+        {/* מונחים (סדר-מקורי) */}
+        <div className="flex flex-col gap-3" role="group" aria-label="מונחים">
+          {pairs.map((pair, i) => {
+            const paired = state.pairing[i] !== undefined;
+            const selected = state.selected?.side === 'term' && state.selected.index === i;
+            const correct = checked && paired ? state.pairing[i] === i : undefined;
+            return (
+              <button
+                key={`term-${i}`}
+                type="button"
+                data-testid={`term-card-${i}`}
+                aria-pressed={selected}
+                disabled={checked}
+                onClick={() => dispatch({ type: 'PICK_TERM', index: i })}
+                className={cardClass({ selected, paired, correct })}
+              >
+                {paired && <LinkBadge n={i + 1} />}
+                <span className="flex-1">{pair.left}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* הגדרות (סדר-מעורבב) */}
+        <div className="flex flex-col gap-3" role="group" aria-label="הגדרות">
+          {defOrder.map((d) => {
+            const pair = pairs[d];
+            if (!pair) return null;
+            const termForDef = defToTerm[d];
+            const paired = termForDef !== undefined;
+            const selected = state.selected?.side === 'def' && state.selected.index === d;
+            const correct = checked && paired ? termForDef === d : undefined;
+            return (
+              <button
+                key={`def-${d}`}
+                type="button"
+                data-testid={`def-card-${d}`}
+                aria-pressed={selected}
+                disabled={checked}
+                onClick={() => dispatch({ type: 'PICK_DEF', index: d })}
+                className={cardClass({ selected, paired, correct })}
+              >
+                {paired && <LinkBadge n={(termForDef ?? 0) + 1} />}
+                <span className="flex-1">{pair.right}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── בדוק / תוצאה ── */}
+      {!checked ? (
+        <button
           type="button"
-          role="button"
-          aria-label="בדוק תשובה"
-          aria-disabled={!isSubmitEnabled}
           data-testid="submit-button"
-          onClick={handleSubmit}
-          onKeyDown={handleSubmitKey}
-          disabled={!isSubmitEnabled}
-          className="pointer-events-auto w-full select-none rounded-pill py-4 font-hebrew text-lg font-bold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active disabled:pointer-events-none"
-          variants={safeSubmitButton}
-          initial="disabled"
-          animate={isSubmitEnabled ? 'enabled' : 'disabled'}
-          {...submitButtonTap}
+          aria-label="בדוק תשובה"
+          disabled={!allPaired}
+          onClick={handleCheck}
+          className="w-full select-none rounded-pill bg-quiz-primary-active py-4 text-lg font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active disabled:opacity-40"
         >
           בדוק תשובה
-        </motion.button>
-      )}
-
-      {/* ── Success: continue button ── */}
-      {state.phase === 'result-correct' && (
-        <motion.button
-          type="button"
-          data-testid="continue-button"
-          onClick={() => onComplete(true)}
-          className="w-full rounded-pill bg-quiz-primary-active py-4 font-hebrew text-lg font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active"
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2 }}
+        </button>
+      ) : (
+        <div
+          className="flex flex-col gap-3"
+          data-testid="matching-result"
+          role="status"
+          aria-live="polite"
         >
-          המשך
-        </motion.button>
-      )}
-
-      {/* ── Error feedback: bottom-sheet + backdrop ── */}
-      <AnimatePresence>
-        {state.phase === 'result-wrong' && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              key="backdrop"
-              className="fixed inset-0 z-40 bg-black"
-              variants={safeBackdrop}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              aria-hidden="true"
-              onClick={() => {}} // prevent click-through
-            />
-
-            {/* Bottom sheet */}
-            <motion.div
-              key="feedback-sheet"
-              role="dialog"
-              aria-modal="true"
-              aria-label="משוב על תשובה"
-              data-testid="feedback-drawer"
-              className="fixed inset-x-0 bottom-0 z-50 mx-auto max-w-2xl rounded-sheet-top bg-quiz-error-drawer px-4 pb-8 pt-6 shadow-cardFloat"
-              variants={safeBottomSheet}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
+          <p className="text-center text-base font-extrabold">
+            {allCorrect ? '✅ כל ההתאמות נכונות!' : '➖ חלק מההתאמות שגויות — הנה הנכונות:'}
+          </p>
+          {!allCorrect && (
+            <ul className="flex flex-col gap-2" role="list" aria-label="התאמות נכונות">
+              {pairs.map((pair, i) => (
+                <li
+                  key={i}
+                  className="flex items-center gap-2 rounded-lg border border-quiz-success-border bg-quiz-success-bg px-3 py-2 text-sm"
+                >
+                  <span className="text-success" aria-hidden="true">
+                    ✓
+                  </span>
+                  <span className="font-bold">{pair.left}</span>
+                  <span className="text-quiz-text-secondary">←</span>
+                  <span className="flex-1">{pair.right}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+          {onDeepExplanation && !allCorrect && (
+            <button
+              type="button"
+              data-testid="deep-explanation-button"
+              onClick={onDeepExplanation}
+              className="text-start text-sm font-medium text-quiz-primary-active underline-offset-2 hover:underline"
             >
-              {/* Mascot + title row */}
-              <div className="mb-4 flex items-center gap-3">
-                <motion.div
-                  variants={safeMascotPop}
-                  initial="hidden"
-                  animate="visible"
-                  className="flex-shrink-0 text-4xl"
-                  aria-hidden="true"
-                >
-                  🤖
-                </motion.div>
-                <p className="font-hebrew text-lg font-bold text-quiz-text-primary">
-                  תשובה לא נכונה
-                </p>
-              </div>
-
-              {/* Correct answers list (staggered) */}
-              <motion.ul
-                variants={safeAnswerContainer}
-                initial="hidden"
-                animate="visible"
-                className="mb-4 flex flex-col gap-2"
-                role="list"
-                aria-label="זוגות נכונים"
-              >
-                {pairs.map((pair, i) => (
-                  <motion.li
-                    key={i}
-                    variants={safeAnswerItem}
-                    className="flex items-center gap-2 rounded-lg border border-quiz-success-border bg-quiz-success-bg px-3 py-2 font-hebrew text-sm text-quiz-text-primary"
-                  >
-                    <span className="ms-1 text-success" aria-label="תשובה נכונה" role="img">
-                      ✓
-                    </span>
-                    <span className="font-medium">{pair.right}</span>
-                    <span className="mx-1 text-quiz-text-secondary">←</span>
-                    <span>{pair.left}</span>
-                  </motion.li>
-                ))}
-              </motion.ul>
-
-              {/* Deep-explanation button */}
-              {onDeepExplanation && (
-                <motion.div
-                  className="mb-4 rounded-lg bg-quiz-explanation px-3 py-2"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1, transition: { delay: 0.25, duration: 0.15 } }}
-                >
-                  <button
-                    type="button"
-                    data-testid="deep-explanation-button"
-                    onClick={onDeepExplanation}
-                    className="w-full text-start font-hebrew text-sm font-medium text-quiz-primary-active underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active"
-                  >
-                    הסבר לעומק
-                  </button>
-                </motion.div>
-              )}
-
-              {/* Continue button */}
-              <button
-                type="button"
-                data-testid="continue-after-wrong"
-                onClick={() => onComplete(false)}
-                className="w-full rounded-pill bg-quiz-primary-active py-4 font-hebrew text-lg font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active"
-              >
-                המשך
-              </button>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+              הסבר לעומק
+            </button>
+          )}
+          <button
+            type="button"
+            data-testid="continue-button"
+            onClick={() => onComplete(allCorrect)}
+            className="w-full rounded-pill bg-quiz-primary-active py-4 text-lg font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active"
+          >
+            המשך
+          </button>
+        </div>
+      )}
     </div>
   );
 }

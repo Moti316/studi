@@ -173,8 +173,8 @@ describe('LessonPlayer', () => {
 
   it('matching → מנתב ל-MatchingPairs (מציג כרטיסי-התאמה)', () => {
     render(<LessonPlayer questions={[MATCHING()]} />);
-    expect(screen.getByTestId('right-card-0')).toBeInTheDocument();
-    expect(screen.getByTestId('left-card-0')).toBeInTheDocument();
+    expect(screen.getByTestId('term-card-0')).toBeInTheDocument();
+    expect(screen.getByTestId('def-card-0')).toBeInTheDocument();
   });
 
   it('type explanation → ExplanationCard (prompt + "הבנתי, המשך")', () => {
