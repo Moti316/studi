@@ -2,9 +2,29 @@
 
 > **מקור-אמת יחיד למשימות.** מסונכרן ב-git (כל מחשב), נטען אוטומטית בכל סשן (SessionStart hook),
 > ומשתקף ב-TodoWrite בתוך הסשן. סימון: ✅ הושלם · 🔄 בתהליך · ⬜ פתוח · 🔴 חוסם · ⏰ מתוזמן.
-> **מסודר לפי [EXECUTION-PLAN.md](docs/context/EXECUTION-PLAN.md)** (סדר-תלויות). מעודכן: 2026-06-04 (שער-עיצוב + הטמעת חומרי-חזרה Drive).
+> **מסודר לפי [EXECUTION-PLAN.md](docs/context/EXECUTION-PLAN.md)** (סדר-תלויות). מעודכן: **2026-06-09** (כיוון-פעיל: בנק-שאלות-NotebookLM + סימולציית-וועדה).
 > 📂 **פירוט תתי-משימות פר-שלב:** [docs/todo/](docs/todo/README.md) — כל שלב A–I בקובץ נפרד (קריטריוני-קבלה + מסמכי-ייחוס).
 > 📊 **פירוט-מורחב** (⏱זמן · 🤖סוכנים · 💲עלות · 🟢🟡🔴סיכון · ראש-צוות · 🚩דורש-מוטי · אימות) פר תת-משימה ב-[docs/todo/](docs/todo/README.md) — הסכמה+מקרא ב-README. (ממשל-v2 / תוצר-3.)
+
+## 🔥 כיוון-פעיל (2026-06-09) — שני מיני-קורסים מעוגנים [DECISIONS · ADR-016 · 🧠 committee-simulation-direction]
+
+> **מחליף את הכיוון-הישן** של מיני-הקורסים. שאלות = NotebookLM (אפס-Gemini). תרחישים = **סימולציית-וועדה** (לא walkthrough סטטי). יעד: לעדכן את האתר — שאלות-חדשות + תרחישים-חדשים חיים.
+
+### S1 · מיני-קורס שו"ת — בנק-שאלות NotebookLM (~500 · מחליף 540 qa)
+
+- ✅ **תשתית נדחפה** (`8436f09`+`5eb01c7`): generation checkpoint+resume · `question-verification-io` (13 טסטים) · sidecar `.built.json`+`--exclude` · תיקון scopeId-כפול · **Workflow אימות `verify-nblm-questions.mjs`** (Claude · אפס-Gemini).
+- 🔄 **ייצור-מלא NotebookLM** (42×mcq/matching/open · per=6 · רץ-ברקע · ~500+).
+- ⬜ `questions:import:dry --file questions-nblm-full` → **Workflow אימות-סמנטי** (citation-fit · args מ-`.built.json`) → `--exclude <held>` → `import --execute`.
+- ⬜ smoke `/lesson/practice` → `qa:delete` (מחיקת 540 הישן).
+
+### S2 · מיני-קורס תרחישים — סימולציית-וועדה אינטראקטיבית (ADR-016 · מחליף 14 walkthroughs)
+
+- ✅ **ADR-016 + מודל-נתונים** (`src/features/simulation/types.ts` · 3-מפקחים · 4-שלבים · `SimulationEngine` transport-abstraction · hybrid פרה-בנוי→חי).
+- ⬜ **`PrebakedEngine`** (מהלך-עץ טהור) + **`SimulationPlayer`** (רכיב-נגן) + route.
+- ⬜ **צינור-חיבור** (Claude Workflow + פרומפט-מגן `committee-sim/master.ts` + עיגון-v2/NotebookLM · **אפס-Gemini**).
+- ⬜ **vertical-slice** (תרחיש-1 E2E) → 🚩 **אישור-מוטי** → הרחבה לכל → `scenarios:delete` (14 walkthroughs).
+- ⏸️ **לו"ז-לימוד-אישי** (אינטייק→תוכנית · פיצ'ר-נלווה · אחרי-slice · 🚩 דורש-מוטי).
+- 🔮 **`LiveEngine`** (Claude-API · דיאלוג-חופשי · לתרגול-אישי) — עתיד (ADR-עתידי).
 
 ## 🏛️ ממשל-v2 — ענף-בקרה עצמאי (סשן רב-שלבי) · [גיבוי-תוכנית: docs/context/GOVERNANCE-V2.md](docs/context/GOVERNANCE-V2.md)
 

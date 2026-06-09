@@ -104,7 +104,7 @@
 | [ADR-013-course-template.md](../../docs/architecture/ADR-013-course-template.md) | Status: Proposed | docs architecture | 2026-06-03 |
 | [ADR-014-scenario-engine.md](../../docs/architecture/ADR-014-scenario-engine.md) | סטטוס: Accepted · 2026-06-08 · מיני-קורס #1 מתוך 2 (תרחישים + פרויקט-גמר). | docs architecture | 2026-06-09 |
 | [ADR-015-notebooklm-content-engine.md](../../docs/architecture/ADR-015-notebooklm-content-engine.md) | סטטוס: Accepted · 2026-06-08 · בעלים: tech-lead (איתן) · ml-engineer · motilev8 | docs architecture | 2026-06-09 |
-| [ADR-016-committee-simulation.md](../../docs/architecture/ADR-016-committee-simulation.md) | סטטוס: Accepted · 2026-06-09 · בעלים: tech-lead (איתן) · product-owner · motilev8 | docs architecture | — |
+| [ADR-016-committee-simulation.md](../../docs/architecture/ADR-016-committee-simulation.md) | סטטוס: Accepted · 2026-06-09 · בעלים: tech-lead (איתן) · product-owner · motilev8 | docs architecture | 2026-06-09 |
 | [README.md](../../docs/architecture/README.md) | תיעוד כל ההחלטות-הארכיטקטוניות המשמעותיות לפרויקט. כל החלטה מקבלת ADR לפני implementation. | docs architecture | 2026-06-01 |
 
 ### 🖼️ עיצוב ומסכים — screens-spec · design · screens  ·  29

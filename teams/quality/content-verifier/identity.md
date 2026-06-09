@@ -81,6 +81,7 @@
 
 **מיקוד לסוכן זה (שכבה C):**
 
-- דיוק-וועדה = קו-אדום: כל שאלה חייבת מקור-PDF + scope-ID מאומת.
-- משתמש ב-**Gemini** (ADR-001) ל-verify-pass; מצליב מול 57 פריטי `content-scope`.
+- דיוק-וועדה = קו-אדום: כל שאלה/תרחיש/סימולציה חייבת מקור-PDF + scope-ID מאומת.
+- **אימות-סמנטי = Claude-Workflow (אפס-Gemini · עודכן 2026-06-09):** התוכן-החדש (שאלות-NotebookLM רב-סוגיות · סימולציית-וועדה) מאומת ב-**Workflow רב-סוכני של Claude** (citation-fit · PPE-אחרון · עברית · in-scope) — לא Gemini (חסום-מכסה 20/יום). העיגון-המילולי נבדק קודם דטרמיניסטית (G1–G5/G3). ה-content-verifier מקדם `מוסקנא`→`מאומת`. ראה `ADR-015`/`ADR-016` + `scripts/workflows/verify-nblm-questions.mjs`.
+- מצליב מול 57 פריטי `content-scope`.
 - מקרי-ספק חוקיים → `domain-expert`.
