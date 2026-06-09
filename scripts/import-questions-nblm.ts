@@ -17,7 +17,7 @@
 import { config as loadEnv } from 'dotenv';
 loadEnv({ path: '.env.local' });
 
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { createHash } from 'node:crypto';
 
@@ -28,6 +28,11 @@ import {
   type StatuteSource,
 } from '../src/lib/import/generated-mcq';
 import { buildMatchingRow, buildOpenRow } from '../src/lib/import/map-nblm-question';
+import {
+  buildVerificationGroups,
+  parseExcludeRefs,
+  filterExcluded,
+} from '../src/lib/import/question-verification-io';
 import type { FlatMatchingPair, FlatOpenQa } from '../src/lib/notebooklm/adapt-flat-questions';
 import type { NewQuestion } from '../drizzle/schema';
 
@@ -131,17 +136,49 @@ async function main(): Promise<void> {
   if (noStatute > 0) console.log(`  ⚠️ ${noStatute} cache-items ללא-נוסח-תואם (דולגו)`);
   console.log(`  סה"כ שורות-מוכנות (G3): ${rows.length}`);
 
-  // ── שלב אימות-סמנטי (אופציונלי · --semantic · Gemini · citation-fit) ──
+  // ── sidecar לאימות-Workflow: קבוצות פר-נוסח (גוף-החוק + שאלותיו) ──
+  // נכתב תמיד (dry+execute) → ה-Workflow (Claude · citation-fit) צורך אותו ומפיק
+  // <file>.held.json שמוזן בחזרה דרך --exclude.
+  const builtPath = join(CACHE_DIR, `${fileArg}.built.json`);
+  const groups = buildVerificationGroups(rows, statuteByScope);
+  writeFileSync(
+    builtPath,
+    JSON.stringify(
+      { file: fileArg, generatedAt: new Date().toISOString(), totalQuestions: rows.length, groups },
+      null,
+      2,
+    ),
+    'utf8',
+  );
+  console.log(`  📋 sidecar-אימות: ${groups.length} קבוצות → ${builtPath}`);
+
+  // ── סינון held (מ-Workflow אימות · --exclude <name>) — לפני כתיבה ל-DB ──
   let toWrite = rows;
-  if (process.argv.includes('--semantic') && rows.length > 0) {
+  const excludeArg = arg('--exclude');
+  if (excludeArg) {
+    const excludePath = join(CACHE_DIR, `${excludeArg}.json`);
+    if (existsSync(excludePath)) {
+      const refs = parseExcludeRefs(readFileSync(excludePath, 'utf8'));
+      const { kept, excluded } = filterExcluded(toWrite, refs);
+      console.log(
+        `[import-questions] exclude=${excludeArg} · השמטו ${excluded.length} (held) · נותרו ${kept.length}`,
+      );
+      toWrite = kept;
+    } else {
+      console.warn(`[import-questions] ⚠️ קובץ-exclude לא נמצא: ${excludePath} (ממשיך ללא-סינון)`);
+    }
+  }
+
+  // ── שלב אימות-סמנטי (אופציונלי · --semantic · Gemini · citation-fit) ──
+  if (process.argv.includes('--semantic') && toWrite.length > 0) {
     const { verifyQuestionsSemantically } =
       await import('../src/lib/import/semantic-verify-questions');
     const { geminiVerifyQuestion } =
       await import('../src/lib/ai/prompts/semantic-verify-questions');
     console.log(
-      `[import-questions] אימות-סמנטי (${rows.length} שאלות · Gemini · citation-fit/עברית/scope)...`,
+      `[import-questions] אימות-סמנטי (${toWrite.length} שאלות · Gemini · citation-fit/עברית/scope)...`,
     );
-    const { passed, held } = await verifyQuestionsSemantically(rows, geminiVerifyQuestion);
+    const { passed, held } = await verifyQuestionsSemantically(toWrite, geminiVerifyQuestion);
     console.log(`  סמנטי: ${passed.length} עברו · ${held.length} מוחזקים`);
     for (const h of held.slice(0, 12)) {
       console.log(

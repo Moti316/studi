@@ -27,6 +27,8 @@ export interface StatuteSource {
   title: string;
   depth?: string; // core | framework | sectoral
   body: string;
+  /** נתיב-הקובץ היחסי לשורש-הריפו (לאימות-Workflow שקורא/Grep מהמקור). אופציונלי. */
+  path?: string;
 }
 
 /** OpenAPI-3 subset ל-responseSchema של Gemini (geminiGenerateJSON). */

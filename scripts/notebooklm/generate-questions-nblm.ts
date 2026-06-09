@@ -17,7 +17,7 @@
  *
  * ⚠️ אל תריץ — המתאם מריץ אחרי בדיקה. דורש bridge+login (BUGS.md#notebooklm-bridge).
  */
-import { mkdirSync, writeFileSync, unlinkSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync, existsSync, unlinkSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
 import { loadStatutes } from '../lib/load-statutes';
@@ -80,21 +80,63 @@ async function main(): Promise<void> {
   mkdirSync(OUTPUT_DIR, { recursive: true });
   mkdirSync(REQUESTS_DIR, { recursive: true });
 
-  const cacheItems: CacheItem[] = [];
+  // resume: טען פלט-קיים (אם יש) — כל call-slot מקבל רשומה אחת (גם בכשל →
+  // items ריק) לשמירת יישור-מיקום מול הלולאה הדטרמיניסטית. ריצה-חוזרת עם אותם
+  // ארגומנטים ממשיכה מהיכן שעצרה במקום להתחיל מאפס.
+  const slots: CacheItem[] = [];
+  if (existsSync(outputFile)) {
+    try {
+      const prev = JSON.parse(readFileSync(outputFile, 'utf-8')) as { items?: CacheItem[] };
+      if (Array.isArray(prev.items)) slots.push(...prev.items);
+      if (slots.length) console.log(`[gen-questions] resume — ${slots.length} call-slots קיימים`);
+    } catch {
+      /* פלט פגום — מתחילים מאפס */
+    }
+  }
+
+  const writeCache = (): void => {
+    writeFileSync(
+      outputFile,
+      JSON.stringify(
+        { batch: outName, generatedAt: new Date().toISOString(), items: slots },
+        null,
+        2,
+      ),
+      'utf-8',
+    );
+  };
+
   let ok = 0;
   let fail = 0;
+  let skip = 0;
   const totalCalls = statutes.length * types.length;
   let call = 0;
 
   for (const statute of statutes) {
     for (const type of types) {
+      const slot = call; // מיקום-קריאה 0-based (יישור-resume דטרמיניסטי)
       call++;
       const label = `[${call}/${totalCalls}] ${statute.scopeId} ${type}`;
+
+      // resume: דלג רק על slot שכבר הושלם בהצלחה (items>0) ותואם scope+type.
+      // slot ריק/חסר/לא-תואם → מריצים-מחדש (מתקנים כשלים קודמים).
+      const existing = slots[slot];
+      if (
+        existing &&
+        existing.scopeId === statute.scopeId &&
+        existing.type === type &&
+        existing.items.length > 0
+      ) {
+        skip++;
+        console.log(`[gen-questions] ${label} — דילוג (${existing.items.length} קיימים) ↩`);
+        continue;
+      }
+
+      let items: unknown[] = [];
       try {
         const prompt = buildCompactQuestionPrompt(statute, { type, n: per });
         const stdout = askNotebook(prompt, notebookId);
-        const items = extractByType(type, stdout);
-        cacheItems.push({ scopeId: statute.scopeId, type, items });
+        items = extractByType(type, stdout);
         ok++;
         console.log(`[gen-questions] ${label} — ${items.length} פריטים ✓`);
       } catch (err) {
@@ -103,6 +145,9 @@ async function main(): Promise<void> {
           `[gen-questions] ${label} — נכשל (מדולג): ${err instanceof Error ? err.message : String(err)}`,
         );
       }
+      slots[slot] = { scopeId: statute.scopeId, type, items };
+      writeCache(); // checkpoint אינקרמנטלי — קריסת-תהליך לא מאבדת התקדמות
+
       if (call < totalCalls) await sleep(THROTTLE_MS);
     }
   }
@@ -113,19 +158,11 @@ async function main(): Promise<void> {
     /* לא קיים — לא נורא */
   }
 
-  const totalItems = cacheItems.reduce((s, c) => s + c.items.length, 0);
-  writeFileSync(
-    outputFile,
-    JSON.stringify(
-      { batch: outName, generatedAt: new Date().toISOString(), items: cacheItems },
-      null,
-      2,
-    ),
-    'utf-8',
-  );
+  writeCache(); // כתיבה-סופית
+  const totalItems = slots.reduce((s, c) => s + c.items.length, 0);
 
   console.log('\n[gen-questions] ─── סיכום ─────────────────────────────');
-  console.log(`  קריאות-הצליחו: ${ok} · נכשלו: ${fail}`);
+  console.log(`  קריאות-הצליחו: ${ok} · נכשלו: ${fail} · דילוג(resume): ${skip}`);
   console.log(`  סה"כ פריטים: ${totalItems} · פלט: ${outputFile}`);
   console.log('[gen-questions] ───────────────────────────────────────');
 }

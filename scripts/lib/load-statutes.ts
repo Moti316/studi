@@ -44,6 +44,7 @@ export function loadStatutes(): StatuteSource[] {
       title: fm.title ?? relative(LEGI_DIR, path).split(sep).join('/'),
       depth: fm.depth,
       body,
+      path: relative(process.cwd(), path).split(sep).join('/'),
     });
   }
   return out.sort((a, b) => a.scopeId.localeCompare(b.scopeId, undefined, { numeric: true }));
