@@ -10,17 +10,17 @@
 
 | # | קובץ-חובה | למה חשוב | עודכן |
 | --- | --- | --- | --- |
-| 1 | [CLAUDE.md](../../CLAUDE.md) | אילוצים-קשיחים · stack · עקרונות · reading-list | 2026-06-08 |
-| 2 | [AGENTS.md](../../AGENTS.md) | חוקי-על קנוניים חוצי-כלים | 2026-06-03 |
+| 1 | [CLAUDE.md](../../CLAUDE.md) | אילוצים-קשיחים · stack · עקרונות · reading-list | 2026-06-09 |
+| 2 | [AGENTS.md](../../AGENTS.md) | חוקי-על קנוניים חוצי-כלים | 2026-06-09 |
 | 3 | [USER.md](../../USER.md) | פרופיל motilev8 + העדפות-עבודה | 2026-05-29 |
-| 4 | [docs/context/PROJECT-MAP.md](../../docs/context/PROJECT-MAP.md) | דלת-כניסה אוצרת לכל ההקשר | 2026-06-08 |
+| 4 | [docs/context/PROJECT-MAP.md](../../docs/context/PROJECT-MAP.md) | דלת-כניסה אוצרת לכל ההקשר | 2026-06-09 |
 | 5 | [docs/context/STATUS.md](../../docs/context/STATUS.md) | איפה אנחנו — phase · עובד · חסום | 2026-06-02 |
-| 6 | [docs/context/EXECUTION-PLAN.md](../../docs/context/EXECUTION-PLAN.md) | התוכנית end-to-end | 2026-06-04 |
-| 7 | [TODO.md](../../TODO.md) | מקור-אמת למשימות (A–I + ממשל-v2) | 2026-06-08 |
-| 8 | [docs/context/SESSION-LOG.md](../../docs/context/SESSION-LOG.md) | handoff אחרון + הצעד-הבא | 2026-06-08 |
+| 6 | [docs/context/EXECUTION-PLAN.md](../../docs/context/EXECUTION-PLAN.md) | התוכנית end-to-end | 2026-06-09 |
+| 7 | [TODO.md](../../TODO.md) | מקור-אמת למשימות (A–I + ממשל-v2) | 2026-06-09 |
+| 8 | [docs/context/SESSION-LOG.md](../../docs/context/SESSION-LOG.md) | handoff אחרון + הצעד-הבא | 2026-06-09 |
 | 9 | [docs/context/MOTI-INBOX.md](../../docs/context/MOTI-INBOX.md) | הערות-מוטי אליי — לקרוא בצעד-0 | 2026-06-04 |
-| 10 | [docs/context/DECISIONS.md](../../docs/context/DECISIONS.md) | לוג-החלטות-מפתח | 2026-05-31 |
-| 11 | [docs/context/PROJECTS.md](../../docs/context/PROJECTS.md) | StudiBuilder מול מגן — לא להתבלבל | 2026-06-02 |
+| 10 | [docs/context/DECISIONS.md](../../docs/context/DECISIONS.md) | לוג-החלטות-מפתח | 2026-06-09 |
+| 11 | [docs/context/PROJECTS.md](../../docs/context/PROJECTS.md) | StudiBuilder מול מגן — לא להתבלבל | 2026-06-09 |
 
 ---
 
@@ -43,11 +43,11 @@
 
 | קובץ | תכלית | תגיות | עודכן |
 | --- | --- | --- | --- |
-| [AGENTS.md](../../AGENTS.md) | קובץ-ההקשר הקנוני של ה-workspace. תקן חוצה-כלים (Claude Code / Cursor / Codex). |  | 2026-06-03 |
-| [CLAUDE.md](../../CLAUDE.md) | 🗂️ אינדקס-הכל (קרא ראשון!): docs/context/MD-INDEX.md — אינדקס-MD חכם ומחולל-אוטומטית של כל מסמכי-הפרויקט (ני… |  | 2026-06-08 |
+| [AGENTS.md](../../AGENTS.md) | קובץ-ההקשר הקנוני של ה-workspace. תקן חוצה-כלים (Claude Code / Cursor / Codex). |  | 2026-06-09 |
+| [CLAUDE.md](../../CLAUDE.md) | 🗂️ אינדקס-הכל (קרא ראשון!): docs/context/MD-INDEX.md — אינדקס-MD חכם ומחולל-אוטומטית של כל מסמכי-הפרויקט (ני… |  | 2026-06-09 |
 | [MEMORY.md](../../MEMORY.md) | 📍 הקשר מלא ועדכני: docs/context/PROJECT-MAP.md (9 קבצי מקור-אמת). |  | 2026-06-03 |
 | [README.md](../../README.md) | פלטפורמת AI בעברית להכנת קורסי-לימוד גיימיפיקטיביים מתוך מסמכי-מקור |  | 2026-06-02 |
-| [TODO.md](../../TODO.md) | מקור-אמת יחיד למשימות. מסונכרן ב-git (כל מחשב), נטען אוטומטית בכל סשן (SessionStart hook), |  | 2026-06-08 |
+| [TODO.md](../../TODO.md) | מקור-אמת יחיד למשימות. מסונכרן ב-git (כל מחשב), נטען אוטומטית בכל סשן (SessionStart hook), |  | 2026-06-09 |
 | [USER.md](../../USER.md) | - שפת תקשורת: עברית, מותר לערב אנגלית-טכנית (RAG, prompt, LSP) |  | 2026-05-29 |
 
 ### 🧭 הקשר-חי — docs/context  ·  14
@@ -56,16 +56,16 @@
 | --- | --- | --- | --- |
 | [ACCESS-MAP.md](../../docs/context/ACCESS-MAP.md) | ⚠️ לא סודות כאן — רק המפה (איזה מפתח, איפה הוא חי, מה הסטטוס). הערכים עצמם ב-.env.local (gitignored) וב-Verce… | docs context | 2026-06-04 |
 | [BUGS.md](../../docs/context/BUGS.md) | זיכרון-מוסדי: בעיות שנפתרו + הפתרון. קרא לפני שאתה נתקל באותו דבר. מעודכן: 2026-05-31. | docs context | 2026-06-08 |
-| [DECISIONS.md](../../docs/context/DECISIONS.md) | החלטות-מפתח שורה-בשורה (מעבר ל-ADRs הפורמליים). חדש למעלה. מעודכן: 2026-06-09. | docs context | 2026-05-31 |
-| [EXECUTION-PLAN.md](../../docs/context/EXECUTION-PLAN.md) | התוכנית האחת והאוטוריטטיבית. מאחדת את build-roadmap (10 phases), ADR-006 (Course-as-Product Factory), | docs context | 2026-06-04 |
-| [GOVERNANCE-V2.md](../../docs/context/GOVERNANCE-V2.md) | גיבוי-בריפו של תוכנית-ממשל-v2 (המקור היה מקומי ב-/.claude/plans/, per-machine). | docs context | 2026-06-04 |
-| [MD-INDEX.md](../../docs/context/MD-INDEX.md) | ⚠️ קובץ מחולל — אל תערוך ידנית. מקור: .claude/scripts/gen-md-index.mjs · רענון: pnpm index:md | docs context | 2026-06-08 |
+| [DECISIONS.md](../../docs/context/DECISIONS.md) | החלטות-מפתח שורה-בשורה (מעבר ל-ADRs הפורמליים). חדש למעלה. מעודכן: 2026-06-09. | docs context | 2026-06-09 |
+| [EXECUTION-PLAN.md](../../docs/context/EXECUTION-PLAN.md) | התוכנית האחת והאוטוריטטיבית. מאחדת את build-roadmap (10 phases), ADR-006 (Course-as-Product Factory), | docs context | 2026-06-09 |
+| [GOVERNANCE-V2.md](../../docs/context/GOVERNANCE-V2.md) | גיבוי-בריפו של תוכנית-ממשל-v2 (המקור היה מקומי ב-/.claude/plans/, per-machine). | docs context | 2026-06-09 |
+| [MD-INDEX.md](../../docs/context/MD-INDEX.md) | ⚠️ קובץ מחולל — אל תערוך ידנית. מקור: .claude/scripts/gen-md-index.mjs · רענון: pnpm index:md | docs context | 2026-06-09 |
 | [MOTI-INBOX.md](../../docs/context/MOTI-INBOX.md) | ערוץ-תקשורת א-סינכרוני. מוטי כותב כאן הערות/הנחיות מכל מחשב (push ל-main); | docs context | 2026-06-04 |
 | [PLANNING-STATE.md](../../docs/context/PLANNING-STATE.md) | ⚠️ לסשן הבא: אנחנו במצב-תכנון רב-נושאי סביב מבנה-הקורס וחומרי-הלימוד — לא לקפוץ ל-build (M5) בלי לסגור את התכ… | docs context | 2026-06-01 |
-| [PROJECT-MAP.md](../../docs/context/PROJECT-MAP.md) | קרא אותי ראשון בכל סשן. אני האינדקס שמכוון לכל שאר קבצי-ההקשר. | docs context | 2026-06-08 |
-| [PROJECTS.md](../../docs/context/PROJECTS.md) | 2 פרויקטים קשורים שמתערבבים. מסמך זה מונע בלבול (גם Claude התבלבל ביניהם). מעודכן: 2026-05-31. | docs context | 2026-06-02 |
-| [PROTOCOL-INDEX.md](../../docs/context/PROTOCOL-INDEX.md) | תכלית: דלת-כניסה אחת לכל פרוטוקולי-הממשל של מערכת-הסוכנים (Agent-OS). עונה ל-4 שאלות: | docs context | 2026-06-08 |
-| [SESSION-LOG.md](../../docs/context/SESSION-LOG.md) | בכל סוף-סשן: "מה נעשה / מה הצעד הבא". חדש למעלה. | docs context | 2026-06-08 |
+| [PROJECT-MAP.md](../../docs/context/PROJECT-MAP.md) | קרא אותי ראשון בכל סשן. אני האינדקס שמכוון לכל שאר קבצי-ההקשר. | docs context | 2026-06-09 |
+| [PROJECTS.md](../../docs/context/PROJECTS.md) | 2 פרויקטים קשורים שמתערבבים. מסמך זה מונע בלבול (גם Claude התבלבל ביניהם). מעודכן: 2026-05-31. | docs context | 2026-06-09 |
+| [PROTOCOL-INDEX.md](../../docs/context/PROTOCOL-INDEX.md) | תכלית: דלת-כניסה אחת לכל פרוטוקולי-הממשל של מערכת-הסוכנים (Agent-OS). עונה ל-4 שאלות: | docs context | 2026-06-09 |
+| [SESSION-LOG.md](../../docs/context/SESSION-LOG.md) | בכל סוף-סשן: "מה נעשה / מה הצעד הבא". חדש למעלה. | docs context | 2026-06-09 |
 | [STATUS.md](../../docs/context/STATUS.md) | מקור-האמת ל"איפה אנחנו". טבלאות ה-Phases ב-CLAUDE.md/README.md/MEMORY.md מפנות לכאן. | docs context | 2026-06-02 |
 | [TASKS.md](../../docs/context/TASKS.md) | ⚠️ קובץ זה הוחלף (2026-06-02). ה-backlog-השטוח-לפי-אזור פוצל למבנה דו-שכבתי לפי סדר-הביצוע: | docs context | 2026-06-02 |
 
@@ -76,11 +76,11 @@
 | [A-moti-gates.md](../../docs/todo/A-moti-gates.md) | שלב A ב-TODO.md · לפי EXECUTION-PLAN.md. | docs todo | 2026-06-03 |
 | [B-m5-import.md](../../docs/todo/B-m5-import.md) | שלב B ב-TODO.md · לפי EXECUTION-PLAN.md. | docs todo | 2026-06-03 |
 | [C-m6-deferred.md](../../docs/todo/C-m6-deferred.md) | שלב C ב-TODO.md · לפי EXECUTION-PLAN.md. | docs todo | 2026-06-03 |
-| [D-quiz-engine.md](../../docs/todo/D-quiz-engine.md) | שלב D ב-TODO.md · לפי EXECUTION-PLAN.md. | docs todo | 2026-06-03 |
+| [D-quiz-engine.md](../../docs/todo/D-quiz-engine.md) | שלב D ב-TODO.md · לפי EXECUTION-PLAN.md. | docs todo | 2026-06-09 |
 | [E-rag.md](../../docs/todo/E-rag.md) | שלב E ב-TODO.md · לפי EXECUTION-PLAN.md. | docs todo | 2026-06-03 |
 | [F-upload-dashboard.md](../../docs/todo/F-upload-dashboard.md) | שלב F ב-TODO.md · לפי EXECUTION-PLAN.md. | docs todo | 2026-06-03 |
 | [G-gamification-tts.md](../../docs/todo/G-gamification-tts.md) | שלב G ב-TODO.md · לפי EXECUTION-PLAN.md. | docs todo | 2026-06-03 |
-| [H-course-product.md](../../docs/todo/H-course-product.md) | שלב H ב-TODO.md · לפי EXECUTION-PLAN.md. | docs todo | 2026-06-03 |
+| [H-course-product.md](../../docs/todo/H-course-product.md) | שלב H ב-TODO.md · לפי EXECUTION-PLAN.md. | docs todo | 2026-06-09 |
 | [I-compliance-launch.md](../../docs/todo/I-compliance-launch.md) | שלב I ב-TODO.md · לפי EXECUTION-PLAN.md. | docs todo | 2026-06-03 |
 | [README.md](../../docs/todo/README.md) | היררכיית-TODO דו-שכבתית. שכבה-1 = TODO.md בשורש (master — סקירת A–I מול תוכנית-הביצוע | docs todo | 2026-06-03 |
 
@@ -97,22 +97,22 @@
 | [ADR-006-course-as-product-factory.md](../../docs/architecture/ADR-006-course-as-product-factory.md) | Status: Accepted (concept) | docs architecture | 2026-05-29 |
 | [ADR-007-brand-identity.md](../../docs/architecture/ADR-007-brand-identity.md) | Status: Accepted | docs architecture | 2026-05-29 |
 | [ADR-008-payment-provider.md](../../docs/architecture/ADR-008-payment-provider.md) | Status: Proposed (להחלטת motilev8) | docs architecture | 2026-05-29 |
-| [ADR-009-magen-integration.md](../../docs/architecture/ADR-009-magen-integration.md) | 🔧 Amended 2026-06-09: כלל-מגן (firewall) — בוטל (REVERSED) בהכרעת-מוטי. בבטיחות וחוק "מספיק טוב" לא מספיק; מ… | docs architecture | 2026-06-02 |
+| [ADR-009-magen-integration.md](../../docs/architecture/ADR-009-magen-integration.md) | 🔧 Amended 2026-06-09: כלל-מגן (firewall) — בוטל (REVERSED) בהכרעת-מוטי. בבטיחות וחוק "מספיק טוב" לא מספיק; מ… | docs architecture | 2026-06-09 |
 | [ADR-010-data-schema-mvp.md](../../docs/architecture/ADR-010-data-schema-mvp.md) | Status: Proposed | docs architecture | 2026-06-01 |
 | [ADR-011-drive-import-pipeline.md](../../docs/architecture/ADR-011-drive-import-pipeline.md) | Status: Proposed | docs architecture | 2026-06-02 |
-| [ADR-012-dev-workflow-practices.md](../../docs/architecture/ADR-012-dev-workflow-practices.md) | Status: Proposed | docs architecture | 2026-06-01 |
+| [ADR-012-dev-workflow-practices.md](../../docs/architecture/ADR-012-dev-workflow-practices.md) | Status: Proposed | docs architecture | 2026-06-09 |
 | [ADR-013-course-template.md](../../docs/architecture/ADR-013-course-template.md) | Status: Proposed | docs architecture | 2026-06-03 |
-| [ADR-014-scenario-engine.md](../../docs/architecture/ADR-014-scenario-engine.md) | סטטוס: Accepted · 2026-06-08 · מיני-קורס #1 מתוך 2 (תרחישים + פרויקט-גמר). | docs architecture | 2026-06-08 |
-| [ADR-015-notebooklm-content-engine.md](../../docs/architecture/ADR-015-notebooklm-content-engine.md) | סטטוס: Accepted · 2026-06-08 · בעלים: tech-lead (איתן) · ml-engineer · motilev8 | docs architecture | 2026-06-08 |
+| [ADR-014-scenario-engine.md](../../docs/architecture/ADR-014-scenario-engine.md) | סטטוס: Accepted · 2026-06-08 · מיני-קורס #1 מתוך 2 (תרחישים + פרויקט-גמר). | docs architecture | 2026-06-09 |
+| [ADR-015-notebooklm-content-engine.md](../../docs/architecture/ADR-015-notebooklm-content-engine.md) | סטטוס: Accepted · 2026-06-08 · בעלים: tech-lead (איתן) · ml-engineer · motilev8 | docs architecture | 2026-06-09 |
 | [README.md](../../docs/architecture/README.md) | תיעוד כל ההחלטות-הארכיטקטוניות המשמעותיות לפרויקט. כל החלטה מקבלת ADR לפני implementation. | docs architecture | 2026-06-01 |
 
 ### 🖼️ עיצוב ומסכים — screens-spec · design · screens  ·  29
 
 | קובץ | תכלית | תגיות | עודכן |
 | --- | --- | --- | --- |
-| [DESIGN-PLAN-A.md](../../docs/design/DESIGN-PLAN-A.md) | כיוון: A · אתוס: הכי-קרוב-ל-StudiesGo — מסקוט מונפש, צבעוניות-תוססת, חוויית-Duolingo, גיימיפיקציה בקדמת-הבמה.… | docs design | 2026-06-04 |
-| [DESIGN-PLAN-B.md](../../docs/design/DESIGN-PLAN-B.md) | אתוס: נקי · רגוע · רציני-ומכובד. מינימליזם חם (לא סטרילי). תחושת אמון ואיכות-פרימיום, מותאם לקהל-מקצועי בוגר … | docs design | 2026-06-04 |
-| [DESIGN-PLAN-C.md](../../docs/design/DESIGN-PLAN-C.md) | כיוון C מתוך 3 כיווני-עיצוב ל-StudiBuilder · קורס "ממונה בטיחות". | docs design | 2026-06-04 |
+| [DESIGN-PLAN-A.md](../../docs/design/DESIGN-PLAN-A.md) | כיוון: A · אתוס: הכי-קרוב-ל-StudiesGo — מסקוט מונפש, צבעוניות-תוססת, חוויית-Duolingo, גיימיפיקציה בקדמת-הבמה.… | docs design | 2026-06-09 |
+| [DESIGN-PLAN-B.md](../../docs/design/DESIGN-PLAN-B.md) | אתוס: נקי · רגוע · רציני-ומכובד. מינימליזם חם (לא סטרילי). תחושת אמון ואיכות-פרימיום, מותאם לקהל-מקצועי בוגר … | docs design | 2026-06-09 |
+| [DESIGN-PLAN-C.md](../../docs/design/DESIGN-PLAN-C.md) | כיוון C מתוך 3 כיווני-עיצוב ל-StudiBuilder · קורס "ממונה בטיחות". | docs design | 2026-06-09 |
 | [DESIGN-PLANS-COMPARE.md](../../docs/design/DESIGN-PLANS-COMPARE.md) | תפקיד-המסמך: product-owner + design-system-lead מציג השוואה-מנומקת של 3 כיווני-העיצוב ל-StudiBuilder (מוצר-לש… | docs design | 2026-06-04 |
 | [mascot-brief.md](../../docs/design/mascot-brief.md) | גרסה: 1.0 | docs design | 2026-05-29 |
 | [motion-specs.md](../../docs/design/motion-specs.md) | מקור: ניתוח-Gemini מ-docs/sources/studiesgo-videos/<NN>/gemini-response.md + ניתוח-Claude מ-frames. | docs design | 2026-05-30 |
@@ -186,7 +186,7 @@
 | [content-scope.md](../../docs/content-scope.md) | Source-of-truth: PDF "חקיקה ותקינה לממונה בטיחות" + PDF "מערכת שעות קורס 1211762 אוגוסט 2025" | docs | 2026-06-01 |
 | [curriculum-coverage.md](../../docs/curriculum-coverage.md) | ⚠️ קובץ זה אוחד אל CONTENT-INDEX.md (2026-05-31) — מטריצת קורס 1211762 × 57 scope-IDs × Drive, סטטיסטיקת-הכיס… | docs | 2026-05-31 |
 | [features.md](../../docs/features.md) | רשימת כל הפיצ'רים שזוהו בסרטונים, ממויינים לקטגוריות. מהווה בסיס ל-MVP scoping | docs | 2026-05-29 |
-| [IDEAS.md](../../docs/IDEAS.md) | Backlog חי לרעיונות / פיצ'רים-עתידיים / פידבקים. לא מחייב ביצוע. כל אחד (מוטי או סוכן) מוזמן להוסיף. | docs | 2026-06-08 |
+| [IDEAS.md](../../docs/IDEAS.md) | Backlog חי לרעיונות / פיצ'רים-עתידיים / פידבקים. לא מחייב ביצוע. כל אחד (מוטי או סוכן) מוזמן להוסיף. | docs | 2026-06-09 |
 | [implementation-gaps.md](../../docs/implementation-gaps.md) | תאריך: 2026-05-30 · נכתב על-בסיס סריקת-קוד ישירה (לא הסתמכות על התיעוד) | docs | 2026-05-31 |
 | [M5-discovery-curation.md](../../docs/M5-discovery-curation.md) | סטטוס: ⏳ ממתין לאישור-מוטי. נוצר 2026-06-02 (ריצת-לילה, instance #5). | docs | 2026-06-02 |
 | [mvp-plan-2026-07-15.md](../../docs/mvp-plan-2026-07-15.md) | מצב: Draft של Product Owner. מצפה לאישור מוטי לפני exit ל-execute. | docs 2026 | 2026-05-30 |
@@ -255,8 +255,8 @@
 
 | קובץ | תכלית | תגיות | עודכן |
 | --- | --- | --- | --- |
-| [ATTRIBUTION.md](../../courses/safety-officer/ATTRIBUTION.md) | מטרה: למפות את קבוצות-חומר-הלימוד של הקורס לפי נושא וסוג בלבד, להעריך את מצב-הזכויות | courses safety-officer | 2026-06-02 |
-| [COURSE-DESIGN.md](../../courses/safety-officer/COURSE-DESIGN.md) | מטרה: להגדיר את מודל-הלמידה של קורס "ממונה בטיחות" (instance #1) — 3 מצבי-הלמידה | courses safety-officer | 2026-06-02 |
+| [ATTRIBUTION.md](../../courses/safety-officer/ATTRIBUTION.md) | מטרה: למפות את קבוצות-חומר-הלימוד של הקורס לפי נושא וסוג בלבד, להעריך את מצב-הזכויות | courses safety-officer | 2026-06-09 |
+| [COURSE-DESIGN.md](../../courses/safety-officer/COURSE-DESIGN.md) | מטרה: להגדיר את מודל-הלמידה של קורס "ממונה בטיחות" (instance #1) — 3 מצבי-הלמידה | courses safety-officer | 2026-06-09 |
 | [curriculum-atgar.md](../../courses/safety-officer/curriculum-atgar.md) | מקור-מבנה: מערכת-שעות קורס ממונה-בטיחות 1211762 (מכללת אתגר, אוג׳2025). מבנה בלבד (פרקים/נושאים — נחלת-מבנה);… | courses safety-officer | 2026-06-01 |
 | [FINAL-PROJECT.md](../../courses/safety-officer/FINAL-PROJECT.md) | מטרה: ספֵק לתכן מיני-קורס ה-capstone שבו המערכת מלווה את המשתמש בהפקת עבודת-גמר אמיתית | courses safety-officer | 2026-06-02 |
 | [ISO-31000-DRAFT.md](../../courses/safety-officer/ISO-31000-DRAFT.md) | טיוטה לסקירת מוטי · תקציר-מקורי · אינו תחליף לתקן הרשמי בתשלום · מעודכן 2026-06-01 | courses safety-officer | 2026-06-01 |
@@ -265,7 +265,7 @@
 | [LEGISLATION-COVERAGE.md](../../courses/safety-officer/LEGISLATION-COVERAGE.md) | מקור: workflow קריאה-מלאה (2026-06-01). name-clean — ללא שמות-מרצים (ראה ../../docs/compliance/COMPLIANCE.md)… | courses safety-officer | 2026-06-01 |
 | [LEGISLATION-SOURCES.md](../../courses/safety-officer/LEGISLATION-SOURCES.md) | הבסיס-החוקי שמאמת כל שאלה/הסבר. PDF = source-of-truth (ADR-005/ADR-011): תשובה | courses safety-officer | 2026-06-03 |
 | [MOLSA-PROGRAM.md](../../courses/safety-officer/MOLSA-PROGRAM.md) | מיפוי התכנית הרשמית להכשרת "ממונה בטיחות בעבודה" (מינהל הבטיחות והבריאות | courses safety-officer | 2026-06-01 |
-| [NOTEBOOKLM-ASSETS.md](../../courses/safety-officer/NOTEBOOKLM-ASSETS.md) | תכלית: אינדקס-עבודה של מחברות-ה-NotebookLM של מוטי הרלוונטיות לקורס ממונה-בטיחות. | courses safety-officer | 2026-06-08 |
+| [NOTEBOOKLM-ASSETS.md](../../courses/safety-officer/NOTEBOOKLM-ASSETS.md) | תכלית: אינדקס-עבודה של מחברות-ה-NotebookLM של מוטי הרלוונטיות לקורס ממונה-בטיחות. | courses safety-officer | 2026-06-09 |
 | [README.md](../../courses/safety-officer/README.md) | תיקיית-הקורס. המבנה = תבנית-הפלטפורמה (כל קורס עתידי באותו מבנה): פרק=מיני-קורס · 3 מצבים (שו"ת · תרחישים · מ… | courses safety-officer | 2026-06-01 |
 | [REGULATORY-WATCH.md](../../courses/safety-officer/REGULATORY-WATCH.md) | מעקב-רגולטורי בלבד — ⚠️ לא תוכן-קורס מחייב. קובץ זה מתעד רפורמות-חקיקה שפורסמו/נחתמו | courses safety-officer | 2026-06-01 |
 | [README.md](../../courses/safety-officer/sources/final-project/README.md) | גיבוי-reference פרטי (הריפו פרטי). אין לשכפל PII לתוכן-משתמש. מעודכן: 2026-06-01. | safety-officer sources final-project | 2026-06-01 |
@@ -279,7 +279,7 @@
 | [activity-log.md](../../teams/builder/accessibility-i18n/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams builder accessibility-i18n | 2026-05-31 |
 | [identity.md](../../teams/builder/accessibility-i18n/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי, ממרשם-התפקידים). | teams builder accessibility-i18n | 2026-05-31 |
 | [memory.md](../../teams/builder/accessibility-i18n/memory.md) | Accessibility & i18n Engineer. מבטיח שהמוצר נגיש (WCAG 2.2 AA) ומלוקלז במלואו. | teams builder accessibility-i18n | 2026-05-31 |
-| [activity-log.md](../../teams/builder/backend-engineer/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams builder backend-engineer | 2026-06-08 |
+| [activity-log.md](../../teams/builder/backend-engineer/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams builder backend-engineer | 2026-06-09 |
 | [identity.md](../../teams/builder/backend-engineer/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי, ממרשם-התפקידים). | teams builder backend-engineer | 2026-05-31 |
 | [memory.md](../../teams/builder/backend-engineer/memory.md) | Backend Engineer (Next.js/Supabase). בונה את ה-API, לוגיקת-העסק והאינטגרציות | teams builder backend-engineer | 2026-06-01 |
 | [bugs-and-fixes.md](../../teams/builder/bugs-and-fixes.md) | יומן-באגים-ותיקונים צוותי. כל סוכן רושם כאן באג שאיתר ואת תיקונו, כדי שהצוות | teams builder | 2026-05-31 |
@@ -336,7 +336,7 @@
 | [identity.md](../../teams/mediator/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי, ממרשם-התפקידים). | teams mediator | 2026-05-31 |
 | [memory.md](../../teams/mediator/memory.md) | המתווך של Agent-OS — השכבה היחידה שבין 4 ראשי-הצוות למועצה (מוטי). תפקידי: לרכז את דו"חות 4 ראשי-הצוות (strat… | teams mediator | 2026-05-31 |
 | [ORG.md](../../teams/ORG.md) | מסמך-העוגן של היררכיית-הסוכנים והממשל. כל סוכן קורא אותו אחרי | teams | 2026-06-08 |
-| [PROJECT-CONTEXT.md](../../teams/PROJECT-CONTEXT.md) | הקובץ הראשון שכל סוכן קורא בתחילת כל משימה, לפני identity.md ו-memory.md. | teams | 2026-06-08 |
+| [PROJECT-CONTEXT.md](../../teams/PROJECT-CONTEXT.md) | הקובץ הראשון שכל סוכן קורא בתחילת כל משימה, לפני identity.md ו-memory.md. | teams | 2026-06-09 |
 | [activity-log.md](../../teams/quality/appsec/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams quality appsec | 2026-06-01 |
 | [identity.md](../../teams/quality/appsec/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי, ממרשם-התפקידים). | teams quality appsec | 2026-05-31 |
 | [memory.md](../../teams/quality/appsec/memory.md) | Application Security Engineer בצוות-האיכות. מזהה וממתֵן סיכוני-אבטחה ברמת-האפליקציה. | teams quality appsec | 2026-05-31 |
@@ -372,7 +372,7 @@
 | [identity.md](../../teams/strategic/product-owner/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי, ממרשם-התפקידים). | teams strategic product-owner | 2026-05-31 |
 | [memory.md](../../teams/strategic/product-owner/memory.md) | בעלת חזון-המוצר של StudiBuilder: מה בונים, למי, ובאיזה סדר. אחראית על scope ל-MVP, תיעדוף ה-backlog, והגדרת ה… | teams strategic product-owner | 2026-05-31 |
 | [TEAM.md](../../teams/strategic/TEAM.md) | מסמך-עוגן של הצוות. כל חבר קורא ../PROJECT-CONTEXT.md תחילה, ואז את identity.md שלו. | teams strategic | 2026-05-31 |
-| [activity-log.md](../../teams/strategic/tech-lead/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams strategic tech-lead | 2026-06-01 |
+| [activity-log.md](../../teams/strategic/tech-lead/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams strategic tech-lead | 2026-06-09 |
 | [identity.md](../../teams/strategic/tech-lead/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי, ממרשם-התפקידים). | teams strategic tech-lead | 2026-05-31 |
 | [memory.md](../../teams/strategic/tech-lead/memory.md) | בעל הכיוון-הארכיטקטוני של StudiBuilder: סטאק, מודל-נתונים, גבולות-מערכת, ואסטרטגיית חוב-טכני. הצלחה = ארכיטקט… | teams strategic tech-lead | 2026-05-31 |
 
@@ -381,7 +381,7 @@
 | קובץ | תכלית | תגיות | עודכן |
 | --- | --- | --- | --- |
 | [_curriculum-audit-protocol.md](../../teams/oversight/_curriculum-audit-protocol.md) | נוהל-הבדיקה של זרוע מבקר-תכנית-הלימודים (oversight). נקרא ע"י רותם/שני/גיא אחרי | teams oversight | 2026-06-03 |
-| [_oversight-protocol.md](../../teams/oversight/_oversight-protocol.md) | פרוטוקול-הסמכויות של ענף-הבקרה העצמאי (oversight). נקרא ע"י כל סוכני-הענף אחרי | teams oversight | 2026-06-03 |
+| [_oversight-protocol.md](../../teams/oversight/_oversight-protocol.md) | פרוטוקול-הסמכויות של ענף-הבקרה העצמאי (oversight). נקרא ע"י כל סוכני-הענף אחרי | teams oversight | 2026-06-09 |
 | [activity-log.md](../../teams/oversight/content-drift-auditor/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams oversight content-drift-auditor | 2026-06-03 |
 | [identity.md](../../teams/oversight/content-drift-auditor/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי, ממרשם-התפקידים). | teams oversight content-drift-auditor | 2026-06-03 |
 | [memory.md](../../teams/oversight/content-drift-auditor/memory.md) | מבקר-סטיית-תוכן בזרוע מבקר-תכנית. מוודא אפס תוכן out-of-curriculum ב-quiz/lessons: כל פריט בתוך | teams oversight content-drift-auditor | 2026-06-03 |
@@ -392,15 +392,15 @@
 | [activity-log.md](../../teams/oversight/curriculum-auditor-lead/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams oversight curriculum-auditor-lead | 2026-06-03 |
 | [identity.md](../../teams/oversight/curriculum-auditor-lead/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי, ממרשם-התפקידים). | teams oversight curriculum-auditor-lead | 2026-06-03 |
 | [memory.md](../../teams/oversight/curriculum-auditor-lead/memory.md) | ראש זרוע מבקר-תכנית-הלימודים (ב-ענף-הבקרה). מוודא שה-קורס-הפעיל כמכלול נאמן לתכנית-הרגולטור | teams oversight curriculum-auditor-lead | 2026-06-03 |
-| [activity-log.md](../../teams/oversight/oversight-lead/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams oversight oversight-lead | 2026-06-08 |
-| [identity.md](../../teams/oversight/oversight-lead/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי, ממרשם-התפקידים). | teams oversight oversight-lead | 2026-06-03 |
-| [memory.md](../../teams/oversight/oversight-lead/memory.md) | ראש ענף-הבקרה העצמאי. מרכז את שני תת-הצוותים (בקרה-חיצונית + מבקר-תכנית) ל-oversight-report.md | teams oversight oversight-lead | 2026-06-03 |
+| [activity-log.md](../../teams/oversight/oversight-lead/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams oversight oversight-lead | 2026-06-09 |
+| [identity.md](../../teams/oversight/oversight-lead/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי, ממרשם-התפקידים). | teams oversight oversight-lead | 2026-06-09 |
+| [memory.md](../../teams/oversight/oversight-lead/memory.md) | ראש ענף-הבקרה העצמאי. מרכז את שני תת-הצוותים (בקרה-חיצונית + מבקר-תכנית) ל-oversight-report.md | teams oversight oversight-lead | 2026-06-09 |
 | [oversight-report.md](../../teams/oversight/oversight-report.md) | דו"ח-בקרה מתגלגל מ-oversight-lead (נדב) ישירות למועצה (מוטי) — לא דרך המתווך. | teams oversight | 2026-06-03 |
 | [activity-log.md](../../teams/oversight/plan-compliance-auditor/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams oversight plan-compliance-auditor | 2026-06-03 |
-| [identity.md](../../teams/oversight/plan-compliance-auditor/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי, ממרשם-התפקידים). | teams oversight plan-compliance-auditor | 2026-06-03 |
+| [identity.md](../../teams/oversight/plan-compliance-auditor/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי, ממרשם-התפקידים). | teams oversight plan-compliance-auditor | 2026-06-09 |
 | [memory.md](../../teams/oversight/plan-compliance-auditor/memory.md) | מבקר בקרה-חיצונית. מצליב activity-log.md של כל סוכן מול התוכנית-המתוכננת | teams oversight plan-compliance-auditor | 2026-06-03 |
 | [activity-log.md](../../teams/oversight/process-audit-officer/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams oversight process-audit-officer | 2026-06-03 |
-| [identity.md](../../teams/oversight/process-audit-officer/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי, ממרשם-התפקידים). | teams oversight process-audit-officer | 2026-06-03 |
+| [identity.md](../../teams/oversight/process-audit-officer/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי, ממרשם-התפקידים). | teams oversight process-audit-officer | 2026-06-09 |
 | [memory.md](../../teams/oversight/process-audit-officer/memory.md) | מבקרת בקרה-חיצונית. מאמתת שלמות-זרימת-הדיווח של ORG.md (§קצב-דיווח · 7-שלבים · סולם-סחף), | teams oversight process-audit-officer | 2026-06-03 |
 | [stop-orders-ledger.md](../../teams/oversight/stop-orders-ledger.md) | ראיית-העצירה של ענף-הבקרה. כל צו-עצירה נחתם כאן לפני שהוא נכנס-לתוקף. | teams oversight | 2026-06-03 |
 | [TEAM.md](../../teams/oversight/TEAM.md) | מסמך-העוגן של ענף-הבקרה העצמאי ב-StudiBuilder. נקרא אחרי | teams oversight | 2026-06-03 |
@@ -427,7 +427,7 @@
 | [interaction-designer.md](../../.claude/agents/interaction-designer.md) | מעצב זרימות, wireframes ופרוטוטיפים. הצלחה = כל זרימה שלמה — כולל מצבי empty/error/loading — ובלי מסכים-ללא-מ… | .claude agents | 2026-05-28 |
 | [ml-engineer.md](../../.claude/agents/ml-engineer.md) | בונה ומתפעל מודלים ו-pipelines של ML/inference. הצלחה = מודל מדיד, ניתן-לשחזור, ומנוטר בפרודקשן. | .claude agents | 2026-05-28 |
 | [notifications-engineer.md](../../.claude/agents/notifications-engineer.md) | מתכנן ומממש push, email ו-in-app notifications. הצלחה = מסר נכון, בזמן נכון, עם כיבוי תמיד-זמין. | .claude agents | 2026-05-28 |
-| [oversight-lead.md](../../.claude/agents/oversight-lead.md) | ראש ענף-הבקרה העצמאי. מרכז בקרה-חיצונית + מבקר-תכנית לדו"ח-אחד למועצה ויוזם צו-עצירה (קוורום 2/3 + ledger, רק… | .claude agents | 2026-06-03 |
+| [oversight-lead.md](../../.claude/agents/oversight-lead.md) | ראש ענף-הבקרה העצמאי. מרכז בקרה-חיצונית + מבקר-תכנית לדו"ח-אחד למועצה ויוזם צו-עצירה (קוורום 2/3 + ledger, רק… | .claude agents | 2026-06-09 |
 | [plan-compliance-auditor.md](../../.claude/agents/plan-compliance-auditor.md) | מצליב activity-log של כל סוכן מול התוכנית (TODO/docs-todo/EXECUTION-PLAN) ומזהה סטייה-מתוכנית-העבודה וסוכן-סו… | .claude agents | 2026-06-03 |
 | [privacy-officer.md](../../.claude/agents/privacy-officer.md) | מגן על נתוני-המשתמש: מינימיזציה, שמירה, בקרות-גישה, הסכמה. הצלחה = אפס PII נאסף ללא צורך מוצהר. | .claude agents | 2026-05-28 |
 | [process-audit-officer.md](../../.claude/agents/process-audit-officer.md) | מאמת שלמות-זרימת-הדיווח (ORG §קצב-דיווח) ומאתר דגלים שנבלעו — בעיקר ע"י המתווך (דגל ב-control-report שלא הגיע… | .claude agents | 2026-06-03 |
