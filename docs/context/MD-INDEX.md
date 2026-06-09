@@ -14,7 +14,7 @@
 | 2 | [AGENTS.md](../../AGENTS.md) | חוקי-על קנוניים חוצי-כלים | 2026-06-09 |
 | 3 | [USER.md](../../USER.md) | פרופיל motilev8 + העדפות-עבודה | 2026-05-29 |
 | 4 | [docs/context/PROJECT-MAP.md](../../docs/context/PROJECT-MAP.md) | דלת-כניסה אוצרת לכל ההקשר | 2026-06-09 |
-| 5 | [docs/context/STATUS.md](../../docs/context/STATUS.md) | איפה אנחנו — phase · עובד · חסום | 2026-06-02 |
+| 5 | [docs/context/STATUS.md](../../docs/context/STATUS.md) | איפה אנחנו — phase · עובד · חסום | 2026-06-09 |
 | 6 | [docs/context/EXECUTION-PLAN.md](../../docs/context/EXECUTION-PLAN.md) | התוכנית end-to-end | 2026-06-09 |
 | 7 | [TODO.md](../../TODO.md) | מקור-אמת למשימות (A–I + ממשל-v2) | 2026-06-09 |
 | 8 | [docs/context/SESSION-LOG.md](../../docs/context/SESSION-LOG.md) | handoff אחרון + הצעד-הבא | 2026-06-09 |
@@ -61,12 +61,12 @@
 | [GOVERNANCE-V2.md](../../docs/context/GOVERNANCE-V2.md) | גיבוי-בריפו של תוכנית-ממשל-v2 (המקור היה מקומי ב-/.claude/plans/, per-machine). | docs context | 2026-06-09 |
 | [MD-INDEX.md](../../docs/context/MD-INDEX.md) | ⚠️ קובץ מחולל — אל תערוך ידנית. מקור: .claude/scripts/gen-md-index.mjs · רענון: pnpm index:md | docs context | 2026-06-09 |
 | [MOTI-INBOX.md](../../docs/context/MOTI-INBOX.md) | ערוץ-תקשורת א-סינכרוני. מוטי כותב כאן הערות/הנחיות מכל מחשב (push ל-main); | docs context | 2026-06-04 |
-| [PLANNING-STATE.md](../../docs/context/PLANNING-STATE.md) | 🔧 מוחלף 2026-06-09: מסמך-תכנון זה הוא פרה-פיבוט (2026-06-01) — מקורות-האמת הנוכחיים ל"איפה אנחנו" הם STATUS.… | docs context | 2026-06-01 |
+| [PLANNING-STATE.md](../../docs/context/PLANNING-STATE.md) | 🔧 מוחלף 2026-06-09: מסמך-תכנון זה הוא פרה-פיבוט (2026-06-01) — מקורות-האמת הנוכחיים ל"איפה אנחנו" הם STATUS.… | docs context | 2026-06-09 |
 | [PROJECT-MAP.md](../../docs/context/PROJECT-MAP.md) | קרא אותי ראשון בכל סשן. אני האינדקס שמכוון לכל שאר קבצי-ההקשר. | docs context | 2026-06-09 |
 | [PROJECTS.md](../../docs/context/PROJECTS.md) | 2 פרויקטים קשורים שמתערבבים. מסמך זה מונע בלבול (גם Claude התבלבל ביניהם). מעודכן: 2026-05-31. | docs context | 2026-06-09 |
 | [PROTOCOL-INDEX.md](../../docs/context/PROTOCOL-INDEX.md) | תכלית: דלת-כניסה אחת לכל פרוטוקולי-הממשל של מערכת-הסוכנים (Agent-OS). עונה ל-4 שאלות: | docs context | 2026-06-09 |
 | [SESSION-LOG.md](../../docs/context/SESSION-LOG.md) | בכל סוף-סשן: "מה נעשה / מה הצעד הבא". חדש למעלה. | docs context | 2026-06-09 |
-| [STATUS.md](../../docs/context/STATUS.md) | מקור-האמת ל"איפה אנחנו". טבלאות ה-Phases ב-CLAUDE.md/README.md/MEMORY.md מפנות לכאן. | docs context | 2026-06-02 |
+| [STATUS.md](../../docs/context/STATUS.md) | מקור-האמת ל"איפה אנחנו". טבלאות ה-Phases ב-CLAUDE.md/README.md/MEMORY.md מפנות לכאן. | docs context | 2026-06-09 |
 | [TASKS.md](../../docs/context/TASKS.md) | ⚠️ קובץ זה הוחלף (2026-06-02). ה-backlog-השטוח-לפי-אזור פוצל למבנה דו-שכבתי לפי סדר-הביצוע: | docs context | 2026-06-02 |
 
 ### ✅ TODO פר-שלב — docs/todo  ·  10
@@ -74,7 +74,7 @@
 | קובץ | תכלית | תגיות | עודכן |
 | --- | --- | --- | --- |
 | [A-moti-gates.md](../../docs/todo/A-moti-gates.md) | שלב A ב-TODO.md · לפי EXECUTION-PLAN.md. | docs todo | 2026-06-03 |
-| [B-m5-import.md](../../docs/todo/B-m5-import.md) | שלב B ב-TODO.md · לפי EXECUTION-PLAN.md. | docs todo | 2026-06-03 |
+| [B-m5-import.md](../../docs/todo/B-m5-import.md) | שלב B ב-TODO.md · לפי EXECUTION-PLAN.md. | docs todo | 2026-06-09 |
 | [C-m6-deferred.md](../../docs/todo/C-m6-deferred.md) | שלב C ב-TODO.md · לפי EXECUTION-PLAN.md. | docs todo | 2026-06-03 |
 | [D-quiz-engine.md](../../docs/todo/D-quiz-engine.md) | שלב D ב-TODO.md · לפי EXECUTION-PLAN.md. | docs todo | 2026-06-09 |
 | [E-rag.md](../../docs/todo/E-rag.md) | שלב E ב-TODO.md · לפי EXECUTION-PLAN.md. | docs todo | 2026-06-03 |
@@ -82,7 +82,7 @@
 | [G-gamification-tts.md](../../docs/todo/G-gamification-tts.md) | שלב G ב-TODO.md · לפי EXECUTION-PLAN.md. | docs todo | 2026-06-03 |
 | [H-course-product.md](../../docs/todo/H-course-product.md) | שלב H ב-TODO.md · לפי EXECUTION-PLAN.md. | docs todo | 2026-06-09 |
 | [I-compliance-launch.md](../../docs/todo/I-compliance-launch.md) | שלב I ב-TODO.md · לפי EXECUTION-PLAN.md. | docs todo | 2026-06-03 |
-| [README.md](../../docs/todo/README.md) | היררכיית-TODO דו-שכבתית. שכבה-1 = TODO.md בשורש (master — סקירת A–I מול תוכנית-הביצוע | docs todo | 2026-06-03 |
+| [README.md](../../docs/todo/README.md) | היררכיית-TODO דו-שכבתית. שכבה-1 = TODO.md בשורש (master — סקירת A–I מול תוכנית-הביצוע | docs todo | 2026-06-09 |
 
 ### 🏛️ ארכיטקטורה — ADR (docs/architecture)  ·  18
 
@@ -93,7 +93,7 @@
 | [ADR-002-pipeline.md](../../docs/architecture/ADR-002-pipeline.md) | Status: Accepted | docs architecture | 2026-05-29 |
 | [ADR-003-auth.md](../../docs/architecture/ADR-003-auth.md) | Status: Accepted | docs architecture | 2026-05-29 |
 | [ADR-004-dashboard-shell.md](../../docs/architecture/ADR-004-dashboard-shell.md) | Status: Accepted | docs architecture | 2026-05-29 |
-| [ADR-005-notebooklm-hybrid.md](../../docs/architecture/ADR-005-notebooklm-hybrid.md) | Status: Accepted (revised 2026-05-29 ערב after megen review) | docs architecture | 2026-06-01 |
+| [ADR-005-notebooklm-hybrid.md](../../docs/architecture/ADR-005-notebooklm-hybrid.md) | Status: Accepted (revised 2026-05-29 ערב after megen review) | docs architecture | 2026-06-09 |
 | [ADR-006-course-as-product-factory.md](../../docs/architecture/ADR-006-course-as-product-factory.md) | Status: Accepted (concept) | docs architecture | 2026-05-29 |
 | [ADR-007-brand-identity.md](../../docs/architecture/ADR-007-brand-identity.md) | Status: Accepted | docs architecture | 2026-05-29 |
 | [ADR-008-payment-provider.md](../../docs/architecture/ADR-008-payment-provider.md) | Status: Proposed (להחלטת motilev8) | docs architecture | 2026-05-29 |
@@ -105,7 +105,7 @@
 | [ADR-014-scenario-engine.md](../../docs/architecture/ADR-014-scenario-engine.md) | 🔧 מוחלף-מורחב 2026-06-09 ע"י ADR-016 (סימולציית-וועדה · 3-מפקחים · hybrid פרה-בנוי→חי) — ה-walkthrough הסטטי… | docs architecture | 2026-06-09 |
 | [ADR-015-notebooklm-content-engine.md](../../docs/architecture/ADR-015-notebooklm-content-engine.md) | סטטוס: Accepted · 2026-06-08 · בעלים: tech-lead (איתן) · ml-engineer · motilev8 | docs architecture | 2026-06-09 |
 | [ADR-016-committee-simulation.md](../../docs/architecture/ADR-016-committee-simulation.md) | סטטוס: Accepted · 2026-06-09 · בעלים: tech-lead (איתן) · product-owner · motilev8 | docs architecture | 2026-06-09 |
-| [README.md](../../docs/architecture/README.md) | תיעוד כל ההחלטות-הארכיטקטוניות המשמעותיות לפרויקט. כל החלטה מקבלת ADR לפני implementation. | docs architecture | 2026-06-01 |
+| [README.md](../../docs/architecture/README.md) | תיעוד כל ההחלטות-הארכיטקטוניות המשמעותיות לפרויקט. כל החלטה מקבלת ADR לפני implementation. | docs architecture | 2026-06-09 |
 
 ### 🖼️ עיצוב ומסכים — screens-spec · design · screens  ·  29
 
@@ -179,22 +179,22 @@
 | קובץ | תכלית | תגיות | עודכן |
 | --- | --- | --- | --- |
 | [architecture.md](../../docs/architecture.md) | מסמך זה מציע ארכיטקטורה ראשונית למערכת דומה ל-StudiesGo. הוא יתעדכן אחרי | docs | 2026-05-29 |
-| [build-roadmap.md](../../docs/build-roadmap.md) | תרשים-העל של בניית הפרויקט מקצה לקצה. כל Phase מסתיים ב-merge + deploy לפרודקשן. | docs | 2026-05-29 |
+| [build-roadmap.md](../../docs/build-roadmap.md) | תרשים-העל של בניית הפרויקט מקצה לקצה. כל Phase מסתיים ב-merge + deploy לפרודקשן. | docs | 2026-06-09 |
 | [concept.md](../../docs/concept.md) | מסמך זה מנתח את https://studiesgo.com מתוך 6 סרטוני מסך שצולמו ב-2026-05-28. | docs | 2026-05-29 |
 | [content_scope_extensions.md](../../docs/content_scope_extensions.md) | מטרה: למלא את ה-gap-IDs ב-content-scope.md שאין להם תוכן-מפורש ב-Drive. | docs | 2026-05-30 |
 | [CONTENT-INDEX.md](../../docs/CONTENT-INDEX.md) | קובץ אחד מאוחד שמחליף את content-inventory.md, curriculum-coverage.md ו-DRIVE-CONTENT-MAP.md. | docs | 2026-06-02 |
 | [content-inventory.md](../../docs/content-inventory.md) | ⚠️ קובץ זה אוחד אל CONTENT-INDEX.md (2026-05-31) — מפת-Drive (כולל תתי-תיקיות), השוואה לתוכנית-הלימודים, וכיס… | docs | 2026-05-31 |
-| [content-scope.md](../../docs/content-scope.md) | Source-of-truth: PDF "חקיקה ותקינה לממונה בטיחות" + PDF "מערכת שעות קורס 1211762 אוגוסט 2025" | docs | 2026-06-01 |
+| [content-scope.md](../../docs/content-scope.md) | Source-of-truth: PDF "חקיקה ותקינה לממונה בטיחות" + PDF "מערכת שעות קורס 1211762 אוגוסט 2025" | docs | 2026-06-09 |
 | [curriculum-coverage.md](../../docs/curriculum-coverage.md) | ⚠️ קובץ זה אוחד אל CONTENT-INDEX.md (2026-05-31) — מטריצת קורס 1211762 × 57 scope-IDs × Drive, סטטיסטיקת-הכיס… | docs | 2026-05-31 |
 | [features.md](../../docs/features.md) | רשימת כל הפיצ'רים שזוהו בסרטונים, ממויינים לקטגוריות. מהווה בסיס ל-MVP scoping | docs | 2026-05-29 |
 | [IDEAS.md](../../docs/IDEAS.md) | Backlog חי לרעיונות / פיצ'רים-עתידיים / פידבקים. לא מחייב ביצוע. כל אחד (מוטי או סוכן) מוזמן להוסיף. | docs | 2026-06-09 |
 | [implementation-gaps.md](../../docs/implementation-gaps.md) | תאריך: 2026-05-30 · נכתב על-בסיס סריקת-קוד ישירה (לא הסתמכות על התיעוד) | docs | 2026-05-31 |
-| [M5-discovery-curation.md](../../docs/M5-discovery-curation.md) | סטטוס: ⏳ ממתין לאישור-מוטי. נוצר 2026-06-02 (ריצת-לילה, instance #5). | docs | 2026-06-02 |
+| [M5-discovery-curation.md](../../docs/M5-discovery-curation.md) | סטטוס: ⏳ ממתין לאישור-מוטי. נוצר 2026-06-02 (ריצת-לילה, instance #5). | docs | 2026-06-09 |
 | [mvp-plan-2026-07-15.md](../../docs/mvp-plan-2026-07-15.md) | מצב: Draft של Product Owner. מצפה לאישור מוטי לפני exit ל-execute. | docs 2026 | 2026-05-30 |
 | [phase-0-retrospective.md](../../docs/phase-0-retrospective.md) | Status: ✅ Complete · Date: 2026-05-29 | docs | 2026-05-29 |
 | [phase-1-retrospective.md](../../docs/phase-1-retrospective.md) | Status: ✅ Complete (mock-first; ממתין ל-Supabase keys לחיווט אמיתי) · Date: 2026-05-29 | docs | 2026-05-29 |
 | [phase-2-retrospective.md](../../docs/phase-2-retrospective.md) | Status: ✅ Complete (mock-first; persistence ל-Phase 6+) · Date: 2026-05-29 | docs | 2026-05-29 |
-| [PROJECT-STRUCTURE.md](../../docs/PROJECT-STRUCTURE.md) | מטרה: להגדיר את שתי-השכבות של StudiBuilder — שכבת-הפלטפורמה (הקוד/ה-DB הגנריים) מול | docs | 2026-06-03 |
+| [PROJECT-STRUCTURE.md](../../docs/PROJECT-STRUCTURE.md) | מטרה: להגדיר את שתי-השכבות של StudiBuilder — שכבת-הפלטפורמה (הקוד/ה-DB הגנריים) מול | docs | 2026-06-09 |
 | [_template.md](../../docs/qa/_template.md) | בדיקות ידניות לפני merge ל-main. גם אחרי שכל ה-gates האוטומטיים עברו. | docs qa | 2026-05-29 |
 | [phase-0-checklist.md](../../docs/qa/phase-0-checklist.md) | בדיקות-אקספטנס לפני סיום Phase 0. | docs qa | 2026-05-29 |
 | [README.md](../../docs/qa/README.md) | תיקייה זו מכילה checklists לבדיקות-ידניות שמשלימות את הבדיקות האוטומטיות (CI/E2E). | docs qa | 2026-05-29 |
@@ -344,7 +344,7 @@
 | [bugs-and-fixes.md](../../teams/quality/bugs-and-fixes.md) | יומן-באגים צוותי (append-only). כל חבר-צוות שמזהה באג רושם אותו כאן; | teams quality | 2026-05-31 |
 | [activity-log.md](../../teams/quality/content-verifier/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams quality content-verifier | 2026-05-31 |
 | [identity.md](../../teams/quality/content-verifier/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי). שדה 12 = שכבה B+C (הקשר-פרויקט ומיקוד). מודל: sonne… | teams quality content-verifier | 2026-06-09 |
-| [memory.md](../../teams/quality/content-verifier/memory.md) | Content Verifier בצוות-האיכות. מאמתת שכל שאלה/תרחיש/הסבר שנוצר ע"י AI נאמן | teams quality content-verifier | 2026-05-31 |
+| [memory.md](../../teams/quality/content-verifier/memory.md) | Content Verifier בצוות-האיכות. מאמתת שכל שאלה/תרחיש/הסבר שנוצר ע"י AI נאמן | teams quality content-verifier | 2026-06-09 |
 | [control-report.md](../../teams/quality/control-report.md) | דו"ח-בקרה מתגלגל מראש-הצוות (מירב / quality-lead) למתווך (אמיר / mediator). | teams quality | 2026-05-31 |
 | [activity-log.md](../../teams/quality/e2e-qa/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams quality e2e-qa | 2026-05-31 |
 | [identity.md](../../teams/quality/e2e-qa/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי, ממרשם-התפקידים). | teams quality e2e-qa | 2026-05-31 |

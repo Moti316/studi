@@ -4,7 +4,7 @@ import { getSupabaseEnv, isSupabaseConfigured } from './env';
 
 /** routes שדורשים התחברות. (/admin נאכף סופית server-side ב-requireCreator —
  * נכלל כאן ל-defence-in-depth: חסימת-קצה + fail-closed בפרודקשן-ללא-env.) */
-const PROTECTED_PREFIXES = ['/dashboard', '/courses', '/settings', '/stats', '/create', '/admin'];
+const PROTECTED_PREFIXES = ['/dashboard', '/courses', '/settings', '/create', '/admin'];
 
 /** routes של auth — משתמש מחובר ינותב מהם ל-/dashboard. */
 const AUTH_ROUTES = ['/login', '/beta-access'];

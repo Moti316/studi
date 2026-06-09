@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, BookOpen, Scale, BarChart3, Settings } from 'lucide-react';
+import { Home, BookOpen, Scale, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface NavItem {
@@ -16,7 +16,6 @@ const ITEMS: NavItem[] = [
   { href: '/dashboard', label: 'בית', Icon: Home },
   { href: '/courses', label: 'קורסים', Icon: BookOpen, matchPrefix: '/courses' },
   { href: '/legislation', label: 'חקיקה', Icon: Scale, matchPrefix: '/legislation' },
-  { href: '/stats', label: 'סטטיסטיקות', Icon: BarChart3 },
   { href: '/settings', label: 'הגדרות', Icon: Settings },
 ];
 
@@ -30,7 +29,7 @@ export function isActive(pathname: string, item: NavItem): boolean {
 
 /**
  * BottomNav — ניווט תחתון 4-טאבים. mobile-first, sticky-bottom.
- * RTL: הסדר ב-DOM הוא בית→קורסים→סטטיסטיקות→הגדרות; flex משאיר זאת חזותית בעברית.
+ * RTL: הסדר ב-DOM הוא בית→קורסים→חקיקה→הגדרות; flex משאיר זאת חזותית בעברית.
  */
 export function BottomNav() {
   const pathname = usePathname();
