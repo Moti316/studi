@@ -343,7 +343,7 @@
 | [memory.md](../../teams/quality/appsec/memory.md) | Application Security Engineer בצוות-האיכות. מזהה וממתֵן סיכוני-אבטחה ברמת-האפליקציה. | teams quality appsec | 2026-05-31 |
 | [bugs-and-fixes.md](../../teams/quality/bugs-and-fixes.md) | יומן-באגים צוותי (append-only). כל חבר-צוות שמזהה באג רושם אותו כאן; | teams quality | 2026-05-31 |
 | [activity-log.md](../../teams/quality/content-verifier/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams quality content-verifier | 2026-05-31 |
-| [identity.md](../../teams/quality/content-verifier/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי). שדה 12 = שכבה B+C (הקשר-פרויקט ומיקוד). מודל: sonne… | teams quality content-verifier | 2026-05-31 |
+| [identity.md](../../teams/quality/content-verifier/identity.md) | מסמך-זהות פנימי. שדות 1-11 = שכבה A (גרעין-תפקיד ניטרלי). שדה 12 = שכבה B+C (הקשר-פרויקט ומיקוד). מודל: sonne… | teams quality content-verifier | 2026-06-09 |
 | [memory.md](../../teams/quality/content-verifier/memory.md) | Content Verifier בצוות-האיכות. מאמתת שכל שאלה/תרחיש/הסבר שנוצר ע"י AI נאמן | teams quality content-verifier | 2026-05-31 |
 | [control-report.md](../../teams/quality/control-report.md) | דו"ח-בקרה מתגלגל מראש-הצוות (מירב / quality-lead) למתווך (אמיר / mediator). | teams quality | 2026-05-31 |
 | [activity-log.md](../../teams/quality/e2e-qa/activity-log.md) | פורמט רשומה: ## [תאריך שעה] משימה ואז Outcome · What changed · Verification · Follow-ups · Verdict (PASS\|CONC… | teams quality e2e-qa | 2026-05-31 |
