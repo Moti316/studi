@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import type { Question } from '../../../../drizzle/schema';
 import type { QuestionResult } from './types';
-import { gradeOpenAnswer, type OpenGrade } from '@/lib/grading/keyword-match';
+import { gradeOpenAnswer, type OpenGrade, type OpenGradeResult } from '@/lib/grading/keyword-match';
 import { DeepExplanationButton } from './DeepExplanationButton';
 
 /**
@@ -56,11 +56,13 @@ export function ExplanationCard({
 }) {
   const answer = modelAnswer(question);
   const [draft, setDraft] = useState('');
-  const [grade, setGrade] = useState<OpenGrade | null>(null);
-  const revealed = grade !== null;
+  const [result, setResult] = useState<OpenGradeResult | null>(null);
+  const revealed = result !== null;
+  const grade = result?.grade ?? null;
 
   function handleCheck() {
-    setGrade(answer ? gradeOpenAnswer(draft, answer).grade : 'partial');
+    if (!answer) return;
+    setResult(gradeOpenAnswer(draft, answer));
   }
 
   function handleContinue() {
@@ -98,16 +100,61 @@ export function ExplanationCard({
         </>
       )}
 
-      {/* שלב-חשיפה: ציון-עצמי + תשובת-מודל */}
-      {revealed && grade && (
+      {/* שלב-חשיפה: התשובה-שלך (נשארת) + מידת-קשר + תשובת-מודל */}
+      {revealed && result && grade && (
         <>
+          {/* התשובה-שלך — נשמרת גלויה להשוואה (בקשת-מוטי) */}
+          <div
+            data-testid="your-answer"
+            className="rounded-card border border-quiz-border bg-quiz-bg px-3 py-2 text-start"
+          >
+            <p className="mb-1 text-xs font-bold text-quiz-text-secondary">התשובה שלך</p>
+            <p className="whitespace-pre-line text-sm leading-relaxed text-quiz-text-primary">
+              {draft.trim() || '— (לא נכתבה תשובה)'}
+            </p>
+          </div>
+
           <p
             data-testid="open-grade"
             className={`flex items-center gap-2 rounded-card border px-3 py-2 text-sm font-bold ${GRADE_UI[grade].cls}`}
           >
             <span aria-hidden="true">{GRADE_UI[grade].icon}</span>
             {GRADE_UI[grade].label}
+            {result.total > 0 && (
+              <span className="font-normal">
+                · נגעת ב-{result.matched} מתוך {result.total} מושגי-מפתח
+              </span>
+            )}
           </p>
+
+          {/* "ראה את הקשר" — מושגי-מפתח שכוסו/הוחמצו (מנגון-הקשר הדטרמיניסטי) */}
+          {result.total > 0 && (
+            <div
+              data-testid="key-concepts"
+              className="flex flex-col gap-1.5 rounded-card border border-quiz-border bg-white px-3 py-2"
+            >
+              <p className="text-xs font-bold text-quiz-text-secondary">מושגי-מפתח בתשובת-המודל</p>
+              <div className="flex flex-wrap gap-1.5">
+                {result.matchedWords.map((w) => (
+                  <span
+                    key={`m-${w}`}
+                    className="rounded-full border border-quiz-success-border bg-quiz-success-bg px-2 py-0.5 text-xs font-medium text-success"
+                  >
+                    ✓ {w}
+                  </span>
+                ))}
+                {result.missedWords.map((w) => (
+                  <span
+                    key={`x-${w}`}
+                    className="rounded-full border border-quiz-border bg-quiz-bg px-2 py-0.5 text-xs font-medium text-quiz-text-secondary"
+                  >
+                    {w}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
           {answer && (
             <div
               data-testid="model-answer"

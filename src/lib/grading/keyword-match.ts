@@ -18,6 +18,10 @@ export interface OpenGradeResult {
   matched: number;
   /** סך מילות-המפתח של המודל. */
   total: number;
+  /** מילות-המפתח שכוסו בתשובת-הלומד (ל"ראה את הקשר"). */
+  matchedWords: string[];
+  /** מילות-המפתח שהוחמצו. */
+  missedWords: string[];
 }
 
 /** ניקוד עברי (טעמים/נקודות) להסרה לפני השוואה. */
@@ -115,15 +119,17 @@ function contentWords(s: string): string[] {
 export function gradeOpenAnswer(studentAnswer: string, modelAnswer: string): OpenGradeResult {
   const keywords = contentWords(modelAnswer);
   const total = keywords.length;
-  if (total === 0) return { grade: 'partial', matched: 0, total: 0 };
+  if (total === 0)
+    return { grade: 'partial', matched: 0, total: 0, matchedWords: [], missedWords: [] };
 
   const studentWords = contentWords(studentAnswer);
   const studentNorm = normalize(studentAnswer);
-  const matched = keywords.filter(
-    (kw) =>
-      studentNorm.includes(kw) || // "מפקח" מוכל ב-"ולמפקח" (קידומת)
-      studentWords.some((sw) => sw.includes(kw) || kw.includes(sw)),
-  ).length;
+  const hit = (kw: string): boolean =>
+    studentNorm.includes(kw) || // "מפקח" מוכל ב-"ולמפקח" (קידומת)
+    studentWords.some((sw) => sw.includes(kw) || kw.includes(sw));
+  const matchedWords = keywords.filter(hit);
+  const missedWords = keywords.filter((kw) => !hit(kw));
+  const matched = matchedWords.length;
 
   const ratio = matched / total;
   let grade: OpenGrade;
@@ -131,5 +137,5 @@ export function gradeOpenAnswer(studentAnswer: string, modelAnswer: string): Ope
   else if (ratio >= 0.25 || (total <= 2 && matched >= 1)) grade = 'partial';
   else grade = 'incorrect';
 
-  return { grade, matched, total };
+  return { grade, matched, total, matchedWords, missedWords };
 }
