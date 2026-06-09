@@ -4,32 +4,28 @@ import {
   buildVerificationGroups,
   parseExcludeRefs,
   filterExcluded,
+  type BuiltMatch,
 } from '@/lib/import/question-verification-io';
 import type { StatuteSource } from '@/lib/import/generated-mcq';
 import type { NewQuestion } from '../../../drizzle/schema';
 
-const STATUTES = new Map<string, StatuteSource>([
-  [
-    '1.0',
-    {
-      scopeId: '1.0',
-      title: 'חוק ארגון הפיקוח',
-      depth: 'core',
-      body: 'גוף 1.0',
-      path: 'leg/1.0.md',
-    },
-  ],
-  [
-    '2.3',
-    {
-      scopeId: '2.3',
-      title: 'תקנות ציוד מגן אישי',
-      depth: 'framework',
-      body: 'גוף 2.3',
-      path: 'leg/2.3.md',
-    },
-  ],
-]);
+const ST_10: StatuteSource = {
+  scopeId: '1.0',
+  title: 'חוק ארגון הפיקוח',
+  depth: 'core',
+  body: 'גוף 1.0',
+  path: 'leg/1.0.md',
+};
+const ST_23: StatuteSource = {
+  scopeId: '2.3',
+  title: 'תקנות ציוד מגן אישי',
+  depth: 'framework',
+  body: 'גוף 2.3',
+  path: 'leg/2.3.md',
+};
+function match(row: NewQuestion, statute: StatuteSource): BuiltMatch {
+  return { row, statute };
+}
 
 function mcqRow(over: Partial<NewQuestion> = {}): NewQuestion {
   return {
@@ -76,32 +72,49 @@ describe('describeAnswer', () => {
 });
 
 describe('buildVerificationGroups', () => {
-  it('מקבץ פר-scope עם גוף-הנוסח, ממוין מספרית', () => {
-    const rows = [
-      mcqRow({ scopeRefs: [{ id: '2.3', confidence: 1 }], sourceRef: 'nbq:2.3:mcq:x' }),
-      mcqRow({ sourceRef: 'nbq:1.0:mcq:y' }),
-      mcqRow({ sourceRef: 'nbq:1.0:mcq:z' }),
+  it('מקבץ פר-נוסח-מותאם עם נתיב-המקור, ממוין מספרית', () => {
+    const matches = [
+      match(mcqRow({ sourceRef: 'nbq:2.3:mcq:x' }), ST_23),
+      match(mcqRow({ sourceRef: 'nbq:1.0:mcq:y' }), ST_10),
+      match(mcqRow({ sourceRef: 'nbq:1.0:mcq:z' }), ST_10),
     ];
-    const groups = buildVerificationGroups(rows, STATUTES);
+    const groups = buildVerificationGroups(matches);
     expect(groups.map((g) => g.scopeId)).toEqual(['1.0', '2.3']); // sorted numeric
     expect(groups[0]!.statutePath).toBe('leg/1.0.md');
     expect(groups[0]!.questions).toHaveLength(2);
     expect(groups[0]!.questions[0]!.answer).toBe('לחקור');
     expect(groups[0]!.questions[0]!.options).toHaveLength(4);
   });
-  it('מדלג שורה ללא-נוסח-תואם', () => {
-    const rows = [mcqRow({ scopeRefs: [{ id: '9.9', confidence: 1 }] })];
-    expect(buildVerificationGroups(rows, STATUTES)).toHaveLength(0);
+  it('scopeId כפול (שני נוסחים) → שתי קבוצות נפרדות לפי נתיב', () => {
+    const dupA: StatuteSource = {
+      scopeId: '4.3',
+      title: 'רישוי-עסקים',
+      body: 'a',
+      path: 'leg/4.3a.md',
+    };
+    const dupB: StatuteSource = {
+      scopeId: '4.3',
+      title: 'הוראות-כלליות',
+      body: 'b',
+      path: 'leg/4.3b.md',
+    };
+    const groups = buildVerificationGroups([
+      match(mcqRow({ sourceRef: 'nbq:4.3:mcq:1' }), dupA),
+      match(mcqRow({ sourceRef: 'nbq:4.3:mcq:2' }), dupB),
+    ]);
+    expect(groups).toHaveLength(2);
+    expect(groups.map((g) => g.statutePath).sort()).toEqual(['leg/4.3a.md', 'leg/4.3b.md']);
   });
   it('matching → ללא options-array (לא mcq)', () => {
-    const rows = [
+    const m = match(
       mcqRow({
         type: 'matching',
         options: [{ left: 'a', right: 'b' }] as unknown as NewQuestion['options'],
         correctAnswer: null,
       }),
-    ];
-    expect(buildVerificationGroups(rows, STATUTES)[0]!.questions[0]!.options).toBeUndefined();
+      ST_10,
+    );
+    expect(buildVerificationGroups([m])[0]!.questions[0]!.options).toBeUndefined();
   });
 });
 

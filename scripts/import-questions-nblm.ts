@@ -32,6 +32,7 @@ import {
   buildVerificationGroups,
   parseExcludeRefs,
   filterExcluded,
+  type BuiltMatch,
 } from '../src/lib/import/question-verification-io';
 import type { FlatMatchingPair, FlatOpenQa } from '../src/lib/notebooklm/adapt-flat-questions';
 import type { NewQuestion } from '../drizzle/schema';
@@ -75,11 +76,16 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  // אינדקס נוסחים לפי scope (לגוף-G3).
-  const statuteByScope = new Map<string, StatuteSource>();
-  for (const s of loadStatutes()) statuteByScope.set(s.scopeId, s);
+  // אינדקס נוסחים לפי scope. scopeId יחיד עשוי למפות למספר נוסחים (4.3×3 · 2.8×2 ·
+  // 2.10×2) — לכן רשימה, וה-G3 בוחר את הנוסח-שאליו הציטוט מעוגן (מונע אובדן-תשואה).
+  const statutesByScope = new Map<string, StatuteSource[]>();
+  for (const s of loadStatutes()) {
+    const arr = statutesByScope.get(s.scopeId);
+    if (arr) arr.push(s);
+    else statutesByScope.set(s.scopeId, [s]);
+  }
 
-  const rows: NewQuestion[] = [];
+  const built: BuiltMatch[] = [];
   const stats: Record<string, TypeStat> = {
     mcq: { built: 0, dropped: 0 },
     matching: { built: 0, dropped: 0 },
@@ -87,9 +93,21 @@ async function main(): Promise<void> {
   };
   let noStatute = 0;
 
+  /** מנסה לבנות שורה מול כל נוסח-מועמד; מחזיר את ההתאמה-הראשונה שעברה G3 (או null). */
+  function tryMatch(
+    candidates: StatuteSource[],
+    build: (st: StatuteSource) => NewQuestion | null,
+  ): BuiltMatch | null {
+    for (const st of candidates) {
+      const row = build(st);
+      if (row) return { row, statute: st };
+    }
+    return null;
+  }
+
   for (const item of cache.items) {
-    const statute = statuteByScope.get(item.scopeId);
-    if (!statute) {
+    const candidates = statutesByScope.get(item.scopeId);
+    if (!candidates || candidates.length === 0) {
       noStatute++;
       continue;
     }
@@ -97,34 +115,35 @@ async function main(): Promise<void> {
 
     if (item.type === 'mcq') {
       for (const mcq of item.items as GeneratedMCQ[]) {
-        const row = buildQuestionRow(
-          mcq,
-          statute,
-          `nbq:${item.scopeId}:mcq:${hash(mcq.prompt ?? '')}`,
-        );
-        if (row) {
-          rows.push(row);
+        const ref = `nbq:${item.scopeId}:mcq:${hash(mcq.prompt ?? '')}`;
+        const m = tryMatch(candidates, (s) => buildQuestionRow(mcq, s, ref));
+        if (m) {
+          built.push(m);
           st.built++;
         } else st.dropped++;
       }
     } else if (item.type === 'matching') {
       const pairs = item.items as FlatMatchingPair[];
       const key = hash(pairs.map((p) => p.term).join('|'));
-      const row = buildMatchingRow(pairs, statute, `nbq:${item.scopeId}:matching:${key}`);
-      if (row) {
-        rows.push(row);
+      const ref = `nbq:${item.scopeId}:matching:${key}`;
+      const m = tryMatch(candidates, (s) => buildMatchingRow(pairs, s, ref));
+      if (m) {
+        built.push(m);
         st.built++;
       } else st.dropped++;
     } else {
       for (const qa of item.items as FlatOpenQa[]) {
-        const row = buildOpenRow(qa, statute, `nbq:${item.scopeId}:open:${hash(qa.prompt ?? '')}`);
-        if (row) {
-          rows.push(row);
+        const ref = `nbq:${item.scopeId}:open:${hash(qa.prompt ?? '')}`;
+        const m = tryMatch(candidates, (s) => buildOpenRow(qa, s, ref));
+        if (m) {
+          built.push(m);
           st.built++;
         } else st.dropped++;
       }
     }
   }
+
+  const rows: NewQuestion[] = built.map((b) => b.row);
 
   console.log(
     `[import-questions] mode=${mode} · file=${fileArg} · cache-items=${cache.items.length}`,
@@ -140,7 +159,7 @@ async function main(): Promise<void> {
   // נכתב תמיד (dry+execute) → ה-Workflow (Claude · citation-fit) צורך אותו ומפיק
   // <file>.held.json שמוזן בחזרה דרך --exclude.
   const builtPath = join(CACHE_DIR, `${fileArg}.built.json`);
-  const groups = buildVerificationGroups(rows, statuteByScope);
+  const groups = buildVerificationGroups(built);
   writeFileSync(
     builtPath,
     JSON.stringify(

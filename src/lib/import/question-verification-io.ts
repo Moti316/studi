@@ -53,24 +53,30 @@ export function describeAnswer(row: NewQuestion): string {
   return '';
 }
 
-function scopeOf(row: NewQuestion): string {
-  return Array.isArray(row.scopeRefs) && row.scopeRefs[0] ? String(row.scopeRefs[0].id) : '';
+/** שורה-שנבנתה + הנוסח-שאליו הותאמה בפועל (G3). */
+export interface BuiltMatch {
+  row: NewQuestion;
+  statute: StatuteSource;
 }
 
-/** בונה קבוצות-אימות (פר-scope) מהשורות-שנבנו + מפת-נוסחים. ממוין דטרמיניסטית. */
-export function buildVerificationGroups(
-  rows: NewQuestion[],
-  statuteByScope: Map<string, StatuteSource>,
-): VerificationGroup[] {
-  const byScope = new Map<string, VerificationGroup>();
-  for (const row of rows) {
-    const scopeId = scopeOf(row);
-    const statute = statuteByScope.get(scopeId);
-    if (!statute) continue;
-    let g = byScope.get(scopeId);
+/**
+ * בונה קבוצות-אימות פר-**נוסח-מותאם** (לא פר-scope). חשוב: scopeId יחיד עשוי למפות
+ * למספר נוסחים (4.3×3 · 2.8×2 · 2.10×2) — קיבוץ לפי הנוסח-שהתאים-ב-G3 מבטיח שכל
+ * סוכן-אימות מקבל את נתיב-המקור הנכון לשאלותיו. ממוין דטרמיניסטית (scope→title).
+ */
+export function buildVerificationGroups(matches: BuiltMatch[]): VerificationGroup[] {
+  const byStatute = new Map<string, VerificationGroup>();
+  for (const { row, statute } of matches) {
+    const key = statute.path || `${statute.scopeId}::${statute.title}`;
+    let g = byStatute.get(key);
     if (!g) {
-      g = { scopeId, title: statute.title, statutePath: statute.path ?? '', questions: [] };
-      byScope.set(scopeId, g);
+      g = {
+        scopeId: statute.scopeId,
+        title: statute.title,
+        statutePath: statute.path ?? '',
+        questions: [],
+      };
+      byStatute.set(key, g);
     }
     const isMcq = row.type === 'mcq_short' || row.type === 'mcq_long';
     g.questions.push({
@@ -82,8 +88,10 @@ export function buildVerificationGroups(
       explanation: String(row.explanation ?? ''),
     });
   }
-  return Array.from(byScope.values()).sort((a, b) =>
-    a.scopeId.localeCompare(b.scopeId, undefined, { numeric: true }),
+  return Array.from(byStatute.values()).sort(
+    (a, b) =>
+      a.scopeId.localeCompare(b.scopeId, undefined, { numeric: true }) ||
+      a.title.localeCompare(b.title),
   );
 }
 
