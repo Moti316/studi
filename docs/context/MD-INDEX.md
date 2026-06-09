@@ -2,7 +2,7 @@
 
 > ⚠️ **קובץ מחולל — אל תערוך ידנית.** מקור: `.claude/scripts/gen-md-index.mjs` · רענון: `pnpm index:md`
 > (מתרענן גם אוטומטית ב-pre-commit). דלת-הכניסה לשליפה-מהירה של כל מסמך בריפו.
-> **סה״כ 351 קבצי-MD בריפו** · ⚠️ 19 יתומים-מקומיים (ראה תחתית) · עמודת "עודכן" = מתי הקובץ עודכן לאחרונה ב-git (לאיתור מסמכים שהתיישנו).
+> **סה״כ 351 קבצי-MD בריפו** · עמודת "עודכן" = מתי הקובץ עודכן לאחרונה ב-git (לאיתור מסמכים שהתיישנו).
 
 ## 📌 קבצי-חובה — קרא/עבור עליהם בכל סשן (נעוץ)
 
@@ -479,27 +479,5 @@
 
 ## ⚠️ יתומים מקומיים — קבצים על הדיסק שאינם בריפו
 
-> קיימים מקומית אך **אינם ב-git** (untracked / .gitignore). מיושן → מחק; רלוונטי → הוסף לריפו. בדוק מול מצב-הפרויקט.
-
-| קובץ | תאריך-דיסק | סטטוס |
-| --- | --- | --- |
-| tools/nblm-bridge/.venv/Lib/site-packages/httpcore-1.0.9.dist-info/licenses/LICENSE.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
-| tools/nblm-bridge/.venv/Lib/site-packages/httpx-0.28.1.dist-info/licenses/LICENSE.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
-| tools/nblm-bridge/.venv/Lib/site-packages/idna-3.18.dist-info/licenses/LICENSE.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
-| tools/nblm-bridge/.venv/Lib/site-packages/notebooklm/data/CODEX.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
-| tools/nblm-bridge/.venv/Lib/site-packages/notebooklm/data/SKILL.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
-| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/element-attributes.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
-| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/playwright-tests.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
-| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/request-mocking.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
-| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/running-code.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
-| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/session-management.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
-| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/spec-driven-testing.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
-| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/storage-state.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
-| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/test-generation.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
-| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/tracing.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
-| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/video-recording.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
-| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/SKILL.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
-| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/trace/SKILL.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
-| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/README.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
-| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/README.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+> ✅ אין קבצי-MD יתומים — כל מסמך מקומי נמצא ב-git.
 
