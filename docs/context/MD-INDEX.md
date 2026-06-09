@@ -105,7 +105,7 @@
 | [ADR-014-scenario-engine.md](../../docs/architecture/ADR-014-scenario-engine.md) | 🔧 מוחלף-מורחב 2026-06-09 ע"י ADR-016 (סימולציית-וועדה · 3-מפקחים · hybrid פרה-בנוי→חי) — ה-walkthrough הסטטי… | docs architecture | 2026-06-09 |
 | [ADR-015-notebooklm-content-engine.md](../../docs/architecture/ADR-015-notebooklm-content-engine.md) | סטטוס: Accepted · 2026-06-08 · בעלים: tech-lead (איתן) · ml-engineer · motilev8 | docs architecture | 2026-06-09 |
 | [ADR-016-committee-simulation.md](../../docs/architecture/ADR-016-committee-simulation.md) | סטטוס: Accepted · 2026-06-09 · בעלים: tech-lead (איתן) · product-owner · motilev8 | docs architecture | 2026-06-09 |
-| [ADR-017-claude-live-evaluation.md](../../docs/architecture/ADR-017-claude-live-evaluation.md) | סטטוס: Accepted · 2026-06-09 · בעלים: tech-lead (איתן) · motilev8 | docs architecture | — |
+| [ADR-017-claude-live-evaluation.md](../../docs/architecture/ADR-017-claude-live-evaluation.md) | סטטוס: Accepted · 2026-06-09 · בעלים: tech-lead (איתן) · motilev8 | docs architecture | 2026-06-09 |
 | [README.md](../../docs/architecture/README.md) | תיעוד כל ההחלטות-הארכיטקטוניות המשמעותיות לפרויקט. כל החלטה מקבלת ADR לפני implementation. | docs architecture | 2026-06-09 |
 
 ### 🖼️ עיצוב ומסכים — screens-spec · design · screens  ·  29

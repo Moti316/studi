@@ -9,6 +9,9 @@
  * הקוראים נופלים-חזרה למנגון-הדטרמיניסטי (keyword-match). Gemini נשאר ה-LLM-לתוכן;
  * Claude = שכבת-ההערכה-החיה בלבד.
  */
+import { existsSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { Agent, fetch as undiciFetch } from 'undici';
 import Anthropic from '@anthropic-ai/sdk';
 
 export class ClaudeClientError extends Error {
@@ -39,9 +42,36 @@ function requireApiKey(): string {
 
 let clientSingleton: Anthropic | null = null;
 
+/**
+ * undici-dispatcher עם CA-bundle ארגוני (אם קיים) — עוקף TLS-inspection-proxy
+ * (אותו חסם שדרש CA-bundle ל-NotebookLM · ראה BUGS.md#notebooklm-runtime-ssl).
+ * תכנותי → עובד ב-dev-server/route/script בלי תלות ב-NODE_EXTRA_CA_CERTS. no-op בלי-bundle.
+ */
+function corpDispatcher(): Agent | undefined {
+  const ca =
+    process.env.SSL_CERT_FILE ||
+    process.env.NODE_EXTRA_CA_CERTS ||
+    join(process.cwd(), 'tools', 'nblm-bridge', '.cache-cabundle.pem');
+  if (!ca || !existsSync(ca)) return undefined;
+  try {
+    return new Agent({ connect: { ca: readFileSync(ca, 'utf-8') } });
+  } catch {
+    return undefined;
+  }
+}
+
 function getClient(): Anthropic {
   if (clientSingleton) return clientSingleton;
-  clientSingleton = new Anthropic({ apiKey: requireApiKey() });
+  const dispatcher = corpDispatcher();
+  // fetch מותאם דרך undici עם ה-dispatcher (CA ארגוני) — אמין יותר מ-fetchOptions.
+  const customFetch = dispatcher
+    ? (url: string | URL, init?: Record<string, unknown>) =>
+        undiciFetch(url as never, { ...(init ?? {}), dispatcher } as never) as never
+    : undefined;
+  clientSingleton = new Anthropic({
+    apiKey: requireApiKey(),
+    ...(customFetch ? { fetch: customFetch as never } : {}),
+  });
   return clientSingleton;
 }
 
