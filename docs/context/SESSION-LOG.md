@@ -5,6 +5,27 @@
 
 ---
 
+## 2026-06-09 — שינוי-כיוון: מגן+NotebookLM · ביטול-firewall (Phase 0) + מודולי-שו"ת (Phase 1.1)
+
+> **הכרעת-מוטי:** "בבטיחות וחוק 'מספיק טוב' לא מספיק" → מנוע-מגן מדויק יותר. **תוכנית אושרה** (`~/.claude/plans/wiggly-munching-bentley.md`).
+
+**הכרעות נעולות:** (1) **מיני-קורס תרחישים** → להסיר את 14 הקיימים → בנק-מעוגן חדש: **NotebookLM מעגן חוק/תקנה (G3) → פרומפט-מאסטר של מגן מחבר** (Gemini-API · offline · לא-runtime) → אימות-סמנטי → ייבוא. (2) **מיני-קורס שו"ת** → שאלות מ-NotebookLM מקורפוס-החקיקה (42), **רב-סוגיות** (MCQ אמריקאית · matching מונח↔הגדרה · open) **מחליפות את 460 qa-bank**. (3) **ביטול firewall-מגן** (port-permitted · name-cleaned · megen מבודד · מוטי בעל-שני-הריפו→אפס-licensing). (4) סימולציה-חיה-runtime = Future.
+
+**Commits (main · typecheck + vitest ירוקים · אומת ב-pre-push):**
+
+- **`5f1e889`** Phase 0 — **ביטול-firewall** ב-34 קבצים (WORKFLOW 6/7 קבוצות + השלמה-ידנית + memory). מקור: **ADR-009 תיקון 2026-06-09**. grep מאמת: 0 כללי-firewall פעילים. גבולות-נפרדים נשמרו (פלטפורמה↔קורס · PARITY · agent-os · PPE).
+- **`212656a`** Phase 1.1 — **מודולים-טהורים לשו"ת רב-סוגי:** `extract-json.ts` (helpers משותפים נחלצו מ-adapt-flat · אפס-שכפול · re-export-תאימות) · `compact-question-prompt.ts` (פר-סוג · verbatim) · `adapt-flat-questions.ts` (extractFlatMcqs/Matching/Open · סינון-פריט) · `map-nblm-question.ts` (buildMatchingRow `{left,right}[]` · buildOpenRow · G3). 14 טסטים.
+
+### 🚩 צעד-הבא (Phase 1.2 → 2 · המשך-התוכנית)
+
+1. **Phase 1.2 — סקריפטים:** `scripts/lib/load-statutes.ts` (הרמה מ-generate-questions.ts) · `scripts/notebooklm/generate-questions-nblm.ts` (clone של generate-scenarios · `--types mcq,matching,open` · `--scope`/`--per`) · `scripts/import-questions-nblm.ts` (clone של import-scenarios · routing פר-סוג → buildQuestionRow/buildMatchingRow/buildOpenRow · `sourceRef=nbq:<scope>:<type>:<hash>`). package.json: `questions:generate`/`questions:import[:dry]`.
+2. **Phase 1.3 — אימות-סמנטי:** `semantic-verify-questions.ts` (טהור · verifyFn מוזרק) + impl-Gemini (אופציה Workflow).
+3. **Phase 1 — הרצה:** generate (NotebookLM · SSL-fix מוטמע · session שמור) → import:dry → verify → import → **מחיקת 460** (`scripts/delete-old-qa-bank.ts` · clone של delete-old-scenarios · `qa:%`). רצף: ייבא→smoke `/lesson/practice`→מחק.
+4. **Phase 2 — תרחישים:** `git clone github.com/Moti316/megen` (אומת נגיש) → חילוץ פרומפט-המאסטר → `src/lib/ai/prompts/committee-sim/master.ts` (name-cleaned) → `delete-old-scenarios.ts --execute` → NotebookLM-ground+Magen-author (`scripts/author-scenarios-magen.ts` · Gemini-API offline) → אימות-סמנטי → import.
+5. **דשבורד:** 2 כרטיסי-מיני-קורס (`src/lib/mock/courses.ts`).
+
+---
+
 ## 2026-06-08 (המשך-ג · אוטונומי) — תרחישים 4-חלקים חיים · SSL-fix · ספריית-חקיקה
 
 > סשן אוטונומי-ארוך (WORKFLOWS-mindset · push+doc-Drive אחרי כל תת-משימה). מוטי נכח לסירוגין; ביצע login-מחדש ל-NotebookLM ואז יצא לאוטונומיה מלאה.
