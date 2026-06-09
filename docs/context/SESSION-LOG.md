@@ -5,6 +5,30 @@
 
 ---
 
+## 2026-06-09 (המשך-ג · סשן-ענק) — בנק-שאלות-חי + סבב-UX + Claude-LiveEngine (ADR-016/017)
+
+> **תמצית:** בנק-השאלות הוחלף, סבב-UX מקיף לפי-StudiesGo, והוקם מנוע-הערכה-סמנטית-חי (Claude). **commits:** `8436f09`→`93730cf`. typecheck+vitest (742) ירוקים בכל push.
+
+**הושלם (הכל ב-`main`):**
+
+- ✅ **בנק-שאלות:** ייצור-מלא NotebookLM (636 פריטים · resumable+checkpoint) → import:dry (443 G3) → **Workflow אימות-סמנטי (37 נוסחים · content-verifier · תפס 14 הזיות-ציטוט)** → import --exclude → **מחיקת 540 qa**. **444 שאלות-NotebookLM מעוגנות חיות.** תיקון scopeId-כפול.
+- ✅ **אודיט-MD (Workflow · 8 סוכנים):** 33 ממצאים → **Workflow-תיקון (22 קבצים)** + CLAUDE/AGENTS ידני. עקביות הכרעות בכל ה-MD.
+- ✅ **מיני-קורס לפי-נושאים:** 8 יחידות StudiesGo (`src/lib/course/topics.ts` · `CourseTopics` · `/courses/safety-officer` + `/lesson/[topic]` · ספירות-אמת).
+- ✅ **ספריית-חקיקה StudiesGo:** 4 מדפים-מתקפלים (`LegislationLibrary`).
+- ✅ **תיקוני-UI:** שאלת-התאמה=זיווג-חופשי+כותרות+הסבר · שו"ת-פתוח=תשובה-נשמרת+מנגון-קשר · מחיקת מסך-סטטיסטיקות (BottomNav 5→4).
+- ✅ **סימולציית-וועדה (ADR-016):** מודל+engine+player+slice-LOTO חי (Claude+פרומפט-מגן+NotebookLM · `/preview/simulation`). **פרה-בנוי (בחירה-סגורה).**
+- ✅ **Claude-LiveEngine (ADR-017):** `claude.ts`+`evaluate-open-answer`+server-action · ExplanationCard מחווט · **fallback דטרמיניסטי**. **מאומת חי** (Haiku · זיהה "נעילה ותיוג"=LOTO). **מפתח של מוטי ב-.env.local.** תיקון TLS-proxy (undici dispatcher + CA-bundle · BUGS.md).
+- 🟣 **preview routes ציבוריים (dev):** `/preview/{simulation,course,legislation,matching}`.
+
+### ⏭️ הצעד-הבא (סשן הבא)
+
+1. **הוזלת-Claude:** prompt-caching (system) + קיצור-prompt + skip-לתשובות-ריקות.
+2. **סימולציה לתשובה-פתוחה (הכרעת-מוטי):** המפקח מקבל תשובה-חופשית ומגיב חי — לחבר את ה-LiveEngine (`gradeOpenAnswerSmart`/Claude) לדיאלוג-הסימולציה (כרגע בחירה-סגורה).
+3. **הרחבת-סימולציה:** חיבור כל 20 הזרעים (Workflow `author-simulation.mjs`) → import → שילוב `/lesson/scenarios` → **החלפת 14 ה-walkthroughs**.
+4. capstone · content-verifier (מוסקנא→מאומת) · שחזור scopes 4.3-4.5 (timeout · resumable).
+
+---
+
 ## 2026-06-09 (המשך-ב) — בנק-שאלות-מלא NotebookLM + פיבוט לסימולציית-וועדה (ADR-016)
 
 > **שתי הכרעות-מוטי בסשן:** (1) **כיוון-תרחישים = סימולציית-וועדה אינטראקטיבית** (3 מפקחים בדיאלוג-חי · לא walkthrough סטטי) · מנוע **HYBRID** (פרה-בנוי-מסועף עכשיו → `LiveEngine` Claude-API עתיד) · חיבור = **Claude+NotebookLM אפס-Gemini** (Gemini חסום-מכסה · אומת ב-quota-probe). (2) **משמעת-תיעוד** — לעגן את כל ההחלטות ב-MD + תיוג + אינדקס. ראה **[ADR-016](../architecture/ADR-016-committee-simulation.md)** + DECISIONS (2026-06-09 · כיוון-תרחישים) + 🧠 `committee-simulation-direction`.

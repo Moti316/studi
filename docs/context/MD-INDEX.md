@@ -55,7 +55,7 @@
 | קובץ | תכלית | תגיות | עודכן |
 | --- | --- | --- | --- |
 | [ACCESS-MAP.md](../../docs/context/ACCESS-MAP.md) | ⚠️ לא סודות כאן — רק המפה (איזה מפתח, איפה הוא חי, מה הסטטוס). הערכים עצמם ב-.env.local (gitignored) וב-Verce… | docs context | 2026-06-04 |
-| [BUGS.md](../../docs/context/BUGS.md) | זיכרון-מוסדי: בעיות שנפתרו + הפתרון. קרא לפני שאתה נתקל באותו דבר. מעודכן: 2026-05-31. | docs context | 2026-06-08 |
+| [BUGS.md](../../docs/context/BUGS.md) | זיכרון-מוסדי: בעיות שנפתרו + הפתרון. קרא לפני שאתה נתקל באותו דבר. מעודכן: 2026-05-31. | docs context | 2026-06-09 |
 | [DECISIONS.md](../../docs/context/DECISIONS.md) | החלטות-מפתח שורה-בשורה (מעבר ל-ADRs הפורמליים). חדש למעלה. מעודכן: 2026-06-09. | docs context | 2026-06-09 |
 | [EXECUTION-PLAN.md](../../docs/context/EXECUTION-PLAN.md) | התוכנית האחת והאוטוריטטיבית. מאחדת את build-roadmap (10 phases), ADR-006 (Course-as-Product Factory), | docs context | 2026-06-09 |
 | [GOVERNANCE-V2.md](../../docs/context/GOVERNANCE-V2.md) | גיבוי-בריפו של תוכנית-ממשל-v2 (המקור היה מקומי ב-/.claude/plans/, per-machine). | docs context | 2026-06-09 |
