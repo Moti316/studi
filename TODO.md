@@ -13,13 +13,26 @@
 
 - ✅ **בלוק-0** — הסרת כפתור "קורס חדש" (שייך לפלטפורמה-עתידית · `5ee116d`).
 - ✅ **בלוק-1 ★** — סימולציה-פתוחה `LiveEngine` (ADR-018): `claude.ts` (prompt-caching + `claudeConverse`) · `committee-sim/{live,grounding}.ts` · `respond-live.action` · `live-engine` reducer · `InspectorBubble` + `LiveSimulationPlayer` · `/preview/simulation-live` · typecheck נקי. **✅ אומת-חי (2026-06-10 · `source:claude`)** — תוקן באג-HIGH ש-`max_tokens=900` חתך את ה-JSON → תמיד-fallback (`BUGS#liveengine-maxtokens-truncation`). ⏳ נותר: צילום-UI חזותי (dev-server).
-- 🔄 **בלוק-2** — מהפכת-עיצוב StudiesGo (נועז · ישיר): ✅ דשבורד gradient-hero + glow + flame-pulse-רצף. ⏳ נותר: קורס/נגן-שיעור/סימולציה · count-up · card-flip · mascot-poses · accent-word (תשתית 34-וריאנטים קיימת).
+- 🔄 **בלוק-2** — מהפכת-עיצוב StudiesGo (נועז · ישיר): **✅ דשבורד — מהפך-דרמטי הושלם ואומת-ויזואלית** (2026-06-10 · הכרעת-מוטי: דשבורד+דרמטי): hero כהה-עוצמתי (gradient ink-blue + glow-orbs + mascot-float 🦺 + level-pill) · stat-chips-זכוכית עם **count-up** (`CountUp`) · **טבעות-יעד מונפשות** (`RingProgress`) · רצועת-רצף בוהקת (להבות פר-יום) · CTA-capstone נועז · `/preview/dashboard` לאימות (Playwright-screenshot). ⏳ נותר: נגן-שיעור · סימולציה · קורס · card-flip · accent-word.
 - ✅ **בלוק-3** — פרויקט-גמר `capstone` (Workflow · 8 סוכנים): `/capstone` route (auth) · wizard 4-שלבים (`CapstoneFlow`) · `SiteStep`/`JsaBuilder`/`RiskMatrix`/`FeedbackStep` · `riskLevel`/`riskBand` (מקרא-המשרד) · `evaluate-capstone.action` (Claude + fallback) · zustand store · קישור מדף-הקורס · 8 טסטים ✅. ⏳ עוד טסטי-jsa-validation + אימות-חי נותרו.
 - ⬜ **בלוק-4** — מורה-פרטי AI על התשובות (`TutorChat` + `tutor-explain.action` · reuse claude.ts).
 - 🔄 **בלוק-5** — בנק-תרחישים pre-bake (Workflow · **12 תרחישי-ענף חוברו · 11 אומתו** content-verifier) → staged `src/features/simulation/data/committee-sim-bank.json`. ⏳ נותר: import ל-DB + wiring ל-`/lesson/scenarios` + תיקון-1-דגל.
 - ⬜ **בלוק-6** — טיוטות ISO 5.3/5.4 + סגירה (TODO/STATUS/SESSION-LOG · לוג-Drive · דו"ח-בוקר).
 - ✅ **סקירת-ריצת-הלילה (2026-06-10 · מחשב-מוטי)** — Workflow-סקירה (20 סוכנים · 14 ממצאים) → Workflow-מימוש (3) + Workflow-אימות-נגדי (9) → **13 ממצאים תוקנו** (★ max_tokens · turn-cap · auth×2 · ציטוט-מומצא · injection · cost-guard · ציון-אמיתי · turnIndex · aria-live · capstone #4/#5/#6 · תרחיש-מדוגל) · **800 vitest** · #14+rate-limit נדחו-מתועד (`BUGS#night-run-review`).
 - ✅ **capstone → תואם-משרד-העבודה (2026-06-10)** [🧠 `capstone-ministry-spec`] — ✅ נגישות (`/preview/capstone`+CTA) · עמוד-פתיחה (PII client-side) · טבלת-JSA+מטריצה-4×4 בפורמט-הרשמי (בקרות-מפוצלות · סיכון לפני/אחרי · סטטוס · 18-עמודות) · מבנה-מסמך 6-פרקים 12-18עמ' (נרטיב-AI) · ייצוא PDF/Word · 70+טסטים. **✅ תוקן באג-HIGH (`capstone-narrative-single-json`):** narrative+JSA רצו על Haiku ב-JSON-יחיד-ענק → נחתך/פגום → `[להשלמה]` stubs _תוך-כדי-חיוב_ (אומת-חי: Haiku+Sonnet שניהם נכשלו). תיקון: **narrative פר-פרק** (`claudeGenerateText` ×5 · טקסט-נקי · fallback פר-פרק) + **JSA→author-model (Sonnet)+maxTokens 9000** + `extractJsonPayload` עמיד. ✅ מסמך-זהב-דוגמה ([`docs/examples/capstone-sample-rakia18.md`](docs/examples/capstone-sample-rakia18.md) · Workflow 11-סוכנים · ביקורת תפסה 3 שגיאות-ציטוט). ⏳ נותר: אימות-חי ב-`/capstone` מחובר (מפתח-prod).
+
+### 🌙🌙 המשך-לילה (סשן-ב' · 2026-06-10 · אוטונומי-מלא) — סדר-ביצוע
+
+> מצב: אוטונומי-מלא (מוטי) · דחיפה+לוג פר-תת-משימה · TODO+MD רציף · **סוכני-בקרה/עיצוב/QA לפני תוצאה** · Workflows-בשיקול-דעת · סיכום-סשן+פרומפט-המשך ב-Drive.
+
+- ✅ **#1 capstone-fix** — narrative פר-פרק + JSA author-model + מסמך-זהב (`f800c14` · 893 טסטים).
+- ✅ **#2 A1/A2 מחקר** — Workflow (web רשמי + קורפוס): עגורנים=2 תקנות (1992 מפעילים / **תשכ"ז-1966 עגורני-צריח · תקנה 65 שם**) · ISO=רקע-מתודולוגיה. **תזכיר-הכרעה מוכן.**
+- 🔄 **#3 דשבורד-מהפך** — ✅ נבנה+אומת-ויזואלית → ⏳ review (design/a11y) → טסטים → push.
+- ⬜ **#4 A1/A2 יישום** — תיקון-קורפוס (תקנה 65→עגורני-צריח תשכ"ז-1966 ב-LEGISLATION-SOURCES/INDEX/LEARNING-MATERIALS) + הוספת מיקום-ISO ל-COURSE-DESIGN. push.
+- ⬜ **#5 עיצוב-המשך** — נגן-שיעור + סימולציה + קורס (B1 דרמטי · "ואז אמשיך לבאים").
+- ⬜ **#6 בלוק-4 מורה-AI** — `TutorChat` + `tutor-explain.action` (reuse claude.ts author-model).
+- ⬜ **#7 בלוק-5 תרחישים** — import 12 ל-DB + wiring `/lesson/scenarios` (DB-write→`dangerouslyDisableSandbox`) + תיקון-דגל.
+- ⬜ **#8 בקרה+סגירה** — סוכני-oversight (plan-compliance/process-audit/coverage) כשער-QA · STATUS/SESSION-LOG · **Drive: סיכום-סשן + פרומפט-המשך** · זיכרון-הרנס · דו"ח-בוקר.
 
 > תיעוד-בעיות: `docs/context/BUGS.md` · עדכון-MD שוטף (MD-INDEX אוטו-רענון ב-pre-commit) · לוג-Drive פר-בלוק+סשן.
 
