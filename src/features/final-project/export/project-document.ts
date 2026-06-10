@@ -24,6 +24,7 @@
 
 import type { CoverInfo, SiteInfo, JsaRow, IndustrySector } from '../types';
 import { assessmentScore, riskBand, riskBandLabel, JSA_STATUS_LABELS } from '../types';
+import type { ProjectNarrative } from '../narrative';
 
 // ---------------------------------------------------------------------------
 // תוויות-עברית (reuse — תואמות SiteStep.SECTOR_OPTIONS / FeedbackStep)
@@ -179,6 +180,12 @@ export interface ProjectDocument {
   siteSummary: string;
   /** טבלת-ה-JSA המחושבת. */
   jsaTable: JsaTable;
+  /**
+   * פרקים-נרטיביים (1,2,3,4,6) — אופציונלי.
+   * נוכח רק כשמחולל-הנרטיב (generate-narrative.action.ts) רץ לפני הייצוא.
+   * undefined = נרטיב לא הופק עדיין (מנועי-הייצוא יפעלו ללא פרקי-נרטיב).
+   */
+  narrative?: ProjectNarrative;
 }
 
 // ---------------------------------------------------------------------------
@@ -207,15 +214,18 @@ function riskLevelCell(score: number): string {
 /**
  * buildProjectDocument — ממיר cover/site/rows למבנה-ביניים אחיד (Word + PDF).
  *
- * @param cover עמוד-הפתיחה (PII · client-side בלבד · null = טרם-מולא).
- * @param site  פרופיל-האתר (null = טרם-מולא).
- * @param rows  שורות-ה-JSA (יתכן ריק).
- * @returns     ProjectDocument — coverLines · siteSummary · jsaTable.
+ * @param cover     עמוד-הפתיחה (PII · client-side בלבד · null = טרם-מולא).
+ * @param site      פרופיל-האתר (null = טרם-מולא).
+ * @param rows      שורות-ה-JSA (יתכן ריק).
+ * @param narrative פרקים-נרטיביים מ-generate-narrative.action.ts (אופציונלי —
+ *                  כשנמסר, ייכלל ב-ProjectDocument.narrative).
+ * @returns         ProjectDocument — coverLines · siteSummary · jsaTable [· narrative].
  */
 export function buildProjectDocument(
   cover: CoverInfo | null,
   site: SiteInfo | null,
   rows: JsaRow[],
+  narrative?: ProjectNarrative,
 ): ProjectDocument {
   // ── עמוד-פתיחה: 7 שדות בסדר-קבוע (גם אם cover=null → "—") ──
   const coverLines: string[] = [
@@ -315,8 +325,45 @@ export function buildProjectDocument(
       headers: [...JSA_HEADERS],
       rows: tableRows,
     },
+    ...(narrative !== undefined ? { narrative } : {}),
   };
 }
+
+// ---------------------------------------------------------------------------
+// PROJECT_CHAPTERS — מטא-מערך של 6 הפרקים הרשמיים בסדרם
+// ---------------------------------------------------------------------------
+
+/**
+ * מטא-רשומה של פרק בודד במסמך-הגמר.
+ * key: מפתח ב-ProjectNarrative (פרק 5 = 'jsaTable' — לא שדה בנרטיב).
+ */
+export interface ChapterMeta {
+  /** מספר-הפרק הרשמי (1–6). */
+  num: 1 | 2 | 3 | 4 | 5 | 6;
+  /** כותרת-הפרק בעברית (כפי שמופיעה במסמך-הגמר). */
+  title: string;
+  /** מפתח-הנתונים: שדה ב-ProjectNarrative (פרקים 1,2,3,4,6) או 'jsaTable' (פרק 5). */
+  key: keyof ProjectNarrative | 'jsaTable';
+}
+
+/**
+ * 6 הפרקים הרשמיים של מסמך-הגמר (משרד-העבודה · פורמט 19.10.2025) בסדרם.
+ *
+ * פרק 5 (jsaTable) הוא הטבלה-הרשמית — אינו שדה ב-ProjectNarrative; key='jsaTable'.
+ * שאר הפרקים מפנים לשדות ProjectNarrative.
+ *
+ * @example
+ *   PROJECT_CHAPTERS.find(c => c.num === 3)
+ *   // { num: 3, title: 'פרק 3 — מבנה ארגוני', key: 'orgStructure' }
+ */
+export const PROJECT_CHAPTERS: readonly ChapterMeta[] = [
+  { num: 1, title: 'פרק 1 — אודות החברה', key: 'aboutCompany' },
+  { num: 2, title: 'פרק 2 — אודות הפרויקט ותהליכי-העבודה', key: 'aboutProject' },
+  { num: 3, title: 'פרק 3 — מבנה ארגוני', key: 'orgStructure' },
+  { num: 4, title: 'פרק 4 — פירוט תהליכי-עבודה וסיכונים כלליים', key: 'workProcesses' },
+  { num: 5, title: 'פרק 5 — טבלת הערכת-סיכונים (לוח-החלטה)', key: 'jsaTable' },
+  { num: 6, title: 'פרק 6 — ניתוח סיכונים', key: 'riskAnalysis' },
+] as const;
 
 // ---------------------------------------------------------------------------
 // re-export נוחות

@@ -14,6 +14,7 @@
 
 import { create } from 'zustand';
 import type { CapstoneStep, CoverInfo, SiteInfo, JsaRow, CapstoneFeedback } from './types';
+import type { ProjectNarrative } from './narrative';
 
 // ---------------------------------------------------------------------------
 // ממשק ה-store
@@ -39,6 +40,12 @@ export interface CapstoneState {
 
   /** תוצאת-המשוב (null = טרם-הופק). */
   feedback: CapstoneFeedback | null;
+
+  /**
+   * פרקים-נרטיביים של המסמך-המלא (null = טרם-הופק).
+   * מחולל על-ידי generateNarrativeAction ומאוחסן client-side בלבד.
+   */
+  narrative: ProjectNarrative | null;
 
   // ---- actions ----
 
@@ -93,6 +100,12 @@ export interface CapstoneState {
   setFeedback: (feedback: CapstoneFeedback | null) => void;
 
   /**
+   * שמירת הפרקים-הנרטיביים (אחרי קריאת generateNarrativeAction).
+   * @param narrative אובייקט-מלא או null (איפוס).
+   */
+  setNarrative: (narrative: ProjectNarrative | null) => void;
+
+  /**
    * איפוס-מלא של ה-store (פרויקט-חדש / "התחל-מחדש").
    * מחזיר לשלב-ראשוני ומנקה כל נתון.
    */
@@ -105,12 +118,16 @@ export interface CapstoneState {
 
 const INITIAL_STEP: CapstoneStep = 'cover';
 
-const initialState: Pick<CapstoneState, 'step' | 'coverInfo' | 'site' | 'jsaRows' | 'feedback'> = {
+const initialState: Pick<
+  CapstoneState,
+  'step' | 'coverInfo' | 'site' | 'jsaRows' | 'feedback' | 'narrative'
+> = {
   step: INITIAL_STEP,
   coverInfo: null,
   site: null,
   jsaRows: [],
   feedback: null,
+  narrative: null,
 };
 
 // ---------------------------------------------------------------------------
@@ -180,6 +197,8 @@ export const useCapstoneStore = create<CapstoneState>()((set) => ({
 
   setFeedback: (feedback) => set({ feedback }),
 
+  setNarrative: (narrative) => set({ narrative }),
+
   reset: () => set({ ...initialState }),
 }));
 
@@ -196,3 +215,6 @@ export const selectFeedback = (s: CapstoneState) => s.feedback;
 
 /** מספר-שורות (להצגת-progress ב-wizard header). */
 export const selectRowCount = (s: CapstoneState) => s.jsaRows.length;
+
+/** הפרקים-הנרטיביים (null = טרם-הופקו). */
+export const selectNarrative = (s: CapstoneState) => s.narrative;

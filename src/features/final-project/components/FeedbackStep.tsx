@@ -19,8 +19,15 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import type { CapstoneGrade, CapstoneFeedbackSection } from '../types';
-import { useCapstoneStore, selectSite, selectJsaRows, selectFeedback } from '../store';
+import {
+  useCapstoneStore,
+  selectSite,
+  selectJsaRows,
+  selectFeedback,
+  selectNarrative,
+} from '../store';
 import { evaluateCapstoneAction } from '../evaluate-capstone.action';
+import { generateNarrativeAction } from '../generate-narrative.action';
 import { ExportButtons } from './ExportButtons';
 
 // ---------------------------------------------------------------------------
@@ -232,10 +239,14 @@ export function FeedbackStep({ onBack, onSubmit }: FeedbackStepProps) {
   const jsaRows = useCapstoneStore(selectJsaRows);
   const feedback = useCapstoneStore(selectFeedback);
   const setFeedback = useCapstoneStore((s) => s.setFeedback);
+  const narrative = useCapstoneStore(selectNarrative);
+  const setNarrative = useCapstoneStore((s) => s.setNarrative);
 
   // --- state מקומי ---
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [narrativeLoading, setNarrativeLoading] = useState(false);
+  const [narrativeError, setNarrativeError] = useState<string | null>(null);
 
   // ---------------------------------------------------------------------------
   // טעינת-המשוב
@@ -258,6 +269,27 @@ export function FeedbackStep({ onBack, onSubmit }: FeedbackStepProps) {
       setLoading(false);
     }
   }, [site, jsaRows, setFeedback]);
+
+  // ---------------------------------------------------------------------------
+  // יצירת הנרטיב (המסמך-המלא)
+  // ---------------------------------------------------------------------------
+
+  const handleGenerateNarrative = useCallback(async () => {
+    if (!site) return;
+
+    setNarrativeLoading(true);
+    setNarrativeError(null);
+
+    try {
+      const result = await generateNarrativeAction(site, jsaRows);
+      setNarrative(result);
+    } catch (err) {
+      setNarrativeError('אירעה שגיאה בחיבור הפרקים. בדוק חיבור-אינטרנט ונסה שוב.');
+      console.error('[FeedbackStep] generateNarrativeAction threw:', err);
+    } finally {
+      setNarrativeLoading(false);
+    }
+  }, [site, jsaRows, setNarrative]);
 
   // טעינה-אוטומטית בהרכבת-הקומפוננטה (או כשאין feedback בStore)
   useEffect(() => {
@@ -346,8 +378,87 @@ export function FeedbackStep({ onBack, onSubmit }: FeedbackStepProps) {
             </p>
           )}
 
+          {/* ── יצירת מסמך-מלא (12-18 עמ') ── */}
+          <div
+            dir="rtl"
+            data-testid="capstone-narrative-section"
+            className="flex flex-col gap-3 rounded-card border border-quiz-border bg-quiz-bg px-4 py-4 font-hebrew"
+          >
+            <div className="flex flex-col gap-0.5 text-start">
+              <p className="text-sm font-bold text-quiz-text-primary">מסמך-גמר מלא (12-18 עמ')</p>
+              <p className="text-xs text-quiz-text-secondary">
+                יחבר אוטומטית את 5 הפרקים-הנרטיביים (פרקים 1-4 ו-6) לפי נתוני-האתר וטבלת-ה-JSA
+              </p>
+            </div>
+
+            {/* כפתור יצירת נרטיב */}
+            {!narrative && (
+              <button
+                type="button"
+                data-testid="capstone-generate-narrative-btn"
+                onClick={() => void handleGenerateNarrative()}
+                disabled={narrativeLoading}
+                className={[
+                  'flex w-full select-none items-center justify-center gap-2 rounded-pill px-5 py-3 text-sm font-bold transition-all',
+                  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active',
+                  narrativeLoading
+                    ? 'cursor-not-allowed bg-quiz-primary-disabled text-white opacity-60'
+                    : 'bg-quiz-primary-active text-white shadow-button hover:bg-primary-600',
+                ].join(' ')}
+              >
+                {narrativeLoading ? (
+                  <>
+                    <span
+                      aria-hidden="true"
+                      className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
+                    />
+                    מחבר את פרקי-המסמך…
+                  </>
+                ) : (
+                  <span>{`צור מסמך-מלא (12-18 עמ')`}</span>
+                )}
+              </button>
+            )}
+
+            {/* אינדיקטור מסמך מוכן */}
+            {narrative && !narrativeLoading && (
+              <div
+                data-testid="capstone-narrative-ready"
+                className="flex items-center gap-2 rounded-card border border-quiz-success-border bg-quiz-success-bg px-3 py-2"
+              >
+                <span aria-hidden="true" className="text-sm text-success">
+                  ✓
+                </span>
+                <p className="text-sm font-semibold text-success">
+                  הפרקים-הנרטיביים מוכנים
+                  {narrative.source === 'claude' ? ' (Claude AI)' : ' (נוסח-מסגרת)'}
+                </p>
+                <button
+                  type="button"
+                  data-testid="capstone-regenerate-narrative-btn"
+                  onClick={() => void handleGenerateNarrative()}
+                  disabled={narrativeLoading}
+                  className="ms-auto text-xs font-medium text-quiz-text-secondary underline-offset-2 hover:text-quiz-primary-active hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active"
+                >
+                  חבר מחדש
+                </button>
+              </div>
+            )}
+
+            {/* שגיאה בנרטיב */}
+            {narrativeError && !narrativeLoading && (
+              <p
+                role="alert"
+                data-testid="capstone-narrative-error"
+                className="text-xs font-semibold text-error"
+              >
+                {narrativeError}
+              </p>
+            )}
+          </div>
+
           {/* הורדת-המסמך-המוגש (PDF / Word) */}
-          <ExportButtons />
+          <ExportButtons narrative={narrative ?? undefined} />
         </div>
       )}
 

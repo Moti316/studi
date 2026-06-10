@@ -2,14 +2,22 @@
  * src/features/final-project/export/export-docx.ts — ייצוא פרויקט-הגמר ל-Word (.docx).
  *
  * משתמש בספריית `docx` (v9) לבניית מסמך-Word נאמן-RTL:
- *   עמוד-פתיחה (כותרת + 7 שדות) → סיכום-אתר → טבלת-JSA (Table · רקע-צבע פר-רצועת-סיכון).
+ *   עמוד-פתיחה (כותרת + 7 שדות) → 6 פרקים רשמיים (PROJECT_CHAPTERS) → page-break בין-פרקים.
+ *
+ * 6 הפרקים הרשמיים (משרד-העבודה · פורמט 19.10.2025):
+ *   1. אודות החברה        2. אודות הפרויקט    3. מבנה ארגוני
+ *   4. תהליכי-עבודה       5. טבלת-JSA        6. ניתוח סיכונים
+ *
+ * אם doc.narrative קיים — מרנדר פרקים 1,2,3,4,6 כנרטיב (כותרת + פסקאות).
+ * אם narrative חסר — מדלג על הפרקים-הנרטיביים (תאימות-לאחור).
+ * פרק 5 = הטבלה תמיד.
  *
  * RTL: כל פסקה rightToLeft + bidirectional · המסמך bidi · יישור-start (ימין).
  * הצבע פר-שורה מבוסס riskBand מתוך מבנה-הביניים (project-document.ts) — מקור-אמת-יחיד.
  *
  * מחזיר Blob (Packer.toBlob) — ה-UI אחראי על triggerDownload.
  *
- * @see ./project-document.ts — buildProjectDocument (מבנה-הביניים)
+ * @see ./project-document.ts — buildProjectDocument · PROJECT_CHAPTERS (מבנה-הביניים)
  */
 
 import {
@@ -25,10 +33,16 @@ import {
   WidthType,
   BorderStyle,
   VerticalAlign,
+  PageBreak,
 } from 'docx';
 import type { CoverInfo, SiteInfo, JsaRow } from '../types';
-import { buildProjectDocument, RISK_LEVEL_COLUMN_INDICES } from './project-document';
+import {
+  buildProjectDocument,
+  RISK_LEVEL_COLUMN_INDICES,
+  PROJECT_CHAPTERS,
+} from './project-document';
 import type { JsaTableRow, JsaTableHeader } from './project-document';
+import type { ProjectNarrative } from '../narrative';
 
 // ---------------------------------------------------------------------------
 // קבועי-עיצוב
@@ -167,50 +181,96 @@ function buildJsaTable(headers: string[], rows: JsaTableRow[]): Table {
 }
 
 // ---------------------------------------------------------------------------
+// עזרים — page-break + בניית-פרק-נרטיבי
+// ---------------------------------------------------------------------------
+
+/** פסקת-page-break (מפריד בין-פרקים). */
+function pageBreakParagraph(): Paragraph {
+  return new Paragraph({
+    children: [new PageBreak()],
+  });
+}
+
+/**
+ * buildNarrativeChapter — מרנדר פרק-נרטיבי (1,2,3,4,6) כרשימת-פסקאות RTL.
+ *
+ * כותרת (HEADING_1) + פסקאות (split על "\n" · שורות-ריקות → שורת-ריווח).
+ * name-clean מובטח ע"י המחולל (SYSTEM_NARRATIVE / buildDeterministicNarrative).
+ */
+function buildNarrativeChapter(title: string, prose: string): (Paragraph | Table)[] {
+  const result: (Paragraph | Table)[] = [
+    rtlParagraph(title, { heading: HeadingLevel.HEADING_1, bold: true, size: 28 }),
+  ];
+  for (const line of prose.split('\n')) {
+    if (line.trim().length === 0) {
+      result.push(new Paragraph({ text: '' }));
+    } else {
+      result.push(rtlParagraph(line, { size: 22 }));
+    }
+  }
+  return result;
+}
+
+// ---------------------------------------------------------------------------
 // exportToDocx — נקודת-הכניסה
 // ---------------------------------------------------------------------------
 
 /**
  * exportToDocx — בונה מסמך-Word שלם ומחזיר Blob.
  *
- * @param cover עמוד-הפתיחה (PII · client-side · null = ריק → "—").
- * @param site  פרופיל-האתר (null = "טרם הוזן").
- * @param rows  שורות-ה-JSA (יתכן ריק → טבלה עם כותרת בלבד).
- * @returns     Promise<Blob> — קובץ-Word מוכן-להורדה.
+ * מבנה: כותרת-ראשית + עמוד-פתיחה → page-break → 6 פרקים רשמיים (PROJECT_CHAPTERS).
+ * פרקים 1,2,3,4,6 = נרטיב (אם doc.narrative קיים · כותרת + פסקאות).
+ * פרק 5 = טבלת-JSA (תמיד).
+ * page-break בין כל פרק לפרק (→ 12-18 עמ').
+ * אם narrative חסר — מדלג על פרקים-נרטיביים (תאימות-לאחור).
+ *
+ * @param cover    עמוד-הפתיחה (PII · client-side · null = ריק → "—").
+ * @param site     פרופיל-האתר (null = "טרם הוזן").
+ * @param rows     שורות-ה-JSA (יתכן ריק → טבלה עם כותרת בלבד).
+ * @param narrative פרקים-נרטיביים מ-generate-narrative.action.ts (אופציונלי).
+ * @returns        Promise<Blob> — קובץ-Word מוכן-להורדה.
  */
 export async function exportToDocx(
   cover: CoverInfo | null,
   site: SiteInfo | null,
   rows: JsaRow[],
+  narrative?: ProjectNarrative,
 ): Promise<Blob> {
-  const doc = buildProjectDocument(cover, site, rows);
+  const doc = buildProjectDocument(cover, site, rows, narrative);
 
   const children: (Paragraph | Table)[] = [
-    // כותרת-ראשית
+    // ── כותרת-ראשית + עמוד-פתיחה ──
     rtlParagraph(doc.title, { heading: HeadingLevel.TITLE, bold: true, size: 36 }),
     new Paragraph({ text: '' }),
-
-    // עמוד-פתיחה
-    rtlParagraph('עמוד-פתיחה', { heading: HeadingLevel.HEADING_1, bold: true, size: 28 }),
+    rtlParagraph('עמוד פתיחה', { heading: HeadingLevel.HEADING_1, bold: true, size: 28 }),
     ...doc.coverLines.map((line) => rtlParagraph(line, { size: 22 })),
-    new Paragraph({ text: '' }),
-
-    // סיכום-אתר
-    rtlParagraph('פרופיל-האתר', { heading: HeadingLevel.HEADING_1, bold: true, size: 28 }),
-    rtlParagraph(doc.siteSummary, { size: 22 }),
-    new Paragraph({ text: '' }),
-
-    // טבלת-JSA
-    rtlParagraph('טבלת ניתוח-סיכונים (JSA)', {
-      heading: HeadingLevel.HEADING_1,
-      bold: true,
-      size: 28,
-    }),
-    // כותרת-הטבלה הרשמית (מפעל/מקום-עבודה/עמדה/הוכן-ע"י/אושר-ע"י · לפני שורת-הכותרות)
-    ...buildTableHeaderBlock(doc.jsaTable.tableHeader),
-    new Paragraph({ text: '' }),
-    buildJsaTable(doc.jsaTable.headers, doc.jsaTable.rows),
   ];
+
+  // ── 6 פרקים רשמיים (PROJECT_CHAPTERS) · page-break לפני כל-פרק ──
+  for (const chapter of PROJECT_CHAPTERS) {
+    children.push(pageBreakParagraph());
+
+    if (chapter.key === 'jsaTable') {
+      // פרק 5 — טבלת-JSA (תמיד)
+      children.push(
+        rtlParagraph(chapter.title, { heading: HeadingLevel.HEADING_1, bold: true, size: 28 }),
+      );
+      children.push(...buildTableHeaderBlock(doc.jsaTable.tableHeader));
+      children.push(new Paragraph({ text: '' }));
+      children.push(buildJsaTable(doc.jsaTable.headers, doc.jsaTable.rows));
+    } else {
+      // פרק נרטיבי (1,2,3,4,6) — רק אם narrative קיים
+      if (doc.narrative) {
+        // key מוגבל ל-keyof ProjectNarrative (לא 'jsaTable') כאן
+        const narrativeKey = chapter.key as keyof ProjectNarrative;
+        const prose = doc.narrative[narrativeKey];
+        if (typeof prose === 'string') {
+          children.push(...buildNarrativeChapter(chapter.title, prose));
+        }
+      }
+      // אם narrative חסר — מדלג (תאימות-לאחור)
+    }
+  }
 
   const document = new Document({
     sections: [
