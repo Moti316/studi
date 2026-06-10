@@ -14,9 +14,9 @@
  *
  * ⚠️ **PII:** מקבל SiteInfo בלבד (אין CoverInfo) — שמות/ת.ז./מנחה לעולם לא ל-Claude.
  *
- * ⚠️ maxTokens=4500 — 10–12 שורות-JSON עבריות-עשירות (existingControls/addedControls/risk)
- *    דורשות לפחות ~350–400 tokens כל-אחת; 3000 גרם לחיתוך (BUGS#liveengine-maxtokens-truncation)
- *    → parse נכשל → fallback מיותר. 4500 מספיק עם מרווח-ביטחון.
+ * ⚠️ model=author (Sonnet) + maxTokens=9000 — חיבור 12 שורות-JSON-מקוננות עשירות הוא משימת-
+ *    יצירה-ארוכה: Haiku@4500 נטה לפלוט JSON-לא-תקין/חתוך → parse נכשל → fallback (אומת-חי
+ *    2026-06-10). Sonnet@9000 אמין ל-JSON-ארוך עם מרווח מלא. ראה claude.ts#defaultAuthorModel.
  *
  * החתימה `generateJsaDraftAction(site): Promise<JsaRow[]>` קנונית — הצרכן הוא
  * <JsaBuilder> ("הכן עבורי טיוטה"). (החליף את ה-placeholder הדטרמיניסטי-המינימלי.)
@@ -33,7 +33,7 @@ import {
   isValidJsaRowArray,
   buildDeterministicJsaDraft,
 } from './jsa-generation';
-import { isClaudeConfigured, claudeGenerateJSON } from '@/lib/ai/claude';
+import { isClaudeConfigured, claudeGenerateJSON, defaultAuthorModel } from '@/lib/ai/claude';
 import { getUser } from '@/lib/auth/server';
 
 /** מבנה-התגובה הצפוי מ-Claude — שורות בלי id (הקליינט/השרת מזריק). */
@@ -62,9 +62,12 @@ export async function generateJsaDraftAction(site: SiteInfo): Promise<JsaRow[]> 
       const result = await claudeGenerateJSON<DraftResponse>({
         system: SYSTEM_JSA_DRAFTER,
         prompt: buildDraftPrompt(site),
-        // #6 max_tokens-truncation fix: 10–12 שורות-JSON עבריות-עשירות ≈ 350–400 tokens/row
-        // → 3000 גרם לחיתוך ו-parse-failure. 4500 = מרווח-ביטחון מלא.
-        maxTokens: 4500,
+        // מודל-author (Sonnet · לא Haiku): חיבור 12 שורות-JSON-מקוננות עשירות הוא משימת-יצירה
+        // שבה Haiku נטה לפלוט JSON-לא-תקין/חתוך → fallback. Sonnet אמין-יותר ל-JSON-ארוך.
+        model: defaultAuthorModel(),
+        // 10–12 שורות עבריות-עשירות (existing/added × 3 בקרות + risk) ≈ 500–650 tokens/row.
+        // 4500 גרם לחיתוך (Unterminated) → parse-failure → fallback. 9000 = מרווח-ביטחון מלא.
+        maxTokens: 9000,
       });
 
       const rawRows = Array.isArray(result?.rows) ? result.rows : [];

@@ -19,7 +19,7 @@
 - 🔄 **בלוק-5** — בנק-תרחישים pre-bake (Workflow · **12 תרחישי-ענף חוברו · 11 אומתו** content-verifier) → staged `src/features/simulation/data/committee-sim-bank.json`. ⏳ נותר: import ל-DB + wiring ל-`/lesson/scenarios` + תיקון-1-דגל.
 - ⬜ **בלוק-6** — טיוטות ISO 5.3/5.4 + סגירה (TODO/STATUS/SESSION-LOG · לוג-Drive · דו"ח-בוקר).
 - ✅ **סקירת-ריצת-הלילה (2026-06-10 · מחשב-מוטי)** — Workflow-סקירה (20 סוכנים · 14 ממצאים) → Workflow-מימוש (3) + Workflow-אימות-נגדי (9) → **13 ממצאים תוקנו** (★ max_tokens · turn-cap · auth×2 · ציטוט-מומצא · injection · cost-guard · ציון-אמיתי · turnIndex · aria-live · capstone #4/#5/#6 · תרחיש-מדוגל) · **800 vitest** · #14+rate-limit נדחו-מתועד (`BUGS#night-run-review`).
-- 🔄 **capstone → תואם-משרד-העבודה (2026-06-10 · `298bec5`+`4325808`)** [🧠 `capstone-ministry-spec`] — ✅ נגישות (`/preview/capstone`+CTA) · עמוד-פתיחה (PII client-side) · AI-טיוטת-JSA (אתר-אמיתי · לא-ממציא) · ייצוא PDF/Word · 70 טסטים. ⏳ **נותר (★ סשן-טרי):** טבלת-JSA+מטריצה בפורמט-הרשמי-המדויק (בקרות-מפוצלות · סיכון לפני/אחרי · סטטוס) · מבנה-מסמך 12-18עמ' · ≥10 שורות-חובה.
+- ✅ **capstone → תואם-משרד-העבודה (2026-06-10)** [🧠 `capstone-ministry-spec`] — ✅ נגישות (`/preview/capstone`+CTA) · עמוד-פתיחה (PII client-side) · טבלת-JSA+מטריצה-4×4 בפורמט-הרשמי (בקרות-מפוצלות · סיכון לפני/אחרי · סטטוס · 18-עמודות) · מבנה-מסמך 6-פרקים 12-18עמ' (נרטיב-AI) · ייצוא PDF/Word · 70+טסטים. **✅ תוקן באג-HIGH (`capstone-narrative-single-json`):** narrative+JSA רצו על Haiku ב-JSON-יחיד-ענק → נחתך/פגום → `[להשלמה]` stubs _תוך-כדי-חיוב_ (אומת-חי: Haiku+Sonnet שניהם נכשלו). תיקון: **narrative פר-פרק** (`claudeGenerateText` ×5 · טקסט-נקי · fallback פר-פרק) + **JSA→author-model (Sonnet)+maxTokens 9000** + `extractJsonPayload` עמיד. ✅ מסמך-זהב-דוגמה ([`docs/examples/capstone-sample-rakia18.md`](docs/examples/capstone-sample-rakia18.md) · Workflow 11-סוכנים · ביקורת תפסה 3 שגיאות-ציטוט). ⏳ נותר: אימות-חי ב-`/capstone` מחובר (מפתח-prod).
 
 > תיעוד-בעיות: `docs/context/BUGS.md` · עדכון-MD שוטף (MD-INDEX אוטו-רענון ב-pre-commit) · לוג-Drive פר-בלוק+סשן.
 
@@ -93,12 +93,14 @@
 
 > **שיטת-עבודה (מוטי 2026-06-04):** commit+push + עדכון-לוג (SESSION-LOG) **אחרי כל תת-משימה** — שוטף במהלך ובסיום.
 
-## 🟠 B · M5 — הרצת-ייבוא בנק-השאלות [חסום ע"י A + אישור-בנקים] · [📋 פירוט](docs/todo/B-m5-import.md)
+## ✅ B · M5 — הרצת-ייבוא בנק-השאלות [**הוחלף ע"י S1 · לא-רלוונטי**] · [📋 פירוט](docs/todo/B-m5-import.md)
 
-4. **B1** — אישור `docs/M5-discovery-curation.md` (~19 בנקים) → הוספת File-IDs ל-`T1_FILE_IDS`.
-5. **B2** — `import:t1:dry` (discovery כעת **71→19**, אומת; בנקים בתיקייה-אחת "שאלות ותשובות") → החלת migration `0002` מול ה-DB.
-6. **B3** — `import:t1 --execute` → **~540 שאלות** + תיוג-Gemini Flash (hard-cap $5) → report ב-`logs/`.
-7. **B4** — אימות: ספירה ב-DB · `/admin/questions` · `/lesson/practice` עם תוכן-אמת.
+> **⛔ מיושן (2026-06-10 · הכרעת-מוטי):** מסלול ה-540-ייבוא-T1 (Gemini-tagged) **הוחלף ע"י S1 — בנק-שאלות-NotebookLM** (444 שאלות-מעוגנות-G3 חיות, מחליפות את ה-540). אין צורך להריץ B1–B4. נותר רק מ-S1: שחזור scopes 4.3–4.5 + אימות-ספירה-DB.
+
+4. ~~**B1** — אישור `docs/M5-discovery-curation.md` (~19 בנקים).~~ — מיושן.
+5. ~~**B2** — `import:t1:dry` + migration `0002`.~~ — מיושן.
+6. ~~**B3** — `import:t1 --execute` → ~540 שאלות + תיוג-Gemini.~~ — **הוחלף ע"י S1 (444 NotebookLM)**.
+7. ~~**B4** — אימות ספירה/admin/practice.~~ — מתבצע במסגרת S1.
 
 ## 🟡 C · 3 ממצאי-M6 שנדחו (החלטות-מוטי) · [📋 פירוט](docs/todo/C-m6-deferred.md)
 
@@ -116,7 +118,7 @@
 ## ⬜ E · Phase 4 — השלמת RAG + מקורות-תוכן · [📋 פירוט](docs/todo/E-rag.md)
 
 13. **E1** `chunker` + `embedder` (pgvector) ל-"הסבר לעומק" — **שלד נבנה בריצת-לילה** (`src/lib/rag/`, לוגיקה-טהורה · DI). נותר: wiring ל-pgvector + **הרצת-embeddings בפועל** (💲 אישור-מוטי + יישור-מימדים `vector(1024)`→Gemini).
-14. **E2 · הטמעת חומרי-חזרה (Drive "סיכומים וחזרות")** — קריאת 4 הקבצים (`חזרה-לוועדה` ~150עמ' · `דגשים` · `סיכום-אחרון` · `מצגת-שאדי`) → **reference name-clean** ב-`courses/safety-officer/revision-materials/` (T2/T3) → הזנה ל-RAG/מורה-AI + **סיגנל-דגש** (מה הוועדה מדגישה) ל-quiz-generation + **cross-check כיסוי** מול 57-scope (`coverage-auditor`). ⚠️ **מצגת-"שאדי" = name-clean/reference-בלבד** (כלל-זכויות + firewall · אישור-מוטי). רישום ב-`CONTENT-INDEX`. (זיכרון `drive-revision-folder-vaada`.) 🚩 **דורש-מוטי:** תזמון (עכשיו / עם-E) + הכרעת-שאדי.
+14. ⏸️ **E2 · הטמעת חומרי-חזרה (Drive "סיכומים וחזרות")** — **[הוקפא 2026-06-10 · הכרעת-מוטי: "לא בטוח שצריך, יש לנו NotebookLM"]** — NotebookLM כבר מעגן את התוכן (S1 · 444 שאלות). נשמר כ-backlog אופציונלי בלבד: אם בעתיד נרצה **סיגנל-דגש** (מה הוועדה מדגישה) ל-quiz/מורה-AI — קריאת 4 הקבצים (`חזרה-לוועדה` · `דגשים` · `סיכום-אחרון` · `מצגת-שאדי`) כ-reference name-clean. ⚠️ מצגת-"שאדי" = זכויות (firewall · אישור-מוטי). **כרגע לא-נדרש.**
 
 ## ⬜ F · פלטפורמת-היצירה (creator end-to-end) · [📋 פירוט](docs/todo/F-upload-dashboard.md)
 

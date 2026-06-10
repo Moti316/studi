@@ -1,13 +1,14 @@
 /**
  * tests/unit/final-project/generate-narrative.test.ts — פרקים-נרטיביים (generateNarrativeAction).
  *
- * 4 שערי-fallback:
- *   1. Claude חי + משתמש-מחובר → מחזיר נרטיב תקין עם source='claude'.
- *   2. משתמש-לא-מחובר → fallback דטרמיניסטי (אפס-קריאת-Claude · חסם-עלות).
- *   3. Claude לא-מוגדר → fallback דטרמיניסטי.
- *   4. תגובת-Claude לא-תקינה (ולידציה נכשלת) → fallback דטרמיניסטי.
- *
- * + בדיקות-ה-action (system/prompt/maxTokens) + שיעור-LiveEngine (maxTokens=6000).
+ * ארכיטקטורת **פר-פרק** (תיקון 2026-06-10): 5 קריאות claudeGenerateText מקבילות (טקסט-נקי),
+ * fallback **פר-פרק**. שערים:
+ *   1. Claude חי + משתמש-מחובר → 5 קריאות → 5 פרקים · source='claude'.
+ *   1b. כל קריאה מקבלת system-פר-פרק · model=author · maxTokens=2400.
+ *   2. משתמש-לא-מחובר → אפס-קריאות · fallback דטרמיניסטי.
+ *   3. Claude לא-מוגדר → אפס-קריאות · fallback דטרמיניסטי.
+ *   4. פרק-בודד נכשל/קצר → אותו-פרק דטרמיניסטי, השאר Claude · source='claude'.
+ *   4b. כל-הפרקים נכשלו → source='deterministic'.
  *
  * מוק '@/lib/ai/claude' + '@/lib/auth/server' — אפס-SDK · אפס-רשת · אפס-Supabase.
  */
@@ -15,22 +16,19 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 // --- מוקים (לפני ה-import של ה-action) ---
 const isClaudeConfigured = vi.fn();
-const claudeGenerateJSON = vi.fn();
+const claudeGenerateText = vi.fn();
+const defaultAuthorModel = vi.fn(() => 'claude-sonnet-4-6');
 vi.mock('@/lib/ai/claude', () => ({
   isClaudeConfigured: () => isClaudeConfigured(),
-  claudeGenerateJSON: (args: unknown) => claudeGenerateJSON(args),
+  claudeGenerateText: (args: unknown) => claudeGenerateText(args),
+  defaultAuthorModel: () => defaultAuthorModel(),
 }));
 
 const getUser = vi.fn();
 vi.mock('@/lib/auth/server', () => ({ getUser: () => getUser() }));
 
 import { generateNarrativeAction } from '@/features/final-project/generate-narrative.action';
-import type { buildDeterministicNarrative } from '@/features/final-project/narrative';
-import {
-  isValidNarrative,
-  buildNarrativePrompt,
-  SYSTEM_NARRATIVE,
-} from '@/features/final-project/narrative';
+import { isValidNarrative, NARRATIVE_CHAPTERS } from '@/features/final-project/narrative';
 import type { SiteInfo, JsaRow } from '@/features/final-project/types';
 
 // ---------------------------------------------------------------------------
@@ -47,7 +45,6 @@ function site(over: Partial<SiteInfo> = {}): SiteInfo {
   };
 }
 
-/** שורת-JSA מינימלית תקינה (לא מוולידת ע"י isValidJsaRowArray — רק לבניית-prompt). */
 function jsaRow(over: Partial<JsaRow> = {}): JsaRow {
   return {
     id: crypto.randomUUID(),
@@ -64,26 +61,11 @@ function jsaRow(over: Partial<JsaRow> = {}): JsaRow {
   };
 }
 
-/** תשובת-Claude תקינה (ללא שדה source — ה-action מוסיף אותו). */
-function claudeNarrative(): Omit<ReturnType<typeof buildDeterministicNarrative>, 'source'> {
-  return {
-    aboutCompany:
-      'החברה פועלת בענף הבנייה מזה שנים רבות ומעסיקה עשרות עובדים מקצועיים. ' +
-      'היא כפופה לפקודת-הבטיחות בעבודה תש"ל-1970 ולתקנות ארגון-הפיקוח תשע"ג-2013.',
-    aboutProject:
-      'הפרויקט כולל עבודות-בנייה בסביבה עירונית עם חשיפה לסיכוני-גובה וחשמל. ' +
-      'מטרת פרויקט-הגמר היא יישום עקרונות ניהול-הסיכונים על פי ISO 45001.',
-    orgStructure:
-      'מבנה-הבטיחות: הנהלה → מנהל-עבודה → ממונה-בטיחות → עובדים. ' +
-      'קו-הדיווח: עובד → מנהל-עבודה → ממונה-בטיחות (תקנות הממונים תשנ"ו-1996).',
-    workProcesses:
-      'תהליכי-העבודה כוללים חפירה, יציקת-בטון, עבודות-גמר ועבודות-גובה. ' +
-      'המעסיק חב להדרכה לפי תקנות מסירת-מידע תשנ"ט-1999.',
-    riskAnalysis:
-      'ניתוח-הסיכונים בוצע ב-JSA. הבקרות-המוצעות לפי מדרג חיסול→החלפה→הנדסי→מנהלי→צמ"א. ' +
-      'מומלץ ליישם תחילה את הבקרות לשורות-האדומות ולעקוב אחר ביצוען.',
-  };
-}
+/** פסקת-Claude עשירה דיה (>120 תווים — מעבר ל-MIN_CHAPTER_CHARS). */
+const RICH =
+  'פסקה מקצועית ארוכה דיה לעבור את סף-המינימום, עם עיגון בפקודת-הבטיחות בעבודה תש"ל-1970 ' +
+  'ובתקנות ארגון-הפיקוח תשע"ג-2013, ובמדרג-הבקרות לפי ISO 45001 — חיסול, החלפה, הנדסי, מנהלי וצמ"א. ' +
+  'הפסקה כוללת מספר משפטים כדי לדמות פרק-אמיתי עשיר ומלא.';
 
 // ---------------------------------------------------------------------------
 // setup
@@ -91,62 +73,63 @@ function claudeNarrative(): Omit<ReturnType<typeof buildDeterministicNarrative>,
 
 beforeEach(() => {
   isClaudeConfigured.mockReset();
-  claudeGenerateJSON.mockReset();
+  claudeGenerateText.mockReset();
+  defaultAuthorModel.mockReset();
+  defaultAuthorModel.mockReturnValue('claude-sonnet-4-6');
   getUser.mockReset();
   getUser.mockResolvedValue({ id: 'u1' }); // ברירת-מחדל: משתמש-מחובר
 });
 
 // ---------------------------------------------------------------------------
-// שכבה 1 — ה-action (4 שערי-fallback)
+// שכבה 1 — מסלול-Claude (פר-פרק)
 // ---------------------------------------------------------------------------
 
-describe('generateNarrativeAction — שערי-fallback', () => {
-  it('שער-1: Claude חי → מחזיר נרטיב תקין עם source="claude"', async () => {
+describe('generateNarrativeAction — מסלול-Claude פר-פרק', () => {
+  it('שער-1: Claude חי → 5 קריאות → 5 פרקים · source="claude"', async () => {
     isClaudeConfigured.mockReturnValue(true);
-    claudeGenerateJSON.mockResolvedValue(claudeNarrative());
+    claudeGenerateText.mockResolvedValue(RICH);
 
     const narrative = await generateNarrativeAction(site(), [jsaRow()]);
 
-    expect(claudeGenerateJSON).toHaveBeenCalledTimes(1);
+    // קריאה-אחת פר-פרק (5 פרקים-נרטיביים)
+    expect(claudeGenerateText).toHaveBeenCalledTimes(NARRATIVE_CHAPTERS.length);
     expect(narrative.source).toBe('claude');
     expect(isValidNarrative(narrative)).toBe(true);
-    // וידוא שכל 5 הפרקים נוכחים ולא-ריקים
-    expect(narrative.aboutCompany.trim().length).toBeGreaterThan(40);
-    expect(narrative.aboutProject.trim().length).toBeGreaterThan(40);
-    expect(narrative.orgStructure.trim().length).toBeGreaterThan(40);
-    expect(narrative.workProcesses.trim().length).toBeGreaterThan(40);
-    expect(narrative.riskAnalysis.trim().length).toBeGreaterThan(40);
+    expect(narrative.aboutCompany).toBe(RICH);
+    expect(narrative.aboutProject).toBe(RICH);
+    expect(narrative.orgStructure).toBe(RICH);
+    expect(narrative.workProcesses).toBe(RICH);
+    expect(narrative.riskAnalysis).toBe(RICH);
   });
 
-  it('שער-1b: Claude מועבר system/prompt/maxTokens=6000 הנכונים', async () => {
+  it('שער-1b: כל קריאה מקבלת system-פר-פרק · model=author · maxTokens=2400', async () => {
     isClaudeConfigured.mockReturnValue(true);
-    claudeGenerateJSON.mockResolvedValue(claudeNarrative());
+    claudeGenerateText.mockResolvedValue(RICH);
 
-    const s = site({ name: 'מפעל-בדיקה', sector: 'manufacturing', mainHazards: ['רעש'] });
-    const rows = [jsaRow()];
-    await generateNarrativeAction(s, rows);
+    await generateNarrativeAction(site(), [jsaRow()]);
 
-    const arg = claudeGenerateJSON.mock.calls[0]![0] as {
-      system: string;
-      prompt: string;
-      maxTokens: number;
-    };
-
-    // maxTokens=6000 — שיעור מ-LiveEngine-maxtokens-truncation: 5 פרקים נחתכו מתחת ל-6000
-    expect(arg.maxTokens).toBe(6000);
-    // system = SYSTEM_NARRATIVE הקנוני
-    expect(arg.system).toBe(SYSTEM_NARRATIVE);
-    // prompt = buildNarrativePrompt הקנוני
-    expect(arg.prompt).toBe(buildNarrativePrompt(s, rows));
+    const calls = claudeGenerateText.mock.calls.map(
+      (c) => c[0] as { system: string; prompt: string; model: string; maxTokens: number },
+    );
+    expect(calls).toHaveLength(5);
+    // כל קריאה: מודל-author + maxTokens=2400
+    for (const arg of calls) {
+      expect(arg.model).toBe('claude-sonnet-4-6');
+      expect(arg.maxTokens).toBe(2400);
+      expect(typeof arg.system).toBe('string');
+      expect(arg.system.length).toBeGreaterThan(40);
+    }
+    // 5 system-prompts ייחודיים (פר-פרק · לא JSON-יחיד)
+    expect(new Set(calls.map((c) => c.system)).size).toBe(5);
   });
 
-  it('שער-2: משתמש-לא-מחובר → fallback דטרמיניסטי (אפס-קריאת-Claude · חסם-עלות)', async () => {
+  it('שער-2: משתמש-לא-מחובר → fallback דטרמיניסטי (אפס-קריאת-Claude)', async () => {
     getUser.mockResolvedValue(null);
     isClaudeConfigured.mockReturnValue(true);
 
     const narrative = await generateNarrativeAction(site(), []);
 
-    expect(claudeGenerateJSON).not.toHaveBeenCalled();
+    expect(claudeGenerateText).not.toHaveBeenCalled();
     expect(narrative.source).toBe('deterministic');
     expect(isValidNarrative(narrative)).toBe(true);
   });
@@ -156,19 +139,32 @@ describe('generateNarrativeAction — שערי-fallback', () => {
 
     const narrative = await generateNarrativeAction(site(), [jsaRow()]);
 
-    expect(claudeGenerateJSON).not.toHaveBeenCalled();
+    expect(claudeGenerateText).not.toHaveBeenCalled();
     expect(narrative.source).toBe('deterministic');
     expect(isValidNarrative(narrative)).toBe(true);
   });
 
-  it('שער-4a: Claude מחזיר JSON עם שדה-חסר → fallback (ולידציה נכשלת)', async () => {
+  it('שער-4: פרק-בודד נכשל → אותו-פרק דטרמיניסטי, השאר Claude · source="claude"', async () => {
     isClaudeConfigured.mockReturnValue(true);
-    // חסר workProcesses ו-riskAnalysis
-    claudeGenerateJSON.mockResolvedValue({
-      aboutCompany: 'תיאור קצר מדי',
-      aboutProject: 'תיאור קצר מדי',
-      orgStructure: 'תיאור קצר מדי',
-    });
+    // פרק "אודות החברה" נכשל; שאר-הפרקים מצליחים.
+    claudeGenerateText.mockImplementation((args: { system: string }) =>
+      args.system.includes('אודות החברה')
+        ? Promise.reject(new Error('truncated'))
+        : Promise.resolve(RICH),
+    );
+
+    const narrative = await generateNarrativeAction(site({ workerCount: 42 }), []);
+
+    expect(narrative.source).toBe('claude'); // ≥1 פרק חובר ע"י Claude
+    expect(narrative.aboutCompany).not.toBe(RICH); // נפל-חזרה לדטרמיניסטי
+    expect(narrative.aboutCompany).toContain('42'); // דטרמיניסטי מציין workerCount
+    expect(narrative.aboutProject).toBe(RICH);
+    expect(isValidNarrative(narrative)).toBe(true);
+  });
+
+  it('שער-4b: כל-הפרקים נכשלו → source="deterministic"', async () => {
+    isClaudeConfigured.mockReturnValue(true);
+    claudeGenerateText.mockRejectedValue(new Error('network-error'));
 
     const narrative = await generateNarrativeAction(site(), []);
 
@@ -176,23 +172,9 @@ describe('generateNarrativeAction — שערי-fallback', () => {
     expect(isValidNarrative(narrative)).toBe(true);
   });
 
-  it('שער-4b: Claude מחזיר שדה קצר מ-40 תווים → fallback (isValidNarrative נכשל)', async () => {
+  it('שער-4c: פרק קצר מ-MIN_CHAPTER_CHARS → דטרמיניסטי (כולם קצרים → deterministic)', async () => {
     isClaudeConfigured.mockReturnValue(true);
-    // aboutCompany = 5 תווים בלבד (מתחת ל-40)
-    claudeGenerateJSON.mockResolvedValue({
-      ...claudeNarrative(),
-      aboutCompany: 'קצר',
-    });
-
-    const narrative = await generateNarrativeAction(site(), []);
-
-    expect(narrative.source).toBe('deterministic');
-    expect(isValidNarrative(narrative)).toBe(true);
-  });
-
-  it('שער-4c: קריאת-Claude זורקת → fallback (ה-action לעולם לא זורק)', async () => {
-    isClaudeConfigured.mockReturnValue(true);
-    claudeGenerateJSON.mockRejectedValue(new Error('network-error · maxTokens-truncation'));
+    claudeGenerateText.mockResolvedValue('קצר מדי');
 
     const narrative = await generateNarrativeAction(site(), []);
 
@@ -202,7 +184,7 @@ describe('generateNarrativeAction — שערי-fallback', () => {
 
   it('ה-action לעולם לא זורק — גם כשה-mock זורק סינכרונית', async () => {
     isClaudeConfigured.mockReturnValue(true);
-    claudeGenerateJSON.mockImplementation(() => {
+    claudeGenerateText.mockImplementation(() => {
       throw new TypeError('sync crash');
     });
 
@@ -213,13 +195,12 @@ describe('generateNarrativeAction — שערי-fallback', () => {
 });
 
 // ---------------------------------------------------------------------------
-// שכבה 2 — בדיקות תוכן ה-fallback הדטרמיניסטי
+// שכבה 2 — תוכן ה-fallback הדטרמיניסטי
 // ---------------------------------------------------------------------------
 
 describe('generateNarrativeAction — fallback דטרמיניסטי (source="deterministic")', () => {
   beforeEach(() => {
-    // כל בדיקות-השכבה הזו: Claude לא מוגדר → fallback
-    isClaudeConfigured.mockReturnValue(false);
+    isClaudeConfigured.mockReturnValue(false); // Claude לא-מוגדר → fallback
   });
 
   it('source = "deterministic" תמיד בנתיב-fallback', async () => {
@@ -241,5 +222,18 @@ describe('generateNarrativeAction — fallback דטרמיניסטי (source="det
     const rows = [jsaRow(), jsaRow({ hazard: 'גז-רעיל', scenario: 'דליפה' })];
     const narrative = await generateNarrativeAction(site(), rows);
     expect(narrative.riskAnalysis).toContain('2');
+  });
+
+  it('אין סמני-stub "[להשלמה" בפלט-הדטרמיניסטי (תיקון 2026-06-10)', async () => {
+    const narrative = await generateNarrativeAction(site(), [jsaRow()]);
+    for (const k of [
+      'aboutCompany',
+      'aboutProject',
+      'orgStructure',
+      'workProcesses',
+      'riskAnalysis',
+    ] as const) {
+      expect(narrative[k]).not.toContain('[להשלמה');
+    }
   });
 });

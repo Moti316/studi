@@ -80,6 +80,20 @@ function defaultEvalModel(): string {
   return process.env.ANTHROPIC_MODEL_EVAL ?? 'claude-haiku-4-5-20251001';
 }
 
+/**
+ * מודל-ברירת-מחדל ל**חיבור-מסמכים** (פרויקט-גמר: נרטיב + טיוטת-JSA) — חזק (Sonnet).
+ *
+ * ⚠️ למה לא Haiku (כמו ההערכה): חיבור 5 פרקים-עבריים-עשירים / 12 שורות-JSA-מקוננות הוא
+ * משימת-יצירה-ארוכה. Haiku נוטה לפלוט JSON-לא-תקין (newline/גרש לא-escaped) או להיחתך
+ * → parse נכשל → fallback-דטרמיניסטי (ה-stubs). זו פעולה **נדירה ו-creator-gated**
+ * (טיוטה פר-פרויקט), כך שאיכות > עלות. override: ANTHROPIC_MODEL_AUTHOR.
+ * (אומת-חי 2026-06-10: גם Haiku וגם Sonnet נכשלו ב-JSON-יחיד-ענק → המעבר הוא ל*פר-פרק*
+ *  + מודל-חזק יחד; ראה generate-narrative.action.ts.)
+ */
+export function defaultAuthorModel(): string {
+  return process.env.ANTHROPIC_MODEL_AUTHOR ?? 'claude-sonnet-4-6';
+}
+
 export interface ClaudeGenerateArgs {
   prompt: string;
   system?: string;
@@ -111,6 +125,40 @@ function stripFences(s: string): string {
     .replace(/^\s*```(?:json)?\s*/i, '')
     .replace(/\s*```\s*$/i, '')
     .trim();
+}
+
+/**
+ * extractJsonPayload — מחלץ את אובייקט/מערך-ה-JSON המאוזן הראשון מטקסט-Claude.
+ *
+ * עמיד ל-preamble/trailing-text (מודל שמוסיף "הנה ה-JSON:" או הערה-אחרי): מאתר את
+ * `{`/`[` הראשון וסורק עד הסוגר-המאוזן (תוך כיבוד-מחרוזות ו-escapes). אם לא-מאוזן
+ * (תגובה-חתוכה) — מחזיר מה-start עד-הסוף, וה-JSON.parse ייכשל → הקורא יִפֹּל-ל-fallback.
+ */
+function extractJsonPayload(raw: string): string {
+  const s = stripFences(raw);
+  const start = s.search(/[{[]/);
+  if (start === -1) return s;
+  const open = s[start];
+  const close = open === '{' ? '}' : ']';
+  let depth = 0;
+  let inStr = false;
+  let esc = false;
+  for (let i = start; i < s.length; i++) {
+    const ch = s[i];
+    if (inStr) {
+      if (esc) esc = false;
+      else if (ch === '\\') esc = true;
+      else if (ch === '"') inStr = false;
+      continue;
+    }
+    if (ch === '"') inStr = true;
+    else if (ch === open) depth++;
+    else if (ch === close) {
+      depth--;
+      if (depth === 0) return s.slice(start, i + 1);
+    }
+  }
+  return s.slice(start);
 }
 
 /** טקסט חופשי מ-Claude. */
@@ -147,7 +195,7 @@ export async function claudeGenerateJSON<T>(args: ClaudeGenerateArgs): Promise<T
     .join('\n');
   const text = await claudeGenerateText({ ...args, system });
   try {
-    return JSON.parse(stripFences(text)) as T;
+    return JSON.parse(extractJsonPayload(text)) as T;
   } catch (err) {
     throw new ClaudeClientError(`Claude generateJSON returned non-JSON: ${errMessage(err)}`, err);
   }

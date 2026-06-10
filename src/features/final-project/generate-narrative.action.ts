@@ -3,51 +3,54 @@
 /**
  * generate-narrative.action.ts — Server Action לפרקים-הנרטיביים של פרויקט-הגמר.
  *
- * זרימה (מקבילה ל-generate-jsa.action.ts):
+ * זרימה (ארכיטקטורת **פר-פרק** · תיקון 2026-06-10):
  *   1. auth-gate: משתמש-לא-מחובר → fallback דטרמיניסטי (חסם-עלות · אפס-Claude).
- *   2. Claude מוגדר → claudeGenerateJSON<Omit<ProjectNarrative,'source'>> עם
- *      SYSTEM_NARRATIVE + buildNarrativePrompt → ולידציה → fallback אם לא-תקין.
- *   3. אחרת / כשל / לא-תקין → buildDeterministicNarrative.
+ *   2. Claude-לא-מוגדר → fallback דטרמיניסטי.
+ *   3. אחרת → **5 קריאות-Claude מקבילות** (claudeGenerateText · טקסט-נקי · מודל-author):
+ *      פרק-אחד-לכל-קריאה. כל פרק שמצליח (ולא-ריק/חתוך) — נכנס; כל פרק שנכשל/קצר →
+ *      ה-fallback-הדטרמיניסטי **של אותו-פרק** (לא מפיל את שאר-המסמך).
+ *   4. source='claude' אם ≥1 פרק חובר ע"י Claude; 'deterministic' רק אם **כל** הפרקים נפלו-חזרה.
+ *
+ * ⚠️ **למה לא JSON-יחיד-ענק (הבאג שתוקן):** אומת-חי (2026-06-10) שחיבור 5 הפרקים כאובייקט-
+ *    JSON-אחד נכשל בשני המודלים — Haiku פלט JSON-לא-תקין (escape בתוך מחרוזת עברית ארוכה),
+ *    Sonnet **נחתך** ב-maxTokens (Unterminated string) → JSON.parse נכשל → fallback (ה-stubs
+ *    `[להשלמה...]` שמוטי ראה, *תוך-כדי-חיוב על-ה-tokens*). פר-פרק + טקסט-נקי = אין class-באגי-
+ *    JSON, ואין-חיתוך (כל פרק חסום ~2400 tokens). ראה BUGS#capstone-narrative-single-json.
  *
  * ⚠️ **לעולם לא זורק** — בטוח לקריאה ב-Server Action / Server Component.
- *    כל שגיאה גורמת ל-fallback דטרמיניסטי (source='deterministic').
  *
  * ⚠️ **PII:** מקבל SiteInfo + JsaRow[] בלבד (אין CoverInfo) — שמות/ת.ז./מנחה לעולם לא ל-Claude.
  *
- * ⚠️ maxTokens=6000 — 5 פרקים-עשירים (2-4 פסקאות כל-אחד · עברית מלאה + עיגון-חקיקה).
- *    maxTokens < 6000 גרם לחיתוך בפרקים האחרונים (שיעור מ-BUGS#liveengine-maxtokens-truncation).
- *    6000 = מרווח-ביטחון מלא ל-5 פרקי-נרטיב עשירים.
- *
- * החתימה `generateNarrativeAction(site, rows): Promise<ProjectNarrative>` קנונית —
- * הצרכן הוא <CapstoneFlow> (שלב-ייצוא-מסמך).
- *
- * @see src/features/final-project/narrative.ts — ProjectNarrative · SYSTEM_NARRATIVE ·
- *      buildNarrativePrompt · isValidNarrative · buildDeterministicNarrative
- * @see src/lib/ai/claude.ts                   — claudeGenerateJSON · isClaudeConfigured
+ * @see src/features/final-project/narrative.ts — NARRATIVE_CHAPTERS · MIN_CHAPTER_CHARS ·
+ *      buildDeterministicNarrative · ProjectNarrative
+ * @see src/lib/ai/claude.ts                   — claudeGenerateText · defaultAuthorModel · isClaudeConfigured
  */
 
 import type { SiteInfo, JsaRow } from './types';
-import type { ProjectNarrative } from './narrative';
 import {
-  SYSTEM_NARRATIVE,
-  buildNarrativePrompt,
-  isValidNarrative,
+  NARRATIVE_CHAPTERS,
+  MIN_CHAPTER_CHARS,
   buildDeterministicNarrative,
+  type ProjectNarrative,
+  type NarrativeChapterKey,
 } from './narrative';
-import { isClaudeConfigured, claudeGenerateJSON } from '@/lib/ai/claude';
+import { isClaudeConfigured, claudeGenerateText, defaultAuthorModel } from '@/lib/ai/claude';
 import { getUser } from '@/lib/auth/server';
+
+/** maxTokens פר-פרק — פרק-בודד עשיר (4-5 פסקאות עבריות) ≈ 1500-2200 tokens; 2400 = מרווח. */
+const MAX_TOKENS_PER_CHAPTER = 2400;
 
 /**
  * generateNarrativeAction — מחזיר את 5 הפרקים-הנרטיביים של מסמך-הגמר.
  *
- * - Claude מוגדר + משתמש-מחובר → קריאת-LLM + ולידציה → {...result, source:'claude'}.
- * - לא-מחובר / Claude-לא-מוגדר / תגובה-לא-תקינה / כשל → fallback דטרמיניסטי
- *   (source='deterministic').
+ * - לא-מחובר / Claude-לא-מוגדר → fallback דטרמיניסטי מלא (source='deterministic').
+ * - אחרת → חיבור פר-פרק מקבילי; כל פרק-שנכשל נופל-חזרה לדטרמיניסטי-שלו (source='claude'
+ *   כל-עוד פרק-אחד-לפחות חובר ע"י Claude).
  * - לעולם לא זורק.
  *
  * @param site SiteInfo — פרופיל-האתר (שלב 1 · אין PII).
- * @param rows JsaRow[] — שורות-ה-JSA (לעיגון פרק-6 בניתוח-הסיכונים).
- * @returns    ProjectNarrative (source='claude'|'deterministic' · תמיד תקין).
+ * @param rows JsaRow[] — שורות-ה-JSA (לעיגון פרקי-הסיכונים).
+ * @returns    ProjectNarrative (תמיד תקין).
  */
 export async function generateNarrativeAction(
   site: SiteInfo,
@@ -55,36 +58,50 @@ export async function generateNarrativeAction(
 ): Promise<ProjectNarrative> {
   // auth: חוסם קריאת-Claude-בתשלום ממשתמש-לא-מחובר (cost-abuse).
   const user = await getUser();
-  if (!user) return buildDeterministicNarrative(site, rows);
+  if (!user || !isClaudeConfigured()) return buildDeterministicNarrative(site, rows);
 
-  // --- מסלול Claude ---
-  if (isClaudeConfigured()) {
-    try {
-      const result = await claudeGenerateJSON<Omit<ProjectNarrative, 'source'>>({
-        system: SYSTEM_NARRATIVE,
-        prompt: buildNarrativePrompt(site, rows),
-        // 5 פרקים-עשירים (2-4 פסקאות כל-אחד · עברית + עיגון-חקיקה).
-        // maxTokens < 6000 גרם לחיתוך בפרקים האחרונים (שיעור מ-LiveEngine-maxtokens bug).
-        maxTokens: 6000,
-      });
+  const model = defaultAuthorModel();
 
-      if (!isValidNarrative(result)) {
-        console.warn(
-          '[generateNarrativeAction] Claude returned invalid narrative — falling back to deterministic.',
+  // 5 פרקים במקביל — כל פרק עם fallback-עצמאי (פרק-אחד-שנכשל לא מפיל את כל-המסמך).
+  const results = await Promise.all(
+    NARRATIVE_CHAPTERS.map(async (spec) => {
+      try {
+        const text = (
+          await claudeGenerateText({
+            system: spec.system,
+            prompt: spec.buildPrompt(site, rows),
+            model,
+            maxTokens: MAX_TOKENS_PER_CHAPTER,
+          })
+        ).trim();
+
+        if (text.length < MIN_CHAPTER_CHARS) {
+          console.warn(
+            `[generateNarrativeAction] chapter "${spec.key}" too short (${text.length} chars) — using deterministic.`,
+          );
+          return { key: spec.key, text: spec.deterministic(site, rows), fromClaude: false };
+        }
+        return { key: spec.key, text, fromClaude: true };
+      } catch (err) {
+        console.error(
+          `[generateNarrativeAction] chapter "${spec.key}" Claude call failed — deterministic:`,
+          err instanceof Error ? err.message : String(err),
         );
-        return buildDeterministicNarrative(site, rows);
+        return { key: spec.key, text: spec.deterministic(site, rows), fromClaude: false };
       }
+    }),
+  );
 
-      return { ...result, source: 'claude' };
-    } catch (err) {
-      console.error(
-        '[generateNarrativeAction] Claude call failed — falling back to deterministic:',
-        err instanceof Error ? err.message : String(err),
-      );
-      return buildDeterministicNarrative(site, rows);
-    }
-  }
+  const claudeCount = results.filter((r) => r.fromClaude).length;
+  const byKey = (k: NarrativeChapterKey): string => results.find((r) => r.key === k)?.text ?? '';
 
-  // --- fallback דטרמיניסטי ---
-  return buildDeterministicNarrative(site, rows);
+  return {
+    aboutCompany: byKey('aboutCompany'),
+    aboutProject: byKey('aboutProject'),
+    orgStructure: byKey('orgStructure'),
+    workProcesses: byKey('workProcesses'),
+    riskAnalysis: byKey('riskAnalysis'),
+    // 'deterministic' רק אם כל-הפרקים נפלו-חזרה; פרק-אחד-אמיתי-לפחות → 'claude'.
+    source: claudeCount > 0 ? 'claude' : 'deterministic',
+  };
 }

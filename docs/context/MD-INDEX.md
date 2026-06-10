@@ -2,7 +2,7 @@
 
 > ⚠️ **קובץ מחולל — אל תערוך ידנית.** מקור: `.claude/scripts/gen-md-index.mjs` · רענון: `pnpm index:md`
 > (מתרענן גם אוטומטית ב-pre-commit). דלת-הכניסה לשליפה-מהירה של כל מסמך בריפו.
-> **סה״כ 352 קבצי-MD בריפו** · עמודת "עודכן" = מתי הקובץ עודכן לאחרונה ב-git (לאיתור מסמכים שהתיישנו).
+> **סה״כ 353 קבצי-MD בריפו** · עמודת "עודכן" = מתי הקובץ עודכן לאחרונה ב-git (לאיתור מסמכים שהתיישנו).
 
 ## 📌 קבצי-חובה — קרא/עבור עליהם בכל סשן (נעוץ)
 
@@ -176,7 +176,7 @@
 | [README.md](../../docs/sources/laws/_inbox/README.md) | תיקייה זו = buffer. אתה מעלה PDFs לכאן (או אלי-בצ'אט ואני שומר לכאן), אני קורא ומסווג. | sources laws _inbox | 2026-05-30 |
 | [README.md](../../docs/sources/laws/README.md) | עקרון-יסוד: כשהמשתמש שואל שאלה על חוק/תקנה/שיטה, התשובה חייבת להיות מבוססת על PDF-מקור בתיקייה זו, עם הפניה ל… | docs sources laws | 2026-06-02 |
 
-### 📄 docs — כללי  ·  24
+### 📄 docs — כללי  ·  25
 
 | קובץ | תכלית | תגיות | עודכן |
 | --- | --- | --- | --- |
@@ -188,6 +188,7 @@
 | [content-inventory.md](../../docs/content-inventory.md) | ⚠️ קובץ זה אוחד אל CONTENT-INDEX.md (2026-05-31) — מפת-Drive (כולל תתי-תיקיות), השוואה לתוכנית-הלימודים, וכיס… | docs | 2026-05-31 |
 | [content-scope.md](../../docs/content-scope.md) | Source-of-truth: PDF "חקיקה ותקינה לממונה בטיחות" + PDF "מערכת שעות קורס 1211762 אוגוסט 2025" | docs | 2026-06-09 |
 | [curriculum-coverage.md](../../docs/curriculum-coverage.md) | ⚠️ קובץ זה אוחד אל CONTENT-INDEX.md (2026-05-31) — מטריצת קורס 1211762 × 57 scope-IDs × Drive, סטטיסטיקת-הכיס… | docs | 2026-05-31 |
+| [capstone-sample-rakia18.md](../../docs/examples/capstone-sample-rakia18.md) | מסמך-דוגמה (gold reference) · פורמט משרד-העבודה 19.10.2025 · נוצר ב-Claude-Workflow רב-סוכני (כותב-פרק לכל פר… | docs examples | — |
 | [features.md](../../docs/features.md) | רשימת כל הפיצ'רים שזוהו בסרטונים, ממויינים לקטגוריות. מהווה בסיס ל-MVP scoping | docs | 2026-05-29 |
 | [IDEAS.md](../../docs/IDEAS.md) | Backlog חי לרעיונות / פיצ'רים-עתידיים / פידבקים. לא מחייב ביצוע. כל אחד (מוטי או סוכן) מוזמן להוסיף. | docs | 2026-06-09 |
 | [implementation-gaps.md](../../docs/implementation-gaps.md) | תאריך: 2026-05-30 · נכתב על-בסיס סריקת-קוד ישירה (לא הסתמכות על התיעוד) | docs | 2026-05-31 |

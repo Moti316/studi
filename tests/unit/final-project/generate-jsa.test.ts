@@ -15,9 +15,11 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 // --- מוקים (לפני ה-import של ה-action) ---
 const isClaudeConfigured = vi.fn();
 const claudeGenerateJSON = vi.fn();
+const defaultAuthorModel = vi.fn(() => 'claude-sonnet-4-6');
 vi.mock('@/lib/ai/claude', () => ({
   isClaudeConfigured: () => isClaudeConfigured(),
   claudeGenerateJSON: (args: unknown) => claudeGenerateJSON(args),
+  defaultAuthorModel: () => defaultAuthorModel(),
 }));
 
 const getUser = vi.fn();
@@ -123,7 +125,7 @@ describe('generateJsaDraftAction — שערי-fallback', () => {
     expect(isValidJsaRowArray(rows)).toBe(true);
   });
 
-  it('Claude מועבר ה-prompt+system הנכונים + maxTokens=4500', async () => {
+  it('Claude מועבר ה-prompt+system הנכונים + model=author + maxTokens=9000', async () => {
     isClaudeConfigured.mockReturnValue(true);
     claudeGenerateJSON.mockResolvedValue(claudeRows());
 
@@ -133,9 +135,12 @@ describe('generateJsaDraftAction — שערי-fallback', () => {
     const arg = claudeGenerateJSON.mock.calls[0]![0] as {
       system: string;
       prompt: string;
+      model: string;
       maxTokens: number;
     };
-    expect(arg.maxTokens).toBe(4500);
+    // מודל-author (Sonnet) + maxTokens=9000 — תיקון 2026-06-10 (Haiku@4500 נחתך/פגום → fallback)
+    expect(arg.model).toBe('claude-sonnet-4-6');
+    expect(arg.maxTokens).toBe(9000);
     expect(arg.system).toContain('מסייע-לנתח אתר-אמיתי');
     expect(arg.prompt).toBe(buildDraftPrompt(s)); // ה-prompt הקנוני
   });
