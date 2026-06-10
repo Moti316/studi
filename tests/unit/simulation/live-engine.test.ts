@@ -45,6 +45,38 @@ describe('live-engine reducer', () => {
     expect(s.stage).toBe('opening');
   });
 
+  it('applyResult — advanceStage עם nextStage=null (לא-done) מגדיל index, לא מאפס (#12)', () => {
+    let s = initLiveState('בנייה');
+    // התקדם ל-branch כדי שאינדקס-התור יהיה > 0 לפני ה-edge.
+    s = applyResult(s, 'תשובה-1', baseRes);
+    s = applyResult(s, 'תשובה-2', {
+      ...baseRes,
+      advanceStage: false,
+      nextStage: 'branch',
+    });
+    expect(s.turnIndexInStage).toBe(1);
+    // edge: advanceStage=true אבל nextStage=null ולא-done → אסור-לאפס.
+    s = applyResult(s, 'תשובה-3', {
+      ...baseRes,
+      advanceStage: true,
+      nextStage: null,
+      nextQuestion: null,
+      done: false,
+    });
+    expect(s.turnIndexInStage).toBe(2);
+    expect(s.stage).toBe('branch'); // השלב נשמר (nextStage ?? state.stage)
+  });
+
+  it('applyResult — advanceStage=true עם nextStage זהה-לשלב-הנוכחי מגדיל index, לא מאפס (#12)', () => {
+    let s = initLiveState('בנייה');
+    s = applyResult(s, 'תשובה-1', { ...baseRes, advanceStage: false, nextStage: 'opening' });
+    expect(s.turnIndexInStage).toBe(1);
+    // advanceStage=true אבל nextStage===state.stage → לא-שינוי-שלב → אסור-לאפס.
+    s = applyResult(s, 'תשובה-2', { ...baseRes, advanceStage: true, nextStage: 'opening' });
+    expect(s.turnIndexInStage).toBe(2);
+    expect(s.stage).toBe('opening');
+  });
+
   it('applyResult — done → result + done', () => {
     let s = initLiveState('בנייה');
     s = applyResult(s, 'תשובה', {

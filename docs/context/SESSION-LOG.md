@@ -5,6 +5,27 @@
 
 ---
 
+## 2026-06-10 (המשך · מחשב-מוטי) — סקירת-לילה: ★ ה-LiveEngine היה מת-בשקט → תוקן + 14 ממצאים
+
+> **תמצית:** סנכרון 7-commits ריצת-הלילה + **סקירה רב-סוכנית** (Workflow · 20 סוכנים · 14 ממצאים) → תיקון **כל ה-13 בני-התיקון** (4 שלב-א' + 9 שלב-ב' Workflows + 2 השלמות-אדוורסרי) → **800 vitest** ירוקים. **commits:** `e418615` + (זה). **★ הממצא:** האימות-החי תפס ש-`max_tokens=900` קיצץ את ה-JSON → ה-סימולציה-הפתוחה **מעולם לא השתמשה ב-Claude** (תמיד fallback). תוקן 3000 → אומת-חי `source:claude`.
+
+**הושלם (הכל ב-`main`):**
+
+- ✅ **סנכרון:** 7-commits (`5ee116d`→`7c4a4ad`) נמשכו · 778→**800 vitest** + typecheck נקי.
+- ✅ **סקירה רב-סוכנית (Workflow · 20 סוכנים · אימות-נגדי):** 14 ממצאים מאומתים (LiveEngine/capstone/בנק-תרחישים/אבטחה).
+- ✅ **שלב-א' (`e418615` · 4 קריטיים):** ★ **max_tokens** (LiveEngine מת-בשקט · `BUGS#liveengine-maxtokens-truncation`) · turn-cap `clampLiveProgress` · auth×2 (respond-live+capstone) · תרחיש-מדוגל-גג.
+- ✅ **שלב-ב' (Workflow-מימוש 3 סוכנים + Workflow-אימות 9 מאמתים · 9 ממצאים + 2 השלמות):**
+  - LiveEngine-בטיחות: `#2` שומר-ציטוט-מומצא (סעיף-לא-מאומת → mode מוסקנא) · `#10` prompt-injection (delimiters + נטרול-זיוף-delimiter + system-clause) · `#9` cost-guard (transcript>24).
+  - LiveEngine-נכונות: `#11` ציון-סיום-אמיתי (גם בכפיית-קאפ · לא 60-קבוע) · `#12` `turnIndexInStage` מתאפס רק על stageChanged · `#13` aria-live מבודד.
+  - capstone: `#4` isPpeOnly+existingControls · `#5` משוב-מיושן→null · `#6` Claude מאחד ליקויים-דטרמיניסטיים.
+- 🟡 **נדחה (מתועד · `BUGS#night-run-review`):** `#14` ציון-לקוח-זייף (מקובל · creator-gated single-user) · rate-limit-מלא + capstone-DB (תשתית).
+
+**הצעד-הבא:** (1) הרצת dev-server מלאה + צילום `/preview/simulation-live` (אימות-UI חזותי · עד-כה אומת תכנותית). (2) בלוק-4 מורה-AI. (3) המשך-עיצוב (בלוק-2). (4) import בנק-12-תרחישים ל-DB + wiring `/lesson/scenarios`. (5) ISO 5.3/5.4.
+
+**לקח-מפתח:** "טסטים-ירוקים" ≠ "פיצ'ר-עובד". fallback-חינני (`לעולם-לא-זורק`) הסווה כשל-מוחלט. **תמיד אימות-חי end-to-end לפיצ'ר-AI.** Workflows (מימוש+אימות-נגדי) = שער-איכות אפקטיבי, אך **רק הרצה-בפועל תפסה את ה-★ באג.**
+
+---
+
 ## 2026-06-10 (ריצת-לילה אוטונומית) — LiveEngine + capstone + בנק-תרחישים + עיצוב
 
 > **תמצית:** מצב-אוטונומי (Workflows + סוכני-בקרה). **5 בלוקים נדחפו ל-`main`.** typecheck + 778 vitest ירוקים בכל push. **commits:** `5ee116d`→`ef2ad08` (6 דחיפות).

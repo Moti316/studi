@@ -51,6 +51,8 @@ export function LiveSimulationPlayer({
   }
 
   const score = runningScore(state.transcript);
+  // הכרזת-קורא-מסך מבודדת: רק התור-האחרון-שהוערך (תגובת-המפקח) + השאלה-הבאה.
+  const lastTurn = state.transcript[state.transcript.length - 1];
 
   return (
     <section
@@ -80,8 +82,14 @@ export function LiveSimulationPlayer({
         </p>
       </header>
 
-      {/* ── היסטוריית-השיח ── */}
-      <div className="flex flex-col gap-4" aria-live="polite">
+      {/* ── הכרזת-a11y מבודדת (sr-only · aria-live) — רק התגובה-האחרונה + השאלה-הבאה ── */}
+      <div data-testid="live-announcer" aria-live="polite" className="sr-only">
+        {lastTurn?.reply ?? ''}
+        {!state.done && state.question ? ` ${state.question}` : ''}
+      </div>
+
+      {/* ── היסטוריית-השיח (ללא aria-live — אחרת קורא-המסך מכריז-מחדש את כל השיחה בכל תור) ── */}
+      <div className="flex flex-col gap-4">
         {state.transcript.map((t, i) => {
           const badge = QUALITY_BADGE[t.quality ?? 'partial'];
           return (

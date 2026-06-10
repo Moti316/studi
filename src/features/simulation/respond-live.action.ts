@@ -32,6 +32,10 @@ export async function respondLiveAction(input: RespondLiveInput): Promise<Respon
   // שער 2 — אין מפתח: fallback דטרמיניסטי (הכל עובד · ללא הבנת-נרדפים).
   if (!isClaudeConfigured()) return deterministicLiveTurn(input);
 
+  // שער 2.5 — cost-guard: transcript-עצום → סיום-בטוח דטרמיניסטי (מונע prompt ענק/עלות-מתפרצת).
+  // הקאפ-לשלב (clampLiveProgress) מסיים בדרך-כלל אחרי ~12 תורים; >24 = חריגה → לא קוראים ל-Claude.
+  if (input.transcript.length > 24) return deterministicLiveTurn(input);
+
   // שער 3 — Claude חי.
   try {
     const system = buildLiveSystemPrompt(input.branch);
@@ -40,7 +44,8 @@ export async function respondLiveAction(input: RespondLiveInput): Promise<Respon
     // JSON-envelope — 900 קוצץ את ה-JSON → parse נכשל → fallback. 3000 נותן מרווח.
     const raw = await claudeConverse({ system, messages, maxTokens: 3000 });
     // clamp: כפיית-התקדמות-מונוטונית (קאפ-שלב) — מונע לולאה-אינסופית/עלות-מתפרצת.
-    return { ...clampLiveProgress(parseLiveTurn(raw), input), source: 'claude' };
+    // input → parseLiveTurn מחשב ציון-סיום-אמיתי + שומר-ציטוט-סעיף (#11/#2).
+    return { ...clampLiveProgress(parseLiveTurn(raw, input), input), source: 'claude' };
   } catch {
     // כשל-Claude (רשת/JSON-שבור) → דטרמיניסטי. לא חושפים שגיאה ללקוח.
     return deterministicLiveTurn(input);

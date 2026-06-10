@@ -12,12 +12,13 @@
 > דלג-NotebookLM (login) → יצירת-תוכן ב-Claude-Workflow מעוגן-קורפוס. עיצוב-נועז ישיר. commit+push פר-בלוק.
 
 - ✅ **בלוק-0** — הסרת כפתור "קורס חדש" (שייך לפלטפורמה-עתידית · `5ee116d`).
-- ✅ **בלוק-1 ★** — סימולציה-פתוחה `LiveEngine` (ADR-018): `claude.ts` (prompt-caching + `claudeConverse`) · `committee-sim/{live,grounding}.ts` · `respond-live.action` (3 שערים) · `live-engine` reducer · `InspectorBubble` + `LiveSimulationPlayer` · `/preview/simulation-live` · **28 טסטים ✅** · typecheck נקי. ⏳ אימות-חי (dev-server) נותר.
+- ✅ **בלוק-1 ★** — סימולציה-פתוחה `LiveEngine` (ADR-018): `claude.ts` (prompt-caching + `claudeConverse`) · `committee-sim/{live,grounding}.ts` · `respond-live.action` · `live-engine` reducer · `InspectorBubble` + `LiveSimulationPlayer` · `/preview/simulation-live` · typecheck נקי. **✅ אומת-חי (2026-06-10 · `source:claude`)** — תוקן באג-HIGH ש-`max_tokens=900` חתך את ה-JSON → תמיד-fallback (`BUGS#liveengine-maxtokens-truncation`). ⏳ נותר: צילום-UI חזותי (dev-server).
 - 🔄 **בלוק-2** — מהפכת-עיצוב StudiesGo (נועז · ישיר): ✅ דשבורד gradient-hero + glow + flame-pulse-רצף. ⏳ נותר: קורס/נגן-שיעור/סימולציה · count-up · card-flip · mascot-poses · accent-word (תשתית 34-וריאנטים קיימת).
 - ✅ **בלוק-3** — פרויקט-גמר `capstone` (Workflow · 8 סוכנים): `/capstone` route (auth) · wizard 4-שלבים (`CapstoneFlow`) · `SiteStep`/`JsaBuilder`/`RiskMatrix`/`FeedbackStep` · `riskLevel`/`riskBand` (מקרא-המשרד) · `evaluate-capstone.action` (Claude + fallback) · zustand store · קישור מדף-הקורס · 8 טסטים ✅. ⏳ עוד טסטי-jsa-validation + אימות-חי נותרו.
 - ⬜ **בלוק-4** — מורה-פרטי AI על התשובות (`TutorChat` + `tutor-explain.action` · reuse claude.ts).
 - 🔄 **בלוק-5** — בנק-תרחישים pre-bake (Workflow · **12 תרחישי-ענף חוברו · 11 אומתו** content-verifier) → staged `src/features/simulation/data/committee-sim-bank.json`. ⏳ נותר: import ל-DB + wiring ל-`/lesson/scenarios` + תיקון-1-דגל.
 - ⬜ **בלוק-6** — טיוטות ISO 5.3/5.4 + סגירה (TODO/STATUS/SESSION-LOG · לוג-Drive · דו"ח-בוקר).
+- ✅ **סקירת-ריצת-הלילה (2026-06-10 · מחשב-מוטי)** — Workflow-סקירה (20 סוכנים · 14 ממצאים) → Workflow-מימוש (3) + Workflow-אימות-נגדי (9) → **13 ממצאים תוקנו** (★ max_tokens · turn-cap · auth×2 · ציטוט-מומצא · injection · cost-guard · ציון-אמיתי · turnIndex · aria-live · capstone #4/#5/#6 · תרחיש-מדוגל) · **800 vitest** · #14+rate-limit נדחו-מתועד (`BUGS#night-run-review`).
 
 > תיעוד-בעיות: `docs/context/BUGS.md` · עדכון-MD שוטף (MD-INDEX אוטו-רענון ב-pre-commit) · לוג-Drive פר-בלוק+סשן.
 

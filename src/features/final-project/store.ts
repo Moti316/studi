@@ -135,16 +135,22 @@ export const useCapstoneStore = create<CapstoneState>()((set) => ({
   addRow: (row) =>
     set((state) => ({
       jsaRows: [...state.jsaRows, row],
+      // עריכת-JSA מבטלת משוב-קודם — אחרת הלומד רואה הערכה ל-JSA-ישן.
+      feedback: null,
     })),
 
   updateRow: (id, patch) =>
     set((state) => ({
       jsaRows: state.jsaRows.map((row) => (row.id === id ? { ...row, ...patch } : row)),
+      // עריכת-JSA מבטלת משוב-קודם — אחרת הלומד רואה הערכה ל-JSA-ישן.
+      feedback: null,
     })),
 
   removeRow: (id) =>
     set((state) => ({
       jsaRows: state.jsaRows.filter((row) => row.id !== id),
+      // עריכת-JSA מבטלת משוב-קודם — אחרת הלומד רואה הערכה ל-JSA-ישן.
+      feedback: null,
     })),
 
   setFeedback: (feedback) => set({ feedback }),

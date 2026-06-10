@@ -13,6 +13,28 @@
 - **פתרון שעובד (מקומי):** `git config --unset core.hooksPath` → commit/push רגיל (אף hook לא מנסה לרוץ) → אופציונלית להחזיר `git config core.hooksPath .husky/_`. האיכות נשמרת ע"י הרצה **ידנית** של `npx tsc --noEmit` + `npx prettier --check` (עובדים ב-PowerShell) ו/או ע"י CI ב-GitHub Actions בכל push.
 - **פתרונות-שורש (להחלטת מוטי):** (א) לתקן git-bash (רה-התקנת Git for Windows / `rebaseall` / החרגת אנטי-וירוס); (ב) commit דרך GitHub web.
 
+## 🔴→🟢 LiveEngine מת-בשקט — max_tokens קיצץ את ה-JSON (2026-06-10) {#liveengine-maxtokens-truncation}
+
+> **באג-HIGH שנתפס באימות-חי (לא בסקירת-הקוד)** — הסימולציה-הפתוחה (★ ADR-018) **מעולם לא השתמשה ב-Claude בפועל**. תוקן ונדחף `e418615`.
+
+- **תסמין:** `/preview/simulation-live` החזיר תמיד `source:'deterministic'` (תשובות-קבועות), למרות שהמפתח מוגדר ו-`claudeConverse` עובד-בבידוד. latency ~14-16s ואז fallback.
+- **שורש:** `respond-live.action` קרא `claudeConverse({maxTokens:900})`. תגובת-מפקח עברית-עשירה **בתוך** JSON-envelope (עברית צפופת-טוקנים · `inspectorReply` ארוך + meta + finalReport) **חרגה מ-900 טוקנים → ה-JSON נחתך** (`...'מנופים') — הוסף.",\n  "done":`) → `JSON.parse` זרק `Unexpected end of JSON input` → `parseLiveTurn` זרק `LiveParseError` → ה-`try/catch` ב-action בלע ונפל ל-`deterministicLiveTurn`. **כל תור** נחתך → Claude אף-פעם לא הגיע ללומד.
+- **אבחון (שיטה):** בידוד הדרגתי — (1) `claudeConverse` ישיר עם system-קצר → עבד (1-2s). (2) עם `buildLiveSystemPrompt` האמיתי (4502 תווים) → עבד אך 14.5s. (3) `parseLiveTurn(raw)` על ה-raw → `Unexpected end of JSON` (ה-tail חתוך). → ה-truncation, לא ה-TLS/הרשת.
+- **✅ פתרון:** `maxTokens: 3000` (מרווח לעברית+envelope). **אומת חי 3×: `source:'claude'`** · ניקוד-חלקי · התקדמות-שלב · אפס-truncation.
+- **לקח:** "הטסטים ירוקים" ≠ "הפיצ'ר עובד". ה-fallback-החינני (`לעולם-לא-זורק`) **הסווה** כשל-מוחלט — הוא בלע את ה-LiveParseError והציג תוכן-תקין-לכאורה. **תמיד אימות-חי end-to-end לפיצ'ר-AI** (לא רק unit-tests · ראה זיכרון `claude-live-evaluation`). הסקירה-הסטטית (20 סוכנים) פספסה זאת — רק הרצה-בפועל תפסה.
+
+## 🟢 סקירת-לילה (2026-06-10) — 14 ממצאים · 4+9 תוקנו (2 Workflows) {#night-run-review}
+
+> סקירה רב-סוכנית (20 סוכנים · אימות-נגדי) של 7-commits ריצת-הלילה → 14 ממצאים. שלב-א' (`e418615`): 4 קריטיים. שלב-ב' (Workflow-מימוש 3 סוכנים + Workflow-אימות 9 מאמתים): 9 נותרים.
+
+- **✅ LiveEngine-בטיחות (עכשיו ש-Claude חי):** `#2` שומר-ציטוט-מומצא (מספר-סעיף ב-`inspectorReply` שלא ניתן-לאימות מול חבילת-העיגון [שם+שנה בלבד] → `mode` יורד `מאומת`→`מוסקנא` · reuse `enforceGrounding`/`detectMode`) · `#10` prompt-injection (delimiters `---תחילת/סוף תשובת-המועמד---` + סעיף "קלט-לא-מהימן" ב-system) · `#9` cost-guard (`transcript>24`→דטרמיניסטי).
+- **✅ LiveEngine-נכונות:** `#11` ציון-סיום-אמיתי מ-`deterministicReport(input)` (היה 60-קבוע) · `#12` `turnIndexInStage` מתאפס רק כש-`stageChanged` (לא על `advanceStage`+`nextStage=null`) · turn-cap `clampLiveProgress` (שלב-א').
+- **✅ auth (שלב-א'):** `respond-live` + `evaluate-capstone` — שער-0 `getUser` (לא-מחובר→דטרמיניסטי · חוסם cost-abuse).
+- **✅ capstone:** `#4` `isPpeOnly` משרשר `existingControls+addedControls` (דגל-שגוי על צמ"א-נוסף-לגיטימי) · `#5` `addRow/updateRow/removeRow`→`feedback:null` (משוב-מיושן) · `#6` מסלול-Claude מאחד (union) ליקויים-דטרמיניסטיים-וודאיים.
+- **✅ a11y:** `#13` `aria-live` מבודד לתור-האחרון (היה על כל ה-transcript → הכרזה-מחדש).
+- **✅ content:** התרחיש-המדוגל (1/12 · גג) — תשובת-הזהב מובילה ב-עבודה-בגובה 8(א) (כל נפילה >2מ') ומתנה 'גג תלול' בשיפוע (שלב-א').
+- **🟡 נדחה (מתועד · להחלטה):** `#14` ציון-לקוח-ניתן-לזיוף — **מקובל-כסיכון-נמוך** (creator-gated · תרגול-עצמי · "רמאות-עצמית"; תיקון-מלא=sessions-מגובי-DB) · `#9` rate-limit-מלא (Upstash/Supabase · תשתית) · capstone-DB-persistence.
+
 ## 🟢 מנוע-תוכן NotebookLM — ממצאי-בקרה (2026-06-08) {#notebooklm-engine}
 
 > נמצאו ע"י ענף-הבקרה (content-verifier + plan-compliance-auditor → oversight-lead) על מנוע-התוכן (ADR-015) **לפני merge**. C1–C3 תוקנו ואומתו; C4 נסגר; מינוריים = follow-up מתועד.

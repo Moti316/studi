@@ -74,7 +74,10 @@ export function applyResult(state: LiveState, answer: string, res: RespondLiveRe
   }
 
   const nextStage = res.nextStage ?? state.stage;
-  const turnIndexInStage = res.advanceStage ? 0 : state.turnIndexInStage + 1;
+  // אפס את אינדקס-התור **רק כשהשלב באמת השתנה** — לא על advanceStage גנרי.
+  // edge: advanceStage===true אבל nextStage===null (סוף/no-op) ולא done → אסור-לאפס.
+  const stageChanged = res.advanceStage && res.nextStage != null && res.nextStage !== state.stage;
+  const turnIndexInStage = stageChanged ? 0 : state.turnIndexInStage + 1;
   return {
     ...state,
     transcript,

@@ -88,4 +88,18 @@ describe('respondLiveAction — 3 שערים', () => {
     const r = await respondLiveAction(input());
     expect(r.source).toBe('deterministic');
   });
+
+  it('#9 cost-guard: transcript ארוך (25 תורים) → דטרמיניסטי (אפס-קריאת-Claude)', async () => {
+    isClaudeConfigured.mockReturnValue(true);
+    const longTranscript = Array.from({ length: 25 }, () => ({
+      stage: 'branch' as const,
+      inspector: 'technical' as const,
+      question: 'q',
+      answer: 'תשובה מלאה עם מספיק מילים כדי לעבור את שער-הקיצור הראשון',
+      pointsAwarded: 5,
+    }));
+    const r = await respondLiveAction(input({ transcript: longTranscript }));
+    expect(r.source).toBe('deterministic');
+    expect(claudeConverse).not.toHaveBeenCalled();
+  });
 });

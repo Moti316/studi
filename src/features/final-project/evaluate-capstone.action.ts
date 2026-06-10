@@ -168,7 +168,16 @@ export async function evaluateCapstoneAction(
         return buildDeterministicFeedback(site, jsaRows);
       }
 
-      return { ...result, source: 'claude' };
+      // אחֵד את הליקויים-הוודאיים של הוולידציה-הדטרמיניסטית לתוך תוצאת-Claude.
+      // Claude עלול לפספס ליקויי-מדרג/פערי-כיסוי וודאיים → union+dedup מבטיח
+      // שהם לעולם לא נשמטים. שאר תוצאת-Claude (overall · sections) נשמרת.
+      const det = buildDeterministicFeedback(site, jsaRows);
+      return {
+        ...result,
+        hierarchyIssues: [...new Set([...(result.hierarchyIssues || []), ...det.hierarchyIssues])],
+        missingHazards: [...new Set([...(result.missingHazards || []), ...det.missingHazards])],
+        source: 'claude',
+      };
     } catch (err) {
       console.error(
         '[evaluateCapstoneAction] Claude call failed — falling back to deterministic:',

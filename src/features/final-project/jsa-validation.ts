@@ -191,8 +191,11 @@ export function validateHierarchy(rows: JsaRow[]): HierarchyIssue[] {
     const score = riskLevel(row.severity, row.probability);
     const band = riskBand(score);
 
-    // A: המלצת-צמ"א בלבד (PPE-only) בלי בקרה-הנדסית קודמת
-    if (isPpeOnly(row.addedControls)) {
+    // A: המלצת-צמ"א בלבד (PPE-only) בלי בקרה-הנדסית קודמת.
+    // שתי-העמודות יחד (קיימות + נוספות) מייצגות את כלל-הבקרות — אם בקרה-הנדסית
+    // כבר קיימת ב-existingControls והמשתמש הוסיף רק צמ"א, אין-זה ליקוי PPE-only.
+    const allControls = `${row.existingControls ?? ''} ${row.addedControls ?? ''}`;
+    if (isPpeOnly(allControls)) {
       issues.push({
         rowId: row.id,
         description:
