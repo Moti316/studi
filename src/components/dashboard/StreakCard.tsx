@@ -24,7 +24,7 @@ export function StreakCard({ streakDays, today }: Props) {
         </h2>
         {!empty && (
           <span className="flex items-center gap-1 text-sm font-bold text-accent-700">
-            <Flame className="size-4" aria-hidden="true" />
+            <Flame className="size-4 animate-flame-pulse text-accent-500" aria-hidden="true" />
             <span>
               {streakDays} {streakDays === 1 ? 'יום' : 'ימים'}
             </span>

@@ -33,13 +33,23 @@ export default async function DashboardPage() {
   return (
     <div className="flex min-h-dvh flex-col">
       <main className="mx-auto w-full max-w-2xl flex-1 space-y-5 p-4 pb-8">
-        <header className="flex items-start justify-between gap-3">
-          <GreetingBanner name={user.displayName} hour={now.getHours()} />
-          <UserHeaderStats
-            credits={user.credits}
-            xpToday={user.xpToday}
-            streakDays={user.streakDays}
+        <header className="relative overflow-hidden rounded-modal bg-gradient-to-bl from-primary-50 via-white to-accent-50/50 px-4 py-5 shadow-card ring-1 ring-quiz-border">
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute -left-8 -top-10 h-28 w-28 rounded-full bg-accent-500/10 blur-2xl"
           />
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute -bottom-12 -right-6 h-28 w-28 rounded-full bg-primary-500/10 blur-2xl"
+          />
+          <div className="relative flex items-start justify-between gap-3">
+            <GreetingBanner name={user.displayName} hour={now.getHours()} />
+            <UserHeaderStats
+              credits={user.credits}
+              xpToday={user.xpToday}
+              streakDays={user.streakDays}
+            />
+          </div>
         </header>
 
         <StreakCard streakDays={user.streakDays} today={today} />

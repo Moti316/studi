@@ -13,7 +13,7 @@
 
 - ✅ **בלוק-0** — הסרת כפתור "קורס חדש" (שייך לפלטפורמה-עתידית · `5ee116d`).
 - ✅ **בלוק-1 ★** — סימולציה-פתוחה `LiveEngine` (ADR-018): `claude.ts` (prompt-caching + `claudeConverse`) · `committee-sim/{live,grounding}.ts` · `respond-live.action` (3 שערים) · `live-engine` reducer · `InspectorBubble` + `LiveSimulationPlayer` · `/preview/simulation-live` · **28 טסטים ✅** · typecheck נקי. ⏳ אימות-חי (dev-server) נותר.
-- ⬜ **בלוק-2** — מהפכת-עיצוב StudiesGo (נועז · ישיר על האפליקציה · דשבורד/קורס/שיעור/סימולציה · motion+depth).
+- 🔄 **בלוק-2** — מהפכת-עיצוב StudiesGo (נועז · ישיר): ✅ דשבורד gradient-hero + glow + flame-pulse-רצף. ⏳ נותר: קורס/נגן-שיעור/סימולציה · count-up · card-flip · mascot-poses · accent-word (תשתית 34-וריאנטים קיימת).
 - ✅ **בלוק-3** — פרויקט-גמר `capstone` (Workflow · 8 סוכנים): `/capstone` route (auth) · wizard 4-שלבים (`CapstoneFlow`) · `SiteStep`/`JsaBuilder`/`RiskMatrix`/`FeedbackStep` · `riskLevel`/`riskBand` (מקרא-המשרד) · `evaluate-capstone.action` (Claude + fallback) · zustand store · קישור מדף-הקורס · 8 טסטים ✅. ⏳ עוד טסטי-jsa-validation + אימות-חי נותרו.
 - ⬜ **בלוק-4** — מורה-פרטי AI על התשובות (`TutorChat` + `tutor-explain.action` · reuse claude.ts).
 - 🔄 **בלוק-5** — בנק-תרחישים pre-bake (Workflow · **12 תרחישי-ענף חוברו · 11 אומתו** content-verifier) → staged `src/features/simulation/data/committee-sim-bank.json`. ⏳ נותר: import ל-DB + wiring ל-`/lesson/scenarios` + תיקון-1-דגל.
