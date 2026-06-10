@@ -35,7 +35,7 @@ import type {
   ControlSet,
   RiskAssessment,
 } from './types';
-import { riskLevel, riskBand, emptyControlSet, emptyJsaRow, isControlSetEmpty } from './types';
+import { riskLevel, riskBand, emptyJsaRow, isControlSetEmpty } from './types';
 
 // ---------------------------------------------------------------------------
 // 1. system-prompt — מסייע-ניתוח-JSA
@@ -731,14 +731,9 @@ export function buildDeterministicJsaDraft(site: SiteInfo): JsaRow[] {
     const trimmed = userHazard.trim();
     if (trimmed.length === 0) continue;
 
-    // נסה להתאים שלד-ענף שמכסה את המפגע-שצוין (חיפוש-מילולי גס) — אם נמצא, נשתמש
-    // בבקרות-המומלצות שלו (כך נשמר כיבוד-המדרג); אחרת שורת-שלד-גנרית בטוחה.
-    const match = skeletons.find(
-      (s) =>
-        s.hazard.includes(trimmed) ||
-        trimmed.includes(s.hazard) ||
-        s.hazard.split(' ').some((w) => w.length > 2 && trimmed.includes(w)),
-    );
+    // נסה להתאים שלד-ענף שמכסה את המפגע-שצוין (התאמה דו-כיוונית + נרדפים) — אם נמצא,
+    // נשתמש בבקרות-העשירות שלו (כך נשמר כיבוד-המדרג); אחרת שורת-שלד-גנרית עשירה.
+    const match = findSkeletonMatch(trimmed, skeletons);
 
     if (match) {
       rows.push(skeletonToRow({ ...match, hazard: trimmed || match.hazard }));
@@ -776,6 +771,58 @@ export function buildDeterministicJsaDraft(site: SiteInfo): JsaRow[] {
 // helpers פנימיים
 // ---------------------------------------------------------------------------
 
+/**
+ * מילות-מפתח-נרדפות → התאמה-לשלד (משלים את ה-substring הדו-כיווני).
+ * `match` = תת-מחרוזת המופיעה ב-`hazard` של השלד-המתאים בענף.
+ */
+const HAZARD_SYNONYMS: { keys: string[]; match: string }[] = [
+  { keys: ['חשמל', 'התחשמל', 'מתח', 'חישמ', 'פחת'], match: 'חשמל' },
+  { keys: ['גובה', 'נפיל', 'פיגום', 'גג', 'סולם', 'מעקה'], match: 'גובה' },
+  { keys: ['חפיר', 'קריס', 'דופן', 'תעל', 'בור-', 'התמוטט'], match: 'חפיר' },
+  { keys: ['הרמה', 'מטען', 'עגור', 'מנוף', 'מלגז', 'חפצים'], match: 'הרמ' },
+  { keys: ['אבק', 'סיליק', 'חציב'], match: 'אבק' },
+  { keys: ['רעש', 'שמיעה'], match: 'רעש' },
+  { keys: ['כימי', 'מסוכן', 'חומ"ס', 'ממס', 'שאיפ', 'אדים'], match: 'חומר' },
+  { keys: ['מכונ', 'חלקים-נע', 'חלקים נע', 'גלגל', 'להב', 'חית'], match: 'מכונ' },
+  { keys: ['חום', 'שמש', 'הדבר', 'ריסוס', 'טרקטור'], match: '' }, // נרדפי-חקלאות → fallback לשלד-ראשון
+];
+
+/**
+ * findSkeletonMatch — מאתר שלד-מפגע לטקסט-מפגע-חופשי של המשתמש.
+ *   1. substring דו-כיווני ברמת-מילה (≥3 תווים · שני-הכיוונים).
+ *   2. נרדפים (HAZARD_SYNONYMS) — תופס "מכה חשמלית"→התחשמלות, "פיגום"→גובה, "חפירות"→בחפירה.
+ */
+function findSkeletonMatch(
+  hazard: string,
+  skeletons: HazardSkeleton[],
+): HazardSkeleton | undefined {
+  const h = hazard.toLowerCase();
+  const userWords = h.split(/[\s/,.()\-–—]+/).filter((w) => w.length >= 3);
+
+  // 1. substring דו-כיווני
+  const direct = skeletons.find((s) => {
+    const sh = s.hazard.toLowerCase();
+    return (
+      sh.includes(h) ||
+      h.includes(sh) ||
+      sh.split(/[\s/,.()\-–—]+/).some((w) => w.length >= 3 && h.includes(w)) ||
+      userWords.some((uw) => sh.includes(uw))
+    );
+  });
+  if (direct) return direct;
+
+  // 2. נרדפים
+  for (const syn of HAZARD_SYNONYMS) {
+    if (syn.keys.some((k) => h.includes(k))) {
+      const m = syn.match
+        ? skeletons.find((s) => s.hazard.toLowerCase().includes(syn.match))
+        : skeletons[0];
+      if (m) return m;
+    }
+  }
+  return undefined;
+}
+
 /** ממיר שלד-מפגע (עשיר) לשורת-JSA מלאה עם id. */
 function skeletonToRow(s: HazardSkeleton): JsaRow {
   return {
@@ -803,13 +850,13 @@ function genericRowForHazard(hazard: string): JsaRow {
   return {
     ...emptyJsaRow(crypto.randomUUID()),
     hazard,
-    scenario: `תרחיש-התממשות עבור "${hazard}" — לתיאור ואימות מול האתר.`,
-    existingControls: emptyControlSet(),
+    scenario: `התממשות גורם-הסיכון "${hazard}" במהלך-העבודה השוטפת — חשיפת-עובד לפגיעה.`,
+    existingControls: cs('', 'נוהל-עבודה כללי', ''),
     riskBefore: ra(3, 3),
     addedControls: cs(
-      'בקרה-הנדסית לפי-מדרג (לבחון: חיסול/החלפה/מיגון/שאיבה)',
-      'נוהל-עבודה + הדרכה + פיקוח',
-      '',
+      'בקרה-הנדסית במקור: מיגון / הפרדה-פיזית / שינוי-תהליך להפחתת-החשיפה',
+      'נוהל-עבודה ייעודי + הדרכת-עובדים + פיקוח שוטף',
+      'ציוד-מגן-אישי מתאים (קו-הגנה אחרון)',
     ),
     riskAfter: ra(3, 1),
     owner: DEFAULT_OWNER,
