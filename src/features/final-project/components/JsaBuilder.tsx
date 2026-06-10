@@ -29,7 +29,7 @@
  * @see src/features/final-project/jsa-validation.ts
  */
 
-import React, { useCallback, useId, useReducer, useRef } from 'react';
+import React, { useCallback, useEffect, useId, useReducer, useRef } from 'react';
 import { useCapstoneStore, selectJsaRows, selectSite } from '../store';
 import { validateHierarchy } from '../jsa-validation';
 import {
@@ -710,11 +710,38 @@ function RowForm({ editingRow, onSubmit, onCancel }: RowFormProps) {
 
   const [form, dispatch] = useReducer(formReducer, initialState);
 
-  // אתחול הטופס כשעוברים לעריכת-שורה שונה
-  const prevEditingIdRef = useRef<string | null>(editingRow?.id ?? null);
-  if (prevEditingIdRef.current !== (editingRow?.id ?? null)) {
-    prevEditingIdRef.current = editingRow?.id ?? null;
-  }
+  // סנכרון ה-reducer כשמשתנה השורה הנערכת (מעבר בין שורות או פתיחת טופס-הוספה).
+  // prevEditingIdRef מונע dispatch מיותר בטעינה-ראשונה (הערך כבר נכון מ-initialState).
+  const prevEditingIdRef = useRef<string | null | undefined>(undefined);
+  useEffect(() => {
+    const newId = editingRow?.id ?? null;
+    if (prevEditingIdRef.current === undefined) {
+      // טעינה ראשונה — initialState כבר נכון, אין צורך ב-dispatch
+      prevEditingIdRef.current = newId;
+      return;
+    }
+    if (prevEditingIdRef.current === newId) return;
+    prevEditingIdRef.current = newId;
+
+    if (editingRow !== null) {
+      dispatch({
+        type: 'LOAD',
+        payload: {
+          hazard: editingRow.hazard,
+          scenario: editingRow.scenario,
+          existingControls: { ...editingRow.existingControls },
+          riskBefore: { ...editingRow.riskBefore },
+          addedControls: { ...editingRow.addedControls },
+          riskAfter: { ...editingRow.riskAfter },
+          owner: editingRow.owner,
+          due: editingRow.due,
+          status: editingRow.status,
+        },
+      });
+    } else {
+      dispatch({ type: 'RESET' });
+    }
+  }, [editingRow]);
 
   const isEditing = editingRow !== null;
 

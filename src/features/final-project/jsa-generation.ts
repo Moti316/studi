@@ -35,7 +35,7 @@ import type {
   ControlSet,
   RiskAssessment,
 } from './types';
-import { riskLevel, riskBand, emptyControlSet, emptyJsaRow } from './types';
+import { riskLevel, riskBand, emptyControlSet, emptyJsaRow, isControlSetEmpty } from './types';
 
 // ---------------------------------------------------------------------------
 // 1. system-prompt — מסייע-ניתוח-JSA
@@ -621,6 +621,10 @@ function isSeverityLevel(x: unknown): x is SeverityLevel {
   return x === 1 || x === 2 || x === 3 || x === 4;
 }
 
+function isProbabilityLevel(x: unknown): x is ProbabilityLevel {
+  return x === 1 || x === 2 || x === 3 || x === 4;
+}
+
 function isValidControlSet(x: unknown): x is ControlSet {
   if (!x || typeof x !== 'object') return false;
   const c = x as Record<string, unknown>;
@@ -634,7 +638,7 @@ function isValidControlSet(x: unknown): x is ControlSet {
 function isValidRiskAssessment(x: unknown): x is RiskAssessment {
   if (!x || typeof x !== 'object') return false;
   const a = x as Record<string, unknown>;
-  return isSeverityLevel(a['severity']) && isSeverityLevel(a['probability']);
+  return isSeverityLevel(a['severity']) && isProbabilityLevel(a['probability']);
 }
 
 /**
@@ -658,8 +662,9 @@ export function isValidJsaRowArray(x: unknown): x is JsaRow[] {
     const r = item as Record<string, unknown>;
 
     if (typeof r['id'] !== 'string' || r['id'].length === 0) return false;
-    if (typeof r['hazard'] !== 'string') return false;
-    if (typeof r['scenario'] !== 'string') return false;
+    // #4: hazard ו-scenario חייבים מחרוזת לא-ריקה
+    if (typeof r['hazard'] !== 'string' || r['hazard'].length === 0) return false;
+    if (typeof r['scenario'] !== 'string' || r['scenario'].length === 0) return false;
     if (typeof r['owner'] !== 'string') return false;
 
     // existingControls / addedControls — חייבים להיות ControlSet
@@ -669,6 +674,16 @@ export function isValidJsaRowArray(x: unknown): x is JsaRow[] {
     // riskBefore / riskAfter — חייבים להיות RiskAssessment
     if (!isValidRiskAssessment(r['riskBefore'])) return false;
     if (!isValidRiskAssessment(r['riskAfter'])) return false;
+
+    // #8: שורה-אדומה (riskBefore ≥ 12) חייבת addedControls שאינן ריקות
+    const riskBeforeAssessment = r['riskBefore'] as RiskAssessment;
+    const addedControlsSet = r['addedControls'] as ControlSet;
+    if (
+      riskBeforeAssessment.severity * riskBeforeAssessment.probability >= 12 &&
+      isControlSetEmpty(addedControlsSet)
+    ) {
+      return false;
+    }
 
     // status — רשות; אם קיים חייב להיות ערך-חוקי
     if (

@@ -14,8 +14,9 @@
  *
  * ⚠️ **PII:** מקבל SiteInfo בלבד (אין CoverInfo) — שמות/ת.ז./מנחה לעולם לא ל-Claude.
  *
- * ⚠️ maxTokens=3000 — רשימת-שורות-JSON-עברית-ארוכה נחתכת ב-maxTokens-נמוך
- *    (BUGS#liveengine-maxtokens-truncation) → parse נכשל → fallback מיותר.
+ * ⚠️ maxTokens=4500 — 10–12 שורות-JSON עבריות-עשירות (existingControls/addedControls/risk)
+ *    דורשות לפחות ~350–400 tokens כל-אחת; 3000 גרם לחיתוך (BUGS#liveengine-maxtokens-truncation)
+ *    → parse נכשל → fallback מיותר. 4500 מספיק עם מרווח-ביטחון.
  *
  * החתימה `generateJsaDraftAction(site): Promise<JsaRow[]>` קנונית — הצרכן הוא
  * <JsaBuilder> ("הכן עבורי טיוטה"). (החליף את ה-placeholder הדטרמיניסטי-המינימלי.)
@@ -61,7 +62,9 @@ export async function generateJsaDraftAction(site: SiteInfo): Promise<JsaRow[]> 
       const result = await claudeGenerateJSON<DraftResponse>({
         system: SYSTEM_JSA_DRAFTER,
         prompt: buildDraftPrompt(site),
-        maxTokens: 3000,
+        // #6 max_tokens-truncation fix: 10–12 שורות-JSON עבריות-עשירות ≈ 350–400 tokens/row
+        // → 3000 גרם לחיתוך ו-parse-failure. 4500 = מרווח-ביטחון מלא.
+        maxTokens: 4500,
       });
 
       const rawRows = Array.isArray(result?.rows) ? result.rows : [];

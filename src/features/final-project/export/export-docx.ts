@@ -28,7 +28,7 @@ import {
 } from 'docx';
 import type { CoverInfo, SiteInfo, JsaRow } from '../types';
 import { buildProjectDocument, RISK_LEVEL_COLUMN_INDICES } from './project-document';
-import type { JsaTableRow } from './project-document';
+import type { JsaTableRow, JsaTableHeader } from './project-document';
 
 // ---------------------------------------------------------------------------
 // קבועי-עיצוב
@@ -110,6 +110,26 @@ function rtlCell(text: string, opts: { fill?: string; bold?: boolean } = {}): Ta
 }
 
 // ---------------------------------------------------------------------------
+// כותרת-הטבלה הרשמית (JsaTableHeader — מעל שורת-הכותרות)
+// ---------------------------------------------------------------------------
+
+/**
+ * buildTableHeaderBlock — מרנדר את JsaTableHeader כסדרת פסקאות RTL.
+ *
+ * פורמט: "תווית: ערך" פר-שדה · 5 שדות · name-clean (factory/workplace/workPosition/preparedBy/approvedBy).
+ * מוצג מעל buildJsaTable (לפני שורת-כותרות-העמודות) — בהתאם לפורמט-המשרד.
+ */
+function buildTableHeaderBlock(header: JsaTableHeader): Paragraph[] {
+  return [
+    rtlParagraph(`מפעל / שם-הפרויקט: ${header.factory}`, { size: 20 }),
+    rtlParagraph(`מקום-עבודה: ${header.workplace}`, { size: 20 }),
+    rtlParagraph(`עמדה / שלב-עבודה: ${header.workPosition}`, { size: 20 }),
+    rtlParagraph(`הוכן ע"י: ${header.preparedBy}`, { size: 20 }),
+    rtlParagraph(`אושר ע"י: ${header.approvedBy}`, { size: 20 }),
+  ];
+}
+
+// ---------------------------------------------------------------------------
 // בניית-הטבלה
 // ---------------------------------------------------------------------------
 
@@ -186,6 +206,9 @@ export async function exportToDocx(
       bold: true,
       size: 28,
     }),
+    // כותרת-הטבלה הרשמית (מפעל/מקום-עבודה/עמדה/הוכן-ע"י/אושר-ע"י · לפני שורת-הכותרות)
+    ...buildTableHeaderBlock(doc.jsaTable.tableHeader),
+    new Paragraph({ text: '' }),
     buildJsaTable(doc.jsaTable.headers, doc.jsaTable.rows),
   ];
 

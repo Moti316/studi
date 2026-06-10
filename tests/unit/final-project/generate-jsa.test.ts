@@ -123,7 +123,7 @@ describe('generateJsaDraftAction — שערי-fallback', () => {
     expect(isValidJsaRowArray(rows)).toBe(true);
   });
 
-  it('Claude מועבר ה-prompt+system הנכונים + maxTokens=3000', async () => {
+  it('Claude מועבר ה-prompt+system הנכונים + maxTokens=4500', async () => {
     isClaudeConfigured.mockReturnValue(true);
     claudeGenerateJSON.mockResolvedValue(claudeRows());
 
@@ -135,7 +135,7 @@ describe('generateJsaDraftAction — שערי-fallback', () => {
       prompt: string;
       maxTokens: number;
     };
-    expect(arg.maxTokens).toBe(3000);
+    expect(arg.maxTokens).toBe(4500);
     expect(arg.system).toContain('מסייע-לנתח אתר-אמיתי');
     expect(arg.prompt).toBe(buildDraftPrompt(s)); // ה-prompt הקנוני
   });
@@ -425,5 +425,64 @@ describe('isValidJsaRowArray', () => {
     delete r.status;
     // status רשות — שורה ללא status תקינה (ה-action יזריק "open")
     expect(isValidJsaRowArray([r])).toBe(true);
+  });
+
+  // #4: hazard ו-scenario חייבים לא-ריקים
+  it('hazard מחרוזת-ריקה → false (#4)', () => {
+    expect(isValidJsaRowArray([{ ...validRow(), hazard: '' }])).toBe(false);
+  });
+
+  it('scenario מחרוזת-ריקה → false (#4)', () => {
+    expect(isValidJsaRowArray([{ ...validRow(), scenario: '' }])).toBe(false);
+  });
+
+  // #8: שורה-אדומה (riskBefore ≥ 12) חייבת addedControls לא-ריקות
+  it('שורה-אדומה (riskBefore=4×3=12) עם addedControls ריקות → false (#8)', () => {
+    expect(
+      isValidJsaRowArray([
+        {
+          ...validRow(),
+          riskBefore: { severity: 4, probability: 3 },
+          addedControls: { engineering: '', administrative: '', ppe: '' },
+        },
+      ]),
+    ).toBe(false);
+  });
+
+  it('שורה-אדומה (riskBefore=4×4=16) עם addedControls ריקות → false (#8)', () => {
+    expect(
+      isValidJsaRowArray([
+        {
+          ...validRow(),
+          riskBefore: { severity: 4, probability: 4 },
+          addedControls: { engineering: '', administrative: '', ppe: '' },
+        },
+      ]),
+    ).toBe(false);
+  });
+
+  it('שורה-אדומה (riskBefore=4×3=12) עם addedControls מלאות → true (#8)', () => {
+    expect(
+      isValidJsaRowArray([
+        {
+          ...validRow(),
+          riskBefore: { severity: 4, probability: 3 },
+          addedControls: { engineering: 'הארקה ומפסק', administrative: 'LOTO', ppe: '' },
+        },
+      ]),
+    ).toBe(true);
+  });
+
+  it('שורה-צהובה (riskBefore=3×3=9) עם addedControls ריקות — עובר (#8 לא-חוסם)', () => {
+    // ציון 9 = צהוב — הכלל-האדום לא חל (הכלל: ≥12 בלבד)
+    expect(
+      isValidJsaRowArray([
+        {
+          ...validRow(),
+          riskBefore: { severity: 3, probability: 3 },
+          addedControls: { engineering: '', administrative: '', ppe: '' },
+        },
+      ]),
+    ).toBe(true);
   });
 });

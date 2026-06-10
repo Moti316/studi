@@ -74,6 +74,23 @@ export function validateHierarchy(rows: JsaRow[]): HierarchyIssue[] {
         severity: band === 'red' ? 'error' : 'warning',
       });
     }
+
+    // C: סיכון yellow/red לפני הבקרות, הוגדרו בקרות-נוספות, אך הסיכון-אחרי עדיין אינו ירוק.
+    const afterScore = assessmentScore(row.riskAfter);
+    const afterBand = riskBand(afterScore);
+    if (
+      (band === 'yellow' || band === 'red') &&
+      !isControlSetEmpty(row.addedControls) &&
+      afterBand !== 'green'
+    ) {
+      issues.push({
+        rowId: row.id,
+        description:
+          `גורם-סיכון "${row.hazard}": הבקרות-הנוספות אינן מורידות את הסיכון לרמה-קבילה ` +
+          `(ציון-אחרי ${afterScore} = ${afterBand === 'red' ? 'אדום' : 'צהוב'}). יש לחזק את הבקרות עד להורדת-הסיכון לרצועה-ירוקה.`,
+        severity: 'warning',
+      });
+    }
   }
 
   return issues;

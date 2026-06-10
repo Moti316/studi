@@ -210,10 +210,12 @@ export async function evaluateCapstoneAction(
   if (isClaudeConfigured()) {
     try {
       const prompt = buildClaudePrompt(site, jsaRows);
+      // maxTokens=2000: משוב-עברי עשיר — 4 sections × ~200 תווים + arrays של ליקויים/פערים.
+      // 1200 היה גורם ל-truncation שקט → fallback דטרמיניסטי (ללא אזהרה ברורה).
       const result = await claudeGenerateJSON<CapstoneFeedback>({
         system: SYSTEM_SAFETY_REVIEWER,
         prompt,
-        maxTokens: 1200,
+        maxTokens: 2000,
       });
 
       if (!isValidCapstoneFeedback(result)) {

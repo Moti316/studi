@@ -89,6 +89,34 @@ function PrintableArea({ printableId }: { printableId: string }) {
 
         {/* טבלת-JSA */}
         <h2 className="mb-2 text-lg font-bold">טבלת ניתוח-סיכונים (JSA)</h2>
+
+        {/* כותרת-הטבלה הרשמית (מפעל / מקום-עבודה / עמדה / הוכן-ע"י / אושר-ע"י) */}
+        <dl
+          dir="rtl"
+          className="mb-3 grid grid-cols-2 gap-x-6 gap-y-1 rounded border border-quiz-border bg-accent-50 px-3 py-2 text-[11px]"
+        >
+          <div className="flex gap-1">
+            <dt className="font-bold">שם-מפעל / פרויקט:</dt>
+            <dd>{doc.jsaTable.tableHeader.factory}</dd>
+          </div>
+          <div className="flex gap-1">
+            <dt className="font-bold">מקום-עבודה:</dt>
+            <dd>{doc.jsaTable.tableHeader.workplace}</dd>
+          </div>
+          <div className="flex gap-1">
+            <dt className="font-bold">עמדה / שלב-עבודה:</dt>
+            <dd>{doc.jsaTable.tableHeader.workPosition}</dd>
+          </div>
+          <div className="flex gap-1">
+            <dt className="font-bold">הוכן-ע"י:</dt>
+            <dd>{doc.jsaTable.tableHeader.preparedBy}</dd>
+          </div>
+          <div className="flex gap-1">
+            <dt className="font-bold">אושר-ע"י:</dt>
+            <dd>{doc.jsaTable.tableHeader.approvedBy}</dd>
+          </div>
+        </dl>
+
         <table className="w-full border-collapse text-[11px]">
           <thead>
             <tr className="bg-accent-50">
@@ -106,7 +134,11 @@ function PrintableArea({ printableId }: { printableId: string }) {
                   <td
                     key={`c-${row.index}-${ci}`}
                     className={`border border-quiz-border px-1.5 py-1 align-top ${
-                      ci === 6 ? `font-bold ${bandCls[row.band]}` : ''
+                      ci === 8
+                        ? `font-bold ${bandCls[row.bandBefore]}`
+                        : ci === 14
+                          ? `font-bold ${bandCls[row.bandAfter]}`
+                          : ''
                     }`}
                   >
                     {cell}

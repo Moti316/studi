@@ -238,7 +238,7 @@ export function assessmentScore(a: RiskAssessment): number {
  *   yellow — 6-9  : לא-קביל (להורידו · המשך-מוגבל רק באישור-מנהל-מוסמך).
  *   red    — 12-16: לא-קביל (פעולה-מיידית · עד-עצירת-עבודה).
  *
- * ציון 5 ו-10-11 אינם מכפלה-אפשרית ב-4×4 (1,2,3,4,6,8,9,12,16); best-fit (5→yellow · 10-11→red).
+ * ציון 5, 7, 10-11 אינם מכפלה-אפשרית ב-4×4 (ערכים-אפשריים: 1,2,3,4,6,8,9,12,16); best-fit (5→yellow · 7→yellow · 10-11→red).
  */
 export function riskBand(score: number): 'green' | 'yellow' | 'red' {
   if (score <= 4) return 'green';
