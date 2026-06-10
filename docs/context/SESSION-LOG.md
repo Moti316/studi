@@ -5,6 +5,27 @@
 
 ---
 
+## 2026-06-10 (המשך-3) — ★ capstone לפורמט-JSA הרשמי (מודל-עשיר) + סקירה-אדוורסרית + תיקונים
+
+> **תמצית:** הושלמה **הדרישה-המרכזית** (★) — רפקטור ה-capstone לפורמט-ה-JSA הרשמי של משרד-העבודה, מעוגן בתיקיית-Drive "פרויקט גמר" (example + "המלצה לפורמט טבלה" + "לוח החלטה"). **3 Workflows** (רפקטור-6-סוכנים → סקירה-4-סוכנים → תיקון-7-סוכנים). **commits:** `6eb0fac` (רפקטור) + `9bfc773` (תיקונים). typecheck נקי · **874 vitest** ירוקים.
+
+**הושלם (הכל ב-`main`):**
+
+- ✅ **מודל-עשיר** (`types.ts` · ליבה ע"י-הראשי): `JsaRow` עם `existingControls`/`addedControls` = `ControlSet{engineering,administrative,ppe}` (בקרות-מפוצלות ×3) · `riskBefore`/`riskAfter` = `RiskAssessment{probability,severity}` (הערכה לפני+אחרי) · `status`. helpers: `emptyJsaRow` · `assessmentScore` · `riskBandLabel` · `JSA_STATUS_LABELS` · `isControlSetEmpty`/`isPpeOnly`.
+- ✅ **`jsa-validation`** (ליבה ע"י-הראשי): מדרג-בקרות **מבני** (PPE-only על שתי-העמודות · לא ניחוש-מילות-מפתח).
+- ✅ **6 צרכנים** (Workflow-רפקטור): `JsaBuilder` (עורך-עשיר · ControlSet×3 · before/after · status) · `RiskMatrix` (4×4 לפי riskBefore + overlay-after · מקרא 1-4/6-9/12-16) · `evaluate`/`jsa-generation` (prompts עשירים) · `export/project-document` (+`export-docx`) טבלת-18-עמודות + כותרת-טבלה.
+- ✅ **סקירה-אדוורסרית** (Workflow · 4 reviewers · 13 ממצאים · 8 HIGH) → **Workflow-תיקון** (7 סוכנים · `9bfc773`): ולידציה-מחמירה (שורה-אדומה-חייבת-בקרות · שדות-לא-ריקים · isProbabilityLevel) · **★ max_tokens** (generate 3000→4500 · evaluate 1200→2000 — אותו שיעור LiveEngine!) · דגל-בקרות-לא-אפקטיביות (riskAfter) · רינדור-כותרת-טבלה ב-Word+PDF · צביעת-עמודות (8/14) · תיקון-reducer-UX ב-JsaBuilder.
+
+**נותר / הצעד-הבא:**
+
+1. **★ אימות-חי AI** (השיעור!): `pnpm dev` → `/capstone` → "צור טיוטת-JSA" → לוודא ש-Claude מייצר ~10-12 שורות-עשירות-תקינות (לא נחתך) · ייצוא PDF/Word תואם-פורמט.
+2. **מבנה-מסמך 12-18 עמ'** (6 פרקים: אודות-חברה/פרויקט/מבנה-ארגוני/תהליכים/טבלה/ניתוח) — `project-document` מרנדר טבלה; הפרקים-הנרטיביים נותרו.
+3. בלוק-4 מורה-AI · המשך-עיצוב (בלוק-2) · import בנק-12-תרחישים · ISO 5.3/5.4.
+
+**2 ממצאי-MEDIUM נדחו** (`completenessScore` policy · deprecated-aliases) — שיקול-דעת, לא-באג.
+
+---
+
 ## 2026-06-10 (המשך-2) — capstone → תואם-משרד-העבודה (ליבה) + פורמט-רשמי נותר 🧠 capstone-ministry-spec
 
 > **תמצית:** מוטי הגדיר את ה-capstone כ**פרויקט-גמר אמיתי תואם-משרד-העבודה**. נבנתה הליבה (Workflow 4-סוכנים · 70 טסטים · `4325808`). **ה-refactor-לפורמט-הרשמי (טבלה+מטריצה זהות-לדוגמה) נותר** — סשן-טרי. עיגון מ-Drive (תיקיית "פרויקט גמר": example + הנחיות) נקרא ומתועד בזיכרון.
