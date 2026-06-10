@@ -16,7 +16,7 @@
 - ⬜ **בלוק-2** — מהפכת-עיצוב StudiesGo (נועז · ישיר על האפליקציה · דשבורד/קורס/שיעור/סימולציה · motion+depth).
 - ✅ **בלוק-3** — פרויקט-גמר `capstone` (Workflow · 8 סוכנים): `/capstone` route (auth) · wizard 4-שלבים (`CapstoneFlow`) · `SiteStep`/`JsaBuilder`/`RiskMatrix`/`FeedbackStep` · `riskLevel`/`riskBand` (מקרא-המשרד) · `evaluate-capstone.action` (Claude + fallback) · zustand store · קישור מדף-הקורס · 8 טסטים ✅. ⏳ עוד טסטי-jsa-validation + אימות-חי נותרו.
 - ⬜ **בלוק-4** — מורה-פרטי AI על התשובות (`TutorChat` + `tutor-explain.action` · reuse claude.ts).
-- 🔄 **בלוק-5** — בנק-תרחישים pre-bake (Workflow · **12 תרחישי-ענף חוברו+אומתו** content-verifier · staging→import).
+- 🔄 **בלוק-5** — בנק-תרחישים pre-bake (Workflow · **12 תרחישי-ענף חוברו · 11 אומתו** content-verifier) → staged `src/features/simulation/data/committee-sim-bank.json`. ⏳ נותר: import ל-DB + wiring ל-`/lesson/scenarios` + תיקון-1-דגל.
 - ⬜ **בלוק-6** — טיוטות ISO 5.3/5.4 + סגירה (TODO/STATUS/SESSION-LOG · לוג-Drive · דו"ח-בוקר).
 
 > תיעוד-בעיות: `docs/context/BUGS.md` · עדכון-MD שוטף (MD-INDEX אוטו-רענון ב-pre-commit) · לוג-Drive פר-בלוק+סשן.
