@@ -19,6 +19,7 @@
 - 🔄 **בלוק-5** — בנק-תרחישים pre-bake (Workflow · **12 תרחישי-ענף חוברו · 11 אומתו** content-verifier) → staged `src/features/simulation/data/committee-sim-bank.json`. ⏳ נותר: import ל-DB + wiring ל-`/lesson/scenarios` + תיקון-1-דגל.
 - ⬜ **בלוק-6** — טיוטות ISO 5.3/5.4 + סגירה (TODO/STATUS/SESSION-LOG · לוג-Drive · דו"ח-בוקר).
 - ✅ **סקירת-ריצת-הלילה (2026-06-10 · מחשב-מוטי)** — Workflow-סקירה (20 סוכנים · 14 ממצאים) → Workflow-מימוש (3) + Workflow-אימות-נגדי (9) → **13 ממצאים תוקנו** (★ max_tokens · turn-cap · auth×2 · ציטוט-מומצא · injection · cost-guard · ציון-אמיתי · turnIndex · aria-live · capstone #4/#5/#6 · תרחיש-מדוגל) · **800 vitest** · #14+rate-limit נדחו-מתועד (`BUGS#night-run-review`).
+- 🔄 **capstone → תואם-משרד-העבודה (2026-06-10 · `298bec5`+`4325808`)** [🧠 `capstone-ministry-spec`] — ✅ נגישות (`/preview/capstone`+CTA) · עמוד-פתיחה (PII client-side) · AI-טיוטת-JSA (אתר-אמיתי · לא-ממציא) · ייצוא PDF/Word · 70 טסטים. ⏳ **נותר (★ סשן-טרי):** טבלת-JSA+מטריצה בפורמט-הרשמי-המדויק (בקרות-מפוצלות · סיכון לפני/אחרי · סטטוס) · מבנה-מסמך 12-18עמ' · ≥10 שורות-חובה.
 
 > תיעוד-בעיות: `docs/context/BUGS.md` · עדכון-MD שוטף (MD-INDEX אוטו-רענון ב-pre-commit) · לוג-Drive פר-בלוק+סשן.
 
