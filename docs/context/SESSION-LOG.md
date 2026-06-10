@@ -5,6 +5,30 @@
 
 ---
 
+## 2026-06-10 (ריצת-לילה אוטונומית) — LiveEngine + capstone + בנק-תרחישים + עיצוב
+
+> **תמצית:** מצב-אוטונומי (Workflows + סוכני-בקרה). **5 בלוקים נדחפו ל-`main`.** typecheck + 778 vitest ירוקים בכל push. **commits:** `5ee116d`→`ef2ad08` (6 דחיפות).
+
+**הושלם (הכל ב-`main`):**
+
+- ✅ **בלוק-0** (`5ee116d`) — הסרת כפתור "קורס חדש" (שייך לפלטפורמה-עתידית · לא ללומד).
+- ✅ **בלוק-1 ★ סימולציה-פתוחה LiveEngine** (`c687fff` · ADR-018) — הכרעת-מוטי: דיאלוג-וועדה פתוח. `claude.ts`: prompt-caching (`CacheableSystem`/`toSystemParam` · `cache_control` ephemeral) + `claudeConverse` multi-turn + max_tokens=900 + skip-קצרות. `committee-sim/{live,grounding}.ts` (פרומפט-חי מעל master · `parseLiveTurn` defensive · `transcriptToMessages` · עיגון פר-ענף). `respond-live.action` (3 שערי-fallback · לעולם-לא-זורק). `live-engine` reducer + `LiveSimulationPlayer` (textarea · transcript · ציון-רץ · coaching · דו"ח 0-100). `/preview/simulation-live`. **28 טסטים.** ⏳ **אימות-חי (dev-server) נותר.**
+- ✅ **בלוק-3 capstone** (`7d22d62`) — **נבנה ע"י Workflow (8 סוכנים) + שולב/אומת ע"י הראשי.** `/capstone` (auth) → `CapstoneFlow` wizard 4-שלבים (SiteStep → JsaBuilder → RiskMatrix → FeedbackStep) · `riskLevel`/`riskBand` (מקרא-המשרד ירוק≤4/צהוב≤9/אדום≥10) · `evaluate-capstone.action` (Claude+fallback) · zustand · קישור מדף-הקורס · **8 טסטים.** ⏳ עוד טסטי-jsa-validation + אימות-חי.
+- ✅ **בלוק-5 בנק-תרחישים** (`def5e13`) — **Workflow (24 סוכנים)** חיבר **12 תרחישי-ענף** פרה-בנויים מעוגני-קורפוס + **content-verifier** (11/12 אומתו · 1 דגל). staged `src/features/simulation/data/committee-sim-bank.json`. ⏳ import-DB + wiring `/lesson/scenarios` + תיקון-דגל.
+- 🔄 **בלוק-2 עיצוב** (`ef2ad08`) — **התחלה:** דשבורד gradient-hero + glow + flame-pulse-רצף. ⏳ נותר: נגן-שיעור/קורס/סימולציה · count-up · card-flip · mascot-poses (תשתית 34-וריאנטים קיימת).
+
+**דורש-מוטי / נותר (הצעד-הבא):**
+
+1. **אימות-חי בלוק-1:** `pnpm dev` → `/preview/simulation-live` → להקליד תשובה → לוודא ש-Claude מגיב כמפקח (`source:'claude'` · partial-credit · התקדמות-שלב). (המפתח ב-`.env.local` מאומת.)
+2. **בלוק-4 מורה-AI** (טרם): `TutorChat` + `tutor-explain.action` (reuse `claude.ts`) · מחובר ל-capstone-feedback ול-ExplanationCard.
+3. **בלוק-2 המשך:** מהפכת-עיצוב מלאה (נגן-שיעור/קורס/סימולציה).
+4. **בלוק-5 השלמה:** import 12 התרחישים ל-DB + wiring + תיקון-דגל-הציטוט.
+5. **בלוק-6:** טיוטות ISO 5.3/5.4 (31010/31000).
+
+**הערות-סביבה (קריטי למחשב-אחר):** `corepack enable pnpm` (pnpm לא על PATH) · git identity `Moti316 <223746285+Moti316@users.noreply.github.com>` · `corepack pnpm install` (אין node_modules בקלון-טרי). pre-push = typecheck + 778 vitest. **תובנה:** Workflows-בונים-קוד (capstone/scenario-bank) חסכו שעות — אבל כותבים-קבצים-לעץ → לאמת+typecheck+gate ע"י הראשי לפני push.
+
+---
+
 ## 2026-06-09 (המשך-ג · סשן-ענק) — בנק-שאלות-חי + סבב-UX + Claude-LiveEngine (ADR-016/017)
 
 > **תמצית:** בנק-השאלות הוחלף, סבב-UX מקיף לפי-StudiesGo, והוקם מנוע-הערכה-סמנטית-חי (Claude). **commits:** `8436f09`→`93730cf`. typecheck+vitest (742) ירוקים בכל push.
