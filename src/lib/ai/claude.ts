@@ -153,6 +153,69 @@ export async function claudeGenerateJSON<T>(args: ClaudeGenerateArgs): Promise<T
   }
 }
 
+/**
+ * system כ-string (legacy · ללא-cache) או כבלוק-ניתן-לקאשינג. כש-`cache:true` מוסיפים
+ * `cache_control: ephemeral` → ה-prefix-הקבוע (פרומפט-מגן + עיגון) נטען מ-cache בכל תור-המשך
+ * (~90% הנחה על input-החוזר · TTL 5 דק'). דורש prefix ≥ ~1-4K tokens כדי שייכנס ל-cache.
+ */
+export type CacheableSystem = string | { text: string; cache?: boolean };
+
+/** ממיר ל-system param של ה-SDK: מחרוזת כמו-שהיא, או מערך-בלוק עם cache_control. */
+function toSystemParam(
+  sys: CacheableSystem | undefined,
+): string | Anthropic.TextBlockParam[] | undefined {
+  if (sys === undefined) return undefined;
+  if (typeof sys === 'string') return sys;
+  return [
+    {
+      type: 'text',
+      text: sys.text,
+      ...(sys.cache ? { cache_control: { type: 'ephemeral' } } : {}),
+    },
+  ];
+}
+
+export interface ClaudeConverseArgs {
+  /** system קבוע (ניתן-לקאשינג) — הפרומפט-מגן + עיגון-החקיקה. */
+  system: CacheableSystem;
+  /** היסטוריית-השיח (תורי user/assistant) — ה-LiveEngine מעביר את ה-transcript. */
+  messages: Anthropic.MessageParam[];
+  model?: string;
+  /** ברירת-מחדל 900 — מספיק לתגובת-מפקח עשירה + envelope, בלי JSON-חתוך. */
+  maxTokens?: number;
+}
+
+/**
+ * שיח רב-תורי מול Claude (ADR-018 · LiveEngine). מעביר message-history אמיתי + system
+ * ניתן-לקאשינג. מחזיר טקסט-גולמי — ה-parse (JSON-envelope) על הקורא. SERVER-ONLY.
+ */
+export async function claudeConverse({
+  system,
+  messages,
+  model,
+  maxTokens = 900,
+}: ClaudeConverseArgs): Promise<string> {
+  const resolved = model ?? defaultEvalModel();
+  const sys = toSystemParam(system);
+  try {
+    const msg = await getClient().messages.create({
+      model: resolved,
+      max_tokens: maxTokens,
+      ...(sys ? { system: sys } : {}),
+      messages,
+    });
+    const text = extractText(msg);
+    if (!text) throw new ClaudeClientError(`Claude returned no text (model=${resolved}).`);
+    return text;
+  } catch (err) {
+    if (err instanceof ClaudeClientError) throw err;
+    throw new ClaudeClientError(
+      `Claude converse failed (model=${resolved}): ${errMessage(err)}`,
+      err,
+    );
+  }
+}
+
 /** Test-only: איפוס ה-singleton (למפתח-טרי בין-טסטים). */
 export function __resetClaudeClientForTests(): void {
   clientSingleton = null;

@@ -6,6 +6,21 @@
 > 📂 **פירוט תתי-משימות פר-שלב:** [docs/todo/](docs/todo/README.md) — כל שלב A–I בקובץ נפרד (קריטריוני-קבלה + מסמכי-ייחוס).
 > 📊 **פירוט-מורחב** (⏱זמן · 🤖סוכנים · 💲עלות · 🟢🟡🔴סיכון · ראש-צוות · 🚩דורש-מוטי · אימות) פר תת-משימה ב-[docs/todo/](docs/todo/README.md) — הסכמה+מקרא ב-README. (ממשל-v2 / תוצר-3.)
 
+## 🌙 ריצת-לילה אוטונומית (2026-06-10) — דחיפה רחבה [הכרעת-מוטי · 4 must]
+
+> מצב-אוטונומי (auto-accept · Workflows · סוכני-בקרה כשער-איכות). כל 4 היעדים = **must**.
+> דלג-NotebookLM (login) → יצירת-תוכן ב-Claude-Workflow מעוגן-קורפוס. עיצוב-נועז ישיר. commit+push פר-בלוק.
+
+- ✅ **בלוק-0** — הסרת כפתור "קורס חדש" (שייך לפלטפורמה-עתידית · `5ee116d`).
+- ✅ **בלוק-1 ★** — סימולציה-פתוחה `LiveEngine` (ADR-018): `claude.ts` (prompt-caching + `claudeConverse`) · `committee-sim/{live,grounding}.ts` · `respond-live.action` (3 שערים) · `live-engine` reducer · `InspectorBubble` + `LiveSimulationPlayer` · `/preview/simulation-live` · **28 טסטים ✅** · typecheck נקי. ⏳ אימות-חי (dev-server) נותר.
+- ⬜ **בלוק-2** — מהפכת-עיצוב StudiesGo (נועז · ישיר על האפליקציה · דשבורד/קורס/שיעור/סימולציה · motion+depth).
+- ⬜ **בלוק-3** — פרויקט-גמר `capstone` (route + JSA-builder + מטריצת-4×4 + משוב-AI · state-מקומי) [Workflow-רקע בונה].
+- ⬜ **בלוק-4** — מורה-פרטי AI על התשובות (`TutorChat` + `tutor-explain.action` · reuse claude.ts).
+- 🔄 **בלוק-5** — בנק-תרחישים pre-bake (Workflow · **12 תרחישי-ענף חוברו+אומתו** content-verifier · staging→import).
+- ⬜ **בלוק-6** — טיוטות ISO 5.3/5.4 + סגירה (TODO/STATUS/SESSION-LOG · לוג-Drive · דו"ח-בוקר).
+
+> תיעוד-בעיות: `docs/context/BUGS.md` · עדכון-MD שוטף (MD-INDEX אוטו-רענון ב-pre-commit) · לוג-Drive פר-בלוק+סשן.
+
 ## 🔥 כיוון-פעיל (2026-06-09) — שני מיני-קורסים מעוגנים [DECISIONS · ADR-016 · 🧠 committee-simulation-direction]
 
 > **מחליף את הכיוון-הישן** של מיני-הקורסים. שאלות = NotebookLM (אפס-Gemini). תרחישים = **סימולציית-וועדה** (לא walkthrough סטטי). יעד: לעדכן את האתר — שאלות-חדשות + תרחישים-חדשים חיים.

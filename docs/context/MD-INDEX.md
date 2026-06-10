@@ -2,7 +2,7 @@
 
 > ⚠️ **קובץ מחולל — אל תערוך ידנית.** מקור: `.claude/scripts/gen-md-index.mjs` · רענון: `pnpm index:md`
 > (מתרענן גם אוטומטית ב-pre-commit). דלת-הכניסה לשליפה-מהירה של כל מסמך בריפו.
-> **סה״כ 351 קבצי-MD בריפו** · עמודת "עודכן" = מתי הקובץ עודכן לאחרונה ב-git (לאיתור מסמכים שהתיישנו).
+> **סה״כ 352 קבצי-MD בריפו** · עמודת "עודכן" = מתי הקובץ עודכן לאחרונה ב-git (לאיתור מסמכים שהתיישנו).
 
 ## 📌 קבצי-חובה — קרא/עבור עליהם בכל סשן (נעוץ)
 
@@ -84,7 +84,7 @@
 | [I-compliance-launch.md](../../docs/todo/I-compliance-launch.md) | שלב I ב-TODO.md · לפי EXECUTION-PLAN.md. | docs todo | 2026-06-03 |
 | [README.md](../../docs/todo/README.md) | היררכיית-TODO דו-שכבתית. שכבה-1 = TODO.md בשורש (master — סקירת A–I מול תוכנית-הביצוע | docs todo | 2026-06-09 |
 
-### 🏛️ ארכיטקטורה — ADR (docs/architecture)  ·  19
+### 🏛️ ארכיטקטורה — ADR (docs/architecture)  ·  20
 
 | קובץ | תכלית | תגיות | עודכן |
 | --- | --- | --- | --- |
@@ -106,6 +106,7 @@
 | [ADR-015-notebooklm-content-engine.md](../../docs/architecture/ADR-015-notebooklm-content-engine.md) | סטטוס: Accepted · 2026-06-08 · בעלים: tech-lead (איתן) · ml-engineer · motilev8 | docs architecture | 2026-06-09 |
 | [ADR-016-committee-simulation.md](../../docs/architecture/ADR-016-committee-simulation.md) | סטטוס: Accepted · 2026-06-09 · בעלים: tech-lead (איתן) · product-owner · motilev8 | docs architecture | 2026-06-09 |
 | [ADR-017-claude-live-evaluation.md](../../docs/architecture/ADR-017-claude-live-evaluation.md) | סטטוס: Accepted · 2026-06-09 · בעלים: tech-lead (איתן) · motilev8 | docs architecture | 2026-06-09 |
+| [ADR-018-committee-live-engine.md](../../docs/architecture/ADR-018-committee-live-engine.md) | סטטוס: Accepted · 2026-06-10 · בעלים: tech-lead (איתן) · motilev8 | docs architecture | — |
 | [README.md](../../docs/architecture/README.md) | תיעוד כל ההחלטות-הארכיטקטוניות המשמעותיות לפרויקט. כל החלטה מקבלת ADR לפני implementation. | docs architecture | 2026-06-09 |
 
 ### 🖼️ עיצוב ומסכים — screens-spec · design · screens  ·  29
