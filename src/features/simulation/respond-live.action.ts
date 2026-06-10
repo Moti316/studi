@@ -8,10 +8,12 @@
  *   3. Claude חי → `claudeConverse` (system ניתן-לקאשינג) → `parseLiveTurn`. כשל → דטרמיניסטי.
  */
 import { isClaudeConfigured, claudeConverse } from '@/lib/ai/claude';
+import { getUser } from '@/lib/auth/server';
 import {
   buildLiveSystemPrompt,
   transcriptToMessages,
   parseLiveTurn,
+  clampLiveProgress,
   isTooShortToGrade,
   deterministicLiveTurn,
   deterministicNudge,
@@ -19,6 +21,11 @@ import {
 import type { RespondLiveInput, RespondLiveResult } from './live-types';
 
 export async function respondLiveAction(input: RespondLiveInput): Promise<RespondLiveResult> {
+  // שער 0 — auth: חוסם קריאות-Claude-בתשלום ממשתמש-לא-מחובר (קריאה-ישירה ל-action · cost-abuse).
+  // לא-מחובר → דטרמיניסטי (אפס-קריאת-Claude · אפס-עלות).
+  const user = await getUser();
+  if (!user) return deterministicLiveTurn(input);
+
   // שער 1 — תשובה ריקה/קצרה-מאוד: nudge בלי-קריאה.
   if (isTooShortToGrade(input.answer)) return deterministicNudge(input);
 
@@ -29,8 +36,11 @@ export async function respondLiveAction(input: RespondLiveInput): Promise<Respon
   try {
     const system = buildLiveSystemPrompt(input.branch);
     const messages = transcriptToMessages(input);
-    const raw = await claudeConverse({ system, messages, maxTokens: 900 });
-    return { ...parseLiveTurn(raw), source: 'claude' };
+    // maxTokens גבוה: תגובת-מפקח עברית-עשירה (עברית צפופת-טוקנים · עשוי ASCII) **בתוך**
+    // JSON-envelope — 900 קוצץ את ה-JSON → parse נכשל → fallback. 3000 נותן מרווח.
+    const raw = await claudeConverse({ system, messages, maxTokens: 3000 });
+    // clamp: כפיית-התקדמות-מונוטונית (קאפ-שלב) — מונע לולאה-אינסופית/עלות-מתפרצת.
+    return { ...clampLiveProgress(parseLiveTurn(raw), input), source: 'claude' };
   } catch {
     // כשל-Claude (רשת/JSON-שבור) → דטרמיניסטי. לא חושפים שגיאה ללקוח.
     return deterministicLiveTurn(input);

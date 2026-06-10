@@ -21,6 +21,7 @@ import type { CapstoneFeedback, SiteInfo, JsaRow } from './types';
 import { riskLevel, riskBand } from './types';
 import { buildDeterministicFeedback } from './jsa-validation';
 import { isClaudeConfigured, claudeGenerateJSON } from '@/lib/ai/claude';
+import { getUser } from '@/lib/auth/server';
 
 // ---------------------------------------------------------------------------
 // System prompt — מבקן-הבטיחות
@@ -145,6 +146,10 @@ export async function evaluateCapstoneAction(
   site: SiteInfo,
   jsaRows: JsaRow[],
 ): Promise<CapstoneFeedback> {
+  // auth: חוסם קריאת-Claude-בתשלום ממשתמש-לא-מחובר (קריאה-ישירה ל-action · cost-abuse).
+  const user = await getUser();
+  if (!user) return buildDeterministicFeedback(site, jsaRows);
+
   // --- מסלול Claude ---
   if (isClaudeConfigured()) {
     try {

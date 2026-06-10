@@ -7,6 +7,7 @@ import {
   buildLiveSystemPrompt,
   transcriptToMessages,
   parseLiveTurn,
+  clampLiveProgress,
   isTooShortToGrade,
   deterministicLiveTurn,
   deterministicNudge,
@@ -169,5 +170,51 @@ describe('deterministicNudge', () => {
     expect(r.quality).toBe('poor');
     expect(r.nextStage).toBe('opening');
     expect(r.done).toBe(false);
+  });
+});
+
+describe('clampLiveProgress — קאפ-שלב צד-שרת (מונע לולאה-אינסופית)', () => {
+  const parsed = (over: Record<string, unknown> = {}) =>
+    parseLiveTurn(
+      JSON.stringify({
+        inspectorReply: 'תגובה',
+        quality: 'good',
+        advanceStage: false,
+        nextStage: 'branch',
+        nextQuestion: 'שאלה',
+        done: false,
+        ...over,
+      }),
+    );
+
+  it('מתחת-לקאפ + המודל-לא-מתקדם → נשאר בשלב (לא נסיגה אחורה)', () => {
+    const r = clampLiveProgress(
+      parsed({ advanceStage: false, nextStage: 'opening' }),
+      input({ stage: 'branch', turnIndexInStage: 0 }),
+    );
+    expect(r.advanceStage).toBe(false);
+    expect(r.nextStage).toBe('branch'); // לא נסיגה ל-opening
+    expect(r.done).toBe(false);
+  });
+
+  it('מעל-הקאפ → כפיית-התקדמות לשלב-הבא', () => {
+    const r = clampLiveProgress(parsed(), input({ stage: 'branch', turnIndexInStage: 2 }));
+    expect(r.advanceStage).toBe(true);
+    expect(r.nextStage).toBe('law');
+  });
+
+  it('שלב-אחרון (cruel) מעל-הקאפ → כפיית-done + דו"ח', () => {
+    const r = clampLiveProgress(parsed(), input({ stage: 'cruel', turnIndexInStage: 2 }));
+    expect(r.done).toBe(true);
+    expect(r.nextStage).toBeNull();
+    expect(r.finalReport).toBeTruthy();
+  });
+
+  it('המודל-סיים (done) → מכובד', () => {
+    const r = clampLiveProgress(
+      parsed({ done: true }),
+      input({ stage: 'law', turnIndexInStage: 0 }),
+    );
+    expect(r.done).toBe(true);
   });
 });

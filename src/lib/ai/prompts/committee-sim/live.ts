@@ -224,6 +224,41 @@ export function parseLiveTurn(raw: string): Omit<RespondLiveResult, 'source'> {
   };
 }
 
+/** קאפ-קשיח על אורך-שלב (גם במסלול-Claude) — מונע לולאה-אינסופית/עלות-מתפרצת. */
+const MAX_TURNS_PER_STAGE = 3;
+
+/**
+ * מכפיף את החלטת-המודל להתקדמות-מונוטונית-קדימה (ADR-018 · תיקון-סקירה 2026-06-10):
+ * המסלול-החי סמך 100% על המודל לקבוע advanceStage/done → Haiku בדיאלוג-עברי-ארוך עלול
+ * לא-לסיים-לעולם (תקיעה בשלב · transcript-גדל · עלות). כאן אוכפים: אחרי MAX_TURNS_PER_STAGE
+ * תורים בשלב — כפיית-התקדמות; בשלב-האחרון (cruel) — כפיית-done + דו"ח. לעולם לא נסיגה-לשלב-קודם.
+ */
+export function clampLiveProgress(
+  p: Omit<RespondLiveResult, 'source'>,
+  input: RespondLiveInput,
+): Omit<RespondLiveResult, 'source'> {
+  if (p.done) return p; // המודל סיים — מכבדים.
+  const overCap = input.turnIndexInStage >= MAX_TURNS_PER_STAGE - 1;
+  const advance = p.advanceStage || overCap;
+  if (!advance) {
+    // נשאר בשלב — אך לעולם לא נסיגה: ה-nextStage חייב להיות השלב-הנוכחי.
+    return { ...p, advanceStage: false, nextStage: input.stage };
+  }
+  const next = nextStageOf(input.stage);
+  if (next === null) {
+    // שלב-אחרון (cruel) → סיום-כפוי + דו"ח (אם המודל לא סיפק).
+    return {
+      ...p,
+      advanceStage: true,
+      done: true,
+      nextStage: null,
+      nextQuestion: null,
+      finalReport: p.finalReport ?? deterministicReportFromScore(60),
+    };
+  }
+  return { ...p, advanceStage: true, nextStage: next };
+}
+
 /* ───────────────────────── fallback דטרמיניסטי (בלי-מפתח / כשל-Claude) ───────────────────────── */
 
 const STAGE_QUESTION: Record<SimStageKey, string> = {

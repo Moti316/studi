@@ -11,6 +11,9 @@ vi.mock('@/lib/ai/claude', () => ({
   claudeConverse: (args: unknown) => claudeConverse(args),
 }));
 
+const getUser = vi.fn();
+vi.mock('@/lib/auth/server', () => ({ getUser: () => getUser() }));
+
 import { respondLiveAction } from '@/features/simulation/respond-live.action';
 import type { RespondLiveInput } from '@/features/simulation/live-types';
 
@@ -30,9 +33,19 @@ function input(over: Partial<RespondLiveInput> = {}): RespondLiveInput {
 beforeEach(() => {
   isClaudeConfigured.mockReset();
   claudeConverse.mockReset();
+  getUser.mockReset();
+  getUser.mockResolvedValue({ id: 'u1' }); // ברירת-מחדל: משתמש-מחובר
 });
 
 describe('respondLiveAction — 3 שערים', () => {
+  it('שער-0: משתמש-לא-מחובר → דטרמיניסטי (אפס-קריאת-Claude · חסם-עלות)', async () => {
+    getUser.mockResolvedValue(null);
+    isClaudeConfigured.mockReturnValue(true);
+    const r = await respondLiveAction(input());
+    expect(r.source).toBe('deterministic');
+    expect(claudeConverse).not.toHaveBeenCalled();
+  });
+
   it('שער-1: תשובה-קצרה → nudge (אפס-קריאת-Claude)', async () => {
     isClaudeConfigured.mockReturnValue(true);
     const r = await respondLiveAction(input({ answer: 'כן' }));
