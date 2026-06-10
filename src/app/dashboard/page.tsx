@@ -95,6 +95,29 @@ export default async function DashboardPage() {
             ))}
           </div>
         </section>
+
+        {/* פרויקט-גמר — CTA בולט (פרויקט-הגמר של קורס ממונה-בטיחות · JSA) */}
+        <Link
+          href="/capstone"
+          data-testid="dashboard-capstone-cta"
+          className="group relative flex items-center justify-between gap-3 overflow-hidden rounded-modal bg-gradient-to-bl from-accent-50 via-white to-primary-50/60 p-4 shadow-card ring-1 ring-quiz-border transition-shadow hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
+        >
+          <span className="flex flex-col gap-0.5 text-start">
+            <span className="text-xs font-bold text-accent-600">פרויקט גמר</span>
+            <span className="text-base font-extrabold text-quiz-text-primary">
+              📋 ניהול-סיכונים — JSA
+            </span>
+            <span className="text-foreground/60 text-xs">
+              בנה טבלת-JSA, הערך לפי מטריצת-4×4 של משרד-העבודה, וקבל משוב-AI
+            </span>
+          </span>
+          <span
+            aria-hidden="true"
+            className="text-xl font-bold text-accent-600 transition-transform group-hover:-translate-x-1"
+          >
+            ←
+          </span>
+        </Link>
       </main>
       <BottomNav />
     </div>
