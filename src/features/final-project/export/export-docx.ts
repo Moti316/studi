@@ -27,7 +27,7 @@ import {
   VerticalAlign,
 } from 'docx';
 import type { CoverInfo, SiteInfo, JsaRow } from '../types';
-import { buildProjectDocument } from './project-document';
+import { buildProjectDocument, RISK_LEVEL_COLUMN_INDICES } from './project-document';
 import type { JsaTableRow } from './project-document';
 
 // ---------------------------------------------------------------------------
@@ -124,10 +124,17 @@ function buildJsaTable(headers: string[], rows: JsaTableRow[]): Table {
   const dataRows = rows.map(
     (row) =>
       new TableRow({
-        children: row.cells.map((cell, ci) =>
-          // צובע את תא "רמת-סיכון" (index 6) בצבע-הרצועה; שאר-התאים לבנים
-          rtlCell(cell, ci === 6 ? { fill: BAND_FILL[row.band], bold: true } : {}),
-        ),
+        children: row.cells.map((cell, ci) => {
+          // עמודה [8] = רמת-סיכון בשלב-זה → bandBefore
+          // עמודה [14] = רמת-סיכון לאחר-יישום → bandAfter
+          if (ci === RISK_LEVEL_COLUMN_INDICES[0]) {
+            return rtlCell(cell, { fill: BAND_FILL[row.bandBefore], bold: true });
+          }
+          if (ci === RISK_LEVEL_COLUMN_INDICES[1]) {
+            return rtlCell(cell, { fill: BAND_FILL[row.bandAfter], bold: true });
+          }
+          return rtlCell(cell);
+        }),
       }),
   );
 

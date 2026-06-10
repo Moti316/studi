@@ -18,7 +18,13 @@
  */
 
 import type { CapstoneFeedback, SiteInfo, JsaRow } from './types';
-import { riskLevel, riskBand } from './types';
+import {
+  assessmentScore,
+  riskBand,
+  riskBandLabel,
+  isControlSetEmpty,
+  JSA_STATUS_LABELS,
+} from './types';
 import { buildDeterministicFeedback } from './jsa-validation';
 import { isClaudeConfigured, claudeGenerateJSON } from '@/lib/ai/claude';
 import { getUser } from '@/lib/auth/server';
@@ -38,11 +44,49 @@ const SYSTEM_SAFETY_REVIEWER = `\
    צמ"א כבקרה-יחידה ללא שנשקלה בקרה-הנדסית = ליקוי-מהותי.
 3. שלמות-שורות-JSA — 6 עמודות, שדות-אחראי+מועד.
 4. מטריצת-סיכון — האם ציוני חומרה×סבירות הגיוניים לתיאור-המפגע?
+5. יעילות-בקרות — האם הערכת-הסיכון לאחר-יישום נמוכה מלפני-יישום?
 
 ציטוט: אם מציין תקנה — חייבת להיות ספציפית (שם-חוק + סעיף).
 שפה: עברית בלבד · RTL · אל תשתמש בשמות-אנשים — תיאורי-תפקיד בלבד.
 
 החזר JSON תקין בלבד בפורמט CapstoneFeedback (ר' הגדרה ב-prompt).`;
+
+// ---------------------------------------------------------------------------
+// helper — רינדור ControlSet לטקסט (3 שורות מפוצלות)
+// ---------------------------------------------------------------------------
+
+/**
+ * renderControlSet — ממיר ControlSet לטקסט מובנה לפרומפט (3 תת-עמודות מפוצלות).
+ * ריק = "(ריק)".
+ */
+function renderControlSet(
+  label: string,
+  c: { engineering: string; administrative: string; ppe: string },
+): string {
+  if (isControlSetEmpty(c)) return `${label}: (ריק)`;
+  const parts: string[] = [];
+  if (c.engineering.trim()) parts.push(`הנדסיות: ${c.engineering.trim()}`);
+  if (c.administrative.trim()) parts.push(`מנהלתיות: ${c.administrative.trim()}`);
+  if (c.ppe.trim()) parts.push(`צמ"א: ${c.ppe.trim()}`);
+  return `${label}:\n  ${parts.join('\n  ')}`;
+}
+
+// ---------------------------------------------------------------------------
+// helper — רינדור RiskAssessment לטקסט (סבירות · חומרה · ציון · רצועה · תווית)
+// ---------------------------------------------------------------------------
+
+/**
+ * renderRiskAssessment — מרנדר הערכת-סיכון לשורת-טקסט קריאה.
+ */
+function renderRiskAssessment(label: string, a: { probability: number; severity: number }): string {
+  const score = assessmentScore(a as Parameters<typeof assessmentScore>[0]);
+  const band = riskBand(score);
+  const bandLabel = riskBandLabel(band);
+  return (
+    `${label}: סבירות ${a.probability} · חומרה ${a.severity} · ` +
+    `ציון ${score} · רצועה: ${bandLabel} (${band})`
+  );
+}
 
 // ---------------------------------------------------------------------------
 // בנה prompt מהנתונים
@@ -51,6 +95,7 @@ const SYSTEM_SAFETY_REVIEWER = `\
 /**
  * buildClaudePrompt — מרכיב prompt מובנה ל-Claude מתוך נתוני-הפרויקט.
  * מגביל את גודל הפרומפט (≤ 20 שורות) כדי למנוע עלות-עודפת.
+ * רינדור-עשיר: בקרות-מפוצלות (הנדסי/מנהלי/צמ"א) · riskBefore/riskAfter · status.
  */
 function buildClaudePrompt(site: SiteInfo, rows: JsaRow[]): string {
   const siteDesc =
@@ -59,18 +104,29 @@ function buildClaudePrompt(site: SiteInfo, rows: JsaRow[]): string {
 
   const ROWS_LIMIT = 20;
   const displayRows = rows.slice(0, ROWS_LIMIT);
+
   const rowsText = displayRows
     .map((r, i) => {
-      const score = riskLevel(r.severity, r.probability);
-      const band = riskBand(score);
+      const statusLabel = JSA_STATUS_LABELS[r.status] ?? r.status;
+      const existingEmpty = isControlSetEmpty(r.existingControls);
+      const addedEmpty = isControlSetEmpty(r.addedControls);
+
       return (
         `\n--- שורה ${i + 1} ---\n` +
-        `גורם-סיכון: ${r.hazard}\n` +
-        `תרחיש: ${r.scenario}\n` +
-        `בקרות-קיימות: ${r.existingControls || '(ריק)'}\n` +
-        `חומרה: ${r.severity} | סבירות: ${r.probability} | ציון: ${score} (${band})\n` +
-        `בקרות-נוספות-נדרשות: ${r.addedControls || '(ריק)'}\n` +
-        `אחראי: ${r.owner || '(ריק)'} | מועד: ${r.due || '(ריק)'}`
+        `גורם-סיכון: ${r.hazard || '(ריק)'}\n` +
+        `תרחיש: ${r.scenario || '(ריק)'}\n` +
+        renderControlSet('בקרות-קיימות', r.existingControls) +
+        '\n' +
+        renderRiskAssessment('הערכת-סיכון-לפני', r.riskBefore) +
+        '\n' +
+        renderControlSet('בקרות-נוספות-נדרשות', r.addedControls) +
+        '\n' +
+        (addedEmpty
+          ? 'הערכת-סיכון-לאחר: (לא-הוגדרו-בקרות)\n'
+          : renderRiskAssessment('הערכת-סיכון-לאחר', r.riskAfter) + '\n') +
+        `אחראי: ${r.owner.trim() || '(ריק)'} | מועד: ${r.due.trim() || '(ריק)'} | סטטוס: ${statusLabel}` +
+        // הערת-מדרג נוספת בעת ריק-כפול
+        (existingEmpty && addedEmpty ? '\n⚠ אין בקרות כלל — שורה חסרה-מהותית.' : '')
       );
     })
     .join('\n');
@@ -174,8 +230,8 @@ export async function evaluateCapstoneAction(
       const det = buildDeterministicFeedback(site, jsaRows);
       return {
         ...result,
-        hierarchyIssues: [...new Set([...(result.hierarchyIssues || []), ...det.hierarchyIssues])],
-        missingHazards: [...new Set([...(result.missingHazards || []), ...det.missingHazards])],
+        hierarchyIssues: [...new Set([...(result.hierarchyIssues ?? []), ...det.hierarchyIssues])],
+        missingHazards: [...new Set([...(result.missingHazards ?? []), ...det.missingHazards])],
         source: 'claude',
       };
     } catch (err) {

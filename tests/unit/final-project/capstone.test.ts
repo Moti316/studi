@@ -1,9 +1,11 @@
 /**
  * tests/unit/final-project/capstone.test.ts — מודל פרויקט-הגמר (JSA Capstone · בלוק-3).
  * מטריצת-הסיכון (riskLevel/riskBand · מקרא-המשרד) + ה-store (zustand). טהור.
+ *
+ * עדכון: מודל-עשיר — existingControls/addedControls הם ControlSet · riskBefore/riskAfter.
  */
 import { describe, expect, it, beforeEach } from 'vitest';
-import { riskLevel, riskBand } from '@/features/final-project/types';
+import { riskLevel, riskBand, emptyJsaRow, emptyControlSet } from '@/features/final-project/types';
 import type { JsaRow, CapstoneFeedback } from '@/features/final-project/types';
 import { useCapstoneStore } from '@/features/final-project/store';
 import { validateHierarchy } from '@/features/final-project/jsa-validation';
@@ -31,17 +33,19 @@ describe('riskBand — מקרא-המשרד (ירוק ≤4 · צהוב ≤9 · א
   });
 });
 
+/** בונה שורת-JSA מלאה ממודל-העשיר. */
 function row(id: string): JsaRow {
   return {
-    id,
+    ...emptyJsaRow(id),
     hazard: 'נפילה מגובה',
     scenario: 'עבודה על קצה-קומה ללא מעקה',
-    existingControls: 'מעקה זמני',
-    severity: 4,
-    probability: 3,
-    addedControls: 'רתמת-בטיחות',
+    existingControls: { engineering: 'מעקה זמני', administrative: '', ppe: '' },
+    riskBefore: { severity: 4, probability: 3 },
+    addedControls: { engineering: '', administrative: 'נוהל עבודה בגובה', ppe: 'רתמת-בטיחות' },
+    riskAfter: { severity: 4, probability: 1 },
     owner: 'מנהל-עבודה',
     due: '',
+    status: 'open',
   };
 }
 
@@ -112,39 +116,90 @@ describe('useCapstoneStore', () => {
 
 // ---------------------------------------------------------------------------
 // #4 — validateHierarchy שוקל existingControls + addedControls יחד ל-PPE-only
+// (ControlSet מבני — engineering/administrative/ppe)
 // ---------------------------------------------------------------------------
 
 describe('validateHierarchy — PPE-only על שתי-העמודות יחד (#4)', () => {
   /** שורת-בסיס עם רמת-סיכון אדומה (כדי שבדיקת ה-PPE-only תהיה רלוונטית). */
   function ppeRow(over: Partial<JsaRow>): JsaRow {
     return {
-      id: 'p1',
+      ...emptyJsaRow('p1'),
       hazard: 'מגע עם חלקים-נעים',
       scenario: 'יד נכנסת לאזור-העבודה של המכונה',
-      existingControls: '',
-      severity: 4,
-      probability: 3,
-      addedControls: '',
+      existingControls: emptyControlSet(),
+      riskBefore: { severity: 4, probability: 3 },
+      addedControls: emptyControlSet(),
+      riskAfter: { severity: 4, probability: 1 },
       owner: 'מנהל-עבודה',
       due: '',
+      status: 'open',
       ...over,
     };
   }
 
   it('בקרה-הנדסית ב-existingControls + צמ"א ב-addedControls → לא מדגיש PPE-only', () => {
-    const rows = [ppeRow({ existingControls: 'מגן מכונה הנדסי', addedControls: 'כפפות' })];
+    const rows = [
+      ppeRow({
+        existingControls: { engineering: 'מגן מכונה הנדסי', administrative: '', ppe: '' },
+        addedControls: { engineering: '', administrative: '', ppe: 'כפפות' },
+      }),
+    ];
     const issues = validateHierarchy(rows);
     // אסור שיופיע ליקוי-PPE-only (severity:error עם "ציוד-מגן-אישי בלבד")
     const ppeOnly = issues.filter((i) => i.description.includes('ציוד-מגן-אישי בלבד'));
     expect(ppeOnly).toHaveLength(0);
   });
 
+  it('מנהלתי ב-addedControls + צמ"א ב-existingControls → לא מדגיש PPE-only', () => {
+    const rows = [
+      ppeRow({
+        existingControls: { engineering: '', administrative: '', ppe: 'כפפות' },
+        addedControls: { engineering: '', administrative: 'נוהל-עבודה', ppe: '' },
+      }),
+    ];
+    const issues = validateHierarchy(rows);
+    const ppeOnly = issues.filter((i) => i.description.includes('ציוד-מגן-אישי בלבד'));
+    expect(ppeOnly).toHaveLength(0);
+  });
+
   it('צמ"א בלבד בשתי-העמודות → עדיין מדגיש PPE-only (לא נשבר)', () => {
-    const rows = [ppeRow({ existingControls: 'כפפות', addedControls: 'קסדה' })];
+    const rows = [
+      ppeRow({
+        existingControls: { engineering: '', administrative: '', ppe: 'כפפות' },
+        addedControls: { engineering: '', administrative: '', ppe: 'קסדה' },
+      }),
+    ];
     const issues = validateHierarchy(rows);
     const ppeOnly = issues.filter((i) => i.description.includes('ציוד-מגן-אישי בלבד'));
     expect(ppeOnly).toHaveLength(1);
     expect(ppeOnly[0]!.severity).toBe('error');
+  });
+
+  it('existingControls ריק לחלוטין + addedControls עם הנדסי → לא PPE-only', () => {
+    const rows = [
+      ppeRow({
+        existingControls: emptyControlSet(),
+        addedControls: { engineering: 'מיגון-מכונה', administrative: '', ppe: 'כפפות' },
+      }),
+    ];
+    const issues = validateHierarchy(rows);
+    const ppeOnly = issues.filter((i) => i.description.includes('ציוד-מגן-אישי בלבד'));
+    expect(ppeOnly).toHaveLength(0);
+  });
+
+  it('שתי-העמודות ריקות לחלוטין + סיכון-אדום → ליקוי חוסר-בקרות (לא PPE-only)', () => {
+    const rows = [
+      ppeRow({
+        existingControls: emptyControlSet(),
+        addedControls: emptyControlSet(),
+      }),
+    ];
+    const issues = validateHierarchy(rows);
+    // אין PPE-only (כי אין צמ"א בכלל), אבל יש ליקוי-חוסר-בקרות (band=red, addedControls ריק)
+    const ppeOnly = issues.filter((i) => i.description.includes('ציוד-מגן-אישי בלבד'));
+    expect(ppeOnly).toHaveLength(0);
+    const missingControls = issues.filter((i) => i.description.includes('בקרות-נוספות'));
+    expect(missingControls.length).toBeGreaterThan(0);
   });
 });
 

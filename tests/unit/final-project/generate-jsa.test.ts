@@ -6,6 +6,9 @@
  *      + '@/lib/auth/server' (אפס-SDK · אפס-רשת · אפס-Supabase).
  *   2. ה-fallback הטהור (buildDeterministicJsaDraft) — ≥1 שורה-תקינה לכל-ענף +
  *      כיבוד-מדרג (אף-שורה אינה צמ"א-בלבד · נאמת מול validateHierarchy).
+ *
+ * עדכון: מודל-עשיר — existingControls/addedControls הם ControlSet · riskBefore/riskAfter · status.
+ * שינוי-שובר: row.severity/probability → row.riskBefore.severity/probability.
  */
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
@@ -28,6 +31,7 @@ import {
 } from '@/features/final-project/jsa-generation';
 import { validateHierarchy } from '@/features/final-project/jsa-validation';
 import type { SiteInfo, IndustrySector, JsaRow } from '@/features/final-project/types';
+import { emptyControlSet } from '@/features/final-project/types';
 
 const ALL_SECTORS: IndustrySector[] = [
   'construction',
@@ -50,29 +54,42 @@ function site(over: Partial<SiteInfo> = {}): SiteInfo {
   };
 }
 
-/** תשובת-Claude תקינה (שורות בלי id — כפי שה-system-prompt מורה). */
+/**
+ * תשובת-Claude תקינה (שורות בלי id — כפי שה-system-prompt מורה).
+ * מודל-עשיר: existingControls/addedControls כ-ControlSet · riskBefore/riskAfter · status.
+ */
 function claudeRows(): { rows: Omit<JsaRow, 'id'>[] } {
   return {
     rows: [
       {
         hazard: 'עבודה בגובה',
         scenario: 'נפילה מקצה-קומה ללא מעקה',
-        existingControls: 'מעקה-זמני',
-        severity: 4,
-        probability: 3,
-        addedControls: 'מעקה-תקני קבוע (הנדסי) + נוהל-עבודה-בגובה',
+        existingControls: { engineering: 'מעקה-זמני', administrative: '', ppe: '' },
+        riskBefore: { severity: 4, probability: 3 },
+        addedControls: {
+          engineering: 'מעקה-תקני קבוע',
+          administrative: 'נוהל-עבודה-בגובה',
+          ppe: '',
+        },
+        riskAfter: { severity: 4, probability: 1 },
         owner: 'מנהל-עבודה',
         due: '',
+        status: 'open',
       },
       {
         hazard: 'התחשמלות',
         scenario: 'מגע בכבל-חשוף',
-        existingControls: 'לוח סגור',
-        severity: 4,
-        probability: 2,
-        addedControls: 'הארקה ומפסק-פחת (הנדסי) + LOTO',
+        existingControls: { engineering: 'לוח סגור', administrative: '', ppe: '' },
+        riskBefore: { severity: 4, probability: 2 },
+        addedControls: {
+          engineering: 'הארקה ומפסק-פחת',
+          administrative: 'LOTO',
+          ppe: '',
+        },
+        riskAfter: { severity: 4, probability: 1 },
         owner: 'חשמלאי-מוסמך',
         due: '',
+        status: 'open',
       },
     ],
   };
@@ -146,9 +163,16 @@ describe('generateJsaDraftAction — שערי-fallback', () => {
 
   it('JSON לא-תקין מ-Claude (שורות חסרות-שדות) → fallback', async () => {
     isClaudeConfigured.mockReturnValue(true);
-    // severity מחוץ-לטווח + scenario חסר → ולידציה נכשלת
+    // riskBefore חסר + scenario חסר → ולידציה נכשלת
     claudeGenerateJSON.mockResolvedValue({
-      rows: [{ hazard: 'X', severity: 9, probability: 2, owner: 'מנהל-עבודה' }],
+      rows: [
+        {
+          hazard: 'X',
+          existingControls: emptyControlSet(),
+          addedControls: emptyControlSet(),
+          owner: 'מנהל-עבודה',
+        },
+      ],
     });
 
     const rows = await generateJsaDraftAction(site());
@@ -199,6 +223,66 @@ describe('buildDeterministicJsaDraft — ≥1 שורה-תקינה לכל-ענף'
     });
   }
 
+  it('כל שורה מכילה ControlSet מבני (existingControls/addedControls)', () => {
+    for (const sector of ALL_SECTORS) {
+      const rows = buildDeterministicJsaDraft(site({ sector }));
+      for (const r of rows) {
+        // existingControls = ControlSet (לא string)
+        expect(typeof r.existingControls).toBe('object');
+        expect(r.existingControls).not.toBeNull();
+        expect(typeof r.existingControls.engineering).toBe('string');
+        expect(typeof r.existingControls.administrative).toBe('string');
+        expect(typeof r.existingControls.ppe).toBe('string');
+
+        // addedControls = ControlSet (לא string)
+        expect(typeof r.addedControls).toBe('object');
+        expect(r.addedControls).not.toBeNull();
+        expect(typeof r.addedControls.engineering).toBe('string');
+        expect(typeof r.addedControls.administrative).toBe('string');
+        expect(typeof r.addedControls.ppe).toBe('string');
+      }
+    }
+  });
+
+  it('כל שורה מכילה riskBefore/riskAfter עם severity/probability 1-4', () => {
+    for (const sector of ALL_SECTORS) {
+      const rows = buildDeterministicJsaDraft(site({ sector }));
+      for (const r of rows) {
+        expect(r.riskBefore.severity).toBeGreaterThanOrEqual(1);
+        expect(r.riskBefore.severity).toBeLessThanOrEqual(4);
+        expect(r.riskBefore.probability).toBeGreaterThanOrEqual(1);
+        expect(r.riskBefore.probability).toBeLessThanOrEqual(4);
+
+        expect(r.riskAfter.severity).toBeGreaterThanOrEqual(1);
+        expect(r.riskAfter.severity).toBeLessThanOrEqual(4);
+        expect(r.riskAfter.probability).toBeGreaterThanOrEqual(1);
+        expect(r.riskAfter.probability).toBeLessThanOrEqual(4);
+      }
+    }
+  });
+
+  it('riskAfter ≤ riskBefore (הפחתת-סיכון — הבקרות-הנוספות מביאות תועלת)', () => {
+    for (const sector of ALL_SECTORS) {
+      const rows = buildDeterministicJsaDraft(site({ sector }));
+      for (const r of rows) {
+        const scoreBefore = r.riskBefore.severity * r.riskBefore.probability;
+        const scoreAfter = r.riskAfter.severity * r.riskAfter.probability;
+        // רמת-הסיכון-אחרי לא גבוהה מלפני (הבקרות מועילות)
+        expect(scoreAfter).toBeLessThanOrEqual(scoreBefore);
+      }
+    }
+  });
+
+  it('כל שורה מכילה status תקין (open|in_progress|done)', () => {
+    const validStatuses = new Set(['open', 'in_progress', 'done']);
+    for (const sector of ALL_SECTORS) {
+      const rows = buildDeterministicJsaDraft(site({ sector }));
+      for (const r of rows) {
+        expect(validStatuses.has(r.status)).toBe(true);
+      }
+    }
+  });
+
   it('מכבד-מדרג: אף שורה אינה צמ"א-בלבד (validateHierarchy ללא ליקוי-PPE-only)', () => {
     for (const sector of ALL_SECTORS) {
       const rows = buildDeterministicJsaDraft(site({ sector }));
@@ -228,34 +312,36 @@ describe('buildDeterministicJsaDraft — ≥1 שורה-תקינה לכל-ענף'
     expect(isValidJsaRowArray(rows)).toBe(true);
   });
 
-  it('severity/probability תמיד בטווח 1-4', () => {
-    for (const sector of ALL_SECTORS) {
-      for (const r of buildDeterministicJsaDraft(site({ sector }))) {
-        expect(r.severity).toBeGreaterThanOrEqual(1);
-        expect(r.severity).toBeLessThanOrEqual(4);
-        expect(r.probability).toBeGreaterThanOrEqual(1);
-        expect(r.probability).toBeLessThanOrEqual(4);
-      }
+  // שמור תאימות-אחורה: לא עולה r.severity / r.probability (שדות ישנים שהוסרו)
+  it('שדות-ישנים (row.severity / row.probability) לא קיימים — הוחלפו ב-riskBefore', () => {
+    const rows = buildDeterministicJsaDraft(site({ sector: 'manufacturing' }));
+    for (const r of rows) {
+      const raw = r as unknown as Record<string, unknown>;
+      // השדות הישנים הוסרו מהמודל; noUncheckedIndexedAccess: הגישה תחזיר undefined
+      expect(raw['severity']).toBeUndefined();
+      expect(raw['probability']).toBeUndefined();
     }
   });
 });
 
 // ---------------------------------------------------------------------------
-// isValidJsaRowArray — type-guard
+// isValidJsaRowArray — type-guard (מודל-עשיר)
 // ---------------------------------------------------------------------------
 
 describe('isValidJsaRowArray', () => {
+  /** שורה תקינה במודל-העשיר. */
   function validRow(): JsaRow {
     return {
       id: 'r1',
       hazard: 'h',
       scenario: 's',
-      existingControls: 'c',
-      severity: 3,
-      probability: 2,
-      addedControls: 'a',
+      existingControls: { engineering: 'c', administrative: '', ppe: '' },
+      riskBefore: { severity: 3, probability: 2 },
+      addedControls: { engineering: 'a', administrative: '', ppe: '' },
+      riskAfter: { severity: 2, probability: 1 },
       owner: 'מנהל-עבודה',
       due: '',
+      status: 'open',
     };
   }
 
@@ -278,9 +364,47 @@ describe('isValidJsaRowArray', () => {
     expect(isValidJsaRowArray([r])).toBe(false);
   });
 
-  it('severity מחוץ-לטווח → false', () => {
-    expect(isValidJsaRowArray([{ ...validRow(), severity: 5 as unknown as 4 }])).toBe(false);
-    expect(isValidJsaRowArray([{ ...validRow(), severity: 0 as unknown as 1 }])).toBe(false);
+  it('riskBefore חסר → false', () => {
+    const r = { ...validRow() } as Partial<JsaRow> & Record<string, unknown>;
+    delete r.riskBefore;
+    expect(isValidJsaRowArray([r])).toBe(false);
+  });
+
+  it('riskBefore.severity מחוץ-לטווח → false', () => {
+    expect(
+      isValidJsaRowArray([
+        { ...validRow(), riskBefore: { severity: 5 as unknown as 4, probability: 2 } },
+      ]),
+    ).toBe(false);
+    expect(
+      isValidJsaRowArray([
+        { ...validRow(), riskBefore: { severity: 0 as unknown as 1, probability: 2 } },
+      ]),
+    ).toBe(false);
+  });
+
+  it('riskBefore.probability מחוץ-לטווח → false', () => {
+    expect(
+      isValidJsaRowArray([
+        { ...validRow(), riskBefore: { severity: 3, probability: 0 as unknown as 1 } },
+      ]),
+    ).toBe(false);
+  });
+
+  it('existingControls לא-ControlSet (string) → false', () => {
+    expect(
+      isValidJsaRowArray([
+        { ...validRow(), existingControls: 'מחרוזת-ישנה' as unknown as JsaRow['existingControls'] },
+      ]),
+    ).toBe(false);
+  });
+
+  it('addedControls לא-ControlSet (string) → false', () => {
+    expect(
+      isValidJsaRowArray([
+        { ...validRow(), addedControls: 'מחרוזת-ישנה' as unknown as JsaRow['addedControls'] },
+      ]),
+    ).toBe(false);
   });
 
   it('due רשות — undefined תקין · non-string פסול', () => {
@@ -288,5 +412,18 @@ describe('isValidJsaRowArray', () => {
     delete r.due;
     expect(isValidJsaRowArray([r])).toBe(true);
     expect(isValidJsaRowArray([{ ...validRow(), due: 5 as unknown as string }])).toBe(false);
+  });
+
+  it('status לא-תקין → false', () => {
+    expect(
+      isValidJsaRowArray([{ ...validRow(), status: 'invalid' as unknown as JsaRow['status'] }]),
+    ).toBe(false);
+  });
+
+  it('status חסר — רשות, ברירת-מחדל open', () => {
+    const r = validRow() as Partial<JsaRow>;
+    delete r.status;
+    // status רשות — שורה ללא status תקינה (ה-action יזריק "open")
+    expect(isValidJsaRowArray([r])).toBe(true);
   });
 });
