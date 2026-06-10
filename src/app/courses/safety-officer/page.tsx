@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { requireAuth } from '@/lib/auth/server';
 import { BottomNav } from '@/components/dashboard/BottomNav';
 import { CourseTopics } from '@/components/course/CourseTopics';
@@ -28,6 +29,25 @@ export default async function SafetyOfficerCoursePage() {
         </header>
 
         <CourseTopics topics={COURSE_TOPICS} counts={counts} />
+
+        {/* פרויקט-גמר (capstone · JSA) */}
+        <Link
+          href="/capstone"
+          data-testid="capstone-entry"
+          className="flex items-center justify-between gap-3 rounded-card border border-quiz-border bg-quiz-explanation px-4 py-4 transition-colors hover:border-quiz-primary-active"
+        >
+          <span className="flex flex-col gap-0.5 text-start">
+            <span className="text-sm font-bold text-quiz-text-primary">
+              📋 פרויקט גמר — ניהול-סיכונים (JSA)
+            </span>
+            <span className="text-xs text-quiz-text-secondary">
+              בנה טבלת-JSA, הערך לפי מטריצת-4×4 של משרד-העבודה, וקבל משוב-AI
+            </span>
+          </span>
+          <span aria-hidden="true" className="text-lg font-bold text-accent-600">
+            ←
+          </span>
+        </Link>
       </main>
       <BottomNav />
     </div>
