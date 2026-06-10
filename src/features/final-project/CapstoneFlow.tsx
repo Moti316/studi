@@ -3,7 +3,8 @@
 /**
  * src/features/final-project/CapstoneFlow.tsx — מנצח-תזמורת wizard פרויקט-הגמר (JSA Capstone).
  *
- * ארבעה שלבים לפי useCapstoneStore.step:
+ * חמישה שלבים לפי useCapstoneStore.step:
+ *   cover    → <CoverStep>     — עמוד-פתיחה (פרטי-מגיש + חברה + מנחה) — עמוד-1 של הפרויקט.
  *   site     → <SiteStep>      — בחירת-אתר + פרופיל-מקום-עבודה (שלב 1).
  *   hazards  → <JsaBuilder>    — בניית טבלת-JSA שורה-אחר-שורה (שלבים 2-3).
  *   matrix   → <RiskMatrix>    — הצגת מטריצת-הסיכון + מדרג-בקרות + ולידציה (שלב 3).
@@ -25,8 +26,9 @@
  */
 
 import React, { useCallback } from 'react';
-import { useCapstoneStore, selectStep, selectSite, selectJsaRows } from './store';
+import { useCapstoneStore, selectStep, selectCover, selectSite, selectJsaRows } from './store';
 import type { CapstoneStep } from './types';
+import { CoverStep } from './components/CoverStep';
 import { SiteStep } from './components/SiteStep';
 import { JsaBuilder } from './components/JsaBuilder';
 import { RiskMatrix } from './components/RiskMatrix';
@@ -45,6 +47,11 @@ interface StepMeta {
 }
 
 const STEPS: StepMeta[] = [
+  {
+    key: 'cover',
+    label: 'עמוד-פתיחה',
+    description: 'פרטי-המגיש והחברה',
+  },
   {
     key: 'site',
     label: 'פרופיל-אתר',
@@ -68,10 +75,11 @@ const STEPS: StepMeta[] = [
 ];
 
 const STEP_INDEX: Record<CapstoneStep, number> = {
-  site: 0,
-  hazards: 1,
-  matrix: 2,
-  feedback: 3,
+  cover: 0,
+  site: 1,
+  hazards: 2,
+  matrix: 3,
+  feedback: 4,
 };
 
 // ---------------------------------------------------------------------------
@@ -87,6 +95,7 @@ export function CapstoneFlow() {
   const step = useCapstoneStore(selectStep);
   const setStep = useCapstoneStore((s) => s.setStep);
   const reset = useCapstoneStore((s) => s.reset);
+  const coverInfo = useCapstoneStore(selectCover);
   const site = useCapstoneStore(selectSite);
   const jsaRows = useCapstoneStore(selectJsaRows);
 
@@ -100,13 +109,15 @@ export function CapstoneFlow() {
     const next = STEPS[currentIndex + 1];
     if (!next) return;
 
+    // שלב 0→1: חייב coverInfo (שדות-חובה מולאו)
+    if (step === 'cover' && !coverInfo) return;
     // שלב 1→2: חייב site
     if (step === 'site' && !site) return;
     // שלב 2→3: חייב לפחות שורה אחת
     if (step === 'hazards' && jsaRows.length === 0) return;
 
     setStep(next.key);
-  }, [step, site, jsaRows.length, currentIndex, setStep]);
+  }, [step, coverInfo, site, jsaRows.length, currentIndex, setStep]);
 
   /** ניווט אחורה */
   const handleBack = useCallback(() => {
@@ -122,19 +133,21 @@ export function CapstoneFlow() {
   // ── האם כפתור-קדימה מאופשר ────────────────────────────────────────────
 
   const canAdvance =
-    step === 'site'
-      ? !!site
-      : step === 'hazards'
-        ? jsaRows.length > 0
-        : step === 'matrix'
-          ? true
-          : /* feedback */ false; // השלב האחרון — אין "קדימה"
+    step === 'cover'
+      ? !!coverInfo
+      : step === 'site'
+        ? !!site
+        : step === 'hazards'
+          ? jsaRows.length > 0
+          : step === 'matrix'
+            ? true
+            : /* feedback */ false; // השלב האחרון — אין "קדימה"
 
   const isLastStep = currentIndex === totalSteps - 1;
 
   // ── progress ──────────────────────────────────────────────────────────────
 
-  /** אחוז-התקדמות לפרוגרס-בר (שלב 1 = 25% · שלב 4 = 100%). */
+  /** אחוז-התקדמות לפרוגרס-בר (שלב 1 = 20% · שלב 5 = 100%). */
   const progressPct = Math.round(((currentIndex + 1) / totalSteps) * 100);
 
   return (
@@ -166,6 +179,8 @@ export function CapstoneFlow() {
         aria-label={`שלב ${currentIndex + 1} מתוך ${totalSteps}: ${STEPS[currentIndex]?.label ?? ''}`}
         className="rounded-b-card border border-t-0 border-quiz-border bg-quiz-bg p-5 sm:p-6"
       >
+        {step === 'cover' && <CoverStep onSubmit={() => setStep('site')} />}
+
         {step === 'site' && <SiteStep />}
 
         {step === 'hazards' && (

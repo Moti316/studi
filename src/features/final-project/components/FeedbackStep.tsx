@@ -21,6 +21,7 @@ import { useEffect, useState, useCallback } from 'react';
 import type { CapstoneGrade, CapstoneFeedbackSection } from '../types';
 import { useCapstoneStore, selectSite, selectJsaRows, selectFeedback } from '../store';
 import { evaluateCapstoneAction } from '../evaluate-capstone.action';
+import { ExportButtons } from './ExportButtons';
 
 // ---------------------------------------------------------------------------
 // קונסטנטים-עיצוב לציון
@@ -344,6 +345,9 @@ export function FeedbackStep({ onBack, onSubmit }: FeedbackStepProps) {
               לא זוהו ליקויים מהותיים — העבודה מוכנה להגשה.
             </p>
           )}
+
+          {/* הורדת-המסמך-המוגש (PDF / Word) */}
+          <ExportButtons />
         </div>
       )}
 

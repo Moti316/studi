@@ -24,10 +24,11 @@
  */
 
 import React, { useCallback, useId, useReducer, useRef } from 'react';
-import { useCapstoneStore, selectJsaRows } from '../store';
+import { useCapstoneStore, selectJsaRows, selectSite } from '../store';
 import { validateHierarchy } from '../jsa-validation';
 import { riskLevel, riskBand } from '../types';
 import type { JsaRow, SeverityLevel, ProbabilityLevel } from '../types';
+import { generateJsaDraftAction } from '../generate-jsa.action';
 
 // ---------------------------------------------------------------------------
 // קבועים
@@ -623,6 +624,65 @@ function RowForm({ editingRow, onSubmit, onCancel }: RowFormProps) {
 }
 
 // ---------------------------------------------------------------------------
+// רכיב-עזר: כפתור "הכן עבורי טיוטה (AI)"
+// ---------------------------------------------------------------------------
+
+interface GenerateDraftButtonProps {
+  /** האם פעולת-ההפקה רצה כעת (loading משותף לכל המופעים). */
+  isGenerating: boolean;
+  /** האם הכפתור מושבת (אין-פרופיל-אתר → אין-בסיס לטיוטה). */
+  disabled: boolean;
+  /** מפעיל את ההפקה. */
+  onGenerate: () => void;
+}
+
+/**
+ * GenerateDraftButton — כפתור הפקת-טיוטת-JSA על-ידי AI.
+ *
+ * מצבים:
+ *   רגיל     — "✨ הכן עבורי טיוטה (AI)".
+ *   loading  — "✨ מכין טיוטה…" + disabled + aria-busy (data-testid=generate-loading).
+ *   disabled — מושבת כשאין-פרופיל-אתר (צריך למלא אתר תחילה).
+ */
+function GenerateDraftButton({ isGenerating, disabled, onGenerate }: GenerateDraftButtonProps) {
+  const isDisabled = disabled || isGenerating;
+
+  return (
+    <button
+      type="button"
+      data-testid="generate-draft-btn"
+      onClick={onGenerate}
+      disabled={isDisabled}
+      aria-busy={isGenerating}
+      aria-label={
+        disabled ? 'הכן עבורי טיוטה (AI) — נדרש פרופיל-אתר תחילה' : 'הכן עבורי טיוטת-JSA באמצעות AI'
+      }
+      title={disabled ? 'יש למלא פרופיל-אתר לפני הפקת-טיוטה' : undefined}
+      className={[
+        'inline-flex items-center gap-2 rounded-pill border-2 px-5 py-2 text-sm font-bold transition-colors',
+        'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active',
+        'disabled:cursor-not-allowed disabled:opacity-40',
+        'border-accent-500 bg-accent-50 text-accent-700 hover:bg-accent-100',
+      ].join(' ')}
+    >
+      {isGenerating ? (
+        <span data-testid="generate-loading" className="flex items-center gap-2">
+          <span aria-hidden="true" className="animate-pulse">
+            ✨
+          </span>
+          מכין טיוטה…
+        </span>
+      ) : (
+        <span className="flex items-center gap-2">
+          <span aria-hidden="true">✨</span>
+          הכן עבורי טיוטה (AI)
+        </span>
+      )}
+    </button>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // רכיב ראשי: JsaBuilder
 // ---------------------------------------------------------------------------
 
@@ -638,13 +698,40 @@ function RowForm({ editingRow, onSubmit, onCancel }: RowFormProps) {
  */
 export function JsaBuilder() {
   const jsaRows = useCapstoneStore(selectJsaRows);
+  const site = useCapstoneStore(selectSite);
   const addRow = useCapstoneStore((s) => s.addRow);
   const updateRow = useCapstoneStore((s) => s.updateRow);
   const removeRow = useCapstoneStore((s) => s.removeRow);
+  const loadRows = useCapstoneStore((s) => s.loadRows);
 
   /** האם הטופס פתוח + איזו שורה עורכים (null = הוספה). */
   const [formOpen, setFormOpen] = React.useState(false);
   const [editingRow, setEditingRow] = React.useState<JsaRow | null>(null);
+
+  /** האם הפקת-טיוטת-AI רצה כעת. */
+  const [isGenerating, setIsGenerating] = React.useState(false);
+  /** שגיאת-הפקה עדינה (null = אין-שגיאה). */
+  const [generateError, setGenerateError] = React.useState<string | null>(null);
+
+  /**
+   * הפקת-טיוטה: קריאת ה-server-action עם פרופיל-האתר → loadRows.
+   * עוטף ב-try/catch — שגיאה מציגה הודעה-עדינה ואינה זורקת.
+   * אין-site → no-op (הכפתור ממילא disabled).
+   */
+  const handleGenerateDraft = React.useCallback(async () => {
+    if (!site) return;
+    setGenerateError(null);
+    setIsGenerating(true);
+    try {
+      const rows = await generateJsaDraftAction(site);
+      loadRows(rows);
+    } catch {
+      // כשל-רך — לא לזרוק; הלומד יכול להמשיך ידנית.
+      setGenerateError('הפקת-הטיוטה נכשלה. נסה שוב, או הוסף שורות ידנית.');
+    } finally {
+      setIsGenerating(false);
+    }
+  }, [site, loadRows]);
 
   /** מיפוי rowId → רשימת תיאורי-ליקוי (מחושב מ-validateHierarchy). */
   const hierarchyIssuesByRow = React.useMemo(() => {
@@ -742,6 +829,36 @@ export function JsaBuilder() {
         </div>
       </div>
 
+      {/* ─── הודעת-אתר-אמיתי (banner · דרישת-משרד-העבודה) ─── */}
+      <div
+        role="note"
+        data-testid="real-site-notice"
+        className="flex items-start gap-2 rounded-card border border-primary-500 bg-primary-50 px-4 py-3 text-sm text-quiz-text-primary"
+      >
+        <span aria-hidden="true" className="mt-0.5 flex-shrink-0 text-base">
+          🏗️
+        </span>
+        <span>
+          משרד-העבודה דורש אתר/מפעל <strong>אמיתי</strong>. הטיוטה = שלד-הכוונה — בדוק ותקן כל שורה
+          מול האתר שלך.
+        </span>
+      </div>
+
+      {/* ─── שגיאת-הפקת-טיוטה (עדינה) ─── */}
+      {generateError && (
+        <div
+          role="alert"
+          aria-live="polite"
+          data-testid="generate-error"
+          className="flex items-start gap-2 rounded-card border border-quiz-error-border bg-quiz-error-bg px-4 py-3 text-sm text-[#991b1b]"
+        >
+          <span aria-hidden="true" className="mt-0.5 flex-shrink-0">
+            ⚠
+          </span>
+          <span>{generateError}</span>
+        </div>
+      )}
+
       {/* ─── שגיאות-היררכיה כלליות (banner) ─── */}
       {totalIssues > 0 && (
         <div
@@ -778,19 +895,31 @@ export function JsaBuilder() {
               <span className="font-medium">מינימום מומלץ: 10 שורות לפרויקט-גמר מלא.</span>
             </p>
           </div>
-          <button
-            type="button"
-            data-testid="add-first-row-btn"
-            onClick={handleOpenAdd}
-            className={[
-              'rounded-pill bg-primary-500 px-6 py-3 text-sm font-bold text-white shadow-button',
-              'hover:bg-primary-600',
-              'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active',
-              'transition-colors',
-            ].join(' ')}
-          >
-            ➕ הוסף שורה ראשונה
-          </button>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <button
+              type="button"
+              data-testid="add-first-row-btn"
+              onClick={handleOpenAdd}
+              className={[
+                'rounded-pill bg-primary-500 px-6 py-3 text-sm font-bold text-white shadow-button',
+                'hover:bg-primary-600',
+                'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active',
+                'transition-colors',
+              ].join(' ')}
+            >
+              ➕ הוסף שורה ראשונה
+            </button>
+            <GenerateDraftButton
+              isGenerating={isGenerating}
+              disabled={!site}
+              onGenerate={() => void handleGenerateDraft()}
+            />
+          </div>
+          {!site && (
+            <p className="text-xs italic text-quiz-text-secondary">
+              להפקת-טיוטה אוטומטית — מלא תחילה את פרופיל-האתר.
+            </p>
+          )}
         </div>
       ) : (
         <ul
@@ -816,21 +945,28 @@ export function JsaBuilder() {
         <RowForm editingRow={editingRow} onSubmit={handleFormSubmit} onCancel={handleFormCancel} />
       )}
 
-      {/* ─── כפתור הוספת שורה (נראה כשיש שורות קיימות) ─── */}
+      {/* ─── כפתורי הוספה (נראים כשיש שורות קיימות) ─── */}
       {jsaRows.length > 0 && !formOpen && (
-        <button
-          type="button"
-          data-testid="add-row-btn"
-          onClick={handleOpenAdd}
-          className={[
-            'self-start rounded-pill border-2 border-dashed border-primary-500 px-5 py-2 text-sm font-bold text-primary-500',
-            'hover:bg-primary-50',
-            'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active',
-            'transition-colors',
-          ].join(' ')}
-        >
-          ➕ הוסף שורה
-        </button>
+        <div className="flex flex-wrap items-center gap-3 self-start">
+          <button
+            type="button"
+            data-testid="add-row-btn"
+            onClick={handleOpenAdd}
+            className={[
+              'rounded-pill border-2 border-dashed border-primary-500 px-5 py-2 text-sm font-bold text-primary-500',
+              'hover:bg-primary-50',
+              'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active',
+              'transition-colors',
+            ].join(' ')}
+          >
+            ➕ הוסף שורה
+          </button>
+          <GenerateDraftButton
+            isGenerating={isGenerating}
+            disabled={!site}
+            onGenerate={() => void handleGenerateDraft()}
+          />
+        </div>
       )}
 
       {/* ─── הנחיית-מדרג (תמיד גלויה — תזכורת לכל המשתמשים) ─── */}

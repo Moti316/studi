@@ -48,9 +48,9 @@ function row(id: string): JsaRow {
 describe('useCapstoneStore', () => {
   beforeEach(() => useCapstoneStore.getState().reset());
 
-  it('ברירת-מחדל: step=site · ללא שורות', () => {
+  it('ברירת-מחדל: step=cover · ללא שורות', () => {
     const s = useCapstoneStore.getState();
-    expect(s.step).toBe('site');
+    expect(s.step).toBe('cover'); // עמוד-פתיחה = שלב-ראשון (דרישת-משרד-העבודה)
     expect(s.jsaRows).toHaveLength(0);
   });
 
@@ -77,7 +77,7 @@ describe('useCapstoneStore', () => {
     s.reset();
     const after = useCapstoneStore.getState();
     expect(after.jsaRows).toHaveLength(0);
-    expect(after.step).toBe('site');
+    expect(after.step).toBe('cover');
   });
 
   // #5 — עריכת-JSA מאפסת משוב-קודם (אחרת הלומד רואה הערכה ל-JSA-ישן)

@@ -13,7 +13,7 @@
  */
 
 import { create } from 'zustand';
-import type { CapstoneStep, SiteInfo, JsaRow, CapstoneFeedback } from './types';
+import type { CapstoneStep, CoverInfo, SiteInfo, JsaRow, CapstoneFeedback } from './types';
 
 // ---------------------------------------------------------------------------
 // ממשק ה-store
@@ -24,6 +24,9 @@ export interface CapstoneState {
 
   /** השלב-הנוכחי ב-wizard. */
   step: CapstoneStep;
+
+  /** פרטי עמוד-הפתיחה (PII · client-side בלבד · null = טרם-מולא). */
+  coverInfo: CoverInfo | null;
 
   /** פרופיל-האתר שהמשתמש מילא (null = טרם-מולא). */
   site: SiteInfo | null;
@@ -46,6 +49,12 @@ export interface CapstoneState {
   setStep: (step: CapstoneStep) => void;
 
   /**
+   * שמירת-פרטי-עמוד-הפתיחה (PII · client-side בלבד).
+   * אינו מאפס JSA/feedback (עמוד-הפתיחה עצמאי מהניתוח).
+   */
+  setCover: (cover: CoverInfo) => void;
+
+  /**
    * שמירת-פרופיל-האתר.
    * מאפס את jsaRows ואת feedback כי שינוי-אתר = התחלה-מחדש.
    */
@@ -56,6 +65,12 @@ export interface CapstoneState {
    * @param row שורה-מלאה (ה-id כבר נוצר ע"י הקורא).
    */
   addRow: (row: JsaRow) => void;
+
+  /**
+   * טעינת-מערך-שורות (מחליף את jsaRows) — לטיוטת-AI ("הכן עבורי").
+   * מאפס feedback (טיוטה-חדשה = הערכה-קודמת לא-תקפה). הלומד עורך אחר-כך.
+   */
+  loadRows: (rows: JsaRow[]) => void;
 
   /**
    * עדכון-שורה קיימת על-פי id.
@@ -88,10 +103,11 @@ export interface CapstoneState {
 // ערכי-ברירת-מחדל
 // ---------------------------------------------------------------------------
 
-const INITIAL_STEP: CapstoneStep = 'site';
+const INITIAL_STEP: CapstoneStep = 'cover';
 
-const initialState: Pick<CapstoneState, 'step' | 'site' | 'jsaRows' | 'feedback'> = {
+const initialState: Pick<CapstoneState, 'step' | 'coverInfo' | 'site' | 'jsaRows' | 'feedback'> = {
   step: INITIAL_STEP,
+  coverInfo: null,
   site: null,
   jsaRows: [],
   feedback: null,
@@ -124,11 +140,20 @@ export const useCapstoneStore = create<CapstoneState>()((set) => ({
 
   setStep: (step) => set({ step }),
 
+  setCover: (cover) => set({ coverInfo: cover }),
+
   setSite: (site) =>
     set({
       site,
       // שינוי-אתר מאפס את כל הנתונים שהמשתמש אסף
       jsaRows: [],
+      feedback: null,
+    }),
+
+  loadRows: (rows) =>
+    set({
+      jsaRows: rows,
+      // טיוטה-חדשה מבטלת משוב-קודם.
       feedback: null,
     }),
 
@@ -164,6 +189,7 @@ export const useCapstoneStore = create<CapstoneState>()((set) => ({
 
 /** מחזיר רק את הסלקטורים הנפוצים — שנצרך כ-hook ל-component ספציפי. */
 export const selectStep = (s: CapstoneState) => s.step;
+export const selectCover = (s: CapstoneState) => s.coverInfo;
 export const selectSite = (s: CapstoneState) => s.site;
 export const selectJsaRows = (s: CapstoneState) => s.jsaRows;
 export const selectFeedback = (s: CapstoneState) => s.feedback;
