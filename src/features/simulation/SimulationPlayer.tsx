@@ -35,12 +35,17 @@ export type SimulationPlayerProps = {
 
 function InspectorBubble({ turn, children }: { turn: SimTurn; children: ReactNode }) {
   return (
-    <div className="flex flex-col gap-1" data-testid={`turn-${turn.id}`}>
-      <span className="flex items-center gap-1.5 text-xs font-bold text-accent-600">
-        <span aria-hidden="true">{INSPECTOR_ICON[turn.inspector]}</span>
+    <div className="flex flex-col gap-1.5" data-testid={`turn-${turn.id}`}>
+      <span className="flex items-center gap-2 text-xs font-bold text-accent-700">
+        <span
+          aria-hidden="true"
+          className="grid size-7 place-items-center rounded-full bg-accent-50 text-base ring-1 ring-inset ring-accent-100"
+        >
+          {INSPECTOR_ICON[turn.inspector]}
+        </span>
         {INSPECTOR_LABELS[turn.inspector]}
       </span>
-      <div className="rounded-card rounded-ss-none border border-quiz-border bg-quiz-bg px-4 py-3 text-start text-sm leading-relaxed text-quiz-text-primary">
+      <div className="rounded-card rounded-ss-none border border-quiz-border bg-card px-4 py-3 text-start text-sm leading-relaxed text-quiz-text-primary shadow-card">
         {children}
       </div>
     </div>
@@ -100,7 +105,7 @@ export function SimulationPlayer({ simulation, onComplete }: SimulationPlayerPro
             {/* תשובת-המועמד (בועה מיושרת-התחלה-הפוכה) */}
             <div className="flex flex-col items-end gap-1">
               <span className="text-xs font-bold text-quiz-text-secondary">התשובה שלך</span>
-              <div className="max-w-[85%] rounded-card rounded-se-none bg-quiz-primary-active px-4 py-2 text-start text-sm font-medium text-white">
+              <div className="max-w-[85%] rounded-card rounded-se-none bg-gradient-to-bl from-primary-500 to-primary-600 px-4 py-2 text-start text-sm font-medium text-white shadow-button">
                 {h.optionText}
               </div>
             </div>
@@ -139,7 +144,7 @@ export function SimulationPlayer({ simulation, onComplete }: SimulationPlayerPro
                 type="button"
                 data-testid={`option-${idx}`}
                 onClick={() => choose(idx)}
-                className="w-full select-none rounded-card border border-quiz-border bg-white px-4 py-3 text-start text-sm font-medium leading-snug text-quiz-text-primary transition-colors hover:border-quiz-primary-active hover:bg-quiz-bg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active"
+                className="w-full select-none rounded-card border border-quiz-border bg-card px-4 py-3 text-start text-sm font-medium leading-snug text-quiz-text-primary shadow-card transition-all hover:-translate-y-0.5 hover:border-primary-500/50 hover:shadow-card-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active"
               >
                 {o.text}
               </button>

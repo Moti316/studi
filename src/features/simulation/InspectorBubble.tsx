@@ -22,12 +22,17 @@ export function InspectorBubble({
   testId?: string;
 }) {
   return (
-    <div className="flex flex-col gap-1" data-testid={testId}>
-      <span className="flex items-center gap-1.5 text-xs font-bold text-accent-600">
-        <span aria-hidden="true">{INSPECTOR_ICON[inspector]}</span>
+    <div className="flex flex-col gap-1.5" data-testid={testId}>
+      <span className="flex items-center gap-2 text-xs font-bold text-accent-700">
+        <span
+          aria-hidden="true"
+          className="grid size-7 place-items-center rounded-full bg-accent-50 text-base ring-1 ring-inset ring-accent-100"
+        >
+          {INSPECTOR_ICON[inspector]}
+        </span>
         {INSPECTOR_LABELS[inspector]}
       </span>
-      <div className="whitespace-pre-wrap rounded-card rounded-ss-none border border-quiz-border bg-quiz-bg px-4 py-3 text-start text-sm leading-relaxed text-quiz-text-primary">
+      <div className="whitespace-pre-wrap rounded-card rounded-ss-none border border-quiz-border bg-card px-4 py-3 text-start text-sm leading-relaxed text-quiz-text-primary shadow-card">
         {children}
       </div>
     </div>

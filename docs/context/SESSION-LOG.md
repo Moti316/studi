@@ -23,7 +23,9 @@
 
 - ✅ **מסך 4 — קורס + חקיקה** — `CourseTopics` (`65207bc`) + `LegislationLibrary`: תגי-אייקון **gradient** (`from-primary-500 to-primary-600` + shadow-button) · hover-lift/shadow-card · count-pills primary (`bg-primary-50 ring-primary-100`) · טקסט dark-aware. אומת-ויזואלית (/preview/course · /preview/legislation · accordion-מדפים).
 
-**Drive:** לוג-סשן מקיף + פרומפט-המשך נכתב (doc `10KsSeXh…`). **בעבודה / הצעד-הבא:** מסך 3 סימולציה · import-תרחישים (בלוק-5) · /lesson/exam (D3) · scopes 4.3-4.5 · באג-האנט.
+- ✅ **מסך 3 — סימולציה** — `InspectorBubble` (משותף+מקומי) → אווטר-אייקון עגול + shadow · בועות-מועמד gradient · כפתורי-אופציה מוגבהים (shadow-card+hover-lift) · live-submit gradient. אומת-ויזואלית (/preview/simulation). **→ סבב-העיצוב B1 המלא הושלם: דשבורד(לילה)+נגן-שיעור+capstone+הגדרות+קורס+חקיקה+סימולציה.**
+
+**Drive:** לוג-סשן מקיף + פרומפט-המשך נכתב (doc `10KsSeXh…`). **8 commits הסשן.** **בעבודה / הצעד-הבא (פונקציונלי):** import-תרחישים-ל-DB (בלוק-5) · /lesson/exam (D3) · scopes 4.3-4.5 (S1) · gamification/persistence (🚩 DB) · באג-האנט.
 
 ---
 

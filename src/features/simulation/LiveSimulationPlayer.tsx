@@ -98,7 +98,7 @@ export function LiveSimulationPlayer({
               {/* תשובת-המועמד */}
               <div className="flex flex-col items-end gap-1">
                 <span className="text-xs font-bold text-quiz-text-secondary">התשובה שלך</span>
-                <div className="max-w-[85%] whitespace-pre-wrap rounded-card rounded-se-none bg-quiz-primary-active px-4 py-2 text-start text-sm font-medium text-white">
+                <div className="max-w-[85%] whitespace-pre-wrap rounded-card rounded-se-none bg-gradient-to-bl from-primary-500 to-primary-600 px-4 py-2 text-start text-sm font-medium text-white shadow-button">
                   {t.answer}
                 </div>
               </div>
@@ -167,7 +167,7 @@ export function LiveSimulationPlayer({
                 data-testid="live-submit"
                 onClick={submit}
                 disabled={!draft.trim()}
-                className="self-start rounded-pill bg-quiz-primary-active px-6 py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                className="self-start rounded-pill bg-gradient-to-bl from-primary-500 to-primary-600 px-6 py-2.5 text-sm font-bold text-white shadow-button transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 שלח תשובה
               </button>
