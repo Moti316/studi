@@ -7,6 +7,7 @@ import { type OpenGrade } from '@/lib/grading/keyword-match';
 import { gradeOpenAnswerAction } from '../grade-open-answer.action';
 import type { SmartGradeResult } from '@/lib/ai/prompts/evaluate-open-answer';
 import { DeepExplanationButton } from './DeepExplanationButton';
+import { TutorChat } from './TutorChat';
 
 /**
  * <ExplanationCard> — נגן לשאלת `explanation` (שו"ת-פתוח · בחינת-ועדה אוֹרָלית).
@@ -193,6 +194,9 @@ export function ExplanationCard({
             </div>
           )}
           <DeepExplanationButton explanation={question.explanation} />
+
+          {/* מורה-AI — שאלות-המשך על השאלה (בלוק-4 · auth+fallback) */}
+          <TutorChat questionPrompt={question.prompt} correctAnswer={answer ?? undefined} />
         </>
       )}
 
