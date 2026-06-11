@@ -19,7 +19,11 @@
 - ✅ **מסך 2 — Capstone** (`8985c9a` · 107 טסטים) — `CapstoneStepperHeader` → **hero כהה gradient** (glow-orb · זהות "📋 בונה ה-JSA" · progress-bar לבן · צעדים לבנים-על-כהה) · מיכל=`rounded-b-modal bg-card` · CTAs ראשיים (Cover/Site/Feedback/Export/Jsa + StepNav) → gradient. **QA-gate a11y:** future-step white/55+white/60 (3.85:1) → white/75. הטבלאות-הרשמיות (שהלילה בנה) נשמרו.
 - ✅ **★ מסך 5 — הגדרות (עיצוב + חיווט · בקשת-מוטי "לחבר כפתורים-לא-פעילים")** — **ThemeSelector היה דקורטיבי** ("Phase 9") → **חיווט אמיתי:** `src/lib/theme.ts` (applyTheme/resolveTheme + no-flash init ב-layout) · **8 טוקני-משטח (card/quiz-bg/border/text/explanation/background) הומרו ל-CSS-vars dark-aware** (globals+tailwind · **light זהה-לחלוטין** · dark נהפך) · `SettingsForm` → **persistence ל-localStorage** (כל פקד שורד-reload · חיווי "נשמר ✓") + applyTheme בשינוי. **אומת-ויזואלית:** light-unchanged + dark-works (`html.dark=true`). TTS-preview מסומן "דורש-backend" (Phase 7). SignOut/DeleteAccount כבר עבדו.
 
-**בעבודה / הצעד-הבא:** מורה-AI (בלוק-4) · מסך 3 סימולציה · מסך 4 קורס+חקיקה · import-תרחישים (בלוק-5) · /lesson/exam (D3) · באג-האנט.
+- ✅ **★ מורה-AI (בלוק-4 · מוטי שאל עליו)** (`f0d41d4` · 914 טסטים) — `tutor-prompt.ts` (טהור · SYSTEM_TUTOR עם **citation-guard** "ציטוט רק-כשבטוח" + buildTutorPrompt + fallback) · `tutor-explain.action` (Claude **author-model**/Sonnet + auth-gate + fallback · לעולם-לא-זורק · דפוס grade-open-answer) · `TutorChat.tsx` (B1 · header-gradient · בועות-Q/A · loading/error · כפתור-שאל) · חּוּוט ל-`ExplanationCard` (אחרי-חשיפה) · `/preview/tutor` · 5 טסטים. **אומת-חי:** preview ask→answer (fallback unauth · Claude-live עם מפתח+auth).
+
+- ✅ **מסך 4א — קורס (CourseTopics)** — כרטיסי-נושא נועזים: תג-אייקון **gradient** (`from-primary-500 to-primary-600` + shadow-button) · hover-lift + shadow-card · count-pill (`bg-primary-50 ring-primary-100`) · טקסט dark-aware. אומת-ויזואלית (/preview/course · 8 יחידות · 458 שאלות).
+
+**Drive:** לוג-סשן מקיף + פרומפט-המשך נכתב (doc `10KsSeXh…`). **בעבודה / הצעד-הבא:** מסך 4ב חקיקה (LegislationLibrary) · מסך 3 סימולציה · import-תרחישים (בלוק-5) · /lesson/exam (D3) · scopes 4.3-4.5 · באג-האנט.
 
 ---
 

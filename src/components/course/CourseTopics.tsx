@@ -55,20 +55,24 @@ export function CourseTopics({ topics, counts, hrefBase = '/lesson' }: CourseTop
               <Link
                 href={`${hrefBase}/${topic.id}`}
                 data-testid={`topic-${topic.id}`}
-                className="hover:border-primary-400 group flex items-center gap-3 rounded-card border border-border bg-card p-3 transition-colors hover:bg-primary-50/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
+                className="group flex items-center gap-3 rounded-card border border-border bg-card p-3 shadow-card transition-all hover:-translate-y-0.5 hover:border-primary-500/40 hover:shadow-card-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
               >
-                <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-primary-100 text-primary-700">
+                <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-bl from-primary-500 to-primary-600 text-white shadow-button">
                   <Icon className="size-6" aria-hidden="true" />
                 </span>
                 <span className="flex min-w-0 flex-1 flex-col gap-0.5 text-start">
                   <span className="text-xs font-bold text-accent-600">יחידה {i + 1}</span>
-                  <span className="text-sm font-extrabold leading-snug">{topic.title}</span>
-                  <span className="text-foreground/55 truncate text-xs">{topic.blurb}</span>
-                  <span className="text-foreground/70 mt-0.5 text-xs font-bold">{n} שאלות</span>
+                  <span className="text-sm font-extrabold leading-snug text-quiz-text-primary">
+                    {topic.title}
+                  </span>
+                  <span className="truncate text-xs text-quiz-text-secondary">{topic.blurb}</span>
+                  <span className="mt-1 inline-flex w-fit items-center rounded-pill bg-primary-50 px-2 py-0.5 text-[11px] font-bold text-primary-700 ring-1 ring-inset ring-primary-100">
+                    {n} שאלות
+                  </span>
                 </span>
                 <ChevronLeft
                   aria-hidden="true"
-                  className="text-foreground/30 size-5 shrink-0 transition-transform group-hover:-translate-x-0.5"
+                  className="size-5 shrink-0 text-quiz-text-secondary transition-transform group-hover:-translate-x-0.5"
                 />
               </Link>
             </li>
