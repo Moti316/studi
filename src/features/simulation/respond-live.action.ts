@@ -36,6 +36,16 @@ export async function respondLiveAction(input: RespondLiveInput): Promise<Respon
   // הקאפ-לשלב (clampLiveProgress) מסיים בדרך-כלל אחרי ~12 תורים; >24 = חריגה → לא קוראים ל-Claude.
   if (input.transcript.length > 24) return deterministicLiveTurn(input);
 
+  // שער 2.6 — תקרת-אורך-תוכן: ספירת-תורים לבדה לא תפסה answer/transcript ענק (input-tokens
+  // לא-מקושארים · cost-abuse · BUGS#system-bug-hunt · #2). תקרה על התשובה-הבודדת + סך-התמלול.
+  const transcriptChars = input.transcript.reduce(
+    (n, t) => n + t.answer.length + (t.reply?.length ?? 0) + t.question.length,
+    0,
+  );
+  if (input.answer.length > 4000 || transcriptChars > 40000) {
+    return deterministicLiveTurn(input);
+  }
+
   // שער 3 — Claude חי.
   try {
     const system = buildLiveSystemPrompt(input.branch);

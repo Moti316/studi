@@ -23,6 +23,42 @@
 - **✅ פתרון:** `maxTokens: 3000` (מרווח לעברית+envelope). **אומת חי 3×: `source:'claude'`** · ניקוד-חלקי · התקדמות-שלב · אפס-truncation.
 - **לקח:** "הטסטים ירוקים" ≠ "הפיצ'ר עובד". ה-fallback-החינני (`לעולם-לא-זורק`) **הסווה** כשל-מוחלט — הוא בלע את ה-LiveParseError והציג תוכן-תקין-לכאורה. **תמיד אימות-חי end-to-end לפיצ'ר-AI** (לא רק unit-tests · ראה זיכרון `claude-live-evaluation`). הסקירה-הסטטית (20 סוכנים) פספסה זאת — רק הרצה-בפועל תפסה.
 
+## 🔴→🟢 capstone — נרטיב+JSA מתים-בשקט (JSON-יחיד-ענק חתוך/פגום · 2026-06-11) {#capstone-narrative-single-json}
+
+> **אותו class כמו [LiveEngine](#liveengine-maxtokens-truncation)** — fallback-חינני שהסווה כשל-מוחלט. מוטי ראה stubs `[להשלמה...]` _תוך-כדי-חיוב על-המפתח_. תוקן ונדחף `f800c14`.
+
+- **תסמין:** `/capstone` ייצר פרקי-נרטיב = `buildDeterministicNarrative` (`[להשלמה...]`) למרות שהמפתח מוגדר ויש **חיוב** על ה-tokens. ה-JSA נפל גם הוא ל-fallback-דטרמיניסטי.
+- **שורש (אומת-חי · לא-נוחש):** `generate-narrative.action` + `generate-jsa.action` קראו `claudeGenerateJSON` **בלי `model`** → ברירת-מחדל `defaultEvalModel()` = **Haiku**. חיבור 5 פרקים-עבריים-עשירים / 12 שורות-JSON-מקוננות כ**אובייקט-JSON-יחיד-ענק** נכשל בשני המודלים: **Haiku** פלט JSON-לא-תקין (newline/גרש לא-escaped בתוך מחרוזת-עברית-ארוכה · `position 2775`); **Sonnet** **נחתך** ב-maxTokens 6000 (`Unterminated string · position 8610`). בשני המקרים `JSON.parse` זרק → `catch` → `buildDeterministicNarrative`. **משלמים על-ה-tokens, מקבלים את-ה-stub.**
+- **אבחון (שיטה):** סקריפט-אבחון `_diag-narrative.ts` שהריץ את _אותו_ `claudeGenerateJSON` עם SYSTEM_NARRATIVE, פעם Haiku ופעם Sonnet → שניהם FAILED (סיבות-שונות). הוכיח שהחלפת-מודל-בלבד **לא** הייתה פותרת.
+- **✅ פתרון:** (1) **narrative → ארכיטקטורת פר-פרק** — 5 קריאות `claudeGenerateText` מקבילות (**טקסט-נקי · בלי JSON** → מבטל class שלם של באגי-escaping · כל פרק חסום ~2400 tokens → אי-אפשר-להיחתך · fallback **פר-פרק**). (2) **JSA → `defaultAuthorModel()` (Sonnet · `ANTHROPIC_MODEL_AUTHOR`) + maxTokens 4500→9000**. (3) `extractJsonPayload` (balanced-brace parser · עמיד ל-preamble/trailing). +15 טסטים · אומת מסמך-זהב (Workflow 11-סוכנים · מבקר תפס 3 שגיאות-ציטוט).
+- **לקח:** (א) **מודל-יחיד-לכל** = מלכודת — Haiku מצוין להערכה-זולה אבל **לא** לחיבור-מסמכים-ארוכים. הפרד `defaultEvalModel` (Haiku · תכוף/זול) מ-`defaultAuthorModel` (Sonnet · נדיר/איכותי). (ב) **JSON-יחיד-ענק שביר** — לתוכן-ארוך, פצל ל-קריאות-טקסט פר-יחידה. (ג) שוב: "ירוק" ≠ "עובד" · ה-fallback-החינני מסווה. ראה זיכרון `claude-author-vs-eval-model`.
+
+## 🔴→🟢 באג-האנט מערכתי — 14 מאומתים מתוך 21 (Workflow · 2026-06-11) {#system-bug-hunt}
+
+> Workflow רב-סוכני (6 ציידים פר-תחום → אימות-אדוורסרי פר-מועמד · default-refute). 21 מועמדים → **14 מאומתים**. הכרעת-מוטי "תפעל לאתר באגים".
+
+- **#1 🔴 HIGH — `grade-open-answer.action.ts` ללא שער-auth → cost-abuse + LLM-relay.** Server-Action שקראה ל-Claude ישירות, ללא `getUser` (כל ה-actions האחיות כן). תוקף-אנונימי (POST + header next-action · לא דרך-הדף) → קריאות-Claude בלתי-מוגבלות + 3 שדות נשלטי-תוקף ללא delimiters = relay פתוח. **✅ תוקן:** שער-`getUser`→`deterministicSmartGrade` (keyword-match · אפס-עלות).
+- **#11 🟡 LOW — `deep-explanation.action.ts` ללא שער-auth** (Gemini embed+gen · יקר). **✅ תוקן:** `getUser`→fail-closed.
+- **#2 🟠 MEDIUM — `respond-live.action.ts` cost-guard סופר תורים-בלבד, לא אורך-תוכן.** answer/transcript ענק (MB) → input-tokens מתפוצצים (לא-מקושארים). **✅ תוקן:** תקרה `answer>4000` / `transcript>40K` תווים.
+- **#4 🟠 MEDIUM — `coverageGaps` keyword 'חד' (2-תווים) תפס מילים-לא-קשורות** ("אחד"/"מיוחד") → פער-כלים-חדים לא-מדווח-לעולם. **✅ תוקן:** הוסר 'חד' + מילים-שלמות/≥3. (אותו class: 'גב' ב-logistics — follow-up.)
+- **#3 🟠 MEDIUM — narrative: פרק-Claude חתוך-ב-max_tokens מתקבל כתקין** (truncation שקט · עובר את בדיקת-האורך). ⏳ follow-up: `claudeGenerateText` יחזיר `stop_reason`.
+- **#5–#8,#12 🟠/🟡 a11y — SimulationPlayer aria-live (כל-השיח מוכרז-מחדש) · McqQuestion radiogroup ללא roving-tabindex · LessonPlayer dialog ללא focus-trap/Escape · RiskMatrix grid ללא ניווט-חיצים · LiveSimulationPlayer איבוד-פוקוס.** ⏳ אצווה-a11y (follow-up).
+- **#9 🟠 MEDIUM — `import-scenarios` source_ref פוזיציוני** (לא content-keyed) → שובר אידמפוטנטיות בעריכת-באץ'. ⏳ follow-up: hash-תוכן (כמו `sourceRefFor`).
+- **#10 🟡 LOW — `clampLiveProgress` מכבד done=true בשלב-מוקדם** → סיום-מוקדם. ⏳ follow-up: לכבד done רק ב-`cruel`.
+- **#13 🟡 LOW — G4 `hasSection` בודק אי-ריקנות בלבד** (לא שהסעיף בנוסח). ⏳ follow-up: לכלול g5.
+- **#14 🟡 LOW — אין CSP ב-`next.config`.** ⏳ follow-up: header CSP.
+- **לקח:** באג-האנט-אדוורסרי (ציד פר-תחום + אימות-default-refute) תפס **שער-auth-חסר-יחיד** מתוך 5 actions-אחיות — דפוס-עקביות (כולן-מגודרות-חוץ-מאחת) הוא ריח-באג מצוין.
+
+## 🟢 דשבורד-מהפך — ממצאי 3 סוכני-בקרה (עיצוב/נגישות/code · 2026-06-11) {#dashboard-redesign-qa}
+
+> שער-QA לפני push (הכרעת-מוטי "סוכני-בקרה לפני תוצאה"). 3 סוכנים · ~13 ממצאים מאומתים → תוקנו (`6bf77a6`).
+
+- **✅ P1 צבע-שבור:** `text-accent-200` **לא-קיים בפלטה** (Tailwind מתעלם → fallback-שחור) → `accent-100`. `text-white` על amber-gradient ("היום") = **2.14:1 כשל-AA** → בועת-"היום" כחולה (`primary` · white על-כחול ~8:1).
+- **✅ P1/P2 נגישות:** `prefers-reduced-motion` — `mascot-float`/`flame-pulse` אינסופיים = **כשל WCAG 2.2.2** → בלוק-CSS ב-globals. aria על אמוג'י (🦺/🔥/✓) · `CountUp` ערך-סופי ב-`sr-only` (לא כל-tick) · focus-visible על "ראה הכל".
+- **✅ P1 hydration:** `CountUp`/`RingProgress` flash (איפוס-ל-0 ב-effect → 0→value נראה) → `useLayoutEffect` (איפוס לפני-paint) + guard `value===0`.
+- **✅ tokens:** צבעי-rgb-קשיחים → CSS-vars (`--ring-fill/--ring-accent/--ring-track`) **dark-aware**.
+- **לקח (לוגיקה):** הסוכן הציע "תיקון מעגלי" לרצף-today=0 — אך **בדיקת-הטסט חשפה** שזה גרוע-יותר (מדליק ימים-עתידיים). ה-model-A המקורי (רק ימי-עבר-השבוע) היה נכון. **TDD תפס המלצת-סוכן-שגויה.**
+
 ## 🟢 סקירת-לילה (2026-06-10) — 14 ממצאים · 4+9 תוקנו (2 Workflows) {#night-run-review}
 
 > סקירה רב-סוכנית (20 סוכנים · אימות-נגדי) של 7-commits ריצת-הלילה → 14 ממצאים. שלב-א' (`e418615`): 4 קריטיים. שלב-ב' (Workflow-מימוש 3 סוכנים + Workflow-אימות 9 מאמתים): 9 נותרים.

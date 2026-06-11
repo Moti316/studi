@@ -11,10 +11,16 @@
 import { sql } from 'drizzle-orm';
 import { db } from '@/lib/db';
 import { buildDeepExplanation, type DeepExplanationResult } from '@/lib/rag/deep-explanation-core';
+import { getUser } from '@/lib/auth/server';
 
 export type { DeepExplanationResult };
 
 export async function generateDeepExplanation(questionId: string): Promise<DeepExplanationResult> {
+  // שער-auth (cost-abuse · BUGS#system-bug-hunt · #11): נתיב יקר (Gemini embed+gen) →
+  // fail-closed למשתמש-לא-מחובר. (ה-UI ממילא צורך הסבר-מוטמע-מראש; זהו fallback/תאימות.)
+  const user = await getUser();
+  if (!user) throw new Error('deep-explanation: unauthenticated');
+
   const rows = await db.execute(
     sql`SELECT prompt, correct_answer, explanation FROM questions WHERE id = ${questionId} LIMIT 1`,
   );

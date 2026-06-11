@@ -259,18 +259,18 @@
 
 | קובץ | תכלית | תגיות | עודכן |
 | --- | --- | --- | --- |
-| [A1-A2-RESEARCH-2026-06-11.md](../../courses/safety-officer/A1-A2-RESEARCH-2026-06-11.md) | מקור: Workflow-מחקר רב-סוכני (אתרים-רשמיים gov.il/נבו/wikisource/ISO + הקורפוס-המקומי) · confidence: high. | courses safety-officer 2026 | — |
+| [A1-A2-RESEARCH-2026-06-11.md](../../courses/safety-officer/A1-A2-RESEARCH-2026-06-11.md) | מקור: Workflow-מחקר רב-סוכני (אתרים-רשמיים gov.il/נבו/wikisource/ISO + הקורפוס-המקומי) · confidence: high. | courses safety-officer 2026 | 2026-06-11 |
 | [ATTRIBUTION.md](../../courses/safety-officer/ATTRIBUTION.md) | מטרה: למפות את קבוצות-חומר-הלימוד של הקורס לפי נושא וסוג בלבד, להעריך את מצב-הזכויות | courses safety-officer | 2026-06-09 |
 | [COURSE-DESIGN.md](../../courses/safety-officer/COURSE-DESIGN.md) | מטרה: להגדיר את מודל-הלמידה של קורס "ממונה בטיחות" (instance #1) — 3 מצבי-הלמידה | courses safety-officer | 2026-06-09 |
 | [curriculum-atgar.md](../../courses/safety-officer/curriculum-atgar.md) | מקור-מבנה: מערכת-שעות קורס ממונה-בטיחות 1211762 (מכללת אתגר, אוג׳2025). מבנה בלבד (פרקים/נושאים — נחלת-מבנה);… | courses safety-officer | 2026-06-01 |
 | [FINAL-PROJECT.md](../../courses/safety-officer/FINAL-PROJECT.md) | מטרה: ספֵק לתכן מיני-קורס ה-capstone שבו המערכת מלווה את המשתמש בהפקת עבודת-גמר אמיתית | courses safety-officer | 2026-06-02 |
 | [ISO-31000-DRAFT.md](../../courses/safety-officer/ISO-31000-DRAFT.md) | טיוטה לסקירת מוטי · תקציר-מקורי · אינו תחליף לתקן הרשמי בתשלום · מעודכן 2026-06-01 | courses safety-officer | 2026-06-01 |
 | [ISO-31010-DRAFT.md](../../courses/safety-officer/ISO-31010-DRAFT.md) | טיוטה לסקירת מוטי · תקציר-מקורי · אינו תחליף לתקן הרשמי בתשלום · מעודכן 2026-06-01 | courses safety-officer | 2026-06-01 |
-| [LEARNING-MATERIALS.md](../../courses/safety-officer/LEARNING-MATERIALS.md) | מטרה: מיפוי חומרי-הלימוד (מצגות · סיכומים · טקסטי-חוק · הקלטות-שיעור · בנקי-שאלות) ל-11 | courses safety-officer | 2026-06-01 |
-| [LEGISLATION-COVERAGE.md](../../courses/safety-officer/LEGISLATION-COVERAGE.md) | מקור: workflow קריאה-מלאה (2026-06-01). name-clean — ללא שמות-מרצים (ראה ../../docs/compliance/COMPLIANCE.md)… | courses safety-officer | 2026-06-01 |
-| [LEGISLATION-SOURCES.md](../../courses/safety-officer/LEGISLATION-SOURCES.md) | הבסיס-החוקי שמאמת כל שאלה/הסבר. PDF = source-of-truth (ADR-005/ADR-011): תשובה | courses safety-officer | 2026-06-03 |
+| [LEARNING-MATERIALS.md](../../courses/safety-officer/LEARNING-MATERIALS.md) | מטרה: מיפוי חומרי-הלימוד (מצגות · סיכומים · טקסטי-חוק · הקלטות-שיעור · בנקי-שאלות) ל-11 | courses safety-officer | 2026-06-11 |
+| [LEGISLATION-COVERAGE.md](../../courses/safety-officer/LEGISLATION-COVERAGE.md) | מקור: workflow קריאה-מלאה (2026-06-01). name-clean — ללא שמות-מרצים (ראה ../../docs/compliance/COMPLIANCE.md)… | courses safety-officer | 2026-06-11 |
+| [LEGISLATION-SOURCES.md](../../courses/safety-officer/LEGISLATION-SOURCES.md) | הבסיס-החוקי שמאמת כל שאלה/הסבר. PDF = source-of-truth (ADR-005/ADR-011): תשובה | courses safety-officer | 2026-06-11 |
 | [MOLSA-PROGRAM.md](../../courses/safety-officer/MOLSA-PROGRAM.md) | מיפוי התכנית הרשמית להכשרת "ממונה בטיחות בעבודה" (מינהל הבטיחות והבריאות | courses safety-officer | 2026-06-01 |
-| [NOTEBOOKLM-ASSETS.md](../../courses/safety-officer/NOTEBOOKLM-ASSETS.md) | תכלית: אינדקס-עבודה של מחברות-ה-NotebookLM של מוטי הרלוונטיות לקורס ממונה-בטיחות. | courses safety-officer | 2026-06-09 |
+| [NOTEBOOKLM-ASSETS.md](../../courses/safety-officer/NOTEBOOKLM-ASSETS.md) | תכלית: אינדקס-עבודה של מחברות-ה-NotebookLM של מוטי הרלוונטיות לקורס ממונה-בטיחות. | courses safety-officer | 2026-06-11 |
 | [README.md](../../courses/safety-officer/README.md) | תיקיית-הקורס. המבנה = תבנית-הפלטפורמה (כל קורס עתידי באותו מבנה): פרק=מיני-קורס · 3 מצבים (שו"ת · תרחישים · מ… | courses safety-officer | 2026-06-01 |
 | [REGULATORY-WATCH.md](../../courses/safety-officer/REGULATORY-WATCH.md) | מעקב-רגולטורי בלבד — ⚠️ לא תוכן-קורס מחייב. קובץ זה מתעד רפורמות-חקיקה שפורסמו/נחתמו | courses safety-officer | 2026-06-01 |
 | [README.md](../../courses/safety-officer/sources/final-project/README.md) | גיבוי-reference פרטי (הריפו פרטי). אין לשכפל PII לתוכן-משתמש. מעודכן: 2026-06-01. | safety-officer sources final-project | 2026-06-01 |

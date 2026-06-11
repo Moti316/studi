@@ -65,6 +65,14 @@ export async function gradeOpenAnswerSmart(
       /* כשל-Claude → fallback */
     }
   }
+  return deterministicSmartGrade(userAnswer, modelAnswer);
+}
+
+/**
+ * deterministicSmartGrade — הערכה דטרמיניסטית (keyword-match · אפס-Claude · אפס-עלות).
+ * משמש כ-fallback (אין-מפתח/כשל-Claude) **וכמסלול למשתמש-לא-מחובר** (cost-abuse guard ב-action).
+ */
+export function deterministicSmartGrade(userAnswer: string, modelAnswer: string): SmartGradeResult {
   const d = gradeOpenAnswer(userAnswer, modelAnswer);
   return {
     grade: d.grade,

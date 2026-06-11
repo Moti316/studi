@@ -5,16 +5,21 @@ vi.mock('@/lib/db', () => ({ db: { execute: vi.fn() } }));
 vi.mock('@/lib/rag/embed', () => ({ embedRagQuery: vi.fn() }));
 vi.mock('@/lib/rag/retrieval', () => ({ retrieveRelevantChunks: vi.fn() }));
 vi.mock('@/lib/ai/client', () => ({ geminiGenerateText: vi.fn() }));
+vi.mock('@/lib/auth/server', () => ({ getUser: vi.fn() }));
 
 import { generateDeepExplanation } from '@/features/lesson-player/deep-explanation.action';
 import { db } from '@/lib/db';
 import { embedRagQuery } from '@/lib/rag/embed';
 import { retrieveRelevantChunks } from '@/lib/rag/retrieval';
 import { geminiGenerateText } from '@/lib/ai/client';
+import { getUser } from '@/lib/auth/server';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 describe('generateDeepExplanation (RAG server-action)', () => {
-  beforeEach(() => vi.clearAllMocks());
+  beforeEach(() => {
+    vi.clearAllMocks();
+    (getUser as any).mockResolvedValue({ id: 'u1' }); // ברירת-מחדל: משתמש-מחובר
+  });
 
   it('מחבר הסבר מעוגן + מקבץ מקורות (dedup לפי כותרת, איחוד scope-ids)', async () => {
     (db.execute as any).mockResolvedValue([
@@ -53,5 +58,12 @@ describe('generateDeepExplanation (RAG server-action)', () => {
   it('שאלה לא-קיימת → זורק שגיאה', async () => {
     (db.execute as any).mockResolvedValue([]);
     await expect(generateDeepExplanation('missing')).rejects.toThrow(/not found/);
+  });
+
+  it('משתמש-לא-מחובר → זורק (שער-auth · cost-abuse · אפס-Gemini)', async () => {
+    (getUser as any).mockResolvedValue(null);
+    await expect(generateDeepExplanation('q-1')).rejects.toThrow(/unauthenticated/);
+    expect(db.execute).not.toHaveBeenCalled();
+    expect(embedRagQuery).not.toHaveBeenCalled();
   });
 });
