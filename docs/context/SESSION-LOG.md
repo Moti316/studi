@@ -5,6 +5,29 @@
 
 ---
 
+## 2026-06-11 (ריצת-לילה אוטונומית-מלאה) — capstone-fix · דשבורד-מהפך · A1/A2 · באג-האנט(14)
+
+> **תמצית:** ריצה אוטונומית-מלאה (מוטי ישן · "push פר-תת-משימה · סוכני-בקרה לפני תוצאה · Workflows · באג-האנט · לימוד-עצמי"). **5 commits** · main ירוק (908+ טסטים). מצב: [[studi-session-2026-06-11-nightrun]].
+
+**הושלם (הכל ב-`main`):**
+
+- ✅ **★ capstone-fix** (`f800c14` · 893 טסטים) — **באג-HIGH אמיתי:** narrative+JSA רצו על **Haiku** ב-JSON-יחיד-ענק → נחתך/פגום → fallback `[להשלמה]` stubs **תוך-כדי-חיוב** (אומת-חי: Haiku+Sonnet שניהם נכשלו). תיקון: **narrative פר-פרק** (`claudeGenerateText` ×5 · טקסט-נקי) + **JSA→`defaultAuthorModel`(Sonnet)+maxTokens 9000** + `extractJsonPayload`. + מסמך-זהב [`docs/examples/capstone-sample-rakia18.md`] (Workflow 11-סוכנים). [`BUGS#capstone-narrative-single-json`]
+- ✅ **דשבורד-מהפך StudiesGo-level** (`6bf77a6` · +15 טסטים) — `DashboardView`: hero כהה (gradient + glow + mascot-float 🦺 + level) · `CountUp`/`RingProgress` מונפשים · רצף-בוהק · CTA נועז · `/preview/dashboard`. **עבר 3 סוכני-בקרה** (עיצוב/a11y/code · ~13 ממצאים תוקנו: accent-200-שבור · ניגודיות-AA · reduced-motion · hydration-flash · tokens). [`BUGS#dashboard-redesign-qa`]
+- ✅ **A1/A2** (`2b88d66`) — Workflow-מחקר (web רשמי + קורפוס): עגורנים = **2 תקנות** (תשנ"ג-1992 מפעילים / **תשכ"ז-1966 עגורני-צריח · תקנה 65 שם · לא 1992**) → תוקן-קורפוס (4 קבצים · 2.6.1 🔴→🟡) + [`A1-A2-RESEARCH-2026-06-11.md`]. ISO = רקע-מתודולוגיה (הוכרע).
+- ✅ **באג-האנט מערכתי** (`1caef7e`) — Workflow (6 ציידים → אימות-אדוורסרי · 21→**14 מאומתים**). **batch-A תוקן:** #1 HIGH `grade-open-answer` ללא-auth (cost-abuse+LLM-relay) · #11 `deep-explanation` auth · #2 cost-cap · #4 coverageGaps 'חד'. [`BUGS#system-bug-hunt`]
+- ✅ **לימוד-עצמי:** BUGS.md (4 רשומות) · זיכרון [[claude-author-vs-eval-model]] + [[studi-session-2026-06-11-nightrun]].
+
+**נותר / הצעד-הבא (פר עדיפות):**
+
+1. **אצווה-a11y מהבאג-האנט** (#5 SimulationPlayer aria-live · #6 McqQuestion roving-tabindex · #7 LessonPlayer focus-trap · #8 RiskMatrix grid · #12 LiveSim focus).
+2. **bug-hunt קטנים:** #3 narrative-truncation-detect · #9 import idempotency (hash source_ref) · #10 done-early · #13 G4 g5 · #14 CSP.
+3. **המשך-עיצוב** (בלוק-2): נגן-שיעור · סימולציה · קורס (B1 דרמטי · `/preview/dashboard` כתבנית).
+4. **בלוק-4 מורה-AI** (`TutorChat` + `tutor-explain.action` · reuse `claude.ts` author-model).
+5. **בלוק-5 תרחישים:** import 12 ל-DB + wiring `/lesson/scenarios` (DB-write→`dangerouslyDisableSandbox`).
+6. **🚩 דורש-מוטי:** אישור הורדת-נוסח-עגורני-צריח-1966 + שיבוץ-ISO · אימות-חי `/capstone` עם מפתח-prod.
+
+---
+
 ## 2026-06-10 (המשך-4) — ★ capstone: מסמך-מלא 12-18 עמ' + אבחון-תוכן-AI + תיקון-fallback
 
 > **תמצית:** השלמת ה-capstone לפרויקט-גמר-רשמי **שלם** — מסמך 12-18 עמ' (6 פרקים) + אבחון-חי של איכות-ה-AI. **commits:** `9881fb7` (מסמך-מלא) + `423ff2d` (fallback). typecheck נקי · **892 vitest**.
