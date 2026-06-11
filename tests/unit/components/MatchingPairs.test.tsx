@@ -62,22 +62,28 @@ describe('MatchingPairs', () => {
     expect(screen.getByTestId('submit-button')).not.toBeDisabled();
   });
 
-  it('זיווג-נכון מלא → onComplete(true) + מסך-הצלחה', () => {
+  // בקשת-מוטי 2026-06-11: «בדוק» חושף תוצאה inline בלבד; ההתקדמות (onComplete) רק ב«המשך» —
+  // כך matching מנהל משוב-עצמאי ולא נפתח sheet-MCQ כפול מעליו ב-LessonPlayer.
+  it('זיווג-נכון מלא → «בדוק» מציג תוצאה; «המשך» קורא onComplete(true)', () => {
     const onComplete = vi.fn();
     render(<MatchingPairs pairs={PAIRS} onComplete={onComplete} />);
     pairAll(true);
     fireEvent.click(screen.getByTestId('submit-button'));
-    expect(onComplete).toHaveBeenCalledWith(true);
     expect(screen.getByTestId('matching-result')).toBeInTheDocument();
     expect(screen.getByText(/כל ההתאמות נכונות/)).toBeInTheDocument();
+    expect(onComplete).not.toHaveBeenCalled(); // טרם-התקדמות
+    fireEvent.click(screen.getByTestId('continue-button'));
+    expect(onComplete).toHaveBeenCalledWith(true);
   });
 
-  it('זיווג-שגוי → onComplete(false) + מציג התאמות-נכונות', () => {
+  it('זיווג-שגוי → מציג התאמות-נכונות; «המשך» קורא onComplete(false)', () => {
     const onComplete = vi.fn();
     render(<MatchingPairs pairs={PAIRS} onComplete={onComplete} />);
     pairAll(false);
     fireEvent.click(screen.getByTestId('submit-button'));
-    expect(onComplete).toHaveBeenCalledWith(false);
     expect(screen.getByText(/חלק מההתאמות שגויות/)).toBeInTheDocument();
+    expect(onComplete).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByTestId('continue-button'));
+    expect(onComplete).toHaveBeenCalledWith(false);
   });
 });

@@ -5,6 +5,21 @@
 
 ---
 
+## 2026-06-11 (המשך-לילה ב' · אוטונומי-מלא) — קו-העיצוב הנועז לכל-המסכים (בלוק-2)
+
+> **תמצית:** מוטי: "להמשיך את קו-הלילה — **במיוחד עיצוב-הדשבורד החדש** — ולהחיל על **כל שאר המסכים**". מצב אוטונומי-מלא (push פר-מסך · QA-gate 3-סוכנים לפני-תוצאה · אימות-ויזואלי Playwright · Workflows בשיקול-דעת · באג-האנט · לימוד-עצמי).
+>
+> **שלב 0 (פיוס-ריפו):** WIP-מקומי (refactor-capstone שתכננתי) התגלה **מיושן** — ריצת-הלילה כבר ביצעה אותו (`6eb0fac`+`9bfc773`+`9881fb7`). נזרק → `git pull` (11 commits → `643288a`) → 909 טסטים ירוקים.
+
+**הושלם (נדחף ל-`main`):**
+
+- ✅ **מסך 1 — נגן-שיעור** (`d8970e3` · 909 טסטים) — `LessonHeader` (progress-segments כחול-מותג + XP/streak glass-pills) · `McqQuestion` (כרטיסים מוגבהים shadow+hover-lift · תג-מספר ממולא-בבחירה · כפתור-gradient) · `LessonPlayer` (מסך-סיכום **gradient-hero** glow-orbs+mascot-float+XP-glass-pill) · `ExplanationCard` · variants משותפים למותג (`cardSelected`/`submitButton`) · `/preview/lesson` חדש. **QA-gate 3-סוכנים:** תיקוני-ניגודיות AA (white-on-amber 1.97:1→טקסט-כהה · XP-pill accent→primary · partial-chip · border-accent-300 שבור→accent-100) + sr-only XP.
+- ✅ **★ מנגנון-התשובה (פידבק-מוטי-חי)** — מוטי: "הצגת-התשובה מסורבלת ולא-נעימה · להחליף באופן-כללי". **שורש (באג-UX):** שאלת-התאמה הפעילה **כפילות** — `MatchingPairs.handleCheck` קרא `onComplete` מיד → `LessonPlayer` פתח **sheet-MCQ מעל** המשוב-ה-inline (+ dump-רצוף `right ← left · …`). **תיקון:** (1) matching מתקדם דרך `openGrade` (כמו תרחיש/שו"ת) — בלי sheet; `onComplete` רק ב"המשך". (2) `CorrectAnswerReveal` מובנה (MCQ=כרטיס · התאמה=כרטיס פר-זוג: מונח-כותרת+הגדרה-מתחת) במקום מחרוזת-רצופה. (3) sheet רגוע (handle · טון-מעודד · max-h/scroll). **אומת-חי:** `matching-result=1 · feedback-wrong(double)=0`. [`BUGS#matching-double-feedback`]
+
+**בעבודה / הצעד-הבא:** מסך 2 Capstone · מסך 3 סימולציה · מסך 4 קורס+חקיקה · מסך 5 הגדרות+Auth (כולל **חיווט-כפתורים-לא-פעילים** · בקשת-מוטי) · מורה-AI (בלוק-4 · נשקל) · באג-האנט+לימוד-עצמי.
+
+---
+
 ## 2026-06-11 (ריצת-לילה אוטונומית-מלאה) — capstone-fix · דשבורד-מהפך · A1/A2 · באג-האנט(14)
 
 > **תמצית:** ריצה אוטונומית-מלאה (מוטי ישן · "push פר-תת-משימה · סוכני-בקרה לפני תוצאה · Workflows · באג-האנט · לימוד-עצמי"). **5 commits** · main ירוק (908+ טסטים). מצב: [[studi-session-2026-06-11-nightrun]].

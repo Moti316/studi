@@ -30,6 +30,20 @@ function q(partial: Partial<Question> & Pick<Question, 'id' | 'type' | 'prompt'>
 
 const MOCK_QUESTIONS: Question[] = [
   q({
+    id: 'p-0',
+    type: 'matching',
+    prompt: 'התאם כל מונח-בטיחות להגדרתו',
+    options: [
+      {
+        left: 'מדרג-הבקרות',
+        right: 'סדר-עדיפויות לטיפול בסיכון: חיסול → החלפה → הנדסי → מנהלי → צמ"א',
+      },
+      { left: 'JSA', right: 'ניתוח-בטיחות-עבודה — פירוק משימה לשלבים וזיהוי הסיכון בכל שלב' },
+      { left: 'SDS', right: 'גיליון-בטיחות המרכז מידע על חומר מסוכן, סיכוניו ואמצעי-המניעה' },
+      { left: 'צמ"א', right: 'ציוד-מגן-אישי — קו-ההגנה האחרון, מגן על העובד הבודד בלבד' },
+    ],
+  }),
+  q({
     id: 'p-1',
     type: 'mcq_long',
     prompt: 'מהו הצעד הראשון במדרג-הבקרות (Hierarchy of Controls) להפחתת סיכון תעסוקתי?',

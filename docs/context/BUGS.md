@@ -13,6 +13,16 @@
 - **פתרון שעובד (מקומי):** `git config --unset core.hooksPath` → commit/push רגיל (אף hook לא מנסה לרוץ) → אופציונלית להחזיר `git config core.hooksPath .husky/_`. האיכות נשמרת ע"י הרצה **ידנית** של `npx tsc --noEmit` + `npx prettier --check` (עובדים ב-PowerShell) ו/או ע"י CI ב-GitHub Actions בכל push.
 - **פתרונות-שורש (להחלטת מוטי):** (א) לתקן git-bash (רה-התקנת Git for Windows / `rebaseall` / החרגת אנטי-וירוס); (ב) commit דרך GitHub web.
 
+## 🟡→🟢 מנגנון-התשובה — משוב-כפול בשאלת-התאמה (UX · 2026-06-11) {#matching-double-feedback}
+
+> **פידבק-חי של מוטי** ("הצגת-התשובה מסורבלת ולא-נעימה · להחליף באופן-כללי" · צילום-מסך). תוקן באותו סשן.
+
+- **תסמין:** בשאלת-התאמה (matching), לאחר "בדוק תשובה" נפתח **bottom-sheet** ("תשובה לא נכונה" 🤖) ובו כל ההתאמות-הנכונות נדחסות ל**פסקה-ירוקה רצופה** (`right ← left · right ← left · …`) — צפוף, לא-קריא, ומכסה את המשוב-ה-inline שכבר קיים.
+- **שורש (ארכיטקטורי · כפילות):** `MatchingPairs` כבר מנהל משוב-inline שלם (`matching-result` + רשימת-זוגות + "המשך" + "הסבר-לעומק"). אך `handleCheck` קרא `onComplete(allCorrect)` **מיד ב-check** → ב-`LessonPlayer` זה תרגם ל-`ANSWER` (מסלול-MCQ) → **`feedback-wrong` sheet נפתח מעל** המשוב-ה-inline. שתי-שכבות-משוב + dump-רצוף (`deriveCorrectAnswerText` חיבר את כל הזוגות ב-`' · '`).
+- **✅ פתרון:** (1) `MatchingPairs.handleCheck` → **רק** `dispatch(CHECK)` (חושף תוצאה-inline); `onComplete` רק ב"המשך". (2) `LessonPlayer` matching → `openGrade` (`correct`/`incorrect`) → `ANSWER_OPEN` מתקדם **בלי sheet** (כמו תרחיש/שו"ת). (3) `deriveCorrectAnswerText`(string) → `deriveCorrectAnswer`(מבני) + `<CorrectAnswerReveal>` — MCQ=כרטיס-בודד · התאמה=כרטיס פר-זוג (מונח-כותרת-ירוק + הגדרה-מתחת). (4) sheet רגוע (drag-handle · טון-מעודד "לא נורא — ככה לומדים" · `max-h-[88vh] overflow-y-auto`). עודכנו 2 טסטי-`MatchingPairs` (onComplete רק ב"המשך").
+- **אומת-חי:** `/preview/lesson` → זיווג-שגוי → `matching-result=1 · feedback-wrong(double)=0`. רשימת-זוגות נקייה ומאווררת.
+- **לקח:** כשרכיב-ילד מנהל משוב-עצמאי, ההורה לא צריך לעטוף אותו ב-feedback-נוסף. דפוס-ה-`openGrade` (bypass ל-MCQ-sheet) הוא הנכון לכל סוג-שאלה עם משוב-משלו (תרחיש · שו"ת · התאמה).
+
 ## 🔴→🟢 LiveEngine מת-בשקט — max_tokens קיצץ את ה-JSON (2026-06-10) {#liveengine-maxtokens-truncation}
 
 > **באג-HIGH שנתפס באימות-חי (לא בסקירת-הקוד)** — הסימולציה-הפתוחה (★ ADR-018) **מעולם לא השתמשה ב-Claude בפועל**. תוקן ונדחף `e418615`.

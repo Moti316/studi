@@ -121,8 +121,9 @@ export function MatchingPairs({ pairs, onComplete, onDeepExplanation }: Matching
 
   function handleCheck() {
     if (!allPaired || checked) return;
+    // רק חושף את התוצאה inline; ההתקדמות (onComplete) רק ב"המשך" — כך matching מנהל
+    // משוב-עצמאי (כמו שו"ת/תרחיש) ולא נפתח גם sheet-MCQ כפול מעליו. [בקשת-מוטי 2026-06-11]
     dispatch({ type: 'CHECK' });
-    onComplete(allCorrect);
   }
 
   /** סגנון-כרטיס לפי מצב (בחור/מזווג/נבדק-נכון/נבדק-שגוי). */
@@ -223,7 +224,7 @@ export function MatchingPairs({ pairs, onComplete, onDeepExplanation }: Matching
           aria-label="בדוק תשובה"
           disabled={!allPaired}
           onClick={handleCheck}
-          className="w-full select-none rounded-pill bg-quiz-primary-active py-4 text-lg font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active disabled:opacity-40"
+          className="w-full select-none rounded-pill bg-gradient-to-bl from-primary-500 to-primary-600 py-4 text-lg font-bold text-white shadow-button transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active disabled:opacity-40"
         >
           בדוק תשובה
         </button>
@@ -242,14 +243,22 @@ export function MatchingPairs({ pairs, onComplete, onDeepExplanation }: Matching
               {pairs.map((pair, i) => (
                 <li
                   key={i}
-                  className="flex items-center gap-2 rounded-lg border border-quiz-success-border bg-quiz-success-bg px-3 py-2 text-sm"
+                  className="overflow-hidden rounded-card border border-quiz-success-border bg-quiz-bg"
                 >
-                  <span className="text-success" aria-hidden="true">
-                    ✓
-                  </span>
-                  <span className="font-bold">{pair.left}</span>
-                  <span className="text-quiz-text-secondary">←</span>
-                  <span className="flex-1">{pair.right}</span>
+                  {/* כותרת-מונח (ירוק · ✓) */}
+                  <div className="flex items-center gap-2 bg-quiz-success-bg px-3 py-1.5">
+                    <span
+                      aria-hidden="true"
+                      className="grid size-4 shrink-0 place-items-center rounded-full bg-success text-[10px] font-bold text-white"
+                    >
+                      ✓
+                    </span>
+                    <span className="text-sm font-bold text-quiz-text-primary">{pair.left}</span>
+                  </div>
+                  {/* ההגדרה (מאוורר · מתחת) */}
+                  <p className="px-3 py-2 text-sm leading-relaxed text-quiz-text-secondary">
+                    {pair.right}
+                  </p>
                 </li>
               ))}
             </ul>
@@ -268,7 +277,7 @@ export function MatchingPairs({ pairs, onComplete, onDeepExplanation }: Matching
             type="button"
             data-testid="continue-button"
             onClick={() => onComplete(allCorrect)}
-            className="w-full rounded-pill bg-quiz-primary-active py-4 text-lg font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active"
+            className="w-full select-none rounded-pill bg-gradient-to-bl from-primary-500 to-primary-600 py-4 text-lg font-bold text-white shadow-button transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active"
           >
             המשך
           </button>

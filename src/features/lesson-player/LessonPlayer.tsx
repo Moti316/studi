@@ -30,8 +30,6 @@ import {
   bottomSheetVariants,
   backdropFadeVariants,
   mascotPopVariants,
-  answerListContainer,
-  answerListItem,
   xpFloaterVariants,
   respectReducedMotion,
 } from '@/lib/animations';
@@ -165,26 +163,105 @@ const INITIAL_STATE: State = {
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 /**
- * Produce a short, human-readable "correct answer" line for the wrong-answer
- * sheet, derived from the schema-as-is payload. Returns null when the answer
- * can't be resolved (the sheet then just shows the generic copy).
+ * תשובה-נכונה **מובנית** לחשיפה (לא מחרוזת-רצופה — UX נקי · בקשת-מוטי 2026-06-11):
+ *   single — אפשרות-בחירה אחת (MCQ).
+ *   pairs  — רשימת-זוגות מונח↔הגדרה (התאמה), כל-זוג כשורה-נפרדת.
+ * null = לא-ניתן-לחילוץ (נציג טקסט-גנרי + ההסבר).
  */
-function deriveCorrectAnswerText(question: Question): string | null {
+type CorrectAnswer =
+  | { kind: 'single'; text: string }
+  | { kind: 'pairs'; pairs: { term: string; def: string }[] }
+  | null;
+
+function deriveCorrectAnswer(question: Question): CorrectAnswer {
   if (question.type === 'mcq_long' || question.type === 'mcq_short') {
     const options = question.options;
     const answer = question.correctAnswer;
     if (isStringOptions(options) && isMcqCorrectAnswer(answer)) {
-      return options[answer.index] ?? null;
+      const text = options[answer.index];
+      return typeof text === 'string' ? { kind: 'single', text } : null;
     }
     return null;
   }
   if (question.type === 'matching') {
     if (isMatchingPairs(question.options)) {
-      return question.options.map((p) => `${p.right} ← ${p.left}`).join(' · ');
+      // החוזה: pairs[i] = {left: מונח, right: הגדרה} → ההתאמה-הנכונה היא left↔right.
+      return {
+        kind: 'pairs',
+        pairs: question.options.map((p) => ({ term: p.left, def: p.right })),
+      };
     }
     return null;
   }
   return null;
+}
+
+/**
+ * <CorrectAnswerReveal> — מציג את התשובה-הנכונה **נקי ומאוורר** (מחליף את ה-dump-הרצוף).
+ *   single — כרטיס-בודד עם ✓ + הטקסט.
+ *   pairs  — כל-זוג ככרטיס: כותרת-מונח (ירוק · ✓) + ההגדרה מתחת. גליל אם רבים.
+ */
+function CorrectAnswerReveal({ answer }: { answer: CorrectAnswer }) {
+  if (!answer) {
+    return (
+      <p
+        data-testid="correct-answer-text"
+        className="rounded-card border border-quiz-border bg-quiz-bg px-3.5 py-3 text-sm leading-relaxed text-quiz-text-secondary"
+      >
+        עיינו בהסבר לתשובה הנכונה.
+      </p>
+    );
+  }
+
+  if (answer.kind === 'single') {
+    return (
+      <div
+        data-testid="correct-answer-single"
+        className="flex items-start gap-2.5 rounded-card border border-quiz-success-border bg-quiz-success-bg px-3.5 py-3"
+      >
+        <span
+          aria-hidden="true"
+          className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-success text-xs font-bold text-white"
+        >
+          ✓
+        </span>
+        <span
+          data-testid="correct-answer-text"
+          className="text-sm font-medium leading-relaxed text-quiz-text-primary"
+        >
+          {answer.text}
+        </span>
+      </div>
+    );
+  }
+
+  // pairs — כל-זוג כרטיס-נפרד (מונח-ירוק מודגש + הגדרה-מתחת)
+  return (
+    <ul
+      data-testid="correct-answer-pairs"
+      aria-label="ההתאמות הנכונות"
+      role="list"
+      className="flex flex-col gap-2"
+    >
+      {answer.pairs.map((p, i) => (
+        <li
+          key={i}
+          className="overflow-hidden rounded-card border border-quiz-success-border bg-quiz-bg"
+        >
+          <div className="flex items-center gap-2 bg-quiz-success-bg px-3 py-1.5">
+            <span
+              aria-hidden="true"
+              className="grid size-4 shrink-0 place-items-center rounded-full bg-success text-[10px] font-bold text-white"
+            >
+              ✓
+            </span>
+            <span className="text-sm font-bold text-quiz-text-primary">{p.term}</span>
+          </div>
+          <p className="px-3 py-2 text-sm leading-relaxed text-quiz-text-secondary">{p.def}</p>
+        </li>
+      ))}
+    </ul>
+  );
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -224,8 +301,6 @@ export function LessonPlayer({ questions, scenarios, onFinish }: LessonPlayerPro
   const safeBottomSheet = respectReducedMotion(bottomSheetVariants);
   const safeBackdrop = respectReducedMotion(backdropFadeVariants);
   const safeMascotPop = respectReducedMotion(mascotPopVariants);
-  const safeAnswerContainer = respectReducedMotion(answerListContainer);
-  const safeAnswerItem = respectReducedMotion(answerListItem);
   const safeFloater = respectReducedMotion(xpFloaterVariants);
 
   // ── Empty state ──
@@ -267,8 +342,7 @@ export function LessonPlayer({ questions, scenarios, onFinish }: LessonPlayerPro
   }
 
   const isFeedback = state.phase === 'feedback-correct' || state.phase === 'feedback-wrong';
-  const correctAnswerText =
-    state.phase === 'feedback-wrong' ? deriveCorrectAnswerText(current) : null;
+  const correctAnswer = state.phase === 'feedback-wrong' ? deriveCorrectAnswer(current) : null;
 
   return (
     <div dir="rtl" className="relative mx-auto flex max-w-2xl flex-col gap-5 font-hebrew">
@@ -353,49 +427,42 @@ export function LessonPlayer({ questions, scenarios, onFinish }: LessonPlayerPro
               aria-modal="true"
               aria-label="משוב על תשובה שגויה"
               data-testid="feedback-wrong"
-              className="fixed inset-x-0 bottom-0 z-50 mx-auto max-w-2xl rounded-sheet-top bg-quiz-error-drawer px-4 pb-8 pt-6 shadow-cardFloat"
+              className="fixed inset-x-0 bottom-0 z-50 mx-auto max-h-[88vh] max-w-2xl overflow-y-auto rounded-sheet-top bg-card px-4 pb-8 pt-3 shadow-cardFloat"
               variants={safeBottomSheet}
               initial="hidden"
               animate="visible"
               exit="exit"
             >
-              {/* Mascot + title */}
+              {/* drag-handle (affordance ויזואלי) */}
+              <div
+                aria-hidden="true"
+                className="mx-auto mb-3 h-1.5 w-10 rounded-pill bg-quiz-border"
+              />
+
+              {/* כותרת — טון-מעודד (לא מאשים) + mascot רגוע */}
               <div className="mb-4 flex items-center gap-3">
                 <motion.div
                   variants={safeMascotPop}
                   initial="hidden"
                   animate="visible"
-                  className="flex-shrink-0 text-4xl"
+                  className="grid size-11 shrink-0 place-items-center rounded-full bg-quiz-error-bg text-2xl ring-1 ring-quiz-error-border"
                   aria-hidden="true"
                   data-testid="feedback-mascot"
                 >
                   🤖
                 </motion.div>
-                <p className="text-lg font-bold text-quiz-text-primary">תשובה לא נכונה</p>
+                <div className="flex flex-col">
+                  <p className="text-base font-extrabold text-quiz-text-primary">
+                    לא נורא — ככה לומדים
+                  </p>
+                  <p className="text-xs font-medium text-quiz-text-secondary">הנה התשובה הנכונה:</p>
+                </div>
               </div>
 
-              {/* Correct answer (staggered V8 list) */}
-              <motion.ul
-                variants={safeAnswerContainer}
-                initial="hidden"
-                animate="visible"
-                className="mb-4 flex flex-col gap-2"
-                role="list"
-                aria-label="התשובה הנכונה"
-                data-testid="correct-answer-list"
-              >
-                <motion.li
-                  variants={safeAnswerItem}
-                  className="flex items-start gap-2 rounded-lg border border-quiz-success-border bg-quiz-success-bg px-3 py-2 text-sm text-quiz-text-primary"
-                >
-                  <span className="text-success" aria-hidden="true">
-                    ✓
-                  </span>
-                  <span data-testid="correct-answer-text">
-                    {correctAnswerText ?? 'עיינו בהסבר לתשובה הנכונה.'}
-                  </span>
-                </motion.li>
-              </motion.ul>
+              {/* התשובה-הנכונה — מובנית ונקייה (מחליף את ה-dump-הרצוף) */}
+              <div className="mb-4">
+                <CorrectAnswerReveal answer={correctAnswer} />
+              </div>
 
               {/* הסבר-לעומק מעוגן-חקיקה — מוטמע-מראש (questions.explanation · אפס Gemini ב-runtime) */}
               <div className="mb-3">
@@ -468,7 +535,11 @@ function QuestionRenderer({ question, scenario, onResult, disabled }: QuestionRe
       return (
         <MatchingPairs
           pairs={question.options}
-          onComplete={(correct) => guardedResult({ correct })}
+          // matching מנהל משוב-עצמאי (תוצאה-inline + "המשך") → openGrade מתקדם **בלי**
+          // sheet-MCQ כפול (כמו תרחיש/שו"ת). [בקשת-מוטי 2026-06-11]
+          onComplete={(correct) =>
+            guardedResult({ correct, openGrade: correct ? 'correct' : 'incorrect' })
+          }
         />
       );
     }
