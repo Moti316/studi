@@ -2,7 +2,7 @@
 
 > ⚠️ **קובץ מחולל — אל תערוך ידנית.** מקור: `.claude/scripts/gen-md-index.mjs` · רענון: `pnpm index:md`
 > (מתרענן גם אוטומטית ב-pre-commit). דלת-הכניסה לשליפה-מהירה של כל מסמך בריפו.
-> **סה״כ 354 קבצי-MD בריפו** · עמודת "עודכן" = מתי הקובץ עודכן לאחרונה ב-git (לאיתור מסמכים שהתיישנו).
+> **סה״כ 354 קבצי-MD בריפו** · ⚠️ 19 יתומים-מקומיים (ראה תחתית) · עמודת "עודכן" = מתי הקובץ עודכן לאחרונה ב-git (לאיתור מסמכים שהתיישנו).
 
 ## 📌 קבצי-חובה — קרא/עבור עליהם בכל סשן (נעוץ)
 
@@ -17,7 +17,7 @@
 | 5 | [docs/context/STATUS.md](../../docs/context/STATUS.md) | איפה אנחנו — phase · עובד · חסום | 2026-06-09 |
 | 6 | [docs/context/EXECUTION-PLAN.md](../../docs/context/EXECUTION-PLAN.md) | התוכנית end-to-end | 2026-06-09 |
 | 7 | [TODO.md](../../TODO.md) | מקור-אמת למשימות (A–I + ממשל-v2) | 2026-06-11 |
-| 8 | [docs/context/SESSION-LOG.md](../../docs/context/SESSION-LOG.md) | handoff אחרון + הצעד-הבא | 2026-06-10 |
+| 8 | [docs/context/SESSION-LOG.md](../../docs/context/SESSION-LOG.md) | handoff אחרון + הצעד-הבא | 2026-06-11 |
 | 9 | [docs/context/MOTI-INBOX.md](../../docs/context/MOTI-INBOX.md) | הערות-מוטי אליי — לקרוא בצעד-0 | 2026-06-04 |
 | 10 | [docs/context/DECISIONS.md](../../docs/context/DECISIONS.md) | לוג-החלטות-מפתח | 2026-06-09 |
 | 11 | [docs/context/PROJECTS.md](../../docs/context/PROJECTS.md) | StudiBuilder מול מגן — לא להתבלבל | 2026-06-09 |
@@ -65,7 +65,7 @@
 | [PROJECT-MAP.md](../../docs/context/PROJECT-MAP.md) | קרא אותי ראשון בכל סשן. אני האינדקס שמכוון לכל שאר קבצי-ההקשר. | docs context | 2026-06-09 |
 | [PROJECTS.md](../../docs/context/PROJECTS.md) | 2 פרויקטים קשורים שמתערבבים. מסמך זה מונע בלבול (גם Claude התבלבל ביניהם). מעודכן: 2026-05-31. | docs context | 2026-06-09 |
 | [PROTOCOL-INDEX.md](../../docs/context/PROTOCOL-INDEX.md) | תכלית: דלת-כניסה אחת לכל פרוטוקולי-הממשל של מערכת-הסוכנים (Agent-OS). עונה ל-4 שאלות: | docs context | 2026-06-09 |
-| [SESSION-LOG.md](../../docs/context/SESSION-LOG.md) | בכל סוף-סשן: "מה נעשה / מה הצעד הבא". חדש למעלה. | docs context | 2026-06-10 |
+| [SESSION-LOG.md](../../docs/context/SESSION-LOG.md) | בכל סוף-סשן: "מה נעשה / מה הצעד הבא". חדש למעלה. | docs context | 2026-06-11 |
 | [STATUS.md](../../docs/context/STATUS.md) | מקור-האמת ל"איפה אנחנו". טבלאות ה-Phases ב-CLAUDE.md/README.md/MEMORY.md מפנות לכאן. | docs context | 2026-06-09 |
 | [TASKS.md](../../docs/context/TASKS.md) | ⚠️ קובץ זה הוחלף (2026-06-02). ה-backlog-השטוח-לפי-אזור פוצל למבנה דו-שכבתי לפי סדר-הביצוע: | docs context | 2026-06-02 |
 
@@ -482,5 +482,27 @@
 
 ## ⚠️ יתומים מקומיים — קבצים על הדיסק שאינם בריפו
 
-> ✅ אין קבצי-MD יתומים — כל מסמך מקומי נמצא ב-git.
+> קיימים מקומית אך **אינם ב-git** (untracked / .gitignore). מיושן → מחק; רלוונטי → הוסף לריפו. בדוק מול מצב-הפרויקט.
+
+| קובץ | תאריך-דיסק | סטטוס |
+| --- | --- | --- |
+| tools/nblm-bridge/.venv/Lib/site-packages/httpcore-1.0.9.dist-info/licenses/LICENSE.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/httpx-0.28.1.dist-info/licenses/LICENSE.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/idna-3.18.dist-info/licenses/LICENSE.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/notebooklm/data/CODEX.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/notebooklm/data/SKILL.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/element-attributes.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/playwright-tests.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/request-mocking.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/running-code.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/session-management.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/spec-driven-testing.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/storage-state.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/test-generation.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/tracing.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/references/video-recording.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/cli-client/skill/SKILL.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/lib/tools/trace/SKILL.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/package/README.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
+| tools/nblm-bridge/.venv/Lib/site-packages/playwright/driver/README.md | 2026-06-08 | ⚠️ לא-בריפו — לבדיקה |
 

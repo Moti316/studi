@@ -75,9 +75,10 @@ describe('animation variants — gemini-extracted', () => {
       expect(obj(cardTap.transition).duration).toBe(0.05);
     });
 
-    it('V2: cardSelectedVariants flips border instantly', () => {
-      expect(obj(cardSelectedVariants.unselected)).toMatchObject({ borderColor: '#E5E7EB' });
-      expect(obj(cardSelectedVariants.selected)).toMatchObject({ borderColor: '#FFB23D' });
+    it('V2: cardSelectedVariants flips border instantly (B1 brand colors)', () => {
+      // B1 redesign (2026-06-11): solid-white card · quiz-border → accent-amber selection.
+      expect(obj(cardSelectedVariants.unselected)).toMatchObject({ borderColor: '#e6eaf1' });
+      expect(obj(cardSelectedVariants.selected)).toMatchObject({ borderColor: '#f5a623' });
     });
 
     it('V3: matchedPairVariants drops opacity to 0.5', () => {

@@ -18,12 +18,12 @@ import { springs } from './_base';
  */
 export const submitButtonVariants: Variants = {
   disabled: {
-    backgroundColor: '#A0C3FF',
+    backgroundColor: '#bcd2f7', // quiz-primary-disabled (B1 brand)
     color: '#FFFFFFCC',
     scale: 1,
   },
   enabled: {
-    backgroundColor: '#4B8DF8',
+    backgroundColor: '#1b4fd6', // B1 primary-500 ink-blue (brand CTA)
     color: '#FFFFFF',
     scale: [1, 1.04, 1], // pop sequence
     transition: {

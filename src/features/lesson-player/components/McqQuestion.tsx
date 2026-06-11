@@ -43,9 +43,7 @@ type McqState = {
   submitted: boolean;
 };
 
-type McqAction =
-  | { type: 'SELECT'; index: number }
-  | { type: 'SUBMIT' };
+type McqAction = { type: 'SELECT'; index: number } | { type: 'SUBMIT' };
 
 function reducer(state: McqState, action: McqAction, optionCount: number): McqState {
   switch (action.type) {
@@ -74,7 +72,8 @@ export function McqQuestion({ question, onResult, isLoading, variant }: McqQuest
   const hasOptions = validOptions !== null && validOptions.length > 0;
   const correctIndex = isMcqCorrectAnswer(correctAnswer) ? correctAnswer.index : null;
   const isErrored =
-    hasOptions && (correctIndex === null || correctIndex < 0 || correctIndex >= validOptions.length);
+    hasOptions &&
+    (correctIndex === null || correctIndex < 0 || correctIndex >= validOptions.length);
 
   const optionCount = validOptions?.length ?? 0;
 
@@ -183,26 +182,20 @@ export function McqQuestion({ question, onResult, isLoading, variant }: McqQuest
   const showCheckButton = state.selectedIndex !== null && !state.submitted;
 
   const gridClass =
-    variant === 'short'
-      ? 'grid grid-cols-2 gap-3 md:grid-cols-4'
-      : 'flex flex-col gap-3';
+    variant === 'short' ? 'grid grid-cols-2 gap-3 md:grid-cols-4' : 'flex flex-col gap-3';
 
   return (
     <div dir="rtl" className="flex flex-col gap-4 font-hebrew">
       {/* ── Prompt ── */}
       <p
         data-testid="mcq-prompt"
-        className="text-start text-lg font-bold leading-relaxed text-quiz-text-primary"
+        className="text-start text-xl font-extrabold leading-relaxed text-quiz-text-primary"
       >
         {question.prompt}
       </p>
 
       {/* ── Options ── */}
-      <div
-        role="radiogroup"
-        aria-label="אפשרויות תשובה"
-        className={gridClass}
-      >
+      <div role="radiogroup" aria-label="אפשרויות תשובה" className={gridClass}>
         {validOptions.map((opt, i) => {
           const selected = isSelected(i);
           return (
@@ -226,7 +219,8 @@ export function McqQuestion({ question, onResult, isLoading, variant }: McqQuest
                 }
               }}
               className={[
-                'flex min-h-[56px] cursor-pointer select-none items-center rounded-card border-2 px-4 py-3 text-start font-hebrew font-medium leading-snug text-quiz-text-primary',
+                'group flex min-h-[60px] cursor-pointer select-none items-center rounded-card border-2 px-4 py-3 text-start font-hebrew font-medium leading-snug text-quiz-text-primary',
+                'shadow-card transition-all duration-150 hover:-translate-y-0.5 hover:shadow-card-hover',
                 'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active',
                 variant === 'short' ? 'justify-center text-center text-base' : 'text-start text-sm',
               ].join(' ')}
@@ -235,10 +229,16 @@ export function McqQuestion({ question, onResult, isLoading, variant }: McqQuest
               initial="unselected"
               animate={selected ? 'selected' : 'unselected'}
             >
-              <span className="flex items-center gap-2">
+              <span className="flex items-center gap-2.5">
                 <span
                   aria-hidden="true"
-                  className="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-pill border border-quiz-border text-xs font-bold text-quiz-text-secondary"
+                  className={[
+                    'inline-flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-pill border text-xs font-extrabold transition-colors',
+                    selected
+                      ? // טקסט-כהה על ענבר (WCAG AA · white-on-amber=1.97:1 נכשל)
+                        'border-accent-500 bg-accent-500 text-quiz-text-primary shadow-sm'
+                      : 'border-quiz-border bg-quiz-bg text-quiz-text-secondary group-hover:border-primary-500/50',
+                  ].join(' ')}
                 >
                   {i + 1}
                 </span>
@@ -258,7 +258,7 @@ export function McqQuestion({ question, onResult, isLoading, variant }: McqQuest
             aria-label="בדוק תשובה"
             data-testid="check-answer-button"
             onClick={handleSubmit}
-            className="w-full select-none rounded-pill py-4 font-hebrew text-lg font-bold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active"
+            className="w-full select-none rounded-pill bg-gradient-to-bl from-primary-500 to-primary-600 py-4 font-hebrew text-lg font-bold text-white shadow-button focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active"
             variants={safeSubmitButton}
             initial="disabled"
             animate="enabled"

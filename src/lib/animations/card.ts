@@ -28,12 +28,12 @@ export const cardTap = {
  */
 export const cardSelectedVariants: Variants = {
   unselected: {
-    borderColor: '#E5E7EB',
-    backgroundColor: 'rgba(255, 178, 61, 0)',
+    borderColor: '#e6eaf1', // quiz-border — solid white card (B1)
+    backgroundColor: '#ffffff',
   },
   selected: {
-    borderColor: '#FFB23D',
-    backgroundColor: 'rgba(255, 178, 61, 0.05)',
+    borderColor: '#f5a623', // accent-500 amber — selection
+    backgroundColor: 'rgba(245, 166, 35, 0.08)',
     transition: { duration: 0 }, // immediate flip
   },
 };

@@ -36,8 +36,9 @@ const GRADE_UI: Record<OpenGrade, { label: string; cls: string; icon: string }> 
     icon: '✓',
   },
   partial: {
+    // border-accent-300 לא קיים בפלטה → accent-100; bg-white ל-WCAG AA (accent-700 על accent-50=4.42:1 נכשל)
     label: 'תשובה חלקית',
-    cls: 'border-accent-300 bg-accent-50 text-accent-700',
+    cls: 'border-accent-100 bg-white text-accent-700',
     icon: '◐',
   },
   incorrect: {
@@ -84,7 +85,7 @@ export function ExplanationCard({
 
   return (
     <div dir="rtl" data-testid="explanation-card" className="flex flex-col gap-3 font-hebrew">
-      <p className="text-start text-lg font-bold leading-relaxed text-quiz-text-primary">
+      <p className="text-start text-xl font-extrabold leading-relaxed text-quiz-text-primary">
         {question.prompt}
       </p>
 
@@ -106,7 +107,7 @@ export function ExplanationCard({
             data-testid="check-answer"
             disabled={disabled || checking}
             onClick={handleCheck}
-            className="self-start rounded-pill bg-quiz-primary-active px-5 py-2 text-sm font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active disabled:opacity-60"
+            className="self-start rounded-pill bg-gradient-to-bl from-primary-500 to-primary-600 px-5 py-2 text-sm font-bold text-white shadow-button transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active disabled:opacity-60"
           >
             {checking ? 'בודק…' : 'בדוק תשובה'}
           </button>
@@ -202,7 +203,7 @@ export function ExplanationCard({
           data-testid="explanation-continue"
           disabled={disabled}
           onClick={handleContinue}
-          className="w-full select-none rounded-pill bg-quiz-primary-active py-4 text-lg font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active disabled:opacity-60"
+          className="w-full select-none rounded-pill bg-gradient-to-bl from-primary-500 to-primary-600 py-4 text-lg font-bold text-white shadow-button transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active disabled:opacity-60"
         >
           המשך
         </button>

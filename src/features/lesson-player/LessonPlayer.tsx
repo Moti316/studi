@@ -318,12 +318,14 @@ export function LessonPlayer({ questions, scenarios, onFinish }: LessonPlayerPro
             >
               +{XP_PER_CORRECT} XP
             </motion.span>
+            {/* קורא-מסך: ה-floater dekorativi (aria-hidden) → מכריזים את ה-XP כאן */}
+            <span className="sr-only">קיבלת {XP_PER_CORRECT} נקודות</span>
             <p className="text-base font-bold text-success">תשובה נכונה!</p>
             <button
               type="button"
               data-testid="continue-button"
               onClick={handleContinue}
-              className="w-full select-none rounded-pill bg-quiz-primary-active py-4 text-lg font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active"
+              className="w-full select-none rounded-pill bg-gradient-to-bl from-primary-500 to-primary-600 py-4 text-lg font-bold text-white shadow-button transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active"
             >
               המשך
             </button>
@@ -404,7 +406,7 @@ export function LessonPlayer({ questions, scenarios, onFinish }: LessonPlayerPro
                 type="button"
                 data-testid="continue-button"
                 onClick={handleContinue}
-                className="w-full select-none rounded-pill bg-quiz-primary-active py-4 text-lg font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active"
+                className="w-full select-none rounded-pill bg-gradient-to-bl from-primary-500 to-primary-600 py-4 text-lg font-bold text-white shadow-button transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active"
               >
                 המשך
               </button>
@@ -496,34 +498,48 @@ function SummaryScreen({
       data-testid="lesson-summary"
       role="status"
       aria-live="polite"
-      className="mx-auto flex max-w-md flex-col items-center gap-4 rounded-card border border-quiz-border bg-quiz-bg px-6 py-12 text-center font-hebrew text-quiz-text-primary"
+      className="relative mx-auto max-w-md overflow-hidden rounded-modal bg-gradient-to-bl from-primary-700 via-primary-600 to-primary-500 px-6 py-12 text-center font-hebrew text-white shadow-button ring-1 ring-primary-700/20"
     >
-      <motion.div
-        variants={safeMascotPop}
-        initial="hidden"
-        animate="visible"
-        className="text-5xl"
+      {/* glow-orbs לעומק (תבנית-הדשבורד) */}
+      <span
         aria-hidden="true"
-        data-testid="summary-mascot"
-      >
-        {allCorrect ? '🎉' : '🤖'}
-      </motion.div>
-      <h2 className="text-2xl font-extrabold">{allCorrect ? 'כל הכבוד!' : 'סיימת את השיעור'}</h2>
-      <p className="text-base text-quiz-text-secondary">
-        ענית נכון על{' '}
-        <span data-testid="summary-correct" className="font-bold text-quiz-text-primary">
-          {correct}
-        </span>{' '}
-        מתוך{' '}
-        <span data-testid="summary-total" className="font-bold text-quiz-text-primary">
-          {total}
-        </span>{' '}
-        שאלות.
-      </p>
-      <p className="inline-flex items-center gap-1 text-lg font-bold text-accent-600">
-        <span aria-hidden="true">⭐</span>
-        <span data-testid="summary-xp">{xp}</span> XP
-      </p>
+        className="pointer-events-none absolute -right-10 -top-12 h-40 w-40 rounded-full bg-accent-500/30 blur-3xl"
+      />
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-16 -left-10 h-40 w-40 rounded-full bg-white/15 blur-3xl"
+      />
+
+      <div className="relative flex flex-col items-center gap-4">
+        <motion.div
+          variants={safeMascotPop}
+          initial="hidden"
+          animate="visible"
+          className="grid size-20 place-items-center rounded-full bg-white/15 text-5xl ring-1 ring-inset ring-white/25 backdrop-blur"
+          aria-hidden="true"
+          data-testid="summary-mascot"
+        >
+          {allCorrect ? '🎉' : '🦺'}
+        </motion.div>
+        <h2 className="text-3xl font-extrabold">{allCorrect ? 'כל הכבוד!' : 'סיימת את השיעור'}</h2>
+        <p className="text-base text-white/80">
+          ענית נכון על{' '}
+          <span data-testid="summary-correct" className="font-extrabold text-white">
+            {correct}
+          </span>{' '}
+          מתוך{' '}
+          <span data-testid="summary-total" className="font-extrabold text-white">
+            {total}
+          </span>{' '}
+          שאלות.
+        </p>
+        <span className="inline-flex items-center gap-1.5 rounded-pill bg-white/15 px-4 py-2 text-lg font-extrabold ring-1 ring-inset ring-white/25 backdrop-blur">
+          <span aria-hidden="true" className="text-accent-100">
+            ⭐
+          </span>
+          <span data-testid="summary-xp">{xp}</span> XP
+        </span>
+      </div>
     </div>
   );
 }
