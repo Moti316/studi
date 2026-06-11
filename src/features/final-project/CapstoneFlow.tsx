@@ -177,7 +177,7 @@ export function CapstoneFlow() {
       ════════════════════════════════════════════════════════════ */}
       <main
         aria-label={`שלב ${currentIndex + 1} מתוך ${totalSteps}: ${STEPS[currentIndex]?.label ?? ''}`}
-        className="rounded-b-card border border-t-0 border-quiz-border bg-quiz-bg p-5 sm:p-6"
+        className="rounded-b-modal border border-t-0 border-quiz-border bg-card p-5 shadow-card sm:p-6"
       >
         {step === 'cover' && <CoverStep onSubmit={() => setStep('site')} />}
 
@@ -255,9 +255,31 @@ function CapstoneStepperHeader({
 }: CapstoneStepperHeaderProps) {
   return (
     <header
-      className="rounded-t-card border border-quiz-border bg-white px-5 pb-4 pt-5"
+      className="relative overflow-hidden rounded-t-modal bg-gradient-to-bl from-primary-700 via-primary-600 to-primary-500 px-5 pb-5 pt-5 text-white shadow-button ring-1 ring-primary-700/20"
       data-testid="capstone-stepper"
     >
+      {/* glow-orb לעומק (תבנית-הדשבורד) */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-8 -top-10 h-32 w-32 rounded-full bg-accent-500/25 blur-3xl"
+      />
+
+      {/* ── כותרת-זהות ─────────────────────────────────── */}
+      <div className="relative mb-4 flex items-center gap-2.5">
+        <span
+          aria-hidden="true"
+          className="grid size-10 shrink-0 place-items-center rounded-card bg-white/15 text-xl ring-1 ring-inset ring-white/25 backdrop-blur"
+        >
+          📋
+        </span>
+        <div className="flex flex-col">
+          <span className="text-[11px] font-bold uppercase tracking-wide text-accent-100">
+            פרויקט גמר
+          </span>
+          <span className="text-base font-extrabold leading-tight">בונה ה-JSA · ניהול-סיכונים</span>
+        </div>
+      </div>
+
       {/* ── progress-bar ─────────────────────────────────── */}
       <div
         role="progressbar"
@@ -266,17 +288,17 @@ function CapstoneStepperHeader({
         aria-valuemax={totalSteps}
         aria-label={`התקדמות: שלב ${currentIndex + 1} מתוך ${totalSteps}`}
         data-testid="capstone-progress-bar"
-        className="mb-4 h-1.5 w-full overflow-hidden rounded-pill bg-quiz-border"
+        className="relative mb-4 h-1.5 w-full overflow-hidden rounded-pill bg-white/20"
       >
         <div
           aria-hidden="true"
-          className="h-full rounded-pill bg-quiz-primary-active transition-all duration-500"
+          className="h-full rounded-pill bg-white transition-all duration-500"
           style={{ width: `${progressPct}%` }}
         />
       </div>
 
       {/* ── stepper tabs ─────────────────────────────────── */}
-      <nav aria-label="שלבי הפרויקט">
+      <nav aria-label="שלבי הפרויקט" className="relative">
         <ol className="flex gap-0.5" role="list">
           {STEPS.map((s, idx) => {
             const isDone = idx < currentIndex;
@@ -295,24 +317,25 @@ function CapstoneStepperHeader({
                   onClick={() => isClickable && onStepClick(idx)}
                   className={[
                     'flex flex-col items-center gap-1.5 px-1 py-0 transition-all',
-                    'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active',
+                    'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white',
                     isClickable && !isCurrent
-                      ? 'cursor-pointer hover:opacity-80'
+                      ? 'cursor-pointer hover:opacity-90'
                       : isFuture
                         ? 'cursor-not-allowed'
                         : 'cursor-default',
                   ].join(' ')}
                 >
-                  {/* עיגול-שלב */}
+                  {/* עיגול-שלב (לבן-על-כהה) */}
                   <span
                     aria-hidden="true"
                     className={[
-                      'flex h-7 w-7 items-center justify-center rounded-full border-2 text-[11px] font-extrabold transition-all',
+                      'flex h-7 w-7 items-center justify-center rounded-full border-2 text-[11px] font-extrabold ring-1 ring-inset transition-all',
                       isDone
-                        ? 'border-quiz-primary-active bg-quiz-primary-active text-white'
+                        ? 'border-white bg-white text-primary-700 ring-transparent'
                         : isCurrent
-                          ? 'border-quiz-primary-active bg-white text-quiz-primary-active shadow-button'
-                          : 'border-quiz-border bg-white text-quiz-text-secondary',
+                          ? 'scale-110 border-white bg-white/20 text-white shadow-button ring-white/40 backdrop-blur'
+                          : // text-white/75 ל-WCAG AA על קצה-הגרדיאנט הבהיר (white/60=3.85:1 נכשל)
+                            'border-white/30 bg-white/10 text-white/75 ring-transparent',
                     ].join(' ')}
                   >
                     {isDone ? '✓' : idx + 1}
@@ -322,9 +345,9 @@ function CapstoneStepperHeader({
                   <span
                     className={[
                       'hidden text-center text-[11px] leading-snug sm:block',
-                      isDone ? 'font-medium text-quiz-primary-active' : '',
-                      isCurrent ? 'font-bold text-quiz-text-primary' : '',
-                      isFuture ? 'text-quiz-text-secondary' : '',
+                      isDone ? 'font-medium text-white/90' : '',
+                      isCurrent ? 'font-bold text-white' : '',
+                      isFuture ? 'text-white/75' : '',
                     ].join(' ')}
                   >
                     {s.label}
@@ -371,7 +394,7 @@ function StepNavBar({ onBack, onNext, canAdvance, isLastStep, nextLabel }: StepN
           'flex min-w-[9rem] select-none items-center justify-center gap-1.5 rounded-pill px-6 py-3 text-sm font-bold transition-all',
           'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active',
           canAdvance
-            ? 'bg-quiz-primary-active text-white shadow-button hover:bg-primary-600'
+            ? 'bg-gradient-to-bl from-primary-500 to-primary-600 text-white shadow-button hover:-translate-y-0.5'
             : 'cursor-not-allowed bg-quiz-primary-disabled text-white opacity-60',
         ].join(' ')}
       >

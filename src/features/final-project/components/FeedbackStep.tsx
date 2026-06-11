@@ -471,7 +471,7 @@ export function FeedbackStep({ onBack, onSubmit }: FeedbackStepProps) {
               type="button"
               data-testid="capstone-submit"
               onClick={onSubmit}
-              className="w-full select-none rounded-pill bg-quiz-primary-active py-4 text-lg font-bold text-white shadow-button focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active"
+              className="w-full select-none rounded-pill bg-gradient-to-bl from-primary-500 to-primary-600 py-4 text-lg font-bold text-white shadow-button transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active"
             >
               סיים והגש
             </button>

@@ -853,8 +853,8 @@ function RowForm({ editingRow, onSubmit, onCancel }: RowFormProps) {
           data-testid="form-submit"
           disabled={!form.hazard.trim() || !form.scenario.trim()}
           className={[
-            'rounded-pill bg-primary-500 px-6 py-2 text-sm font-bold text-white shadow-button',
-            'hover:bg-primary-600',
+            'rounded-pill bg-gradient-to-bl from-primary-500 to-primary-600 px-6 py-2 text-sm font-bold text-white shadow-button',
+            'transition-transform hover:-translate-y-0.5',
             'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active',
             'disabled:cursor-not-allowed disabled:opacity-40',
             'transition-colors',
@@ -1182,8 +1182,8 @@ export function JsaBuilder() {
               data-testid="add-first-row-btn"
               onClick={handleOpenAdd}
               className={[
-                'rounded-pill bg-primary-500 px-6 py-3 text-sm font-bold text-white shadow-button',
-                'hover:bg-primary-600',
+                'rounded-pill bg-gradient-to-bl from-primary-500 to-primary-600 px-6 py-3 text-sm font-bold text-white shadow-button',
+                'transition-transform hover:-translate-y-0.5',
                 'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active',
                 'transition-colors',
               ].join(' ')}

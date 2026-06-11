@@ -324,7 +324,7 @@ export function ExportButtons({ baseFilename = 'פרויקט-גמר', narrative 
           data-testid="export-pdf-btn"
           onClick={() => void handlePdf()}
           disabled={busy !== null}
-          className="flex flex-1 select-none items-center justify-center gap-2 rounded-pill bg-quiz-primary-active px-5 py-3 text-sm font-bold text-white shadow-button focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active disabled:cursor-not-allowed disabled:opacity-60"
+          className="flex flex-1 select-none items-center justify-center gap-2 rounded-pill bg-gradient-to-bl from-primary-500 to-primary-600 px-5 py-3 text-sm font-bold text-white shadow-button transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active disabled:cursor-not-allowed disabled:opacity-60"
         >
           <span aria-hidden="true">⬇️</span>
           {busy === 'pdf' ? 'מייצא PDF…' : 'הורד PDF'}

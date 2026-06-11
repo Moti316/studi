@@ -381,8 +381,8 @@ export function CoverStep({ onSubmit }: CoverStepProps) {
           type="submit"
           data-testid="cover-step-submit"
           className={cn(
-            'mt-1 w-full rounded-pill py-4 text-base font-bold text-white transition-colors',
-            'bg-quiz-primary-active hover:bg-primary-600 active:bg-primary-700',
+            'mt-1 w-full rounded-pill py-4 text-base font-bold text-white',
+            'bg-gradient-to-bl from-primary-500 to-primary-600 transition-transform hover:-translate-y-0.5 active:translate-y-0',
             'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active',
             'select-none shadow-button',
           )}
