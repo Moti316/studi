@@ -2,7 +2,7 @@
 
 > ⚠️ **קובץ מחולל — אל תערוך ידנית.** מקור: `.claude/scripts/gen-md-index.mjs` · רענון: `pnpm index:md`
 > (מתרענן גם אוטומטית ב-pre-commit). דלת-הכניסה לשליפה-מהירה של כל מסמך בריפו.
-> **סה״כ 355 קבצי-MD בריפו** · ⚠️ 19 יתומים-מקומיים (ראה תחתית) · עמודת "עודכן" = מתי הקובץ עודכן לאחרונה ב-git (לאיתור מסמכים שהתיישנו).
+> **סה״כ 356 קבצי-MD בריפו** · ⚠️ 19 יתומים-מקומיים (ראה תחתית) · עמודת "עודכן" = מתי הקובץ עודכן לאחרונה ב-git (לאיתור מסמכים שהתיישנו).
 
 ## 📌 קבצי-חובה — קרא/עבור עליהם בכל סשן (נעוץ)
 
@@ -230,7 +230,7 @@
 | [2.4.2-chashmal-mitkan-arai-2002.md](../../courses/safety-officer/sources/legislation/2-pkudat-habetihut/2.4.2-chashmal-mitkan-arai-2002.md) | בתוקף סמכותי לפי סעיף 13 לחוק החשמל, התשי"ד-1954 (להלן – החוק), ובאישור ועדת העבודה הרווחה והבריאות של הכנסת … | sources legislation 2-pkudat-habetihut 2002 | 2026-06-03 |
 | [2.5-ezra-rishona-1988.md](../../courses/safety-officer/sources/legislation/2-pkudat-habetihut/2.5-ezra-rishona-1988.md) | בתוקף סמכותי לפי סעיפים 147(א) ו-151 לפקודת הבטיחות בעבודה [נוסח חדש], התש"ל-1970 (להלן – הפקודה), אני מתקין … | sources legislation 2-pkudat-habetihut 1988 | 2026-06-03 |
 | [2.6-agoranaim-atatim-1992.md](../../courses/safety-officer/sources/legislation/2-pkudat-habetihut/2.6-agoranaim-atatim-1992.md) | בתוקף סמכותי לפי סעיפים 173 ו-216 לפקודת הבטיחות בעבודה [נוסח חדש], התש"ל-1970 (להלן – הפקודה), אני מתקין תקנ… | sources legislation 2-pkudat-habetihut 1992 | 2026-06-03 |
-| [2.6.1-agoranei-tsriach-1966.md](../../courses/safety-officer/sources/legislation/2-pkudat-habetihut/2.6.1-agoranei-tsriach-1966.md) | בתוקף סמכותי לפי סעיפים 55, 66, 67 ו-81 לפקודת הבטיחות בעבודה, 1946 (להלן – הפקודה), וסעיפים 14(א) ו-2(ד) לפק… | sources legislation 2-pkudat-habetihut 1966 | — |
+| [2.6.1-agoranei-tsriach-1966.md](../../courses/safety-officer/sources/legislation/2-pkudat-habetihut/2.6.1-agoranei-tsriach-1966.md) | בתוקף סמכותי לפי סעיפים 55, 66, 67 ו-81 לפקודת הבטיחות בעבודה, 1946 (להלן – הפקודה), וסעיפים 14(א) ו-2(ד) לפק… | sources legislation 2-pkudat-habetihut 1966 | 2026-06-11 |
 | [2.6.2-haramat-bnei-adam-malgazot-1983.md](../../courses/safety-officer/sources/legislation/2-pkudat-habetihut/2.6.2-haramat-bnei-adam-malgazot-1983.md) | בתוקף סמכותי לפי סעיפים 173 ו-216 לפקודת הבטיחות בעבודה [נוסח חדש], התש"ל-1970, אני מתקין תקנות אלה: | sources legislation 2-pkudat-habetihut 1983 | 2026-06-03 |
 | [2.7-gilyon-betihut-sds-1998.md](../../courses/safety-officer/sources/legislation/2-pkudat-habetihut/2.7-gilyon-betihut-sds-1998.md) | בתוקף סמכות שר העבודה והרווחה לפי סעיפים 173 ו-216 לפקודת הבטיחות בעבודה [נוסח חדש], התש"ל-1970 (להלן – הפקוד… | sources legislation 2-pkudat-habetihut 1998 | 2026-06-03 |
 | [2.8-mechonot-haklaiyot-1988.md](../../courses/safety-officer/sources/legislation/2-pkudat-habetihut/2.8-mechonot-haklaiyot-1988.md) | בתוקף סמכותי לפי סעיפים 46, 47, 173 ו-216 לפקודת הבטיחות בעבודה [נוסח חדש], התש"ל-1970, אני מתקין תקנות אלה: | sources legislation 2-pkudat-habetihut 1988 | 2026-06-03 |
@@ -253,10 +253,10 @@
 | [4.3.3-rishuy-asakim-horaot-klaliot-2000.md](../../courses/safety-officer/sources/legislation/4-hukei-ezer/4.3.3-rishuy-asakim-horaot-klaliot-2000.md) | בתוקף סמכותי לפי סעיפים 6ב, 7א(ב), 13, 38ב ו-39 לחוק רישוי עסקים, התשכ"ח-1968 (להלן – החוק), לאחר התייעצות עם… | sources legislation 4-hukei-ezer 2000 | 2026-06-03 |
 | [4.4-chomarim-mesukanim-1993.md](../../courses/safety-officer/sources/legislation/4-hukei-ezer/4.4-chomarim-mesukanim-1993.md) | 1. בחוק זה – | sources legislation 4-hukei-ezer 1993 | 2026-06-03 |
 | [4.5-chok-hagaz-1989.md](../../courses/safety-officer/sources/legislation/4-hukei-ezer/4.5-chok-hagaz-1989.md) | רשויות ומשפט מנהלי – תשתיות – גז | sources legislation 4-hukei-ezer 1989 | 2026-06-03 |
-| [INDEX.md](../../courses/safety-officer/sources/legislation/INDEX.md) | מחולל אוטומטית מ-scripts/legislation-manifest.ts (pnpm legislation:index) — אל תערוך ידנית. | safety-officer sources legislation | 2026-06-03 |
+| [INDEX.md](../../courses/safety-officer/sources/legislation/INDEX.md) | מחולל אוטומטית מ-scripts/legislation-manifest.ts (pnpm legislation:index) — אל תערוך ידנית. | safety-officer sources legislation | 2026-06-11 |
 | [README.md](../../courses/safety-officer/sources/legislation/README.md) | טקסטי-חוק/תקנות — נחלת-הכלל, מקור-אמת לאימות שאלות (ADR-005). מפת-הקשרים מלאה: INDEX.md. קטלוג + סטטוס: ../..… | safety-officer sources legislation | 2026-06-03 |
 
-### 🎓 קורס safety-officer  ·  16
+### 🎓 קורס safety-officer  ·  17
 
 | קובץ | תכלית | תגיות | עודכן |
 | --- | --- | --- | --- |
@@ -274,6 +274,7 @@
 | [NOTEBOOKLM-ASSETS.md](../../courses/safety-officer/NOTEBOOKLM-ASSETS.md) | תכלית: אינדקס-עבודה של מחברות-ה-NotebookLM של מוטי הרלוונטיות לקורס ממונה-בטיחות. | courses safety-officer | 2026-06-11 |
 | [README.md](../../courses/safety-officer/README.md) | תיקיית-הקורס. המבנה = תבנית-הפלטפורמה (כל קורס עתידי באותו מבנה): פרק=מיני-קורס · 3 מצבים (שו"ת · תרחישים · מ… | courses safety-officer | 2026-06-01 |
 | [REGULATORY-WATCH.md](../../courses/safety-officer/REGULATORY-WATCH.md) | מעקב-רגולטורי בלבד — ⚠️ לא תוכן-קורס מחייב. קובץ זה מתעד רפורמות-חקיקה שפורסמו/נחתמו | courses safety-officer | 2026-06-01 |
+| [RISK-METHODOLOGY-INTRO.md](../../courses/safety-officer/RISK-METHODOLOGY-INTRO.md) | מעמד: פתיח-היחידה "ניהול-סיכונים תעשייתיים" (יחידה ט · scopes 5.3 · 5.4) — נלמד לפני | courses safety-officer | — |
 | [README.md](../../courses/safety-officer/sources/final-project/README.md) | גיבוי-reference פרטי (הריפו פרטי). אין לשכפל PII לתוכן-משתמש. מעודכן: 2026-06-01. | safety-officer sources final-project | 2026-06-01 |
 | [UNREAD-MEDIA.md](../../courses/safety-officer/UNREAD-MEDIA.md) | מטרה: רישום מלא של קבצי-המדיה ב-Drive שלא ניתנו לקריאה אוטומטית (אודיו · וידאו · | courses safety-officer | 2026-06-02 |
 

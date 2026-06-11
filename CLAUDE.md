@@ -22,7 +22,7 @@
 - **משימות (TODO דו-שכבתי):** `TODO.md` (master A–I מול EXECUTION-PLAN) · `docs/todo/` (קובץ פר-שלב — פירוט תתי-משימות + קריטריוני-קבלה)
 - **הקשר-חי** (`docs/context/`): `PROJECT-MAP.md` · `PROTOCOL-INDEX.md` (מפת-ממשל מאוצרת — 4 שכבות+בקרה · 12 פרוטוקולים · זרימת-דיווח · צו-עצירה · 7-צעדים · Star-Chamber) · `PROJECTS.md` · `STATUS.md` · `EXECUTION-PLAN.md` · `TASKS.md` (stub → `docs/todo/`) · `BUGS.md` · `DECISIONS.md` · `ACCESS-MAP.md` · `SESSION-LOG.md`
 - **תוכן/scope:** `docs/content-scope.md` · `docs/CONTENT-INDEX.md`
-- **קורס safety-officer** (`courses/safety-officer/`): `curriculum-atgar` · `LEGISLATION-SOURCES` · `LEGISLATION-COVERAGE` · `MOLSA-PROGRAM` · `LEARNING-MATERIALS` · `UNREAD-MEDIA` · `ATTRIBUTION` · `COURSE-DESIGN` · `FINAL-PROJECT` · `REGULATORY-WATCH` · `ISO-31010/31000-DRAFT` · `docs/PROJECT-STRUCTURE.md`
+- **קורס safety-officer** (`courses/safety-officer/`): `curriculum-atgar` · `LEGISLATION-SOURCES` · `LEGISLATION-COVERAGE` · `MOLSA-PROGRAM` · `LEARNING-MATERIALS` · `UNREAD-MEDIA` · `ATTRIBUTION` · `COURSE-DESIGN` · `FINAL-PROJECT` · `REGULATORY-WATCH` · `ISO-31010/31000-DRAFT` · `RISK-METHODOLOGY-INTRO` (A1 · פתיח-יחידה-ט) · `docs/PROJECT-STRUCTURE.md`
 - **ציות/רעיונות:** `docs/compliance/COMPLIANCE.md` (חובות-ציות + task-force) · `docs/IDEAS.md` (רעיונות/פידבק)
 - **ארכיטקטורה** (לפי-צורך): `docs/architecture/ADR-001..013`
 - **סוכנים:** `teams/PROJECT-CONTEXT.md` (עוגן-הקשר — נקרא ראשון) · `teams/ORG.md` (היררכיה+פרוטוקולים+מחזור-חיים) · `teams/README.md` (רוסטר 33) · `teams/HOWTO-add-agent.md` (מתי+איך להקים סוכן) · `teams/oversight/` (ענף-בקרה עצמאי: TEAM · \_oversight-protocol · \_curriculum-audit-protocol · stop-orders-ledger) · `teams/<tier>/<slug>/{identity.md,memory.md,activity-log.md}`
