@@ -1,4 +1,8 @@
 import { defineConfig } from 'drizzle-kit';
+import { config as loadEnv } from 'dotenv';
+
+// drizzle-kit אינו טוען env-files בעצמו — DATABASE_URL חי ב-.env.local (כמו בסקריפטים).
+loadEnv({ path: '.env.local' });
 
 /**
  * Drizzle config.
