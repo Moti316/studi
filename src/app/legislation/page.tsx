@@ -2,7 +2,11 @@ import type { Metadata } from 'next';
 import { requireAuth } from '@/lib/auth/server';
 import { BottomNav } from '@/components/dashboard/BottomNav';
 import { LegislationLibrary } from '@/components/legislation/LegislationLibrary';
-import { LEGISLATION_CHAPTERS, LEGISLATION_TOTAL } from '@/lib/legislation/catalog';
+import {
+  LEGISLATION_CHAPTERS,
+  LEGISLATION_BY_TOPIC,
+  LEGISLATION_TOTAL,
+} from '@/lib/legislation/catalog';
 
 export const metadata: Metadata = {
   title: 'ספריית החקיקה',
@@ -28,7 +32,11 @@ export default async function LegislationPage() {
           </p>
         </header>
 
-        <LegislationLibrary chapters={LEGISLATION_CHAPTERS} total={LEGISLATION_TOTAL} />
+        <LegislationLibrary
+          chapters={LEGISLATION_CHAPTERS}
+          topicShelves={LEGISLATION_BY_TOPIC}
+          total={LEGISLATION_TOTAL}
+        />
       </main>
       <BottomNav />
     </div>

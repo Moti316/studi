@@ -16,6 +16,7 @@ import {
   type ChapterDir,
   type Depth,
 } from '../../../scripts/legislation-manifest';
+import { COURSE_TOPICS } from '../course/topics';
 
 /** פריט-חקיקה מוכן-לתצוגה. */
 export interface LegislationItem {
@@ -132,3 +133,58 @@ export const LEGISLATION_TOTAL = LEGISLATION_SOURCES.length;
 export const LEGISLATION_FLAT: readonly LegislationItem[] = LEGISLATION_CHAPTERS.flatMap(
   (c) => c.items,
 );
+
+// ---------------------------------------------------------------------------
+// מפת-נושאים — קיבוץ לפי 8 יחידות-הקורס (הכרעת-מוטי 2026-06-11)
+// ---------------------------------------------------------------------------
+
+/** מדף-נושא: יחידת-קורס + נוסחי-החקיקה ששייכים אליה. */
+export interface LegislationTopicShelf {
+  /** topic.id (מ-COURSE_TOPICS) או 'extra' (נוסחים ללא-יחידה). */
+  readonly id: string;
+  readonly title: string;
+  readonly blurb: string;
+  /** שם-אייקון lucide (ממופה ברכיב). */
+  readonly icon: string;
+  /** קישור-תרגול ל-/lesson/<topic-id> (ל-'extra' — אין). */
+  readonly practiceHref?: string;
+  readonly items: readonly LegislationItem[];
+}
+
+/**
+ * LEGISLATION_BY_TOPIC — הקטלוג מקובץ לפי יחידות-הקורס (חקיקה↔למידה):
+ * פריט משויך ליחידה ש-`topic.scopes` שלה מכיל את ה-scopeId שלו (תקנות-משנה
+ * נושאות את scope-האב → נופלות לאותה-יחידה). נוסחים ללא-יחידה → מדף "נוספים".
+ * נבנה פעם-אחת (module-level · נתון-סטטי).
+ */
+export const LEGISLATION_BY_TOPIC: readonly LegislationTopicShelf[] = (() => {
+  const claimed = new Set<string>(); // displayId-ים שכבר-שובצו
+  const shelves: LegislationTopicShelf[] = COURSE_TOPICS.map((t) => {
+    const items = LEGISLATION_FLAT.filter((i) => t.scopes.includes(i.scopeId)).sort((a, b) =>
+      compareDisplayId(a.displayId, b.displayId),
+    );
+    for (const i of items) claimed.add(i.displayId);
+    return {
+      id: t.id,
+      title: t.title,
+      blurb: t.blurb,
+      icon: t.icon,
+      practiceHref: `/lesson/${t.id}`,
+      items,
+    };
+  }).filter((s) => s.items.length > 0);
+
+  const extra = LEGISLATION_FLAT.filter((i) => !claimed.has(i.displayId)).sort((a, b) =>
+    compareDisplayId(a.displayId, b.displayId),
+  );
+  if (extra.length > 0) {
+    shelves.push({
+      id: 'extra',
+      title: 'נוספים ומשלימים',
+      blurb: 'נוסחים שאינם משויכים ליחידת-תרגול (עדיין)',
+      icon: 'BookMarked',
+      items: extra,
+    });
+  }
+  return shelves;
+})();

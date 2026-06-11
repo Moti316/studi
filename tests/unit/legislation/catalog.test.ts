@@ -6,8 +6,10 @@ import {
   LEGISLATION_CHAPTERS,
   LEGISLATION_TOTAL,
   LEGISLATION_FLAT,
+  LEGISLATION_BY_TOPIC,
   DEPTH_LABELS,
 } from '@/lib/legislation/catalog';
+import { COURSE_TOPICS, isTopicId } from '@/lib/course/topics';
 
 describe('legislation catalog', () => {
   it('4 פרקים · 42 נוסחים', () => {
@@ -50,5 +52,36 @@ describe('legislation catalog', () => {
   it('displayId ייחודי על-פני הקטלוג', () => {
     const ids = LEGISLATION_FLAT.map((it) => it.displayId);
     expect(new Set(ids).size).toBe(ids.length);
+  });
+});
+
+describe('LEGISLATION_BY_TOPIC — מפת-נושאים (חקיקה↔למידה)', () => {
+  it('כיסוי-מלא: כל 42 הנוסחים משויכים בדיוק-פעם-אחת (יחידות + "נוספים")', () => {
+    const all = LEGISLATION_BY_TOPIC.flatMap((s) => s.items.map((i) => i.displayId));
+    expect(all).toHaveLength(LEGISLATION_TOTAL); // אין-כפילות בין-מדפים, אין-נשמט
+    expect(new Set(all).size).toBe(LEGISLATION_TOTAL);
+  });
+
+  it('כל מדף-יחידה נושא practiceHref תקף ל-/lesson/<topic-id>; "נוספים" — בלי', () => {
+    for (const s of LEGISLATION_BY_TOPIC) {
+      expect(s.items.length).toBeGreaterThan(0); // אין-מדף-ריק
+      if (s.id === 'extra') {
+        expect(s.practiceHref).toBeUndefined();
+      } else {
+        expect(isTopicId(s.id)).toBe(true);
+        expect(s.practiceHref).toBe(`/lesson/${s.id}`);
+      }
+    }
+  });
+
+  it('שיוך-נכון: כל פריט במדף-יחידה נושא scopeId מתוך scopes-היחידה', () => {
+    const topicScopes = new Map(COURSE_TOPICS.map((t) => [t.id, new Set(t.scopes)]));
+    for (const s of LEGISLATION_BY_TOPIC) {
+      if (s.id === 'extra') continue;
+      const scopes = topicScopes.get(s.id)!;
+      for (const item of s.items) {
+        expect(scopes.has(item.scopeId)).toBe(true);
+      }
+    }
   });
 });

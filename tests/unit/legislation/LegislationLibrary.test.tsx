@@ -1,10 +1,10 @@
 /**
- * LegislationLibrary.test.tsx — רינדור + חיפוש של ספריית-החקיקה.
+ * LegislationLibrary.test.tsx — רינדור + שתי-תצוגות (נושא|חוק) + חיפוש של ספריית-החקיקה.
  */
 import { describe, it, expect } from 'vitest';
 import { render, screen, fireEvent, within } from '@testing-library/react';
 import { LegislationLibrary } from '@/components/legislation/LegislationLibrary';
-import type { LegislationChapter } from '@/lib/legislation/catalog';
+import type { LegislationChapter, LegislationTopicShelf } from '@/lib/legislation/catalog';
 
 const CHAPTERS: LegislationChapter[] = [
   {
@@ -43,19 +43,64 @@ const CHAPTERS: LegislationChapter[] = [
   },
 ];
 
-describe('LegislationLibrary', () => {
-  it('מציג את כל המדפים (כותרות) + ספירה; פריטים מקופלים כברירת-מחדל', () => {
-    render(<LegislationLibrary chapters={CHAPTERS} total={2} />);
-    expect(screen.getByText('חוק ארגון הפיקוח על העבודה ותקנותיו')).toBeInTheDocument();
-    expect(screen.getByText('פקודת הבטיחות בעבודה ותקנותיה')).toBeInTheDocument();
-    expect(screen.getByText(/2 נוסחים · 2 מדפים/)).toBeInTheDocument();
-    // מקופל → פריט-הנוסח אינו מרונדר עד פתיחת-המדף.
+/** מדפי-נושא תואמים (אותם 2 פריטים מקובצים-לפי-יחידה). */
+const TOPIC_SHELVES: LegislationTopicShelf[] = [
+  {
+    id: 'argun',
+    title: 'ארגון הפיקוח וניהול הבטיחות',
+    blurb: 'ממונה בטיחות · תכנית-ניהול',
+    icon: 'ClipboardCheck',
+    practiceHref: '/lesson/argun',
+    items: [CHAPTERS[0]!.items[0]!],
+  },
+  {
+    id: 'gova',
+    title: 'עבודה בגובה, בנייה ותכנון',
+    blurb: 'עבודה-בגובה · עבודות-בנייה',
+    icon: 'HardHat',
+    practiceHref: '/lesson/gova',
+    items: [CHAPTERS[1]!.items[0]!],
+  },
+];
+
+function renderLib() {
+  return render(<LegislationLibrary chapters={CHAPTERS} topicShelves={TOPIC_SHELVES} total={2} />);
+}
+
+describe('LegislationLibrary — מפת-נושאים (ברירת-מחדל)', () => {
+  it('מציג מדפי-יחידות-לימוד כברירת-מחדל; פריטים מקופלים', () => {
+    renderLib();
+    expect(screen.getByText('ארגון הפיקוח וניהול הבטיחות')).toBeInTheDocument();
+    expect(screen.getByText('עבודה בגובה, בנייה ותכנון')).toBeInTheDocument();
+    expect(screen.getByText(/2 נוסחים מאורגנים לפי 2 יחידות-לימוד/)).toBeInTheDocument();
     expect(screen.queryByTestId('legislation-item-2.1')).not.toBeInTheDocument();
   });
 
-  it('פתיחת-מדף חושפת פריט עם קישור-נבו וקישור-PDF חיצוניים', () => {
-    render(<LegislationLibrary chapters={CHAPTERS} total={2} />);
-    fireEvent.click(screen.getByTestId('chapter-2')); // פתיחת מדף-2
+  it('פתיחת-מדף-נושא חושפת כפתור "תרגל יחידה זו" + פריטים', () => {
+    renderLib();
+    fireEvent.click(screen.getByTestId('topic-shelf-gova'));
+    expect(screen.getByTestId('legislation-item-2.1')).toBeInTheDocument();
+    const practice = screen.getByTestId('practice-t-gova');
+    expect(practice).toHaveAttribute('href', '/lesson/gova');
+    expect(practice).toHaveTextContent('תרגל יחידה זו');
+  });
+
+  it('מעבר לתצוגת "לפי חוק" מציג את משפחות-החוק (התצוגה-הישנה נשמרת)', () => {
+    renderLib();
+    fireEvent.click(screen.getByTestId('view-legal'));
+    expect(screen.getByText('פקודת הבטיחות בעבודה ותקנותיה')).toBeInTheDocument();
+    expect(screen.getByText(/2 מדפים/)).toBeInTheDocument();
+    // ולחזרה:
+    fireEvent.click(screen.getByTestId('view-topic'));
+    expect(screen.getByText(/יחידות-לימוד/)).toBeInTheDocument();
+  });
+});
+
+describe('LegislationLibrary — תצוגת-חוק + קישורים + חיפוש', () => {
+  it('פתיחת-מדף-חוק חושפת פריט עם קישור-נבו וקישור-PDF חיצוניים', () => {
+    renderLib();
+    fireEvent.click(screen.getByTestId('view-legal'));
+    fireEvent.click(screen.getByTestId('chapter-2'));
     const row = screen.getByTestId('legislation-item-2.1');
     const nevo = within(row).getByRole('link', { name: /נבו/ });
     expect(nevo).toHaveAttribute('href', 'https://www.nevo.co.il/law_html/law00/74164.htm');
@@ -64,8 +109,8 @@ describe('LegislationLibrary', () => {
     expect(within(row).getByRole('link', { name: /PDF/ })).toBeInTheDocument();
   });
 
-  it('חיפוש לפי כותרת מסנן פריטים', () => {
-    render(<LegislationLibrary chapters={CHAPTERS} total={2} />);
+  it('חיפוש לפי כותרת מסנן פריטים (בתצוגת-נושא)', () => {
+    renderLib();
     fireEvent.change(screen.getByRole('searchbox', { name: 'חיפוש חוק או תקנה' }), {
       target: { value: 'גובה' },
     });
@@ -75,7 +120,7 @@ describe('LegislationLibrary', () => {
   });
 
   it('חיפוש לפי מספר-scope', () => {
-    render(<LegislationLibrary chapters={CHAPTERS} total={2} />);
+    renderLib();
     fireEvent.change(screen.getByRole('searchbox', { name: 'חיפוש חוק או תקנה' }), {
       target: { value: '1.0' },
     });
@@ -84,7 +129,7 @@ describe('LegislationLibrary', () => {
   });
 
   it('חיפוש ללא-תוצאות מציג empty-state', () => {
-    render(<LegislationLibrary chapters={CHAPTERS} total={2} />);
+    renderLib();
     fireEvent.change(screen.getByRole('searchbox', { name: 'חיפוש חוק או תקנה' }), {
       target: { value: 'זזזזז' },
     });

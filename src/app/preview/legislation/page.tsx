@@ -3,7 +3,11 @@
  * (מדפים-מתקפלים · StudiesGo), להדגמה למוטי לפני המסך-המוגן `/legislation`.
  */
 import { LegislationLibrary } from '@/components/legislation/LegislationLibrary';
-import { LEGISLATION_CHAPTERS, LEGISLATION_TOTAL } from '@/lib/legislation/catalog';
+import {
+  LEGISLATION_CHAPTERS,
+  LEGISLATION_BY_TOPIC,
+  LEGISLATION_TOTAL,
+} from '@/lib/legislation/catalog';
 
 export const dynamic = 'force-dynamic';
 
@@ -16,7 +20,11 @@ export default function PreviewLegislationPage() {
           כל החוקים והתקנות של מבחן-ההסמכה — חוק › תקנותיו, עם קישור לנוסח-המלא.
         </p>
       </header>
-      <LegislationLibrary chapters={LEGISLATION_CHAPTERS} total={LEGISLATION_TOTAL} />
+      <LegislationLibrary
+        chapters={LEGISLATION_CHAPTERS}
+        topicShelves={LEGISLATION_BY_TOPIC}
+        total={LEGISLATION_TOTAL}
+      />
     </main>
   );
 }
