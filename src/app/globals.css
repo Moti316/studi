@@ -47,6 +47,33 @@
     }
   }
 
+  /* === A11yWidget — הגדרות-נגישות-מהירות (classes על <html> · src/components/a11y) === */
+  /* גודל-טקסט: rem-scale (כל גדלי-ה-tailwind נגזרים מ-rem). */
+  html.a11y-font-lg {
+    font-size: 112.5%;
+  }
+  html.a11y-font-xl {
+    font-size: 125%;
+  }
+  /* ניגודיות-מוגברת: חיזוק טקסט-משני וגבולות (light + dark). */
+  html.a11y-contrast {
+    --quiz-text-secondary: 51 65 85; /* slate-700 */
+    --surface-border: 100 116 139; /* slate-500 */
+  }
+  html.a11y-contrast.dark {
+    --quiz-text-secondary: 203 213 225; /* slate-300 */
+    --surface-border: 148 163 184; /* slate-400 */
+  }
+  /* הפחתת-אנימציות ידנית (מקביל ל-prefers-reduced-motion · לבחירת-המשתמש). */
+  html.a11y-reduce-motion *,
+  html.a11y-reduce-motion *::before,
+  html.a11y-reduce-motion *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
   html {
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: transparent;

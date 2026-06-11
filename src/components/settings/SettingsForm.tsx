@@ -58,6 +58,8 @@ export function SettingsForm({ initial }: Props) {
     } catch {
       // localStorage חסום — נשאר ב-state בלבד.
     }
+    // sync same-tab לצרכנים (A11yWidget מאזין · cross-tab דרך 'storage').
+    window.dispatchEvent(new Event('studi-settings-changed'));
     setSavedFlash(true);
     if (flashTimer.current) clearTimeout(flashTimer.current);
     flashTimer.current = setTimeout(() => setSavedFlash(false), 1600);

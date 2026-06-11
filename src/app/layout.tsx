@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Heebo, Rubik } from 'next/font/google';
 import './globals.css';
 import { THEME_INIT_SCRIPT } from '@/lib/theme';
+import { A11yWidget } from '@/components/a11y/A11yWidget';
 
 const heebo = Heebo({
   subsets: ['hebrew', 'latin'],
@@ -55,6 +56,8 @@ export default function RootLayout({
       </head>
       <body className="text-foreground min-h-dvh bg-background font-sans antialiased">
         {children}
+        {/* כפתור-נגישות-צף (כל-המסכים · נשלט מהגדרות) */}
+        <A11yWidget />
       </body>
     </html>
   );
