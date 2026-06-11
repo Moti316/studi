@@ -12,10 +12,10 @@ import {
 import { COURSE_TOPICS, isTopicId } from '@/lib/course/topics';
 
 describe('legislation catalog', () => {
-  it('4 פרקים · 42 נוסחים', () => {
+  it('4 פרקים · 43 נוסחים', () => {
     expect(LEGISLATION_CHAPTERS).toHaveLength(4);
-    expect(LEGISLATION_TOTAL).toBe(42);
-    expect(LEGISLATION_FLAT).toHaveLength(42);
+    expect(LEGISLATION_TOTAL).toBe(43);
+    expect(LEGISLATION_FLAT).toHaveLength(43);
   });
 
   it('פרקים ממוספרים 1..4 עם כותרת לא-ריקה', () => {
@@ -44,9 +44,16 @@ describe('legislation catalog', () => {
       expect(it.title.length).toBeGreaterThan(5);
       expect(it.year).toBeGreaterThan(1940);
       expect(it.nevoUrl).toMatch(/^https:\/\/www\.nevo\.co\.il\//);
-      expect(it.pdfUrl).toMatch(/^https:\/\/drive\.google\.com\//);
+      if (it.pdfUrl !== null) {
+        expect(it.pdfUrl).toMatch(/^https:\/\/drive\.google\.com\//);
+      }
       expect(Object.keys(DEPTH_LABELS)).toContain(it.depth);
     }
+  });
+
+  it('בדיוק פריט-אחד ממתין-ל-PDF (2.6.1 · נעלם כשמוטי מעלה)', () => {
+    const pending = LEGISLATION_FLAT.filter((it) => it.pdfUrl === null);
+    expect(pending.map((it) => it.displayId)).toEqual(['2.6.1']);
   });
 
   it('displayId ייחודי על-פני הקטלוג', () => {
@@ -56,7 +63,7 @@ describe('legislation catalog', () => {
 });
 
 describe('LEGISLATION_BY_TOPIC — מפת-נושאים (חקיקה↔למידה)', () => {
-  it('כיסוי-מלא: כל 42 הנוסחים משויכים בדיוק-פעם-אחת (יחידות + "נוספים")', () => {
+  it('כיסוי-מלא: כל 43 הנוסחים משויכים בדיוק-פעם-אחת (יחידות + "נוספים")', () => {
     const all = LEGISLATION_BY_TOPIC.flatMap((s) => s.items.map((i) => i.displayId));
     expect(all).toHaveLength(LEGISLATION_TOTAL); // אין-כפילות בין-מדפים, אין-נשמט
     expect(new Set(all).size).toBe(LEGISLATION_TOTAL);

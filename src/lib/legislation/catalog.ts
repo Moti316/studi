@@ -1,7 +1,7 @@
 /**
  * src/lib/legislation/catalog.ts — קטלוג-החקיקה לתצוגת ספריית-החקיקה.
  *
- * מקור-אמת יחיד: `scripts/legislation-manifest.ts` (`LEGISLATION_SOURCES`, 42 נוסחים)
+ * מקור-אמת יחיד: `scripts/legislation-manifest.ts` (`LEGISLATION_SOURCES`)
  * — אותו manifest שמזין את `fetch-legislation.ts` ומחולל את `INDEX.md`. כאן אנו
  * **נגזרים** ממנו תצוגה היררכית (4 פרקים · חוק > תקנותיו) ללא שכפול-נתונים.
  *
@@ -32,8 +32,8 @@ export interface LegislationItem {
   readonly depth: Depth;
   /** קישור לנוסח-נבו (ציבורי). */
   readonly nevoUrl: string;
-  /** קישור ל-PDF-המחייב ב-Drive (creator-gated). */
-  readonly pdfUrl: string;
+  /** קישור ל-PDF-המחייב ב-Drive (creator-gated). null = ממתין-להעלאה (drivePdfPending). */
+  readonly pdfUrl: string | null;
   /** נתיב ה-`.md` בריפו (נוסח-עבודה). */
   readonly mdPath: string;
 }
@@ -106,7 +106,7 @@ function toItem(s: LegislationSource): LegislationItem {
     year: yearOf(s),
     depth: s.depth,
     nevoUrl: s.url,
-    pdfUrl: driveUrl(s.driveFileId),
+    pdfUrl: s.driveFileId ? driveUrl(s.driveFileId) : null,
     mdPath: relPathFor(s),
   };
 }

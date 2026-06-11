@@ -1,7 +1,7 @@
 /**
  * tests/unit/import/legislation-manifest.test.ts
  *
- * Guards the 39-item legislation manifest: every canonical scopeId is valid,
+ * Guards the 43-item legislation manifest: every canonical scopeId is valid,
  * slugs/urls/filenames are unique, chapter dirs match the scope chapter, and the
  * special cases (2.10's two texts, the `covers` back-references) hold. This is
  * the 0-drift gate against scope-refs.ts and the A2 plan.
@@ -25,19 +25,28 @@ const CHAPTER_DIRS: readonly ChapterDir[] = [
 ];
 
 describe('legislation manifest — shape', () => {
-  it('has exactly 42 sources (39 + 2.8.1 traktorim + 4.3.2 tzav + 4.3.3 horaot-klaliot)', () => {
-    expect(LEGISLATION_SOURCES.length).toBe(42);
+  it('has exactly 43 sources (39 + 2.8.1 + 4.3.2 + 4.3.3 + 2.6.1 agoranei-tsriach)', () => {
+    expect(LEGISLATION_SOURCES.length).toBe(43);
   });
 
   it('passes the built-in validator (valid scopes, unique slug/url/filename/driveFileId)', () => {
     expect(validateManifest()).toEqual([]);
   });
 
-  it('every source has a Drive PDF file-id + a depth tier', () => {
+  it('every source has a Drive PDF file-id (or an explicit pending flag) + a depth tier', () => {
     for (const s of LEGISLATION_SOURCES) {
-      expect(s.driveFileId, `driveFileId ${s.scopeId}`).toMatch(/^[A-Za-z0-9_-]{20,}$/);
+      if (s.drivePdfPending) {
+        expect(s.driveFileId, `pending ${s.scopeId} must not carry an id`).toBeUndefined();
+      } else {
+        expect(s.driveFileId, `driveFileId ${s.scopeId}`).toMatch(/^[A-Za-z0-9_-]{20,}$/);
+      }
       expect(['core', 'framework', 'topic'], `depth ${s.scopeId}`).toContain(s.depth);
     }
+  });
+
+  it('only 2.6.1 is pending a Drive PDF (shrinks to none once Moti uploads)', () => {
+    const pending = LEGISLATION_SOURCES.filter((s) => s.drivePdfPending);
+    expect(pending.map((s) => s.scopeId)).toEqual(['2.6.1']);
   });
 
   it('every canonical scopeId is a known committee scope', () => {
@@ -89,9 +98,12 @@ describe('legislation manifest — special cases', () => {
     expect(ordinance.covers).toContain('2.11');
   });
 
-  it('2.6 records covers:[2.6.1] (tower-crane has no standalone text)', () => {
-    const cranes = LEGISLATION_SOURCES.find((s) => s.scopeId === '2.6')!;
-    expect(cranes.covers).toContain('2.6.1');
+  it('2.6.1 (tower cranes 1966) is a standalone text — 2.6 no longer claims to cover it', () => {
+    const towerCranes = LEGISLATION_SOURCES.find((s) => s.scopeId === '2.6.1')!;
+    expect(towerCranes.url).toContain('74805');
+    expect(towerCranes.officialTitle).toContain('עגורני-צריח');
+    const operators = LEGISLATION_SOURCES.find((s) => s.scopeId === '2.6')!;
+    expect(operators.covers ?? []).not.toContain('2.6.1');
   });
 
   it('does NOT include the skipped narrow elevator-door regulation (74832)', () => {

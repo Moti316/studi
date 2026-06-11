@@ -57,7 +57,7 @@ export const COURSE_TOPICS: readonly CourseTopic[] = [
     title: 'מכונות, הרמה ועגורנים',
     blurb: 'מכונות-חקלאיות · אגורנאים-עגורנים · הרמת-אדם · דוודי-קיטור',
     icon: 'Cog',
-    scopes: ['2.6', '2.6.2', '2.8', '2.10'],
+    scopes: ['2.6', '2.6.1', '2.6.2', '2.8', '2.10'],
   },
   {
     id: 'gehut',

@@ -21,9 +21,11 @@
  *   each `.md` frontmatter points here. Creator-gated (auth-required).
  * - Curriculum (doc 905018, מינהל-הבטיחות): defines scope; `depth` tier below.
  *
- * SKIPPED (no standalone text): 2.6.1 (covered in 2.6 reg.65 + 2.0), 2.11
- * (covered in 2.0). 5.x ISO standards (paywalled). The 3 items 2.8.1 / 4.3.2 /
- * 4.3.3 were added 2026-06-03 after the official curriculum (905018) named them.
+ * SKIPPED (no standalone text): 2.11 (covered in 2.0). 5.x ISO standards
+ * (paywalled). The 3 items 2.8.1 / 4.3.2 / 4.3.3 were added 2026-06-03 after
+ * the official curriculum (905018) named them. 2.6.1 (עגורני-צריח תשכ"ז-1966)
+ * was added 2026-06-11 (A2 research corrected the "covered by 2.6" mixup —
+ * tower-crane regs ARE a standalone text, ~102 regs incl. reg.65).
  */
 
 import { isValidScopeId } from '../src/lib/db/constants/scope-refs';
@@ -49,7 +51,9 @@ export interface LegislationSource {
   /** Official title (verbatim from Nevo) — used for the L3 title cross-check. */
   readonly officialTitle: string;
   /** Google-Drive file-id of the official PDF (binding source-of-truth, folder "חוקים ותקנות"). */
-  readonly driveFileId: string;
+  readonly driveFileId?: string;
+  /** TRUE only while the binding PDF awaits manual upload to Drive (then replaced by driveFileId). */
+  readonly drivePdfPending?: true;
   /** Curriculum depth tier (905018): core role/legislation · framework cross-cutting · topic branch/agent-specific. */
   readonly depth: Depth;
   /** Extra scope ids this single text also satisfies (no standalone text of their own). */
@@ -69,7 +73,7 @@ export function driveUrl(fileId: string): string {
   return `https://drive.google.com/file/d/${fileId}/view`;
 }
 
-/** The 42 legislation sources (39 + 2.8.1 + 4.3.2 + 4.3.3, added per curriculum 905018). */
+/** The 43 legislation sources (39 + 2.8.1 + 4.3.2 + 4.3.3 per curriculum 905018, + 2.6.1 per A2 2026-06-11). */
 export const LEGISLATION_SOURCES: readonly LegislationSource[] = [
   // ── Chapter 1 — חוק ארגון הפיקוח + תקנות (scope 1.x) ──
   {
@@ -229,7 +233,17 @@ export const LEGISLATION_SOURCES: readonly LegislationSource[] = [
     officialTitle: 'תקנות הבטיחות בעבודה (עגורנאים, מפעילי מכונות הרמה אחרות ואתתים), תשנ"ג-1992',
     driveFileId: '1WVE1pfnPvWYgbxmjAh64nq2EAAute0wa',
     depth: 'framework',
-    covers: ['2.6.1'],
+  },
+  {
+    // A2 2026-06-11: standalone text (הקמה · בודק-מוסמך · תסקיר · reg.65 איסור-הרמת-אדם).
+    // Binding PDF staged at .cache/nevo — awaiting Moti's drag into Drive "תקנות".
+    scopeId: '2.6.1',
+    slug: 'agoranei-tsriach-1966',
+    chapterDir: '2-pkudat-habetihut',
+    url: `${NEVO}law00/74805.htm`,
+    officialTitle: 'תקנות הבטיחות בעבודה (עגורני-צריח), תשכ"ז-1966',
+    drivePdfPending: true,
+    depth: 'topic',
   },
   {
     scopeId: '2.6.2',
@@ -501,11 +515,17 @@ export function validateManifest(
     if (!/^https:\/\/www\.nevo\.co\.il\/law_html\//.test(s.url)) {
       errors.push(`unexpected url host: ${s.url}`);
     }
-    if (!/^[A-Za-z0-9_-]{20,}$/.test(s.driveFileId)) {
+    if (s.drivePdfPending) {
+      if (s.driveFileId !== undefined) {
+        errors.push(`drivePdfPending with driveFileId for ${s.scopeId} — pick one`);
+      }
+    } else if (!s.driveFileId || !/^[A-Za-z0-9_-]{20,}$/.test(s.driveFileId)) {
       errors.push(`invalid driveFileId for ${s.scopeId}: ${s.driveFileId}`);
     }
-    if (driveIds.has(s.driveFileId)) errors.push(`duplicate driveFileId: ${s.driveFileId}`);
-    driveIds.add(s.driveFileId);
+    if (s.driveFileId) {
+      if (driveIds.has(s.driveFileId)) errors.push(`duplicate driveFileId: ${s.driveFileId}`);
+      driveIds.add(s.driveFileId);
+    }
   }
   return errors;
 }

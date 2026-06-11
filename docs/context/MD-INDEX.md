@@ -2,7 +2,7 @@
 
 > ⚠️ **קובץ מחולל — אל תערוך ידנית.** מקור: `.claude/scripts/gen-md-index.mjs` · רענון: `pnpm index:md`
 > (מתרענן גם אוטומטית ב-pre-commit). דלת-הכניסה לשליפה-מהירה של כל מסמך בריפו.
-> **סה״כ 354 קבצי-MD בריפו** · ⚠️ 19 יתומים-מקומיים (ראה תחתית) · עמודת "עודכן" = מתי הקובץ עודכן לאחרונה ב-git (לאיתור מסמכים שהתיישנו).
+> **סה״כ 355 קבצי-MD בריפו** · ⚠️ 19 יתומים-מקומיים (ראה תחתית) · עמודת "עודכן" = מתי הקובץ עודכן לאחרונה ב-git (לאיתור מסמכים שהתיישנו).
 
 ## 📌 קבצי-חובה — קרא/עבור עליהם בכל סשן (נעוץ)
 
@@ -206,7 +206,7 @@
 | [sitemap.md](../../docs/sitemap.md) | mermaid | docs | 2026-05-29 |
 | [vercel-public-poc.md](../../docs/vercel-public-poc.md) | סטטוס: ❌ POC preview-pages חסומים ב-403 Host not in allowlist. | docs | 2026-05-30 |
 
-### ⚖️ קורפוס-חקיקה (נבו verbatim)  ·  44
+### ⚖️ קורפוס-חקיקה (נבו verbatim)  ·  45
 
 | קובץ | תכלית | תגיות | עודכן |
 | --- | --- | --- | --- |
@@ -230,6 +230,7 @@
 | [2.4.2-chashmal-mitkan-arai-2002.md](../../courses/safety-officer/sources/legislation/2-pkudat-habetihut/2.4.2-chashmal-mitkan-arai-2002.md) | בתוקף סמכותי לפי סעיף 13 לחוק החשמל, התשי"ד-1954 (להלן – החוק), ובאישור ועדת העבודה הרווחה והבריאות של הכנסת … | sources legislation 2-pkudat-habetihut 2002 | 2026-06-03 |
 | [2.5-ezra-rishona-1988.md](../../courses/safety-officer/sources/legislation/2-pkudat-habetihut/2.5-ezra-rishona-1988.md) | בתוקף סמכותי לפי סעיפים 147(א) ו-151 לפקודת הבטיחות בעבודה [נוסח חדש], התש"ל-1970 (להלן – הפקודה), אני מתקין … | sources legislation 2-pkudat-habetihut 1988 | 2026-06-03 |
 | [2.6-agoranaim-atatim-1992.md](../../courses/safety-officer/sources/legislation/2-pkudat-habetihut/2.6-agoranaim-atatim-1992.md) | בתוקף סמכותי לפי סעיפים 173 ו-216 לפקודת הבטיחות בעבודה [נוסח חדש], התש"ל-1970 (להלן – הפקודה), אני מתקין תקנ… | sources legislation 2-pkudat-habetihut 1992 | 2026-06-03 |
+| [2.6.1-agoranei-tsriach-1966.md](../../courses/safety-officer/sources/legislation/2-pkudat-habetihut/2.6.1-agoranei-tsriach-1966.md) | בתוקף סמכותי לפי סעיפים 55, 66, 67 ו-81 לפקודת הבטיחות בעבודה, 1946 (להלן – הפקודה), וסעיפים 14(א) ו-2(ד) לפק… | sources legislation 2-pkudat-habetihut 1966 | — |
 | [2.6.2-haramat-bnei-adam-malgazot-1983.md](../../courses/safety-officer/sources/legislation/2-pkudat-habetihut/2.6.2-haramat-bnei-adam-malgazot-1983.md) | בתוקף סמכותי לפי סעיפים 173 ו-216 לפקודת הבטיחות בעבודה [נוסח חדש], התש"ל-1970, אני מתקין תקנות אלה: | sources legislation 2-pkudat-habetihut 1983 | 2026-06-03 |
 | [2.7-gilyon-betihut-sds-1998.md](../../courses/safety-officer/sources/legislation/2-pkudat-habetihut/2.7-gilyon-betihut-sds-1998.md) | בתוקף סמכות שר העבודה והרווחה לפי סעיפים 173 ו-216 לפקודת הבטיחות בעבודה [נוסח חדש], התש"ל-1970 (להלן – הפקוד… | sources legislation 2-pkudat-habetihut 1998 | 2026-06-03 |
 | [2.8-mechonot-haklaiyot-1988.md](../../courses/safety-officer/sources/legislation/2-pkudat-habetihut/2.8-mechonot-haklaiyot-1988.md) | בתוקף סמכותי לפי סעיפים 46, 47, 173 ו-216 לפקודת הבטיחות בעבודה [נוסח חדש], התש"ל-1970, אני מתקין תקנות אלה: | sources legislation 2-pkudat-habetihut 1988 | 2026-06-03 |

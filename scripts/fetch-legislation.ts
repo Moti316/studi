@@ -233,7 +233,11 @@ function buildMarkdown(
     `fetch_date: ${yamlStr(fetchDate)}`,
     `license: public-domain`,
     // Binding source-of-truth = the official PDF in Drive (COMPLETE — appendices included).
-    `authoritative_source: ${yamlStr(driveUrl(source.driveFileId))}`,
+    `authoritative_source: ${
+      source.driveFileId
+        ? yamlStr(driveUrl(source.driveFileId))
+        : yamlStr('PENDING-UPLOAD — ה-PDF המחייב ממתין-להעלאה לתיקיית-Drive "תקנות" (פרק-2)')
+    }`,
     `authoritative_kind: ${yamlStr(AUTHORITATIVE_KIND)}`,
     `section_count: ${maxSection}`,
     `heading_count: ${stripped.headingCount}`,
@@ -407,7 +411,7 @@ function runIndex(): void {
           completeness = '✓';
         }
       }
-      const pdf = `[PDF](${driveUrl(s.driveFileId)})`;
+      const pdf = s.driveFileId ? `[PDF](${driveUrl(s.driveFileId)})` : '⏳ ממתין-להעלאה';
       const md = `[.md](${mdPath})`;
       const nevo = `[נבו](${s.url})`;
       lines.push(
@@ -418,7 +422,7 @@ function runIndex(): void {
   }
   lines.push(
     `> **סה"כ ${total} נוסחים** · ${partial} מסומנים \`⚠️ חלקי\` (תוספת-תמונה — הנוסח-המלא ב-PDF-המחייב). ` +
-      `דולגו (אין-נוסח-עצמאי): 2.6.1 (בתוך 2.6/2.0) · 2.11 (בתוך 2.0). 5.x ISO — בתשלום.`,
+      `דולגו (אין-נוסח-עצמאי): 2.11 (בתוך 2.0). 5.x ISO — בתשלום.`,
   );
   lines.push('');
 

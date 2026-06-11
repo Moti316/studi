@@ -322,15 +322,22 @@ function LegislationRow({ item }: { item: LegislationItem }) {
           <ExternalLink aria-hidden="true" className="size-3.5" />
           נוסח מלא (נבו)
         </a>
-        <a
-          href={item.pdfUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:text-foreground inline-flex items-center gap-1"
-        >
-          <FileText aria-hidden="true" className="size-3.5" />
-          PDF מחייב
-        </a>
+        {item.pdfUrl ? (
+          <a
+            href={item.pdfUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-foreground inline-flex items-center gap-1"
+          >
+            <FileText aria-hidden="true" className="size-3.5" />
+            PDF מחייב
+          </a>
+        ) : (
+          <span className="inline-flex items-center gap-1 opacity-60">
+            <FileText aria-hidden="true" className="size-3.5" />
+            PDF בהעלאה
+          </span>
+        )}
       </div>
     </li>
   );
