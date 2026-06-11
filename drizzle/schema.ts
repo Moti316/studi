@@ -148,6 +148,37 @@ export const scenarios = pgTable(
   }),
 );
 
+// ─── simulations (committee-sim · ADR-016 · pre-baked branching) ─────────
+// סימולציות-וועדה פרה-בנויות (3 מפקחים · 4 שלבים · ציון 0-100). ה-payload המלא
+// (stages/turns/options) נשמר כ-jsonb יחיד — תוכן-מחובר-וקפוא, לא נתון-יחסי.
+export const simulations = pgTable(
+  'simulations',
+  {
+    id: uuid('id')
+      .primaryKey()
+      .default(sql`uuid_generate_v4()`),
+    title: text('title').notNull(),
+    /** ענף (בנייה/חשמל/חומ"ס/...) — לסינון/מיון בתצוגה. */
+    branch: text('branch').notNull(),
+    intro: text('intro').notNull(),
+    /** ה-Simulation המלא (src/features/simulation/types.ts) — מקור-הריצה של הנגן. */
+    data: jsonb('data').notNull(),
+    scopeRefs: jsonb('scope_refs')
+      .notNull()
+      .default(sql`'[]'::jsonb`),
+    // Stable provenance key (committee-sim:<title>) — ON CONFLICT idempotent re-imports
+    // (mirrors idx_scenarios_source_ref).
+    sourceRef: text('source_ref'),
+    status: contentStatus('status').notNull().default('מאומת'),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => ({
+    branchIdx: index('idx_simulations_branch').on(t.branch),
+    statusIdx: index('idx_simulations_status').on(t.status),
+    sourceRefIdx: uniqueIndex('idx_simulations_source_ref').on(t.sourceRef),
+  }),
+);
+
 // ─── questions ─────────────────────────────────────────────────────────
 export const questions = pgTable(
   'questions',
@@ -331,6 +362,8 @@ export type Chunk = typeof chunks.$inferSelect;
 export type NewChunk = typeof chunks.$inferInsert;
 export type Scenario = typeof scenarios.$inferSelect;
 export type NewScenario = typeof scenarios.$inferInsert;
+export type SimulationRow = typeof simulations.$inferSelect;
+export type NewSimulationRow = typeof simulations.$inferInsert;
 export type Question = typeof questions.$inferSelect;
 export type NewQuestion = typeof questions.$inferInsert;
 export type PracticeSession = typeof practiceSessions.$inferSelect;

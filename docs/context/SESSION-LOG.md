@@ -32,7 +32,11 @@
 - ✅ **נראוּת מורה-AI** — מוטי: "איפה מורה-AI?" (היה רק-בשו"ת) → כפתור **"🎓 שאל את המורה"** ב-sheet תשובה-שגויה (כל סוגי-השאלות · collapsed · איפוס-פר-שאלה). אומת-חי.
 - 🛠️ אגב-אימות: 500 על /preview/dashboard = שחיתות-cache של dev-server ארוך (webpack moduleId) — restart פתר; לא-באג-קוד.
 
-**Drive:** לוג-סשן מקיף + פרומפט-המשך נכתב (doc `10KsSeXh…`). **11 commits הסשן.** **בעבודה / הצעד-הבא (פונקציונלי):** import-תרחישים-ל-DB (בלוק-5) · /lesson/exam (D3) · scopes 4.3-4.5 (S1) · gamification/persistence (🚩 DB) · אודיט-נגישות-5568 (לפני-launch) · באג-האנט.
+**סבב-3 (אישור-מוטי: 5 משימות-סיום-קורס + A1/A2):**
+
+- ✅ **★ בלוק-5 — תרחישי-הוועדה חיים ב-`/lesson/scenarios`** — טבלת-`simulations` (סכמה · jsonb-payload · sourceRef-idempotent) · `scripts/import-simulations.ts` (`pnpm sim:import[:execute]` · מדלג-מדוגל "גג-רעפים" 1/12) · **`ScenarioLab`** (hero-B1 + 11 כרטיסי-ענף → `SimulationPlayer` + חזרה) · route-סטטי `/lesson/scenarios` (auth · DB→**fallback-לבנק** — פועל-מלא גם-בלי-DB) · `/preview/simulation` = Lab-מלא (במקום fixture-מקומי) · תיקון-תוכן: 3 ענפים-באנגלית→עברית בבנק · +5 טסטים (sim-bank). אומת-חי (11 כרטיסים · נגן נפתח). ⚠️ **`db:push` נחסם ע"י ה-auto-classifier** (מיגרציית-prod) → 🚩 מוטי: `pnpm db:push && pnpm sim:import:execute` (פקודה-אחת · עד-אז ה-fallback משרת).
+
+**Drive:** לוג-סשן מקיף + פרומפט-המשך נכתב (doc `10KsSeXh…`). **בעבודה / הצעד-הבא (פונקציונלי):** import-תרחישים-ל-DB (בלוק-5) · /lesson/exam (D3) · scopes 4.3-4.5 (S1) · gamification/persistence (🚩 DB) · אודיט-נגישות-5568 (לפני-launch) · באג-האנט.
 
 ---
 

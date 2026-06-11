@@ -1,41 +1,35 @@
 /**
- * /preview/simulation — תצוגה-מקדימה זמנית של סימולציית-הוועדה (ADR-016 · vertical-slice).
+ * /preview/simulation — תצוגה-מקדימה (dev · ציבורי) של מיני-קורס תרחישי-הוועדה.
  *
- * מרנדר את <SimulationPlayer> עם תרחיש-מחובר מ-`.cache/notebooklm/simulations/sim-loto.json`
- * (תוצר חיבור-Claude+פרומפט-מגן). **ציבורי · dev-preview בלבד** — להדגמה למוטי לפני שילוב
- * ב-`/lesson/scenarios` המוגן. אם ה-fixture חסר → הודעה.
+ * מרנדר את <ScenarioLab> עם הבנק-הסטטי-המאומת (committee-sim-bank · 11 מאומתים) —
+ * אותו-תוכן כמו `/lesson/scenarios` המוגן, בלי auth/DB. להדגמה למוטי בכל-מכונה.
  */
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
-import { SimulationPlayer } from '@/features/simulation/SimulationPlayer';
+import { ScenarioLab } from '@/features/simulation/ScenarioLab';
 import type { Simulation } from '@/features/simulation/types';
+import bank from '@/features/simulation/data/committee-sim-bank.json';
+import verdicts from '@/features/simulation/data/committee-sim-bank.verify.json';
 
 export const dynamic = 'force-dynamic';
 
-function loadSim(): Simulation | null {
-  try {
-    const raw = readFileSync(
-      join(process.cwd(), '.cache', 'notebooklm', 'simulations', 'sim-loto.json'),
-      'utf8',
-    );
-    return JSON.parse(raw) as Simulation;
-  } catch {
-    return null;
-  }
-}
-
 export default function PreviewSimulationPage() {
-  const sim = loadSim();
+  const okTitles = new Set(
+    (verdicts as { title: string; overallOk: boolean }[])
+      .filter((v) => v.overallOk)
+      .map((v) => v.title),
+  );
+  const sims = (bank as Simulation[]).filter((s) => okTitles.has(s.title));
+
   return (
-    <main dir="rtl" className="mx-auto min-h-screen max-w-2xl bg-quiz-bg/30 px-4 py-8 font-hebrew">
-      {sim ? (
-        <SimulationPlayer simulation={sim} />
-      ) : (
-        <p className="rounded-card border border-quiz-border bg-white px-4 py-3 text-start text-sm text-quiz-text-secondary">
-          התרחיש-המחובר טרם נוצר (`.cache/notebooklm/simulations/sim-loto.json`). הרץ את
-          author-simulation Workflow.
+    <main dir="rtl" className="mx-auto min-h-screen max-w-2xl bg-background px-4 py-8 font-hebrew">
+      <div className="mb-4">
+        <p className="text-xs font-semibold uppercase tracking-wide text-quiz-text-secondary">
+          תצוגה-מקדימה (dev)
         </p>
-      )}
+        <h1 className="text-lg font-extrabold text-quiz-text-primary">
+          תרחישי וועדת-הסמכה · בנק-מלא
+        </h1>
+      </div>
+      <ScenarioLab sims={sims} />
     </main>
   );
 }
