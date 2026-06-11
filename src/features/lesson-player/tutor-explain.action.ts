@@ -18,6 +18,7 @@
 
 import { isClaudeConfigured, claudeGenerateText, defaultAuthorModel } from '@/lib/ai/claude';
 import { getUser } from '@/lib/auth/server';
+import { guardAiCall } from '@/lib/ai/usage-guard';
 import {
   SYSTEM_TUTOR,
   buildTutorPrompt,
@@ -42,6 +43,10 @@ export async function askTutorAction(req: TutorRequest): Promise<TutorResponse> 
   // auth: חוסם קריאת-Claude-בתשלום ממשתמש-לא-מחובר (cost-abuse · BUGS#system-bug-hunt).
   const user = await getUser();
   if (!user) return tutorFallback(req);
+
+  // שער-מכסה (שחרור-לחברים): חריגה-יומית → fallback (אפס-עלות).
+  const gate = await guardAiCall(user.id, 'tutor');
+  if (!gate.allowed) return tutorFallback(req);
 
   if (isClaudeConfigured()) {
     try {

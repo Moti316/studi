@@ -28,6 +28,7 @@ import {
 import { buildDeterministicFeedback } from './jsa-validation';
 import { isClaudeConfigured, claudeGenerateJSON } from '@/lib/ai/claude';
 import { getUser } from '@/lib/auth/server';
+import { guardAiCall } from '@/lib/ai/usage-guard';
 
 // ---------------------------------------------------------------------------
 // System prompt — מבקן-הבטיחות
@@ -205,6 +206,10 @@ export async function evaluateCapstoneAction(
   // auth: חוסם קריאת-Claude-בתשלום ממשתמש-לא-מחובר (קריאה-ישירה ל-action · cost-abuse).
   const user = await getUser();
   if (!user) return buildDeterministicFeedback(site, jsaRows);
+
+  // שער-מכסה (שחרור-לחברים): חריגה-יומית → משוב-דטרמיניסטי (אפס-עלות).
+  const gate = await guardAiCall(user.id, 'capstone-eval');
+  if (!gate.allowed) return buildDeterministicFeedback(site, jsaRows);
 
   // --- מסלול Claude ---
   if (isClaudeConfigured()) {

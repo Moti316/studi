@@ -9,6 +9,7 @@
  */
 import { isClaudeConfigured, claudeConverse } from '@/lib/ai/claude';
 import { getUser } from '@/lib/auth/server';
+import { guardAiCall } from '@/lib/ai/usage-guard';
 import {
   buildLiveSystemPrompt,
   transcriptToMessages,
@@ -25,6 +26,10 @@ export async function respondLiveAction(input: RespondLiveInput): Promise<Respon
   // לא-מחובר → דטרמיניסטי (אפס-קריאת-Claude · אפס-עלות).
   const user = await getUser();
   if (!user) return deterministicLiveTurn(input);
+
+  // שער 0.5 — מכסה-יומית (שחרור-לחברים): חריגה → תור-דטרמיניסטי (אפס-עלות).
+  const gate = await guardAiCall(user.id, 'sim-live');
+  if (!gate.allowed) return deterministicLiveTurn(input);
 
   // שער 1 — תשובה ריקה/קצרה-מאוד: nudge בלי-קריאה.
   if (isTooShortToGrade(input.answer)) return deterministicNudge(input);

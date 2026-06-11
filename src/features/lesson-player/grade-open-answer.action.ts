@@ -15,6 +15,7 @@ import {
   type SmartGradeResult,
 } from '@/lib/ai/prompts/evaluate-open-answer';
 import { getUser } from '@/lib/auth/server';
+import { guardAiCall } from '@/lib/ai/usage-guard';
 
 export async function gradeOpenAnswerAction(input: {
   userAnswer: string;
@@ -24,6 +25,10 @@ export async function gradeOpenAnswerAction(input: {
   // שער-auth: חוסם קריאת-Claude-בתשלום ממשתמש-לא-מחובר (cost-abuse + LLM-relay).
   const user = await getUser();
   if (!user) return deterministicSmartGrade(input.userAnswer, input.modelAnswer);
+
+  // שער-מכסה (שחרור-לחברים): חריגה-יומית → keyword-match (אפס-עלות · חוויה-מלאה).
+  const gate = await guardAiCall(user.id, 'grade-open');
+  if (!gate.allowed) return deterministicSmartGrade(input.userAnswer, input.modelAnswer);
 
   return gradeOpenAnswerSmart(input.userAnswer, input.modelAnswer, input.prompt);
 }

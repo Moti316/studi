@@ -36,6 +36,9 @@
 
 - ✅ **★ בלוק-5 — תרחישי-הוועדה חיים ב-`/lesson/scenarios`** — טבלת-`simulations` (סכמה · jsonb-payload · sourceRef-idempotent) · `scripts/import-simulations.ts` (`pnpm sim:import[:execute]` · מדלג-מדוגל "גג-רעפים" 1/12) · **`ScenarioLab`** (hero-B1 + 11 כרטיסי-ענף → `SimulationPlayer` + חזרה) · route-סטטי `/lesson/scenarios` (auth · DB→**fallback-לבנק** — פועל-מלא גם-בלי-DB) · `/preview/simulation` = Lab-מלא (במקום fixture-מקומי) · תיקון-תוכן: 3 ענפים-באנגלית→עברית בבנק · +5 טסטים (sim-bank). אומת-חי (11 כרטיסים · נגן נפתח). ⚠️ **`db:push` נחסם ע"י ה-auto-classifier** (מיגרציית-prod) → 🚩 מוטי: `pnpm db:push && pnpm sim:import:execute` (פקודה-אחת · עד-אז ה-fallback משרת).
 
+- ✅ **★ מבחן-דמה `/lesson/exam`** (`3db54d0` · D3 · 5 טסטים) — `exam-core` (ניקוד% · עובר≥70 · mm:ss) · `ExamPlayer` (30-אקראיות · טיימר-60-דק' יורד+auto-submit · **אפס-משוב-תוך-כדי** · דלג/חזור · הגש-בכל-עת → hero עובר/נכשל + סקירת-טעויות-מלאה+הסברים + retake) · route (MCQ מהבנק-המעוגן) · `/preview/exam` · CTA-נועז בדף-הקורס. אומת-חי (זרימה-מלאה · ציון-67-נכשל-נכון).
+- ✅ **★ מגבלות-שימוש-AI (בקשת-מוטי — שחרור-לחברים)** — `src/lib/ai/usage-guard.ts`: מכסת-משתמש-יומית (40 · `AI_USER_DAILY_CAP`) + גלובלית (400 · `AI_GLOBAL_DAILY_CAP`) · UTC-יומי · **DB-מועדף** (טבלת-`ai_usage` · increment-אטומי · נכללת-ב-db:push-הממתין) → **fallback-זיכרון** (פר-instance) · לעולם-לא-זורק. **חּוּוט לכל-6-נתיבי-Claude** (tutor · grade-open · sim-live · jsa-draft · capstone-eval · narrative) — חריגה ⇒ fallback-דטרמיניסטי (חוויה-מלאה · אפס-עלות). 5 טסטים. ⚠️ **המלצה-קשיחה למוטי: הגדר Spend-Limit חודשי ב-console.anthropic.com** (הערובה-האמיתית).
+
 **Drive:** לוג-סשן מקיף + פרומפט-המשך נכתב (doc `10KsSeXh…`). **בעבודה / הצעד-הבא (פונקציונלי):** import-תרחישים-ל-DB (בלוק-5) · /lesson/exam (D3) · scopes 4.3-4.5 (S1) · gamification/persistence (🚩 DB) · אודיט-נגישות-5568 (לפני-launch) · באג-האנט.
 
 ---

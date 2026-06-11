@@ -36,6 +36,7 @@ import {
 } from './narrative';
 import { isClaudeConfigured, claudeGenerateText, defaultAuthorModel } from '@/lib/ai/claude';
 import { getUser } from '@/lib/auth/server';
+import { guardAiCall } from '@/lib/ai/usage-guard';
 
 /** maxTokens פר-פרק — פרק-בודד עשיר (4-5 פסקאות עבריות) ≈ 1500-2200 tokens; 2400 = מרווח. */
 const MAX_TOKENS_PER_CHAPTER = 2400;
@@ -59,6 +60,10 @@ export async function generateNarrativeAction(
   // auth: חוסם קריאת-Claude-בתשלום ממשתמש-לא-מחובר (cost-abuse).
   const user = await getUser();
   if (!user || !isClaudeConfigured()) return buildDeterministicNarrative(site, rows);
+
+  // שער-מכסה (שחרור-לחברים): נרטיב = 5 קריאות-Sonnet → צורך 5 יחידות.
+  const gate = await guardAiCall(user.id, 'narrative');
+  if (!gate.allowed) return buildDeterministicNarrative(site, rows);
 
   const model = defaultAuthorModel();
 

@@ -27,6 +27,7 @@ import {
   index,
   check,
   customType,
+  primaryKey,
 } from 'drizzle-orm/pg-core';
 import { sql, relations } from 'drizzle-orm';
 
@@ -176,6 +177,22 @@ export const simulations = pgTable(
     branchIdx: index('idx_simulations_branch').on(t.branch),
     statusIdx: index('idx_simulations_status').on(t.status),
     sourceRefIdx: uniqueIndex('idx_simulations_source_ref').on(t.sourceRef),
+  }),
+);
+
+// ─── ai_usage (מכסות-AI יומיות · usage-guard · שחרור-לחברים) ─────────────
+// מונה-קריאות-Claude פר (יום-UTC · משתמש · action). increment אטומי ב-ON CONFLICT.
+export const aiUsage = pgTable(
+  'ai_usage',
+  {
+    day: text('day').notNull(), // YYYY-MM-DD (UTC)
+    userId: uuid('user_id').notNull(),
+    action: text('action').notNull(),
+    count: integer('count').notNull().default(0),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.day, t.userId, t.action] }),
+    dayIdx: index('idx_ai_usage_day').on(t.day),
   }),
 );
 

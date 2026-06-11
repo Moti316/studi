@@ -35,6 +35,7 @@ import {
 } from './jsa-generation';
 import { isClaudeConfigured, claudeGenerateJSON, defaultAuthorModel } from '@/lib/ai/claude';
 import { getUser } from '@/lib/auth/server';
+import { guardAiCall } from '@/lib/ai/usage-guard';
 
 /** מבנה-התגובה הצפוי מ-Claude — שורות בלי id (הקליינט/השרת מזריק). */
 interface DraftResponse {
@@ -55,6 +56,10 @@ export async function generateJsaDraftAction(site: SiteInfo): Promise<JsaRow[]> 
   // auth: חוסם קריאת-Claude-בתשלום ממשתמש-לא-מחובר (cost-abuse).
   const user = await getUser();
   if (!user) return buildDeterministicJsaDraft(site);
+
+  // שער-מכסה (שחרור-לחברים): חריגה-יומית → שלד-דטרמיניסטי (אפס-עלות).
+  const gate = await guardAiCall(user.id, 'jsa-draft');
+  if (!gate.allowed) return buildDeterministicJsaDraft(site);
 
   // --- מסלול Claude ---
   if (isClaudeConfigured()) {
