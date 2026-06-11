@@ -41,6 +41,7 @@ import { MatchingPairs } from './components/MatchingPairs';
 import { ExplanationCard } from './components/ExplanationCard';
 import { ScenarioWalkthrough } from './components/ScenarioWalkthrough';
 import { DeepExplanationButton } from './components/DeepExplanationButton';
+import { TutorChat } from './components/TutorChat';
 import type { QuestionResult, ScenarioInput } from './components/types';
 import { isMatchingPairs, isMcqCorrectAnswer, isStringOptions } from './components/types';
 import type { OpenGrade } from '@/lib/grading/keyword-match';
@@ -284,7 +285,11 @@ export function LessonPlayer({ questions, scenarios, onFinish }: LessonPlayerPro
     [total],
   );
 
+  /** מורה-AI ב-sheet (collapsed · נראוּת לכל סוגי-השאלות — בקשת-מוטי 2026-06-11). */
+  const [tutorOpen, setTutorOpen] = React.useState(false);
+
   const handleContinue = useCallback(() => {
+    setTutorOpen(false); // איפוס פר-שאלה
     dispatch({ type: 'CONTINUE', total });
   }, [total]);
 
@@ -467,6 +472,32 @@ export function LessonPlayer({ questions, scenarios, onFinish }: LessonPlayerPro
               {/* הסבר-לעומק מעוגן-חקיקה — מוטמע-מראש (questions.explanation · אפס Gemini ב-runtime) */}
               <div className="mb-3">
                 <DeepExplanationButton explanation={current.explanation} />
+              </div>
+
+              {/* מורה-AI — נגיש מכל סוג-שאלה (collapsed · בקשת-מוטי 2026-06-11) */}
+              <div className="mb-3">
+                {tutorOpen ? (
+                  <TutorChat
+                    questionPrompt={current.prompt}
+                    correctAnswer={
+                      correctAnswer?.kind === 'single'
+                        ? correctAnswer.text
+                        : correctAnswer?.kind === 'pairs'
+                          ? correctAnswer.pairs.map((p) => `${p.term} — ${p.def}`).join('\n')
+                          : undefined
+                    }
+                  />
+                ) : (
+                  <button
+                    type="button"
+                    data-testid="ask-tutor-btn"
+                    onClick={() => setTutorOpen(true)}
+                    className="inline-flex items-center gap-1.5 rounded-pill border border-primary-100 bg-primary-50 px-4 py-2 text-sm font-bold text-primary-700 transition-colors hover:bg-primary-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-quiz-primary-active"
+                  >
+                    <span aria-hidden="true">🎓</span>
+                    שאל את המורה
+                  </button>
+                )}
               </div>
 
               <button
