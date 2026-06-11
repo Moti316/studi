@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Heebo, Rubik } from 'next/font/google';
 import './globals.css';
+import { THEME_INIT_SCRIPT } from '@/lib/theme';
 
 const heebo = Heebo({
   subsets: ['hebrew', 'latin'],
@@ -42,7 +43,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="he" dir="rtl" className={`${rubik.variable} ${heebo.variable}`}>
+    <html
+      lang="he"
+      dir="rtl"
+      className={`${rubik.variable} ${heebo.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        {/* no-flash: מחיל ערכת-נושא (light/dark) לפני-paint לפי localStorage/מערכת */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
       <body className="text-foreground min-h-dvh bg-background font-sans antialiased">
         {children}
       </body>

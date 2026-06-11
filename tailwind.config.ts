@@ -33,22 +33,23 @@ const config: Config = {
         error: '#ef4444',
 
         // === Surfaces ===
+        // surfaces — dark-aware (CSS-vars · globals.css :root/.dark · light זהה-לערך-המקורי)
         background: {
-          DEFAULT: '#fbfcfe',
+          DEFAULT: 'rgb(var(--background) / <alpha-value>)',
           dark: '#0f172a',
         },
         card: {
-          DEFAULT: '#ffffff',
+          DEFAULT: 'rgb(var(--card) / <alpha-value>)',
           dark: '#1e293b',
         },
         border: {
-          DEFAULT: '#e6eaf1',
+          DEFAULT: 'rgb(var(--surface-border) / <alpha-value>)',
           dark: '#334155',
         },
 
         // === Quiz tokens (light-mode) — gemini-response 02-lesson-flow ===
         quiz: {
-          bg: '#ffffff',
+          bg: 'rgb(var(--quiz-bg) / <alpha-value>)',
           primary: {
             active: '#1b4fd6', // B1 ink-blue
             disabled: '#bcd2f7',
@@ -63,12 +64,12 @@ const config: Config = {
             bg: '#fdf3f3',
             drawer: '#fdf3f3',
           },
-          explanation: '#eef4ff',
+          explanation: 'rgb(var(--quiz-explanation) / <alpha-value>)',
           text: {
-            primary: '#1a2233', // B1 deep, high-contrast
-            secondary: '#5b6678', // B1 AA secondary
+            primary: 'rgb(var(--quiz-text-primary) / <alpha-value>)', // B1 deep · dark-aware
+            secondary: 'rgb(var(--quiz-text-secondary) / <alpha-value>)', // B1 AA · dark-aware
           },
-          border: '#e6eaf1',
+          border: 'rgb(var(--surface-border) / <alpha-value>)',
         },
 
         // === Dark-mode tokens — gemini-response 07-stats-feedback ===

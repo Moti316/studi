@@ -6,6 +6,13 @@
   :root {
     --foreground: 26 34 51; /* B1 ink #1A2233 (high-contrast) */
     --background: 251 252 254; /* B1 #FBFCFE */
+    /* === surface tokens (dark-aware · RGB-triples · light = ערכי-B1 המקוריים) === */
+    --card: 255 255 255; /* #ffffff */
+    --quiz-bg: 255 255 255; /* #ffffff */
+    --surface-border: 230 234 241; /* #e6eaf1 */
+    --quiz-text-primary: 26 34 51; /* #1a2233 */
+    --quiz-text-secondary: 91 102 120; /* #5b6678 */
+    --quiz-explanation: 238 244 255; /* #eef4ff */
     /* === ring/SVG color-tokens (dark-aware · נצרך ע"י RingProgress) === */
     --ring-fill: #1b4fd6; /* primary-500 */
     --ring-accent: #f5a623; /* accent-500 */
@@ -14,7 +21,14 @@
 
   .dark {
     --foreground: 248 250 252; /* slate-50 */
-    --background: 15 23 42;
+    --background: 15 23 42; /* #0f172a */
+    /* surfaces — מצב-כהה */
+    --card: 30 41 59; /* #1e293b */
+    --quiz-bg: 30 41 59; /* #1e293b */
+    --surface-border: 51 65 85; /* #334155 */
+    --quiz-text-primary: 241 245 249; /* #f1f5f9 */
+    --quiz-text-secondary: 148 163 184; /* #94a3b8 */
+    --quiz-explanation: 30 58 95; /* #1e3a5f */
     --ring-fill: #3b82f6;
     --ring-accent: #f5a623;
     --ring-track: #334155; /* border-dark */

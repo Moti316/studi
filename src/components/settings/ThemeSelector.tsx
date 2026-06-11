@@ -17,7 +17,8 @@ const OPTIONS: { value: ThemePref; label: string; Icon: typeof Sun }[] = [
 
 /**
  * בחירת ערכת-נושא: מערכת / בהיר / כהה.
- * שינוי בפועל של ערכת-הנושא מטופל ב-Phase 9 (ThemeProvider).
+ * השינוי **מוחל בפועל** (SettingsForm → applyTheme · class `dark` על <html> · src/lib/theme.ts)
+ * ונשמר ב-localStorage (no-flash init ב-layout).
  */
 export function ThemeSelector({ value, onChange }: Props) {
   return (
