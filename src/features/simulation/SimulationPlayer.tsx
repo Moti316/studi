@@ -57,6 +57,7 @@ export function SimulationPlayer({ simulation, onComplete }: SimulationPlayerPro
   const [current, setCurrent] = useState<SimTurn | null>(() => engine.start());
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [result, setResult] = useState<SimResult | null>(null);
+  const lastEntry = history.length > 0 ? history[history.length - 1] : undefined;
 
   function choose(idx: number) {
     if (!current) return;
@@ -97,8 +98,16 @@ export function SimulationPlayer({ simulation, onComplete }: SimulationPlayerPro
         </p>
       </header>
 
-      {/* ── היסטוריית-השיח ── */}
-      <div className="flex flex-col gap-4" aria-live="polite">
+      {/* ── הכרזת-a11y מבודדת (sr-only) — רק משוב-התור-האחרון + השאלה-הבאה ── */}
+      <div data-testid="sim-announcer" aria-live="polite" className="sr-only">
+        {lastEntry
+          ? `${INSPECTOR_LABELS[lastEntry.turn.inspector]}: ${lastEntry.response.feedback}`
+          : ''}
+        {current && lastEntry ? ` ${current.prompt}` : ''}
+      </div>
+
+      {/* ── היסטוריית-השיח (ללא aria-live — אחרת קורא-המסך מכריז-מחדש את כל השיחה בכל תור) ── */}
+      <div className="flex flex-col gap-4">
         {history.map((h, i) => (
           <div key={i} className="flex flex-col gap-2">
             <InspectorBubble turn={h.turn}>{h.turn.prompt}</InspectorBubble>

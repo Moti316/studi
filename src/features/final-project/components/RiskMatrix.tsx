@@ -146,6 +146,10 @@ interface MatrixCellProps {
   tooltipId: string; // id ל-aria-describedby
   isExpanded: boolean; // האם ה-tooltip פתוח?
   onToggle: () => void; // פתיחה/סגירה ל-tooltip
+  /** #8 roving-tabindex: רק תא-אחד ב-Tab-order; חיצים נעים בין-תאים. */
+  tabbable: boolean;
+  cellRef: (el: HTMLDivElement | null) => void;
+  onNavKey: (e: React.KeyboardEvent) => void;
 }
 
 function MatrixCell({
@@ -156,6 +160,9 @@ function MatrixCell({
   tooltipId,
   isExpanded,
   onToggle,
+  tabbable,
+  cellRef,
+  onNavKey,
 }: MatrixCellProps) {
   const score = riskLevel(severity, probability);
   const band = riskBand(score);
@@ -178,22 +185,21 @@ function MatrixCell({
   return (
     <div
       role="gridcell"
+      ref={cellRef}
       aria-label={ariaLabelParts.join(' · ')}
       aria-expanded={hasDot ? isExpanded : undefined}
       aria-describedby={hasDot && isExpanded ? tooltipId : undefined}
       data-testid={cellTestId}
-      tabIndex={hasDot ? 0 : -1}
+      tabIndex={tabbable ? 0 : -1}
       onClick={hasDot ? onToggle : undefined}
-      onKeyDown={
-        hasDot
-          ? (e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                onToggle();
-              }
-            }
-          : undefined
-      }
+      onKeyDown={(e) => {
+        if (hasDot && (e.key === 'Enter' || e.key === ' ')) {
+          e.preventDefault();
+          onToggle();
+          return;
+        }
+        onNavKey(e);
+      }}
       className={[
         'relative flex items-center justify-center rounded-sm border transition-all duration-150',
         BAND_BG[band],
@@ -299,6 +305,59 @@ export function RiskMatrix({ rows }: RiskMatrixProps) {
 
   // מעקב אחרי התא הפתוח (tooltip)
   const [openCell, setOpenCell] = useState<string | null>(null);
+
+  // #8 roving-tabindex + ניווט-חיצים בין כל 16 התאים (RTL: שמאל=חומרה-עולה).
+  const [focusKey, setFocusKey] = useState<string | null>(null);
+  const cellRefs = useRef(new Map<string, HTMLDivElement>());
+  const defaultFocusKey = (() => {
+    for (const prob of PROBABILITY_LEVELS) {
+      for (const sev of SEVERITY_LEVELS) {
+        if ((beforeMap.get(`${sev}-${prob}`) ?? []).length > 0) return `${sev}-${prob}`;
+      }
+    }
+    return `${SEVERITY_LEVELS[0]}-${PROBABILITY_LEVELS[0]}`;
+  })();
+  const activeKey = focusKey ?? defaultFocusKey;
+
+  const navigateTo = useCallback((sev: number, prob: number) => {
+    const s = Math.min(4, Math.max(1, sev));
+    const p = Math.min(4, Math.max(1, prob));
+    const key = `${s}-${p}`;
+    setFocusKey(key);
+    cellRefs.current.get(key)?.focus();
+  }, []);
+
+  const handleNavKey = useCallback(
+    (e: React.KeyboardEvent, sev: number, prob: number) => {
+      switch (e.key) {
+        case 'ArrowUp': // שורה-עליונה = סבירות-גבוהה
+          e.preventDefault();
+          navigateTo(sev, prob + 1);
+          break;
+        case 'ArrowDown':
+          e.preventDefault();
+          navigateTo(sev, prob - 1);
+          break;
+        case 'ArrowLeft': // RTL: שמאלה = חומרה-עולה
+          e.preventDefault();
+          navigateTo(sev + 1, prob);
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          navigateTo(sev - 1, prob);
+          break;
+        case 'Home':
+          e.preventDefault();
+          navigateTo(1, prob);
+          break;
+        case 'End':
+          e.preventDefault();
+          navigateTo(4, prob);
+          break;
+      }
+    },
+    [navigateTo],
+  );
 
   // סגירה בלחיצה מחוץ לרכיב
   const containerRef = useRef<HTMLDivElement>(null);
@@ -438,6 +497,12 @@ export function RiskMatrix({ rows }: RiskMatrixProps) {
                       tooltipId={tooltipId}
                       isExpanded={openCell === cellKey}
                       onToggle={() => toggleCell(cellKey)}
+                      tabbable={activeKey === cellKey}
+                      cellRef={(el) => {
+                        if (el) cellRefs.current.set(cellKey, el);
+                        else cellRefs.current.delete(cellKey);
+                      }}
+                      onNavKey={(e) => handleNavKey(e, sev, prob)}
                     />
                   );
                 })}

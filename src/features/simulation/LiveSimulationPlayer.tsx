@@ -8,7 +8,7 @@
  * מתקדם על 4 השלבים, עד דו"ח-סיום (0-100 + חולשות + 3 חיזוקים). בלי-מפתח → fallback
  * דטרמיניסטי (ה-action מטפל). RTL · design-tokens · a11y (aria-live · native textarea).
  */
-import { useState, useTransition } from 'react';
+import { useEffect, useRef, useState, useTransition } from 'react';
 import type { LiveFinalReport } from './live-types';
 import { initLiveState, toInput, applyResult, runningScore, type LiveState } from './live-engine';
 import { respondLiveAction } from './respond-live.action';
@@ -37,6 +37,14 @@ export function LiveSimulationPlayer({
   const [state, setState] = useState<LiveState>(() => initLiveState(branch));
   const [draft, setDraft] = useState('');
   const [pending, startTransition] = useTransition();
+  // #12: ה-textarea נעלם בזמן-ההמתנה ("המפקחים מתייעצים…") וחוזר עם התשובה —
+  // בלי שחזור-פוקוס המקלדת "נופלת" ל-body וקורא-מסך מאבד את מקומו.
+  const answerRef = useRef<HTMLTextAreaElement | null>(null);
+  const wasPending = useRef(false);
+  useEffect(() => {
+    if (wasPending.current && !pending && !state.done) answerRef.current?.focus();
+    wasPending.current = pending;
+  }, [pending, state.done]);
 
   function submit() {
     const answer = draft.trim();
@@ -152,6 +160,7 @@ export function LiveSimulationPlayer({
               </label>
               <textarea
                 id="live-answer"
+                ref={answerRef}
                 data-testid="live-answer-input"
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}

@@ -10,10 +10,10 @@
 
 | # | קובץ-חובה | למה חשוב | עודכן |
 | --- | --- | --- | --- |
-| 1 | [CLAUDE.md](../../CLAUDE.md) | אילוצים-קשיחים · stack · עקרונות · reading-list | 2026-06-09 |
+| 1 | [CLAUDE.md](../../CLAUDE.md) | אילוצים-קשיחים · stack · עקרונות · reading-list | 2026-06-11 |
 | 2 | [AGENTS.md](../../AGENTS.md) | חוקי-על קנוניים חוצי-כלים | 2026-06-09 |
 | 3 | [USER.md](../../USER.md) | פרופיל motilev8 + העדפות-עבודה | 2026-05-29 |
-| 4 | [docs/context/PROJECT-MAP.md](../../docs/context/PROJECT-MAP.md) | דלת-כניסה אוצרת לכל ההקשר | 2026-06-09 |
+| 4 | [docs/context/PROJECT-MAP.md](../../docs/context/PROJECT-MAP.md) | דלת-כניסה אוצרת לכל ההקשר | 2026-06-11 |
 | 5 | [docs/context/STATUS.md](../../docs/context/STATUS.md) | איפה אנחנו — phase · עובד · חסום | 2026-06-09 |
 | 6 | [docs/context/EXECUTION-PLAN.md](../../docs/context/EXECUTION-PLAN.md) | התוכנית end-to-end | 2026-06-09 |
 | 7 | [TODO.md](../../TODO.md) | מקור-אמת למשימות (A–I + ממשל-v2) | 2026-06-11 |
@@ -44,7 +44,7 @@
 | קובץ | תכלית | תגיות | עודכן |
 | --- | --- | --- | --- |
 | [AGENTS.md](../../AGENTS.md) | קובץ-ההקשר הקנוני של ה-workspace. תקן חוצה-כלים (Claude Code / Cursor / Codex). |  | 2026-06-09 |
-| [CLAUDE.md](../../CLAUDE.md) | 🗂️ אינדקס-הכל (קרא ראשון!): docs/context/MD-INDEX.md — אינדקס-MD חכם ומחולל-אוטומטית של כל מסמכי-הפרויקט (ני… |  | 2026-06-09 |
+| [CLAUDE.md](../../CLAUDE.md) | 🗂️ אינדקס-הכל (קרא ראשון!): docs/context/MD-INDEX.md — אינדקס-MD חכם ומחולל-אוטומטית של כל מסמכי-הפרויקט (ני… |  | 2026-06-11 |
 | [MEMORY.md](../../MEMORY.md) | 📍 הקשר מלא ועדכני: docs/context/PROJECT-MAP.md (9 קבצי מקור-אמת). |  | 2026-06-03 |
 | [README.md](../../README.md) | פלטפורמת AI בעברית להכנת קורסי-לימוד גיימיפיקטיביים מתוך מסמכי-מקור |  | 2026-06-02 |
 | [TODO.md](../../TODO.md) | מקור-אמת יחיד למשימות. מסונכרן ב-git (כל מחשב), נטען אוטומטית בכל סשן (SessionStart hook), |  | 2026-06-11 |
@@ -62,7 +62,7 @@
 | [MD-INDEX.md](../../docs/context/MD-INDEX.md) | ⚠️ קובץ מחולל — אל תערוך ידנית. מקור: .claude/scripts/gen-md-index.mjs · רענון: pnpm index:md | docs context | 2026-06-11 |
 | [MOTI-INBOX.md](../../docs/context/MOTI-INBOX.md) | ערוץ-תקשורת א-סינכרוני. מוטי כותב כאן הערות/הנחיות מכל מחשב (push ל-main); | docs context | 2026-06-04 |
 | [PLANNING-STATE.md](../../docs/context/PLANNING-STATE.md) | 🔧 מוחלף 2026-06-09: מסמך-תכנון זה הוא פרה-פיבוט (2026-06-01) — מקורות-האמת הנוכחיים ל"איפה אנחנו" הם STATUS.… | docs context | 2026-06-09 |
-| [PROJECT-MAP.md](../../docs/context/PROJECT-MAP.md) | קרא אותי ראשון בכל סשן. אני האינדקס שמכוון לכל שאר קבצי-ההקשר. | docs context | 2026-06-09 |
+| [PROJECT-MAP.md](../../docs/context/PROJECT-MAP.md) | קרא אותי ראשון בכל סשן. אני האינדקס שמכוון לכל שאר קבצי-ההקשר. | docs context | 2026-06-11 |
 | [PROJECTS.md](../../docs/context/PROJECTS.md) | 2 פרויקטים קשורים שמתערבבים. מסמך זה מונע בלבול (גם Claude התבלבל ביניהם). מעודכן: 2026-05-31. | docs context | 2026-06-09 |
 | [PROTOCOL-INDEX.md](../../docs/context/PROTOCOL-INDEX.md) | תכלית: דלת-כניסה אחת לכל פרוטוקולי-הממשל של מערכת-הסוכנים (Agent-OS). עונה ל-4 שאלות: | docs context | 2026-06-09 |
 | [SESSION-LOG.md](../../docs/context/SESSION-LOG.md) | בכל סוף-סשן: "מה נעשה / מה הצעד הבא". חדש למעלה. | docs context | 2026-06-11 |
@@ -262,7 +262,7 @@
 | --- | --- | --- | --- |
 | [A1-A2-RESEARCH-2026-06-11.md](../../courses/safety-officer/A1-A2-RESEARCH-2026-06-11.md) | מקור: Workflow-מחקר רב-סוכני (אתרים-רשמיים gov.il/נבו/wikisource/ISO + הקורפוס-המקומי) · confidence: high. | courses safety-officer 2026 | 2026-06-11 |
 | [ATTRIBUTION.md](../../courses/safety-officer/ATTRIBUTION.md) | מטרה: למפות את קבוצות-חומר-הלימוד של הקורס לפי נושא וסוג בלבד, להעריך את מצב-הזכויות | courses safety-officer | 2026-06-09 |
-| [COURSE-DESIGN.md](../../courses/safety-officer/COURSE-DESIGN.md) | מטרה: להגדיר את מודל-הלמידה של קורס "ממונה בטיחות" (instance #1) — 3 מצבי-הלמידה | courses safety-officer | 2026-06-09 |
+| [COURSE-DESIGN.md](../../courses/safety-officer/COURSE-DESIGN.md) | מטרה: להגדיר את מודל-הלמידה של קורס "ממונה בטיחות" (instance #1) — 3 מצבי-הלמידה | courses safety-officer | 2026-06-11 |
 | [curriculum-atgar.md](../../courses/safety-officer/curriculum-atgar.md) | מקור-מבנה: מערכת-שעות קורס ממונה-בטיחות 1211762 (מכללת אתגר, אוג׳2025). מבנה בלבד (פרקים/נושאים — נחלת-מבנה);… | courses safety-officer | 2026-06-01 |
 | [FINAL-PROJECT.md](../../courses/safety-officer/FINAL-PROJECT.md) | מטרה: ספֵק לתכן מיני-קורס ה-capstone שבו המערכת מלווה את המשתמש בהפקת עבודת-גמר אמיתית | courses safety-officer | 2026-06-02 |
 | [ISO-31000-DRAFT.md](../../courses/safety-officer/ISO-31000-DRAFT.md) | טיוטה לסקירת מוטי · תקציר-מקורי · אינו תחליף לתקן הרשמי בתשלום · מעודכן 2026-06-01 | courses safety-officer | 2026-06-01 |
@@ -274,7 +274,7 @@
 | [NOTEBOOKLM-ASSETS.md](../../courses/safety-officer/NOTEBOOKLM-ASSETS.md) | תכלית: אינדקס-עבודה של מחברות-ה-NotebookLM של מוטי הרלוונטיות לקורס ממונה-בטיחות. | courses safety-officer | 2026-06-11 |
 | [README.md](../../courses/safety-officer/README.md) | תיקיית-הקורס. המבנה = תבנית-הפלטפורמה (כל קורס עתידי באותו מבנה): פרק=מיני-קורס · 3 מצבים (שו"ת · תרחישים · מ… | courses safety-officer | 2026-06-01 |
 | [REGULATORY-WATCH.md](../../courses/safety-officer/REGULATORY-WATCH.md) | מעקב-רגולטורי בלבד — ⚠️ לא תוכן-קורס מחייב. קובץ זה מתעד רפורמות-חקיקה שפורסמו/נחתמו | courses safety-officer | 2026-06-01 |
-| [RISK-METHODOLOGY-INTRO.md](../../courses/safety-officer/RISK-METHODOLOGY-INTRO.md) | מעמד: פתיח-היחידה "ניהול-סיכונים תעשייתיים" (יחידה ט · scopes 5.3 · 5.4) — נלמד לפני | courses safety-officer | — |
+| [RISK-METHODOLOGY-INTRO.md](../../courses/safety-officer/RISK-METHODOLOGY-INTRO.md) | מעמד: פתיח-היחידה "ניהול-סיכונים תעשייתיים" (יחידה ט · scopes 5.3 · 5.4) — נלמד לפני | courses safety-officer | 2026-06-11 |
 | [README.md](../../courses/safety-officer/sources/final-project/README.md) | גיבוי-reference פרטי (הריפו פרטי). אין לשכפל PII לתוכן-משתמש. מעודכן: 2026-06-01. | safety-officer sources final-project | 2026-06-01 |
 | [UNREAD-MEDIA.md](../../courses/safety-officer/UNREAD-MEDIA.md) | מטרה: רישום מלא של קבצי-המדיה ב-Drive שלא ניתנו לקריאה אוטומטית (אודיו · וידאו · | courses safety-officer | 2026-06-02 |
 

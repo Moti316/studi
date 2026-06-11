@@ -219,6 +219,24 @@ describe('LessonPlayer', () => {
     expect(screen.getByTestId('xp-counter')).toHaveTextContent('0');
   });
 
+  // ── #7 a11y: דיאלוג תשובה-שגויה — Escape + פוקוס ──
+  it('#7: Escape על ה-sheet ממשיך לשאלה-הבאה, ופוקוס נכנס לדיאלוג בפתיחה', async () => {
+    render(
+      <LessonPlayer
+        questions={[MCQ_LONG({ correctAnswer: { index: 2 } }), MCQ_LONG({ prompt: 'שאלה ב' })]}
+      />,
+    );
+    answerMcq(0); // wrong
+    const sheet = screen.getByTestId('feedback-wrong');
+    expect(sheet).toHaveAttribute('tabindex', '-1');
+    await new Promise((r) => setTimeout(r, 5)); // הפוקוס נקבע ב-setTimeout(0)
+    expect(document.activeElement).toBe(sheet);
+
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(screen.queryByTestId('feedback-wrong')).not.toBeInTheDocument();
+    expect(screen.getByTestId('mcq-prompt')).toHaveTextContent('שאלה ב');
+  });
+
   // ── Sequence advance ──
   it('המשך אחרי שאלה ראשונה → מציג את השאלה השנייה', () => {
     render(

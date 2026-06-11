@@ -15,7 +15,7 @@
  * RTL-first: dir="rtl", logical props (ps-/pe-/text-start).
  */
 
-import React, { useCallback, useEffect, useReducer } from 'react';
+import React, { useCallback, useEffect, useReducer, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   cardTap,
@@ -80,6 +80,19 @@ export function McqQuestion({ question, onResult, isLoading, variant }: McqQuest
   const [state, dispatchRaw] = useReducer(
     (s: McqState, a: McqAction) => reducer(s, a, optionCount),
     { selectedIndex: null, submitted: false },
+  );
+
+  // #6 roving-tabindex: רק האופציה ה"פעילה" (הנבחרת, או הראשונה) ב-Tab-order;
+  // חיצים נעים-ובוחרים (כמו radio native), Home/End לקצוות. RTL: שמאל=קדימה.
+  const optionRefs = useRef<(HTMLElement | null)[]>([]);
+  const rovingIndex = state.selectedIndex ?? 0;
+  const moveTo = useCallback(
+    (idx: number) => {
+      const next = (idx + optionCount) % optionCount;
+      dispatchRaw({ type: 'SELECT', index: next });
+      optionRefs.current[next]?.focus();
+    },
+    [optionCount],
   );
 
   const handleSubmit = useCallback(() => {
@@ -201,8 +214,11 @@ export function McqQuestion({ question, onResult, isLoading, variant }: McqQuest
           return (
             <motion.div
               key={i}
+              ref={(el: HTMLElement | null) => {
+                optionRefs.current[i] = el;
+              }}
               role="radio"
-              tabIndex={state.submitted ? -1 : 0}
+              tabIndex={state.submitted ? -1 : rovingIndex === i ? 0 : -1}
               aria-checked={selected}
               aria-disabled={state.submitted}
               aria-label={`אפשרות ${i + 1}: ${opt}`}
@@ -216,6 +232,21 @@ export function McqQuestion({ question, onResult, isLoading, variant }: McqQuest
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
                   dispatchRaw({ type: 'SELECT', index: i });
+                  return;
+                }
+                // RTL: ArrowLeft=קדימה · ArrowRight=אחורה (כמו radio native ב-dir=rtl)
+                if (e.key === 'ArrowDown' || e.key === 'ArrowLeft') {
+                  e.preventDefault();
+                  moveTo(i + 1);
+                } else if (e.key === 'ArrowUp' || e.key === 'ArrowRight') {
+                  e.preventDefault();
+                  moveTo(i - 1);
+                } else if (e.key === 'Home') {
+                  e.preventDefault();
+                  moveTo(0);
+                } else if (e.key === 'End') {
+                  e.preventDefault();
+                  moveTo(optionCount - 1);
                 }
               }}
               className={[

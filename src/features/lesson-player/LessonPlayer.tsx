@@ -293,6 +293,53 @@ export function LessonPlayer({ questions, scenarios, onFinish }: LessonPlayerPro
     dispatch({ type: 'CONTINUE', total });
   }, [total]);
 
+  // #7 a11y: ה-sheet של תשובה-שגויה הוא דיאלוג-מודאלי מותאם (לא Radix) —
+  // פוקוס-נכנס בפתיחה · מלכודת-Tab · Escape=המשך · שחזור-פוקוס בסגירה.
+  const wrongSheetRef = React.useRef<HTMLDivElement | null>(null);
+  const sheetOpen = state.phase === 'feedback-wrong';
+  React.useEffect(() => {
+    if (!sheetOpen) return;
+    const opener = document.activeElement as HTMLElement | null;
+    // פוקוס ראשוני לתוך הדיאלוג (אחרי אנימציית-הכניסה של framer)
+    const t = setTimeout(() => wrongSheetRef.current?.focus(), 0);
+    const onKey = (e: KeyboardEvent) => {
+      const sheet = wrongSheetRef.current;
+      if (!sheet) return;
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        handleContinue();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      const focusables = Array.from(
+        sheet.querySelectorAll<HTMLElement>(
+          'button, [href], input, textarea, select, [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((el) => !el.hasAttribute('disabled'));
+      if (focusables.length === 0) return;
+      const first = focusables[0]!;
+      const last = focusables[focusables.length - 1]!;
+      const active = document.activeElement;
+      if (e.shiftKey && (active === first || active === sheet)) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      } else if (active && !sheet.contains(active)) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => {
+      clearTimeout(t);
+      document.removeEventListener('keydown', onKey);
+      // שחזור-פוקוס למפעיל אם עדיין ב-DOM (השאלה מתחלפת — best-effort)
+      if (opener && document.contains(opener)) opener.focus();
+    };
+  }, [sheetOpen, handleContinue]);
+
   // Fire onFinish once when the summary phase is reached.
   const reportedRef = React.useRef(false);
   React.useEffect(() => {
@@ -428,6 +475,8 @@ export function LessonPlayer({ questions, scenarios, onFinish }: LessonPlayerPro
 
             <motion.div
               key="wrong-sheet"
+              ref={wrongSheetRef}
+              tabIndex={-1}
               role="dialog"
               aria-modal="true"
               aria-label="משוב על תשובה שגויה"
