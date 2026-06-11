@@ -30,6 +30,27 @@ export default async function SafetyOfficerCoursePage() {
 
         <CourseTopics topics={COURSE_TOPICS} counts={counts} />
 
+        {/* מבחן-דמה (D3) */}
+        <Link
+          href="/lesson/exam"
+          data-testid="exam-entry"
+          className="group relative flex items-center justify-between gap-3 overflow-hidden rounded-card bg-gradient-to-bl from-primary-600 to-primary-700 px-4 py-4 text-white shadow-button ring-1 ring-primary-700/30 transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
+        >
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute -left-6 -top-8 h-24 w-24 rounded-full bg-accent-500/25 blur-2xl"
+          />
+          <span className="relative flex flex-col gap-0.5 text-start">
+            <span className="text-sm font-extrabold">⏱️ מבחן-דמה — סימולציית יום-האמת</span>
+            <span className="text-xs text-white/75">
+              30 שאלות · 60 דקות · ציון-עובר 70 · סקירת-טעויות מלאה
+            </span>
+          </span>
+          <span aria-hidden="true" className="relative text-lg font-bold text-accent-100">
+            ←
+          </span>
+        </Link>
+
         {/* פרויקט-גמר (capstone · JSA) */}
         <Link
           href="/capstone"
