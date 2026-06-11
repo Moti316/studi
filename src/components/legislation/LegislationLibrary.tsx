@@ -126,7 +126,7 @@ export function LegislationLibrary({ chapters, total }: LegislationLibraryProps)
               <li key={chapter.dir}>
                 <section
                   aria-label={chapter.title}
-                  className="overflow-hidden rounded-card border border-border bg-card"
+                  className="overflow-hidden rounded-card border border-border bg-card shadow-card transition-shadow hover:shadow-card-hover"
                 >
                   <button
                     type="button"
@@ -135,14 +135,16 @@ export function LegislationLibrary({ chapters, total }: LegislationLibraryProps)
                     data-testid={`chapter-${chapter.num}`}
                     className="flex w-full items-center gap-3 p-3 text-start transition-colors hover:bg-primary-50/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
                   >
-                    <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-primary-100 text-primary-700">
+                    <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-bl from-primary-500 to-primary-600 text-white shadow-button">
                       <Icon className="size-5" aria-hidden="true" />
                     </span>
                     <span className="flex min-w-0 flex-1 flex-col gap-0.5">
                       <span className="text-xs font-bold text-accent-600">מדף {chapter.num}</span>
-                      <span className="text-sm font-extrabold leading-snug">{chapter.title}</span>
+                      <span className="text-sm font-extrabold leading-snug text-quiz-text-primary">
+                        {chapter.title}
+                      </span>
                     </span>
-                    <span className="text-foreground/55 shrink-0 rounded-full bg-border px-2 py-0.5 text-xs font-bold">
+                    <span className="shrink-0 rounded-pill bg-primary-50 px-2.5 py-0.5 text-xs font-bold text-primary-700 ring-1 ring-inset ring-primary-100">
                       {chapter.items.length}
                     </span>
                     <ChevronDown

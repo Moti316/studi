@@ -21,9 +21,9 @@
 
 - ✅ **★ מורה-AI (בלוק-4 · מוטי שאל עליו)** (`f0d41d4` · 914 טסטים) — `tutor-prompt.ts` (טהור · SYSTEM_TUTOR עם **citation-guard** "ציטוט רק-כשבטוח" + buildTutorPrompt + fallback) · `tutor-explain.action` (Claude **author-model**/Sonnet + auth-gate + fallback · לעולם-לא-זורק · דפוס grade-open-answer) · `TutorChat.tsx` (B1 · header-gradient · בועות-Q/A · loading/error · כפתור-שאל) · חּוּוט ל-`ExplanationCard` (אחרי-חשיפה) · `/preview/tutor` · 5 טסטים. **אומת-חי:** preview ask→answer (fallback unauth · Claude-live עם מפתח+auth).
 
-- ✅ **מסך 4א — קורס (CourseTopics)** — כרטיסי-נושא נועזים: תג-אייקון **gradient** (`from-primary-500 to-primary-600` + shadow-button) · hover-lift + shadow-card · count-pill (`bg-primary-50 ring-primary-100`) · טקסט dark-aware. אומת-ויזואלית (/preview/course · 8 יחידות · 458 שאלות).
+- ✅ **מסך 4 — קורס + חקיקה** — `CourseTopics` (`65207bc`) + `LegislationLibrary`: תגי-אייקון **gradient** (`from-primary-500 to-primary-600` + shadow-button) · hover-lift/shadow-card · count-pills primary (`bg-primary-50 ring-primary-100`) · טקסט dark-aware. אומת-ויזואלית (/preview/course · /preview/legislation · accordion-מדפים).
 
-**Drive:** לוג-סשן מקיף + פרומפט-המשך נכתב (doc `10KsSeXh…`). **בעבודה / הצעד-הבא:** מסך 4ב חקיקה (LegislationLibrary) · מסך 3 סימולציה · import-תרחישים (בלוק-5) · /lesson/exam (D3) · scopes 4.3-4.5 · באג-האנט.
+**Drive:** לוג-סשן מקיף + פרומפט-המשך נכתב (doc `10KsSeXh…`). **בעבודה / הצעד-הבא:** מסך 3 סימולציה · import-תרחישים (בלוק-5) · /lesson/exam (D3) · scopes 4.3-4.5 · באג-האנט.
 
 ---
 
